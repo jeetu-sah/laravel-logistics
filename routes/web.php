@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', 'Auth\LoginController@index');
+
+Route::group(['middleware'=>['auth']] , function(){
+    /*Manage customer routes*/
+});
+
 Route::get('/', function () {
     return view('login/login');
 });
