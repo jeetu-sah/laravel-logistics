@@ -15,5 +15,14 @@ use App\Http\Middleware\AdminAuth;
 |
 */
 
+Route::get('/', 'Auth\LoginController@index');
+
+Route::group(['middleware'=>['auth']] , function(){
+    /*Manage customer routes*/
+});
+
+Route::get('/', function () {
+    return view('login/login');
+});
 Route::get('/', [LoginController::class, 'index']);
 Route::post('admin/check-login', [LoginController::class, 'store']);
