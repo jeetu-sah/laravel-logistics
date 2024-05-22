@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\AdminAuth;
 
 /*
@@ -15,14 +15,12 @@ use App\Http\Middleware\AdminAuth;
 |
 */
 
-Route::get('/', 'Auth\LoginController@index');
+Route::get('/', [LoginController::class, 'index']);
+Route::post('login', [LoginController::class, 'store']);
 
 Route::group(['middleware'=>['auth']] , function(){
     /*Manage customer routes*/
 });
 
-Route::get('/', function () {
-    return view('login/login');
-});
-Route::get('/', [LoginController::class, 'index']);
-Route::post('admin/check-login', [LoginController::class, 'store']);
+
+
