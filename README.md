@@ -8,7 +8,7 @@
 </p>
 
 ## Installation
-Run the below comand
+Run the below command <br />
 php artisan db:seed --class=UserSeeder
 
 
