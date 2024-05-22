@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\admin\ReviewerController;
 use App\Http\Middleware\AdminAuth;
 
 /*
@@ -17,7 +19,7 @@ use App\Http\Middleware\AdminAuth;
 
 Route::get('/', 'Auth\LoginController@index');
 
-Route::group(['middleware'=>['auth']] , function(){
+Route::group(['middleware' => ['auth']], function () {
     /*Manage customer routes*/
 });
 
@@ -26,3 +28,6 @@ Route::get('/', function () {
 });
 Route::get('/', [LoginController::class, 'index']);
 Route::post('admin/check-login', [LoginController::class, 'store']);
+Route::get('admin', [AdminController::class, 'index']);
+Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);
+Route::get('admin/reviewers-list', [ReviewerController::class, 'show']);
