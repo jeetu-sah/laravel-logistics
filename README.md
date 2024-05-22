@@ -1,5 +1,5 @@
 ## Installation
-Run the below command <br />
+#### Run the below command <br />
 php artisan db:seed --class=UserSeeder
 
 
