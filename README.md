@@ -1,6 +1,6 @@
 ## Installation
 #### Run the below command <br />
-composer install
+composer install <br />
 php artisan db:seed --class=UserSeeder
 
 
