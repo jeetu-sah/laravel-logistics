@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\admin\ReviewerController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +33,11 @@ Route::get('admin', [AdminController::class, 'index']);
 Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);
 Route::get('admin/reviewers-list', [ReviewerController::class, 'show']);
 Route::post('admin/add-reviewers', [ReviewerController::class, 'add_reviewers'])->name('admin.add_reviewers');
+// Permission
+Route::get('admin/permission', [PermissionController::class, 'index']);
+Route::post('admin/add-permission', [PermissionController::class, 'store'])->name('admin.add-permission');
+Route::get('admin/permission-list', [PermissionController::class, 'show']);
+// Role
+Route::get('admin/role', [RoleController::class, 'index']);
+Route::post('admin/add-role', [RoleController::class, 'store'])->name('admin.add-role');
+Route::get('admin/role-list', [RoleController::class, 'show']);
