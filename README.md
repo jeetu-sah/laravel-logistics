@@ -1,7 +1,8 @@
 ## Installation
 #### Run the below command <br />
 composer install <br />
-php artisan db:seed --class=UserSeeder
+php artisan migrate <br />
+php artisan db:seed --class=UserSeeder <br />
 
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
