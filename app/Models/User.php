@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'mobile',
         'user_type',
+        'password',
         'user_status',
         'term_and_condition',
         'is_signed'

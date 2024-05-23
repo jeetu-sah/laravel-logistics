@@ -33,4 +33,5 @@ Route::post('login', [LoginController::class, 'store']);
 
 Route::get('admin', [AdminController::class, 'index']);
 Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);
-Route::get('admin/reviewers-list', [ReviewerController::class, 'index']);
+Route::get('admin/reviewers-list', [ReviewerController::class, 'show']);
+Route::post('admin/add-reviewers', [ReviewerController::class, 'add_reviewers'])->name('admin.add_reviewers');
