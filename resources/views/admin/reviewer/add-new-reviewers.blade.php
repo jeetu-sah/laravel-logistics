@@ -19,7 +19,7 @@
                 <div class="card">
 
                     <div class="card-body">
-                        <form action="{{ route('admin.add_reviewers') }}" method="post" id="form" name="pForm"
+                        <form action="{{ url('admin.reviewers/') }}" method="post" id="form" name="pForm"
                             enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
                             <div class="form-row">

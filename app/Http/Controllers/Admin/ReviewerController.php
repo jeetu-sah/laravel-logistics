@@ -13,7 +13,7 @@ class ReviewerController extends Controller
     public function index()
     {
         $data['heading'] = 'Add Reviewers';
-        $data['listUrl'] = 'admin/reviewers-list';
+        $data['listUrl'] = 'admin/reviewers';
         return view('admin.reviewer.add-new-reviewers')->with($data);
     }
 
