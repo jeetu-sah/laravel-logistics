@@ -33,6 +33,7 @@ Route::group(['middleware' => ['guest']], function () {
 Route::get('admin', [AdminController::class, 'index']);
 
 Route::get('admin/reviewers', [ReviewerController::class, 'show']);
+Route::get('admin/reviewers/list', [ReviewerController::class, 'list']);
 Route::get('admin/reviewers/create', [ReviewerController::class, 'index']);
 Route::post('admin/reviewers/store', [ReviewerController::class, 'store'])->name('admin.add_reviewers');
 
