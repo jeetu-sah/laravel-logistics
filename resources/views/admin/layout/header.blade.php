@@ -31,10 +31,13 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="false" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="#" 
+                    data-toggle="collapse" 
+                    data-target="#collapseUtilities"
+                    aria-expanded="false" 
+                    aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Permission</span>
+                    <span>Manage Roles</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar" style="">
@@ -58,7 +61,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2/ collapse-inner rounded">
                         {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
-                        <a class="collapse-item" href="{{ url('admin/add-new-reviewers') }}">Add Reviewers</a>
+                        <a class="collapse-item" href="{{ url('admin/reviewers') }}">Add Reviewers</a>
                         <a class="collapse-item" href="cards.html">Reviewers List</a>
                     </div>
                 </div>
