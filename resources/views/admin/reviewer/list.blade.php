@@ -44,28 +44,7 @@
 <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
 <script>
     $(document).ready(function(e) {
-        // $('#reviewers-list').DataTable({
-        //     "processing": true,
-        //     "serverSide": true,
-        //     "ajax": {
-        //         "url": "{{ url('admin/reviewers/list') }}",
-        //         "dataType": "json",
-        //         "type": "GET",
-        //         "data": function(d) {
-        //             d.role_id = 1;
-        //         },
-        //     },
-        //     "columns": [{
-        //             data: 'sn',
-        //             orderable: false
-        //         },
-        //         { data: 'name' },
-        //         { data: 'email' },
-        //         { data: 'mobile' },
-        //         { data: 'user_type' },
-        //         { data: 'action', orderable: false },
-        //     ]
-        // });
+
         new DataTable('#reviewers-list', {
             ajax: {
                 url: "{{ url('admin/reviewers/list') }}",
@@ -91,7 +70,8 @@
                     data: 'user_type'
                 },
                 {
-                    data: 'action', orderable: false
+                    data: 'action',
+                    orderable: false
                 }
             ],
             processing: true,
