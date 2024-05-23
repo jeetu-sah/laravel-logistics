@@ -26,11 +26,7 @@ Route::group(['middleware' => ['guest']], function () {
     Route::get('/', [LoginController::class, 'index']);
 });
 
-
-
 Route::post('login', [LoginController::class, 'store']);
-
-
 Route::get('admin', [AdminController::class, 'index']);
 Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);
 Route::get('admin/reviewers-list', [ReviewerController::class, 'show']);

@@ -65,8 +65,8 @@
                                     <select class="form-select select2 form-control" name="user_type" id="userType"
                                         required>
                                         <option selected disabled value="">Select User Type</option>
-                                        <option value="1">Admin</option>
-                                        <option value="2">User</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="reviewer">Reviewer</option>
                                     </select>
                                     @error('user_type')
                                         <span class="text-danger">{{ $message }}</span>
