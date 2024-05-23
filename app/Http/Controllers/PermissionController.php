@@ -12,7 +12,7 @@ class PermissionController extends Controller
         $data['heading'] = 'Add Permission';
         $data['listUrl'] = 'admin/permission-list';
 
-        return view('admin.add-permission')->with($data);
+        return view('admin.authorization.add-permission')->with($data);
     }
     public function store(Request $request)
     {

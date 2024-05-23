@@ -12,7 +12,7 @@ class RoleController extends Controller
         $data['heading'] = 'Add Role';
         $data['listUrl'] = 'admin/role-list';
 
-        return view('admin.add-role')->with($data);
+        return view('admin.authorization.add-role')->with($data);
     }
     public function store(Request $request)
     {
@@ -29,6 +29,6 @@ class RoleController extends Controller
         $data['list'] = 'Role List';
         $data['addroleURL'] = 'admin/role';
         $data['btnName'] = 'Add role';
-        return view('admin/role-list')->with($data);
+        return view('admin.authorization.role-list')->with($data);
     }
 }

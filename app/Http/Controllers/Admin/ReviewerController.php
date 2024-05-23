@@ -14,10 +14,10 @@ class ReviewerController extends Controller
     {
         $data['heading'] = 'Add Reviewers';
         $data['listUrl'] = 'admin/reviewers-list';
-        return view('admin.add-new-reviewers')->with($data);
+        return view('admin.reviewer.add-new-reviewers')->with($data);
     }
 
-    public function add_reviewers(Request $request)
+    public function store(Request $request)
     {
         try {
             $request->validate(
@@ -76,9 +76,6 @@ class ReviewerController extends Controller
     public function show()
     {
         $data['allUsers'] = User::paginate(10);
-        $data['heading'] = 'Reviewers';
-        $data['addReviewersURL'] = 'admin/add-new-reviewers';
-        $data['btnName'] = 'Add Reviewers';
-        return view('admin.reviewers-list')->with($data);
+        return view('admin.reviewer.reviewers-list')->with($data);
     }
 }
