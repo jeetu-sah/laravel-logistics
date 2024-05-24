@@ -43,9 +43,9 @@
                     data-parent="#accordionSidebar" style="">
                     <div class="bg-white py-2 collapse-inner rounded">
                         {{-- <h6 class="collapse-header">Custom Utilities:</h6> --}}
-                        <a class="collapse-item" href="{{ url('admin/permission') }}">Add Permission</a>
-                        <a class="collapse-item" href="{{ url('admin/permission-list') }}">Permission List</a>
-                        <a class="collapse-item" href="{{ url('admin/role') }}">Add Role</a>
+                        {{-- <a class="collapse-item" href="{{ url('admin/permission') }}">Add Permission</a> --}}
+                        {{-- <a class="collapse-item" href="{{ url('admin/permission-list') }}">Permission List</a> --}}
+                        {{-- <a class="collapse-item" href="{{ url('admin/role') }}">Add Role</a> --}}
                         <a class="collapse-item" href="{{ url('admin/role-list') }}">Role List</a>
                     </div>
                 </div>
