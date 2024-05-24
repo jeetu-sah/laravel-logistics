@@ -7,14 +7,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Event\TestRunner\ExecutionAborted;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewerController extends Controller
 {
     public function index()
     {
-        $data['heading'] = 'Add Reviewers';
-        $data['listUrl'] = 'admin/reviewers-list';
-        return view('admin.reviewer.add-new-reviewers')->with($data);
+        $data['title'] = 'Reviewer | Create';
+
+        return view('admin.reviewer.create')->with($data);
     }
 
     public function store(Request $request)
@@ -76,6 +77,59 @@ class ReviewerController extends Controller
     public function show()
     {
         $data['allUsers'] = User::paginate(10);
-        return view('admin.reviewer.reviewers-list')->with($data);
+
+        $data['title'] = 'Reviewer | List';
+        return view('admin.reviewer.list')->with($data);
+    }
+
+    public function list(Request $request)
+    {
+        $limit = request()->input('length');
+		$start = request()->input('start');
+        $totalRecord = User::count();
+        
+        $usersQuery = User::query();
+        $users = $usersQuery->skip($start)->take($limit)->get();
+
+        $row = [];
+        if ($users->count() > 0) {
+            $i = 1;
+            foreach ($users as $user) {
+                $change_credential = NULL;
+                $delete_btn =  "<a href='javascript::void()' data-partnerid='" . $user->id . "' data-toggle='tooltip' title='Add category' class='btn btn-danger remove_partner' style='margin-right: 5px;'><i class='fas fa-trash'></i></a>&nbsp;";
+
+                $edit_btn = '<a href="#" data-toggle="tooltip" title="Edit Record" class="btn btn-primary" style="margin-right: 5px;">
+						<i class="fas fa-edit"></i> 
+					  </a>';
+
+                //if(Auth::user()->isAbleTo('change-user-credential')){
+                $change_credential = '<a href="' . url("admin/edit_credential/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-success" style="margin-right: 5px;">
+						<i class="fas fa-key"></i> 
+					  </a>';
+                //}
+                $row = [];
+                $row['sn'] = '<a href="' . url("admin/roles/user_permission/$user->id?page=roles") . '">' . $user->id . '</a>';;
+
+                $row['name'] = $user->first_name;
+                $row['email'] = $user->email;
+                $row['mobile'] = $user->mobile;
+                $row['user_type'] = $user->user_type;
+
+                $row['action'] = $delete_btn . ' ' . $edit_btn . " " . $change_credential;
+
+                $rows[] = $row;
+            }
+        }
+
+        $json_data = array(
+            "draw"            => intval(request()->input('draw')),
+            "recordsTotal"    => intval($totalRecord),
+            "recordsFiltered" => intval($totalRecord),
+            "data"            => $rows
+        );
+        // echo "<pre>";
+        // print_r($json_data);exit;
+        return json_encode($json_data);
+        exit;
     }
 }
