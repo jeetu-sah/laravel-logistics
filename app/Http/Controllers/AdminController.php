@@ -12,7 +12,15 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+        return view('admin.dashboard.dashboard');
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function adminlayout()
+    {
+        return view('admin.dashboard.dashboard');
     }
 
     /**
@@ -31,35 +39,4 @@ class AdminController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Admin $admin)
-    {
-        //
-    }
 }

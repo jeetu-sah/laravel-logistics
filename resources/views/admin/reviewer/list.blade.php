@@ -1,20 +1,34 @@
-@extends('admin.layout.layout')
+@extends('admin.admin_layout.master')
+@section('main_content')
+<div class="content-wrapper" style="min-height: 1419.51px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="{{ url('admin/reviewers/create') }}" 
+                        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                        <i class=" fa-sm text-white-50"></i>Create Reviewers </a>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Reviewer List</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
-@section('main-content')
-<!-- Begin Page Content -->
-<div class="container-fluid">
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Reviewers</h1>
-        <a href="{{ url('admin/reviewers/create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fa-sm text-white-50"></i> Add Reviewers</a>
-    </div>
-
-    <!-- Content Row -->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
+    <!-- Main content -->
+    <section class="content">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Reviewer List</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
                     <div class="table-responsive ">
                         <table class="table table-bordered table-striped" id="reviewers-list">
                             <thead>
@@ -33,8 +47,12 @@
                     </div>
                 </div>
             </div>
+            <!-- /.card-body -->
         </div>
-    </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
 </div>
 @endsection
 

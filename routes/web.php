@@ -31,6 +31,7 @@ Route::group(['middleware' => ['guest']], function () {
 
 
 Route::get('admin', [AdminController::class, 'index']);
+Route::get('admin/adminlayout', [AdminController::class, 'adminlayout']);
 
 Route::get('admin/reviewers', [ReviewerController::class, 'show']);
 Route::get('admin/reviewers/list', [ReviewerController::class, 'list']);
@@ -48,5 +49,6 @@ Route::post('admin/add-permission', [PermissionController::class, 'store'])->nam
 Route::get('admin/permission-list', [PermissionController::class, 'show']);
 // Role
 Route::get('admin/role', [RoleController::class, 'index']);
+Route::get('admin/role/list', [RoleController::class, 'list']);
 Route::post('admin/add-role', [RoleController::class, 'store'])->name('admin.add-role');
 Route::get('admin/role-list', [RoleController::class, 'show']);
