@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use PHPUnit\Event\TestRunner\ExecutionAborted;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
+use App\Library\sHelper;
 
 
 class ReviewerController extends Controller
@@ -81,12 +82,12 @@ class ReviewerController extends Controller
         return view('admin.reviewer.list')->with($data);
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $data['title'] = 'Reviewer | Edit';
         $data['reviwer'] = User::with('roles')->find($id);
         $data['roles'] = Role::all();
-       
+      
         return view('admin.reviewer.edit')->with($data);
     }
 

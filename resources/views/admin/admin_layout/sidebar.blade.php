@@ -27,7 +27,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ url('/') }}" class="nav-link active">
+                            <a href="{{ url('/') }}" class="nav-link {{ sHelper::activeSideBar(Request::path() , ['admin']) }}">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -36,7 +36,7 @@
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="{{ url('/') }}" class="nav-link">
+                            <a href="{{ url('/') }}" class="nav-link {{ sHelper::activeSideBar(Request::path() , ['admin/role-list']) }}">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     Manage Roles
@@ -55,7 +55,7 @@
                         </li>
 
                         <li class="nav-item has-treeview">
-                            <a href="{{ url('admin/admin/role-list') }}" class="nav-link">
+                            <a href="{{ url('admin/admin/role-list') }}" class="nav-link {{ (request()->is('admin/reviewers*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
                                     Manage Reviewers
