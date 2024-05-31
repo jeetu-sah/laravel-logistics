@@ -15,19 +15,24 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $password = "@Admin@123#";
-        User::create([
+        $user = User::create([
             'first_name' => 'Journal',
             'last_name' => 'Journal',
-            'email' => 'admin@gmail.com',
+            'email' => 'author@gmail.com',
             'email_verified_at' => now(),
             'mobile_verified_at' => now(),
-            'mobile' => 8887603331,
-            'user_type' => 'admin',
+            'mobile' => 88876033315,
+            'user_type' => 'author',
             'password' => Hash::make($password),
             'user_status' => 'active',
             'term_and_condition' => 1,
             'is_signed' => 1,
             'remember_token' => 222221,
         ]);
+
+        if($user != NULL) {
+            $user->assignRole('author'); 
+            $user->assignRole('reviewer'); 
+        }
     }
 }

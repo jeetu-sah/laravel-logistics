@@ -17,9 +17,9 @@ class RoleSeeder extends Seeder
         $roles = [
             [
 
-                'name' => 'Admin',
+                'name' => 'Author',
                 'guard_name' => 'web',
-                'slug' => 'admin',
+                'slug' => 'author',
                 'created_at' => date('Y-m-d'),
             ],
             [
