@@ -61,8 +61,13 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2/ collapse-inner rounded">
                         {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
+<<<<<<< HEAD
                         <a class="collapse-item" href="{{ url('admin/reviewers/create') }}">Add Reviewers </a>
                         <a class="collapse-item" href="{{ url('admin/reviewers') }}"> Reviewers List</a>
+=======
+                        <a class="collapse-item" href="{{ url('admin/reviewers') }}">Reviewers List</a>
+                        <a class="collapse-item" href="{{ url('admin/reviewers/create') }}">Add Reviewers</a>
+>>>>>>> 5ff2b80505ae087229723c9e0f22f62b74994e88
                     </div>
                 </div>
             </li>
