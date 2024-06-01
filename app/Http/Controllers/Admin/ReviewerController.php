@@ -16,8 +16,14 @@ class ReviewerController extends Controller
 {
     public function index()
     {
+<<<<<<< HEAD
+        $data['heading'] = 'Add Reviewers';
+        $data['listUrl'] = 'admin/reviewers';
+        return view('admin.reviewer.add-new-reviewers')->with($data);
+=======
         $data['title'] = 'Reviewer | Create';
         return view('admin.reviewer.create')->with($data);
+>>>>>>> 5ff2b80505ae087229723c9e0f22f62b74994e88
     }
 
     public function store(Request $request)
