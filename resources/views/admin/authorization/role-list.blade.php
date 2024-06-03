@@ -97,6 +97,4 @@
 @section('styles')
 @parent
 <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
-</script>
-
 @endsection

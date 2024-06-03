@@ -7,17 +7,17 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">
-                    @role('Author')
-                      Author
-                    @endrole
-
-                    @unlessrole(['Author'])
-                        @role('Reviewer')
-                            Reviewer
+                        @role('Author')
+                        Author
                         @endrole
-                    @endrole
 
-                    Dashboard         
+                        @unlessrole(['Author'])
+                        @role('Reviewer')
+                        Reviewer
+                        @endrole
+                        @endrole
+
+                        Dashboard
                     </h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
@@ -34,32 +34,34 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-list"></i></span>
+                    <a href="#" class="dashboard-link" style="color:black;">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-list"></i></span>
 
-                        <div class="info-box-content">
-                            <span class="info-box-text">New Submissions</span>
-                            <span class="info-box-number">
-                                10
-                                <small>%</small>
-                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">New Submissions</span>
+                                <span class="info-box-number">
+                                    10
+                                    <small>%</small>
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
+                    </a>
                 </div>
                 <!-- /.col -->
                 <div class="col-12 col-sm-6 col-md-4">
-                    <div class="info-box mb-3">
-                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list"></i></span>
+                    <a href="#" class="dashboard-link" style="color:black;">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list"></i></span>
 
-                        <div class="info-box-content">
-                            <span class="info-box-text">Revisions</span>
-                            <span class="info-box-number">41,410</span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Revisions</span>
+                                <span class="info-box-number">41,410</span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
+                    </a>
                 </div>
                 <!-- /.col -->
 
@@ -67,14 +69,16 @@
                 <div class="clearfix hidden-md-up"></div>
 
                 <div class="col-12 col-sm-6 col-md-4">
-                    <div class="info-box mb-3">
-                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-list"></i></span>
+                    <a href="#" class="dashboard-link" style="color:black;">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-list"></i></span>
 
-                        <div class="info-box-content">
-                            <span class="info-box-text">Completed</span>
-                            <span class="info-box-number">760</span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Completed</span>
+                                <span class="info-box-number">760</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -127,4 +131,11 @@
 </div>
 <!-- /.row -->
 
+@endsection
+
+@section('styles')
+@parent
+.dashboard-link {
+    color: #292828 !important;
+}
 @endsection
