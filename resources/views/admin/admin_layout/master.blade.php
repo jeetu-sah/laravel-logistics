@@ -108,7 +108,7 @@
                         <div class="dropdown-divider"></div>
 
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer text-primary">Update My Information</a>
+                        <a href="{{ url('admin') }}" class="dropdown-item dropdown-footer text-primary">Update My Information</a>
                     </div>
                 </li>
                 <!-- Notifications Dropdown Menu -->

@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\admin\ReviewerController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Admin\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,9 @@ Route::get('admin/reviewers/edit/{id}', [ReviewerController::class, 'edit']);
 Route::post('admin/reviewers/update/{id}', [ReviewerController::class, 'update']);
 Route::post('admin/reviewers/store', [ReviewerController::class, 'store'])->name('admin.add_reviewers');
 Route::post('admin/reviewers/change_roles', [ReviewerController::class, 'changeRoles'])->name('admin.reviewer.change_roles');
+
+
+Route::get('admin/article/create', [ArticleController::class, 'index']);
 
 
 //Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);
