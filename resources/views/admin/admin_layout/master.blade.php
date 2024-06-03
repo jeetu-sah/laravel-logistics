@@ -65,7 +65,7 @@
                                 <span>User Name</span>
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
-                                        <span class="float-right">{{ Auth::user()->first_name }}</span>
+                                        <span class="float-right">{{ Auth::user()->first_name ?? '' }}</span>
                                     </h3>
                                 </div>
                             </div>
