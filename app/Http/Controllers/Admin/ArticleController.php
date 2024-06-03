@@ -3,21 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use PHPUnit\Event\TestRunner\ExecutionAborted;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Role;
-use App\Library\sHelper;
 
-
-class ReviewerController extends Controller
+class ArticleController extends Controller
 {
     public function index()
     {
-        $data['title'] = 'Reviewer | Create';
-        return view('admin.reviewer.create')->with($data);
+        $data['title'] = 'Article | Create';
+        return view('admin.article.create')->with($data);
     }
 
     public function store(Request $request)
