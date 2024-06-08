@@ -36,6 +36,13 @@ class RoleSeeder extends Seeder
                 'slug' => 'reviewer',
                 'created_at' => date('Y-m-d'),
             ],
+            [
+
+                'name' => 'Publisher',
+                'guard_name' => 'web',
+                'slug' => 'publisher',
+                'created_at' => date('Y-m-d'),
+            ],
         ];
 
         foreach ($roles as $role) {

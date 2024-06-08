@@ -17,6 +17,7 @@ class ReviewerController extends Controller
     public function index()
     {
         $data['title'] = 'Reviewer | Create';
+        
         return view('admin.reviewer.create')->with($data);
     }
 

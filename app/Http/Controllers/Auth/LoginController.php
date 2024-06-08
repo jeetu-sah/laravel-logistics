@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Role;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -9,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Library\sHelper;
 
 class LoginController extends BaseController
 {
@@ -21,8 +23,10 @@ class LoginController extends BaseController
     public function index()
     {
         $data['title'] = 'Login Action';
-
-        return view('login.login')->with($data);
+        $data['roles'] = Role::all();
+       
+        return view('login.adminLogin')->with($data);
+        //return view('login.login')->with($data);
     }
 
 
@@ -35,14 +39,16 @@ class LoginController extends BaseController
          // Step 1: Validate the request data
          $validatedData = $request->validate([
              'email' => 'required|email',
-             'password' => 'required'
+             'password' => 'required',
+             'role' => 'required'
          ], [
              // Custom error messages
              'email.required' => 'Email is required.',
              'email.email' => 'Please enter a valid email address.',
-             'password.required' => 'Password is required.'
+             'password.required' => 'Password is required.',
+             'role.required' => 'Please select a valid role.'
          ]);
- 
+
          // Step 2: Attempt to find the admin in the database
          $user = User::where('email', $request->email)->first();
          
@@ -51,6 +57,9 @@ class LoginController extends BaseController
             if($user->user_status == 'active'){
 				if(Hash::check($request->password, $user->password)){
 					$remember = $request->remeber_me;
+                    $roleId = $request->role;
+                    sHelper::activateLoggedInUserRole($user, $roleId);
+                    
 					Auth::login($user , $remember); 
 					return redirect('/admin')->with(["msg"=>"<div class='notice notice-success notice'><strong>Success </strong>  Login Successfully !!! </div>" ]);  
 				   }

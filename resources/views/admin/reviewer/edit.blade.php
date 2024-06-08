@@ -18,16 +18,15 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     @if(Session::has('msg'))
-                    {!! Session::get("msg") !!}
+                        {!! Session::get("msg") !!}
                     @endif
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
     <!-- Main content -->
     <section class="content">
-        <!-- Default box -->
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Edit Reviewer</h3>
@@ -119,9 +118,6 @@
             </div>
             <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-
-
     </section>
     <!-- /.content -->
 </div>

@@ -106,6 +106,20 @@
                             <!-- Message End -->
                         </a>
                         <div class="dropdown-divider"></div>
+                        <a href="{{ url('logout') }}" class="dropdown-item">
+                            <!-- logout start-->
+                            <div class="media">
+                                <span>Logout</span>
+                                <div class="media-body">
+                                    <!-- <h3 class="dropdown-item-title">
+                                        <span class="float-right">English</span>
+                                    </h3> -->
+                                </div>
+                                
+                            </div>
+                            <!-- logout End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
 
                         <div class="dropdown-divider"></div>
                         <a href="{{ url('admin') }}" class="dropdown-item dropdown-footer text-primary">Update My Information</a>
