@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ArticleType;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -10,6 +11,7 @@ class ArticleController extends Controller
     public function index()
     {
         $data['title'] = 'Article | Create';
+        $data['articleTypes'] = ArticleType::all();
         return view('admin.article.create')->with($data);
     }
 

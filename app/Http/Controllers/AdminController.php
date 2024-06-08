@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Library\sHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -12,7 +13,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard.dashboard');
+        $data['title'] = 'dashboard';
+        $data['roles'] = Auth::user()->roles;
+        $data['selectedRole'] = sHelper::activeLoggedInUserRole(Auth::user());
+     
+        return view('admin.dashboard.dashboard', $data);
     }
 
     /**
@@ -20,7 +25,8 @@ class AdminController extends Controller
      */
     public function adminlayout()
     {
-        return view('admin.dashboard.dashboard');
+        $data['title'] = 'login';
+        return view('admin.dashboard.dashboard', $data);
     }
 
     /**

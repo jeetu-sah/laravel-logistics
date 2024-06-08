@@ -25,9 +25,16 @@
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    @if(Session::has('msg'))
+                    {!! Session::get("msg") !!}
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.content-header -->
     <div class="content-header">
@@ -93,15 +100,19 @@
                         </div>
                         <div class="card-body">
 
-                            <form action="{{ route('admin.add_reviewers') }}" method="post" id="form" name="pForm" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            <form action="{{ route('admin.settings.change') }}" method="post" id="form" enctype="multipart/form-data" class="needs-validation" novalidate>
                                 @csrf
                                 <div class="row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Change Role</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select select2 form-control" name="user_status" id="user_status" required>
+                                        <select class="form-select select2 form-control" name="role" id="role" required>
                                             <option selected disabled value="">Select Role</option>
-                                            <option value="author">Author</option>
-                                            <option value="reviewer">Reviewer</option>
+                                            @foreach($roles as $role)
+                                                <option value="{{ $role->id }}" 
+                                                    {{ ($selectedRole->role_id == $role->id) ? 'selected' : '' }}
+                                                >{{ $role->name }}</option>
+                                            @endforeach()
+                                            <!-- <option value="reviewer">Reviewer</option> -->
                                         </select>
                                     </div>
                                 </div>
@@ -136,6 +147,6 @@
 @section('styles')
 @parent
 .dashboard-link {
-    color: #292828 !important;
+color: #292828 !important;
 }
 @endsection
