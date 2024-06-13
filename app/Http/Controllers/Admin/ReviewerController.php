@@ -77,9 +77,15 @@ class ReviewerController extends Controller
                 'term_and_condition' => 1,
             ]);
 
-            $user->save();
+            if ($user->save()) {
 
-            return redirect('/admin/reviewers')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong> Reviewer addedd Successfully !!! </div>" ]);  
+                //assigned roles
+                $roles = Role::where('slug','reviewer')->get();
+                $user->assignRole($roles);
+                
+                return redirect('/admin/reviewers')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong> Reviewer addedd Successfully !!! </div>" ]);  
+            }
+
 
         } catch (\Exception $e) {
             // Log the exception
@@ -134,7 +140,8 @@ class ReviewerController extends Controller
                     $user->removeRole($assignedRole);
                 }
             }
-    
+
+            //unassigned, assigned roles
             if($user != NULL) {
                 if(count($roleIdArr) > 0) {
                     //assigned, assigned roles
