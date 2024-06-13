@@ -23,40 +23,55 @@ class ReviewerController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $request->validate(
-                [
-                    'first_name' => 'required|string|max:255',
-                    'last_name' => 'required|string|max:255',
-                    'mobile' => 'required|digits:10|unique:users',
-                    'email' => 'required|string|email|max:255|unique:users',
-                    'user_type' => 'required',
-                    'password' => 'required|min:8',
-                    'user_status' => 'required|string',
-                ],
-                [
-                    // Custom error messages
-                    'first_name.required' => 'First name is required.',
-                    'last_name.required' => 'Last name is required.',
-                    'mobile.required' => 'Mobile number is required.',
-                    'mobile.digits' => 'Mobile number must be 10 digits.',
-                    'mobile.unique' => 'This mobile number is already registered.',
-                    'email.required' => 'Email is required.',
-                    'email.email' => 'Please enter a valid email address.',
-                    'email.unique' => 'This email is already registered.',
-                    'user_type.required' => 'User type is required.',
-                    'password.required' => 'Password is required.',
-                    'password.min' => 'Password must be at least 8 characters.',
-                    'user_status.required' => 'User status is required.',
-                ]
-            );
 
+        $request->validate(
+            [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'mobile' => 'required|digits:10|unique:users',
+                'email' => 'required|string|email|max:255|unique:users',
+                'degree' => 'required|string',
+                'institution' => 'required|string',
+                'position' => 'required|string',
+                'department' => 'required|string',
+                'reason' => 'required|string',
+                'password' => 'required',
+                'user_status' => 'required|string',
+            ],
+            [
+                // Custom error messages
+                'first_name.required' => 'First name is required !!!',
+                'last_name.required' => 'Last name is required !!!',
+                'mobile.required' => 'Mobile number is required !!!',
+                'mobile.digits' => 'Mobile number must be 10 digits !!!',
+                'mobile.unique' => 'This mobile number is already registered !!!',
+                'email.required' => 'Email field is required !!!',
+                'email.email' => 'Please enter a valid email address !!!',
+                'email.unique' => 'This email is already registered !!!',
+                'degree.required' => 'User Degree field is required !!!',
+                'institution.required' => 'Institution field is required !!!',
+                'position.required' => 'Position field is required !!!',
+                'department.required' => 'Department field is required !!!',
+                'reason.required' => 'Reason field is required !!!',
+                'user_type.required' => 'User type is required !!!',
+                'password.required' => 'Password is required !!!',
+                'password.min' => 'Password must be at least 8 characters !!!',
+                'user_status.required' => 'User status is required !!!',
+            ]
+        );
+
+        try {
             $user = new User([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'mobile' => $request->mobile,
                 'email' => $request->email,
-                'user_type' => $request->user_type,
+                'degree' => $request->degree,
+                'institution' => $request->institution,
+                'position' => $request->position,
+                'department' => $request->department,
+                'reason' => $request->reason,
+                'user_type' => 'reviewer',
                 'password' => Hash::make($request->password),
                 'user_status' => $request->user_status,
                 'term_and_condition' => 1,
@@ -64,14 +79,14 @@ class ReviewerController extends Controller
 
             $user->save();
 
-            // Redirect to the reviewers list with a success message
-            return redirect()->route('admin/reviewers-list')->with('success', 'New employee added successfully!');
+            return redirect('/admin/reviewers')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong> Reviewer addedd Successfully !!! </div>" ]);  
+
         } catch (\Exception $e) {
             // Log the exception
             $e->getMessage();
 
             // Redirect back with an error message
-            return redirect()->back()->withErrors(['error' => 'An unexpected error occurred. Please try again later.']);
+            return redirect()->back()->with(["msg"=>"<div class='callout callout-danger'><strong>Wrong </strong> Something went wrong, please try again!!! </div>" ]);  
         }
     }
 
@@ -101,8 +116,13 @@ class ReviewerController extends Controller
             $user->last_name = $request->last_name ?? '';
             $user->email = $request->email ?? '';
             $user->mobile = $request->mobile ?? '';
-            $user->user_type = $request->user_type ?? '';
             $user->user_status = $request->user_status ?? '';
+            $user->degree = $request->degree ?? '';
+            $user->institution = $request->institution ?? '';
+            $user->position = $request->position ?? '';
+            $user->department = $request->department ?? '';
+            $user->reason = $request->reason ?? '';
+
             $user->save(); 
 
             $roleIdArr = $request->roles;
@@ -125,7 +145,7 @@ class ReviewerController extends Controller
     
             return redirect()->back()->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Record update Successfully  !!! </div>"]); 
         } else{
-            return redirect()->back()->with(["msg"=>"<div class='callout callout-info'><strong>Info </strong>  Something went wrong, please try again.  !!! </div>"]); 
+            return redirect()->back()->with(["msg"=>"<div class='callout callout-danger'><strong>Info </strong>  Something went wrong, please try again.  !!! </div>"]); 
         }
     }
 
