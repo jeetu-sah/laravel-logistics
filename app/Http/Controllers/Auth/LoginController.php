@@ -61,14 +61,14 @@ class LoginController extends BaseController
                     sHelper::activateLoggedInUserRole($user, $roleId);
                     
 					Auth::login($user , $remember); 
-					return redirect('/admin')->with(["msg"=>"<div class='notice notice-success notice'><strong>Success </strong>  Login Successfully !!! </div>" ]);  
+					return redirect('/admin')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Login Successfully !!! </div>" ]);  
 				   }
 				else{
-					 return redirect()->back()->with(["msg"=>"<div class='notice notice-danger notice'><strong>Wrong </strong>  password does not matched !!! </div>"]);  
+					 return redirect()->back()->with(["msg"=>"<div class='callout callout-danger'><strong>Wrong </strong>  password does not matched !!! </div>"]);  
 				}		
 			}
 			else{
-			  return redirect()->back()->with(["msg"=>"<div class='notice notice-danger notice'><strong>Wrong </strong>  Your account is blocked !!! </div>"]);
+			  return redirect()->back()->with(["msg"=>"<div class='callout callout-danger'><strong>Wrong </strong>  Your account is blocked !!! </div>"]);
 			}
          } else {
              // Admin not found or password incorrect, redirect back with error message

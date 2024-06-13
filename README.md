@@ -5,6 +5,7 @@ php artisan migrate <br />
 php artisan db:seed --class=UserSeeder <br />
 php artisan db:seed --class=RoleSeeder <br />
 php artisan db:seed --class=PermissionSeeder <br />
+php artisan db:seed --class=ArticleTypeSeeder <br />
 
 ### Dependency Packages
 
