@@ -206,4 +206,17 @@ class sHelper
 				['login_status', '=', 1],
 			])->first();
 	}
+
+	public static function fetchNewUserId()
+	{
+		$userMaxID =  User::max('userId');
+		if ($userMaxID == NULL) {
+			return (1000 + 1);
+			
+		}
+		return $userMaxID + 1;
+	}
+
+
+
 }

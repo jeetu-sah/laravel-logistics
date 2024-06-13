@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ArticleType;
+use App\Models\ItemType;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -12,6 +14,9 @@ class ArticleController extends Controller
     {
         $data['title'] = 'Article | Create';
         $data['articleTypes'] = ArticleType::all();
+        $data['itemTypes'] = ItemType::all();
+        $data['reviewers'] = User::all();
+
         return view('admin.article.create')->with($data);
     }
 

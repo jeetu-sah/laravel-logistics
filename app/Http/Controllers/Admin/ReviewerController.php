@@ -61,6 +61,9 @@ class ReviewerController extends Controller
         );
 
         try {
+            $userId = sHelper::fetchNewUserId();
+          
+
             $user = new User([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -75,6 +78,7 @@ class ReviewerController extends Controller
                 'password' => Hash::make($request->password),
                 'user_status' => $request->user_status,
                 'term_and_condition' => 1,
+                'userId' => $userId,
             ]);
 
             if ($user->save()) {
@@ -180,7 +184,7 @@ class ReviewerController extends Controller
 					  </a>';
                 //}
                 $row = [];
-                $row['sn'] = '<a href="' . url("admin/roles/user_permission/$user->id?page=roles") . '">' . $user->id . '</a>';;
+                $row['sn'] = '<a href="' . url("admin/reviewers/edit/$user->id") . '">' . $user->userId . '</a>';;
 
                 $row['name'] = $user->first_name;
                 $row['email'] = $user->email;
