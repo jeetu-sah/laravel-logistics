@@ -36,7 +36,8 @@ class User extends Authenticatable
         'password',
         'user_status',
         'term_and_condition',
-        'is_signed'
+        'is_signed',
+        'userId'
     ];
 
     /**
@@ -62,9 +63,9 @@ class User extends Authenticatable
 
 
      /**
-     * Get the user's full name.
+     * Get the user's full_name.
      */
-    protected function fullName()
+    protected function  getfullNameAttribute ()
     {
        return $this->first_name. " ". $this->last_name;
     }

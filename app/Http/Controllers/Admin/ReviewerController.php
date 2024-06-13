@@ -61,6 +61,9 @@ class ReviewerController extends Controller
         );
 
         try {
+            $userId = sHelper::fetchNewUserId();
+          
+
             $user = new User([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -75,11 +78,18 @@ class ReviewerController extends Controller
                 'password' => Hash::make($request->password),
                 'user_status' => $request->user_status,
                 'term_and_condition' => 1,
+                'userId' => $userId,
             ]);
 
-            $user->save();
+            if ($user->save()) {
 
-            return redirect('/admin/reviewers')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong> Reviewer addedd Successfully !!! </div>" ]);  
+                //assigned roles
+                $roles = Role::where('slug','reviewer')->get();
+                $user->assignRole($roles);
+                
+                return redirect('/admin/reviewers')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong> Reviewer addedd Successfully !!! </div>" ]);  
+            }
+
 
         } catch (\Exception $e) {
             // Log the exception
@@ -134,7 +144,8 @@ class ReviewerController extends Controller
                     $user->removeRole($assignedRole);
                 }
             }
-    
+
+            //unassigned, assigned roles
             if($user != NULL) {
                 if(count($roleIdArr) > 0) {
                     //assigned, assigned roles
@@ -173,7 +184,7 @@ class ReviewerController extends Controller
 					  </a>';
                 //}
                 $row = [];
-                $row['sn'] = '<a href="' . url("admin/roles/user_permission/$user->id?page=roles") . '">' . $user->id . '</a>';;
+                $row['sn'] = '<a href="' . url("admin/reviewers/edit/$user->id") . '">' . $user->userId . '</a>';;
 
                 $row['name'] = $user->first_name;
                 $row['email'] = $user->email;
