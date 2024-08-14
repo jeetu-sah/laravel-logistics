@@ -17,12 +17,18 @@
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    @if(Session::has('msg'))
+                    {!! Session::get("msg") !!}
+                    @endif
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Main content -->
     <section class="content">
-        <!-- Default box -->
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Reviewer List</h3>
@@ -102,6 +108,4 @@
 @section('styles')
 @parent
 <link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
-</script>
-
 @endsection

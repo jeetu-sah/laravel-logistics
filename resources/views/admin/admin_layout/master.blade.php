@@ -65,7 +65,7 @@
                                 <span>User Name</span>
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
-                                        <span class="float-right">{{ Auth::user()->first_name }}</span>
+                                        <span class="float-right">{{ Auth::user()->first_name ?? '' }}</span>
                                     </h3>
                                 </div>
                             </div>
@@ -79,13 +79,11 @@
                                 <!-- <i class="far fa-user"></i>  -->
                                 <span>Role</span>
                                 <div class="media-body">
-
-
+                                <h3 class="dropdown-item-title">
+                                        <span class="float-right">{{ ucfirst(auth::user()->active_role) ?? '--'}}</span>
+                                    </h3> 
                                 </div>
-                                <select class="float-right" name="role" id="role">
-                                    <option value="author">author</option>
-                                    <option value="reviewer">reviewer</option>
-                                </select>
+                                
                             </div>
                             <!-- Message End -->
                         </a>
@@ -106,9 +104,23 @@
                             <!-- Message End -->
                         </a>
                         <div class="dropdown-divider"></div>
+                        <a href="{{ url('logout') }}" class="dropdown-item">
+                            <!-- logout start-->
+                            <div class="media">
+                                <span>Logout</span>
+                                <div class="media-body">
+                                    <!-- <h3 class="dropdown-item-title">
+                                        <span class="float-right">English</span>
+                                    </h3> -->
+                                </div>
+                                
+                            </div>
+                            <!-- logout End -->
+                        </a>
+                        <div class="dropdown-divider"></div>
 
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer text-primary">Update My Information</a>
+                        <a href="{{ url('admin') }}" class="dropdown-item dropdown-footer text-primary">Update My Information</a>
                     </div>
                 </li>
                 <!-- Notifications Dropdown Menu -->

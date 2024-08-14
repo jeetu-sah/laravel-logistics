@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogOutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\admin\ReviewerController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,16 +23,15 @@ use App\Http\Controllers\RoleController;
 
 
 
-Route::group(['middleware' => ['auth']], function () {
-    /*Manage customer routes*/
-});
+
 
 Route::group(['middleware' => ['guest']], function () {
-    Route::get('/', [LoginController::class, 'index']);
+    Route::get('/', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
 });
 
-
+Route::group(['middleware' => ['auth']], function () {
+    
 Route::get('admin', [AdminController::class, 'index']);
 Route::get('admin/adminlayout', [AdminController::class, 'adminlayout']);
 
@@ -39,7 +41,10 @@ Route::get('admin/reviewers/create', [ReviewerController::class, 'index']);
 Route::get('admin/reviewers/edit/{id}', [ReviewerController::class, 'edit']);
 Route::post('admin/reviewers/update/{id}', [ReviewerController::class, 'update']);
 Route::post('admin/reviewers/store', [ReviewerController::class, 'store'])->name('admin.add_reviewers');
-Route::post('admin/reviewers/change_roles', [ReviewerController::class, 'changeRoles'])->name('admin.reviewer.change_roles');
+Route::post('admin/settings/change', [SettingsController::class, 'changeSettings'])->name('admin.settings.change');
+
+
+Route::get('admin/article/create', [ArticleController::class, 'index']);
 
 
 //Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);
@@ -55,3 +60,8 @@ Route::get('admin/role', [RoleController::class, 'index']);
 Route::get('admin/role/list', [RoleController::class, 'list']);
 Route::post('admin/add-role', [RoleController::class, 'store'])->name('admin.add-role');
 Route::get('admin/role-list', [RoleController::class, 'show']);
+
+Route::get('logout', [LogOutController::class, 'index']);
+});
+
+
