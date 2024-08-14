@@ -16,14 +16,13 @@ class ReviewerController extends Controller
 {
     public function index()
     {
-<<<<<<< HEAD
+
         $data['heading'] = 'Add Reviewers';
         $data['listUrl'] = 'admin/reviewers';
         return view('admin.reviewer.add-new-reviewers')->with($data);
-=======
+
         $data['title'] = 'Reviewer | Create';
         return view('admin.reviewer.create')->with($data);
->>>>>>> 5ff2b80505ae087229723c9e0f22f62b74994e88
     }
 
     public function store(Request $request)
@@ -93,7 +92,7 @@ class ReviewerController extends Controller
         $data['title'] = 'Reviewer | Edit';
         $data['reviwer'] = User::with('roles')->find($id);
         $data['roles'] = Role::all();
-      
+
         return view('admin.reviewer.edit')->with($data);
     }
 
@@ -101,36 +100,36 @@ class ReviewerController extends Controller
     {
         $data['title'] = 'Reviewer | update';
         $user = User::find($id);
-        if($user != NULL) {
+        if ($user != NULL) {
             $user->first_name = $request->first_name ?? '';
             $user->last_name = $request->last_name ?? '';
             $user->email = $request->email ?? '';
             $user->mobile = $request->mobile ?? '';
             $user->user_type = $request->user_type ?? '';
             $user->user_status = $request->user_status ?? '';
-            $user->save(); 
+            $user->save();
 
             $roleIdArr = $request->roles;
-    
+
             //unassigned, assigned roles
             $assignedRoles = $user->roles;
-            if($assignedRoles->count() > 0) {
-                foreach($assignedRoles as $assignedRole) {
+            if ($assignedRoles->count() > 0) {
+                foreach ($assignedRoles as $assignedRole) {
                     $user->removeRole($assignedRole);
                 }
             }
-    
-            if($user != NULL) {
-                if(count($roleIdArr) > 0) {
+
+            if ($user != NULL) {
+                if (count($roleIdArr) > 0) {
                     //assigned, assigned roles
                     $roles = Role::whereIn('id', $roleIdArr)->get();
                     $user->assignRole($roles);
                 }
             }
-    
-            return redirect()->back()->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Record update Successfully  !!! </div>"]); 
-        } else{
-            return redirect()->back()->with(["msg"=>"<div class='callout callout-info'><strong>Info </strong>  Something went wrong, please try again.  !!! </div>"]); 
+
+            return redirect()->back()->with(["msg" => "<div class='callout callout-success'><strong>Success </strong>  Record update Successfully  !!! </div>"]);
+        } else {
+            return redirect()->back()->with(["msg" => "<div class='callout callout-info'><strong>Info </strong>  Something went wrong, please try again.  !!! </div>"]);
         }
     }
 
