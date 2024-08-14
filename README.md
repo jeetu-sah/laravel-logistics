@@ -1,4 +1,8 @@
+## Required software
+    PHP 8.2 >=
+
 ## Installation
+
 #### Run the below command <br />
 composer install <br />
 php artisan migrate <br />
