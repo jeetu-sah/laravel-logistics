@@ -99,6 +99,54 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('admin/admin/role-list') }}"
+                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Branch
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('admin/branch/create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Branch</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/branch/branch-list') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Branch List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('admin/admin/role-list') }}"
+                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Booking
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('admin/booking/create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Booking </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/booking/branch-list') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Branch List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
