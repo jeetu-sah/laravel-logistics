@@ -199,6 +199,7 @@ class sHelper
 
 	public static function activeLoggedInUserRole(User $user)
 	{
+		
 		return DB::table('model_has_roles')
 			->where([
 				['model_type', '=', 'App\Models\User'],

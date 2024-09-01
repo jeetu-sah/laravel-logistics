@@ -16,7 +16,6 @@ class AdminController extends Controller
         $data['title'] = 'dashboard';
         $data['roles'] = Auth::user()->roles;
         $data['selectedRole'] = sHelper::activeLoggedInUserRole(Auth::user());
-     
         return view('admin.dashboard.dashboard', $data);
     }
 
@@ -44,5 +43,4 @@ class AdminController extends Controller
     {
         //
     }
-
 }

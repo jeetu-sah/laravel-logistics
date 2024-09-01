@@ -26,7 +26,6 @@ class LoginController extends BaseController
         $data['roles'] = Role::all();
        
         return view('login.adminLogin')->with($data);
-        //return view('login.login')->with($data);
     }
 
 
@@ -40,28 +39,31 @@ class LoginController extends BaseController
          $validatedData = $request->validate([
              'email' => 'required|email',
              'password' => 'required',
-             'role' => 'required'
          ], [
              // Custom error messages
              'email.required' => 'Email is required.',
              'email.email' => 'Please enter a valid email address.',
              'password.required' => 'Password is required.',
-             'role.required' => 'Please select a valid role.'
          ]);
 
          // Step 2: Attempt to find the admin in the database
          $user = User::where('email', $request->email)->first();
-         
+     
          if ($user != NULL) {
-           
             if($user->user_status == 'active'){
 				if(Hash::check($request->password, $user->password)){
 					$remember = $request->remeber_me;
-                    $roleId = $request->role;
-                    sHelper::activateLoggedInUserRole($user, $roleId);
+                    // $role = $user->user_type;
                     
+                    // sHelper::activateLoggedInUserRole($user, $role);
 					Auth::login($user , $remember); 
-					return redirect('/admin')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Login Successfully !!! </div>" ]);  
+                    if($user->user_type == 'admin') {
+                        return redirect('/admin')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Login Successfully !!! </div>" ]);  
+                        
+                    } else if($user->user_type == 'branch-user') {
+                        return redirect('/branch-user/dashboard')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Login Successfully !!! </div>" ]);  
+                    }
+
 				   }
 				else{
 					 return redirect()->back()->with(["msg"=>"<div class='callout callout-danger'><strong>Wrong </strong>  password does not matched !!! </div>"]);  

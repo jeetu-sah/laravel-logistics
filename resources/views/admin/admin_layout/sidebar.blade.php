@@ -33,7 +33,7 @@
                         </p>
                     </a>
                 </li>
-                @role('Author')
+                @role('Admin')
                     <li class="nav-item has-treeview">
                         <a href="{{ url('/') }}"
                             class="nav-link {{ sHelper::activeSideBar(Request::path(), ['admin/role-list']) }}">
@@ -53,31 +53,34 @@
 
                         </ul>
                     </li>
+                    @endrole
+
+                    @role('Branchuser')
                     <li class="nav-item has-treeview">
-                        <a href="{{ url('admin/admin/role-list') }}"
+                        <a href="{{ url('branch-user/branch-user/employees') }}"
                             class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-edit"></i>
                             <p>
-                                Manage Reviewers
+                                Manage Employees
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ url('admin/reviewers') }}" class="nav-link">
+                                <a href="{{ url('branch-user/employees') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Reviewers List</p>
+                                    <p>Employees List</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/reviewers/create') }}" class="nav-link">
+                                <a href="{{ url('branch-user/employees/create') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Create Reviewers </p>
+                                    <p>Create Employees </p>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                @endrole
+                    @endrole
 
 
 
@@ -106,6 +109,7 @@
                         </li>
                     </ul>
                 </li>
+                @role('Admin')
                 <li class="nav-item has-treeview">
                     <a href="{{ url('admin/admin/role-list') }}"
                         class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
@@ -130,6 +134,8 @@
                         </li>
                     </ul>
                 </li>
+                @endrole
+                @role('Branchuser')
                 <li class="nav-item has-treeview">
                     <a href="{{ url('admin/admin/role-list') }}"
                         class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
@@ -166,6 +172,7 @@
                         </li>
                     </ul>
                 </li>
+                @endrole
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
