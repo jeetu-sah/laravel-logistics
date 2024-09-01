@@ -1,3 +1,12 @@
+## Application Demo
+   #### Admin Demo
+    email    : admin@gmail.com 
+    password : Admin@123#
+
+   #### Branch Demo
+    email    : branch@gmail.com 
+    password : Branch@123# 
+
 ## Required software
     PHP ^8.1.25 
 
