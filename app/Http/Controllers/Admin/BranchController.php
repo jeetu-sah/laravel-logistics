@@ -18,7 +18,7 @@ class BranchController extends Controller
     {
         $data['heading']  = 'Create Branch';
         $data['listUrl'] = 'admin/branch/branch-list';
-        $data['states'] =  DB::table('states')->get();
+        $data['states'] =  DB::table('country_states')->get();
 
         return view('admin.branch.create-branch', $data);
     }
