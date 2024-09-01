@@ -1,5 +1,5 @@
 ## Required software
-    PHP 8.1.25 <
+    PHP ^8.1.25 
 
     composer 2.7.7 
 ## Installation
