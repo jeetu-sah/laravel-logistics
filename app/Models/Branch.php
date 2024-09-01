@@ -10,7 +10,7 @@ class Branch extends Model
     use HasFactory;
 
     // Specify the table if it's not the plural form of the model name
-    protected $table = 'branch';
+    protected $table = 'branches';
 
     // Allow mass assignment for these fields
     protected $fillable = [

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class BranchController extends Controller
@@ -16,11 +16,8 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $data['heading']  = 'Create Branch';
-        $data['listUrl'] = 'admin/branch/branch-list';
-        $data['states'] =  DB::table('country_states')->get();
-
-        return view('admin.branch.create-branch', $data);
+        $data['branchDetails'] = Branch::all();
+        return view('admin.branch.list', $data);
     }
 
     /**
@@ -28,7 +25,12 @@ class BranchController extends Controller
      */
     public function create()
     {
-        //
+        $data['heading']  = 'Create Branch';
+        $data['listUrl'] = 'admin/branch/branch-list';
+        $data['countries'] =  DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
+        $data['states'] =  DB::table('country_states')->get();
+
+        return view('admin.branch.create', $data);
     }
 
 
@@ -38,7 +40,7 @@ class BranchController extends Controller
     public function show(Branch $Branch)
     {
         $data['branchDetails'] = Branch::all();
-        return view('admin.branch.branch-list', $data);
+        return view('admin.branch.list', $data);
     }
 
     /**
@@ -63,17 +65,6 @@ class BranchController extends Controller
     public function destroy(Branch $Branch)
     {
         //
-    }
-
-    public function getDistricts($stateId)
-    {
-        // Using the query builder to fetch districts based on the state ID
-        $districts = DB::table('district')
-            ->where('state_id', $stateId)
-            ->get(['district_id', 'district_name']);
-
-        // Return the districts as a JSON response
-        return response()->json($districts);
     }
 
     public function store(Request $request)
@@ -109,6 +100,47 @@ class BranchController extends Controller
         ]);
 
         // Redirect or return a response
-        return redirect('admin/branch/branch-list')->with('success', 'Branch created successfully!');
+        return redirect('admin/branch/list')->with('success', 'Branch created successfully!');
+    }
+
+
+    public function list(Request $request)
+    {
+        $limit = request()->input('length');
+        $start = request()->input('start');
+        $totalRecord = Branch::count();
+
+        $branchQuery = Branch::query();
+        $branches = $branchQuery->skip($start)->take($limit)->get();
+
+        $rows = [];
+        if ($branches->count() > 0) {
+            $i = 1;
+            foreach ($branches as $branch) {
+                $row = [];
+                $row['sn'] =  $branch->id;
+                $row['branch_name'] = $branch->branch_name;
+                $row['branch_code'] = '<a href="' . url("admin/roles/user_permission/$branch->id?page=roles") . '">' . $branch->branch_code . '</a>';
+                $row['owner_name'] = $branch->owner_name;
+                $row['contact'] = $branch->contact;
+                $row['gst'] = $branch->gst;
+                $row['user_status'] = $branch->user_status;
+                $row['action'] = 'action';
+                $row['created_at'] = Carbon::parse($branch->craeted_at)->format('d/m/Y'); //->format();
+
+                $rows[] = $row;
+            }
+        }
+
+        $json_data = array(
+            "draw"            => intval(request()->input('draw')),
+            "recordsTotal"    => intval($totalRecord),
+            "recordsFiltered" => intval($totalRecord),
+            "data"            => $rows
+        );
+        // echo "<pre>";
+        // print_r($json_data);exit;
+        return json_encode($json_data);
+        exit;
     }
 }

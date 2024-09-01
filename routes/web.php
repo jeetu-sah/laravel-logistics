@@ -38,14 +38,16 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/', [AdminController::class, 'index']);
         Route::get('/adminlayout', [AdminController::class, 'adminlayout']);
+        Route::get('/get-states/{countryId}', [AdminController::class, 'getStates']);
+        Route::get('/get-districts/{stateId}', [AdminController::class, 'getDistricts']);
 
         Route::post('/settings/change', [SettingsController::class, 'changeSettings'])->name('admin.settings.change');
         // Branch 
-        Route::get('/branch/create', [BranchController::class, 'index']);
-        Route::get('/branch/branch-list', [BranchController::class, 'show']);
-
-        Route::get('/branch/get-districts/{stateId}', [BranchController::class, 'getDistricts']);
-        Route::post('/create-new-branch', [BranchController::class, 'store'])->name('admin.create-new-branch');
+        Route::get('/branches', [BranchController::class, 'index']);
+        Route::get('/branches/create', [BranchController::class, 'create']);
+        Route::get('/branches/list', [BranchController::class, 'list']);
+        Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
+        
         // booking 
         Route::get('/booking/create', [BookingController::class, 'index']);
         Route::get('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking']);

@@ -6,13 +6,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <!-- <a href="{{ url('admin/reviewers/create') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-                        <i class=" fa-sm text-white-50"></i>Create Reviewers </a> -->
+                    <a href="{{ url('admin/branches/create') }}"
+                        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                        <i class=" fa-sm text-white-50"></i>Create Branch </a>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Role List</li>
+                        <li class="breadcrumb-item active">Branch List</li>
                     </ol>
                 </div>
             </div>
@@ -24,30 +25,37 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Role List</h3>
+                <h3 class="card-title">Branch List</h3>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="table-responsive ">
-                        <table class="display" id="role-list">
+                        <table class="display" id="branch-list">
                             <thead>
                                 <tr>
-                                    <th>S.no</th>
-                                    <th>Role</th>
-                                    <th>Slug</th>
-                                    <th>Guard</th>
+                                    <th>SN.</th>
+                                    <th>Branch Code</th>
+                                    <th>Branch Name</th>
+                                    <th>Branch Owner Name</th>
+                                    <th>GST No.</th>
+                                    <th>Status</th>
                                     <th>Creation Date</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
             <!-- /.card-body -->
         </div>
+        <!-- /.card -->
+
     </section>
+    <!-- /.content -->
 </div>
 @endsection
 
@@ -59,10 +67,10 @@
 <script>
     $(document).ready(function(e) {
 
-        new DataTable('#role-list', {
+        new DataTable('#branch-list', {
             responsive: true,
             ajax: {
-                url: "{{ url('admin/role/list') }}",
+                url: "{{ url('admin/branches/list') }}",
                 data: function(d) {
                     //d.myKey = 'myValue';
                     // d.custom = $('#myInput').val();
@@ -73,19 +81,33 @@
                     data: 'sn'
                 },
                 {
-                    data: 'name'
+                    data: 'branch_code'
                 },
                 {
-                    data: 'slug'
+                    data: 'branch_name'
                 },
                 {
-                    data: 'guard'
+                    data: 'owner_name'
                 },
                 {
-                    data: 'created_at',
+                    data: 'gst'
+
+                },
+                {
+                    data: 'user_status'
+
+                },
+                {
+                    data: 'created_at'
+
+                },
+                {
+                    data: 'action',
+
                     orderable: false
                 }
             ],
+
             processing: true,
             serverSide: true
         });
