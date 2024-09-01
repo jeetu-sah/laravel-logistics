@@ -4,14 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogOutController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\admin\ReviewerController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
-// use App\Http\Controllers\BranchUser\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -56,20 +55,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('admin/article/create', [ArticleController::class, 'index']);
 
     Route::prefix('branch-user/')->group(function(){
-        //Route::get('dashboard',"DashboardController@index");
+       
         Route::get('dashboard',[\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
 
-        Route::get('employees', [ReviewerController::class, 'show']);
-        Route::get('employees/list', [ReviewerController::class, 'list']);
-        Route::get('employees/create', [ReviewerController::class, 'index']);
-        Route::get('employees/edit/{id}', [ReviewerController::class, 'edit']);
-        Route::post('employees/update/{id}', [ReviewerController::class, 'update']);
-        Route::post('employees/store', [ReviewerController::class, 'store'])->name('branch-user.add_employee');
+        Route::get('employees', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
+        Route::get('employees/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);
+        Route::get('employees/create', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'index']);
+        Route::get('employees/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
+        Route::post('employees/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
+        Route::post('employees/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
         
-        //plot payment 
-        //  Route::prefix('payment')->name('payment.')->group(function(){
-        //     Route::get('add/{plotid}',"Admin\PlotPaymentController@index")->name('add');
-        //  });
+
     });
 
     //Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);

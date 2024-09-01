@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\BranchUser;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -16,9 +16,9 @@ class ReviewerController extends Controller
 {
     public function index()
     {
-        $data['title'] = 'Reviewer | Create';
+        $data['title'] = 'Employee | Create';
         
-        return view('admin.reviewer.create')->with($data);
+        return view('branchuser.reviewer.create')->with($data);
     }
 
     public function store(Request $request)
@@ -84,10 +84,10 @@ class ReviewerController extends Controller
             if ($user->save()) {
 
                 //assigned roles
-                $roles = Role::where('slug','reviewer')->get();
+                $roles = Role::where('slug','employee')->get();
                 $user->assignRole($roles);
                 
-                return redirect('/admin/reviewers')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong> Reviewer addedd Successfully !!! </div>" ]);  
+                return redirect('/branch-user/employees')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong> Reviewer addedd Successfully !!! </div>" ]);  
             }
 
 
@@ -105,7 +105,7 @@ class ReviewerController extends Controller
     public function show()
     {
         $data['title'] = 'Reviewer | List';
-        return view('admin.reviewer.list')->with($data);
+        return view('branchuser.reviewer.list')->with($data);
     }
 
     public function edit(Request $request, $id)
@@ -114,7 +114,7 @@ class ReviewerController extends Controller
         $data['reviwer'] = User::with('roles')->find($id);
         $data['roles'] = Role::all();
       
-        return view('admin.reviewer.edit')->with($data);
+        return view('branchuser.reviewer.edit')->with($data);
     }
 
     public function update(Request $request, $id)
