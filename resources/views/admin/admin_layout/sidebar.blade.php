@@ -34,53 +34,53 @@
                     </a>
                 </li>
                 @role('Admin')
-                    <li class="nav-item has-treeview">
-                        <a href="{{ url('/') }}"
-                            class="nav-link {{ sHelper::activeSideBar(Request::path(), ['admin/role-list']) }}">
-                            <i class="nav-icon fas fa-chart-pie"></i>
-                            <p>
-                                Manage Roles
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('admin/role-list') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Roles</p>
-                                </a>
-                            </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('/') }}"
+                        class="nav-link {{ sHelper::activeSideBar(Request::path(), ['admin/role-list']) }}">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Manage Roles
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('admin/role-list') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Roles</p>
+                            </a>
+                        </li>
 
-                        </ul>
-                    </li>
-                    @endrole
+                    </ul>
+                </li>
+                @endrole
 
-                    @role('Branchuser')
-                    <li class="nav-item has-treeview">
-                        <a href="{{ url('branch-user/branch-user/employees') }}"
-                            class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-edit"></i>
-                            <p>
-                                Manage Employees
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('branch-user/employees') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Employees List</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('branch-user/employees/create') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Create Employees </p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    @endrole
+                @role('Branchuser')
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('branch-user/branch-user/employees') }}"
+                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Manage Employees
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('branch-user/employees') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Employees List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('branch-user/employees/create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Employees </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endrole
 
 
 
@@ -121,17 +121,18 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/branch/create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create Branch</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/branch/branch-list') }}" class="nav-link">
+                            <a href="{{ url('admin/branches') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Branch List</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/branches/create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Branch</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
                 @endrole
