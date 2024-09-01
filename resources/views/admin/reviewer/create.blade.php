@@ -33,7 +33,7 @@
                 <h3 class="card-title">Create Reviewer</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.add_reviewers') }}" method="post" id="form" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form action="{{ route('branch-user.add_employee') }}" method="post" id="form" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf
                     <div class="row">
                         <div class="col-md-6">

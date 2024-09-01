@@ -47,10 +47,7 @@
             </div>
             <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-
     </section>
-    <!-- /.content -->
 </div>
 @endsection
 

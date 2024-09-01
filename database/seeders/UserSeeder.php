@@ -14,26 +14,41 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $password = "@Admin@123#";
+        $adminPassword = "Admin@123#";
+        $branchPassword = "Branch@123#";
+        $users = [
+            [
+                'first_name' => 'Admin',
+                'last_name' => 'Admin',
+                'email' => 'admin@gmail.com',
+                'email_verified_at' => now(),
+                'mobile_verified_at' => now(),
+                'mobile' => 88876033315,
+                'user_type' => 'admin',
+                'password' => Hash::make($adminPassword),
+                'user_status' => 'active',
+                'term_and_condition' => 1,
+                'is_signed' => 1,
+                'remember_token' => 222221,
+            ],
+            [
+                'first_name' => 'Vikas Logistics branch',
+                'last_name' => 'Journal',
+                'email' => 'branch@gmail.com',
+                'email_verified_at' => now(),
+                'mobile_verified_at' => now(),
+                'mobile' => 88876033315,
+                'user_type' => 'branch-user',
+                'password' => Hash::make($branchPassword),
+                'user_status' => 'active',
+                'term_and_condition' => 1,
+                'is_signed' => 1,
+                'remember_token' => 222221,
+            ],
+        ];
 
-        $user = User::create([
-            'first_name' => 'Journal',
-            'last_name' => 'Journal',
-            'email' => 'author@gmail.com',
-            'email_verified_at' => now(),
-            'mobile_verified_at' => now(),
-            'mobile' => 88876033315,
-            'user_type' => 'author',
-            'password' => Hash::make($password),
-            'user_status' => 'active',
-            'term_and_condition' => 1,
-            'is_signed' => 1,
-            'remember_token' => 222221,
-        ]);
-
-        if ($user != NULL) {
-            $user->assignRole('author');
-            $user->assignRole('reviewer');
+        foreach ($users as $user) {
+            $user = User::updateOrCreate(['email' => $user['email']], $user);   
         }
     }
 }

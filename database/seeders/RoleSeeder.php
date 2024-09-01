@@ -17,32 +17,25 @@ class RoleSeeder extends Seeder
         $roles = [
             [
 
-                'name' => 'Author',
+                'name' => 'Admin',
                 'guard_name' => 'web',
-                'slug' => 'author',
+                'slug' => 'admin',
                 'created_at' => date('Y-m-d'),
             ],
             [
 
-                'name' => 'Editor',
+                'name' => 'Branch user',
                 'guard_name' => 'web',
-                'slug' => 'editor',
+                'slug' => 'branch-user',
                 'created_at' => date('Y-m-d'),
             ],
             [
 
-                'name' => 'Reviewer',
+                'name' => 'Employee',
                 'guard_name' => 'web',
-                'slug' => 'reviewer',
+                'slug' => 'employee',
                 'created_at' => date('Y-m-d'),
-            ],
-            [
-
-                'name' => 'Publisher',
-                'guard_name' => 'web',
-                'slug' => 'publisher',
-                'created_at' => date('Y-m-d'),
-            ],
+            ]
         ];
 
         foreach ($roles as $role) {

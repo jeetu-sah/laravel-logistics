@@ -7,9 +7,19 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">
-                        Admin Dashboard
+                        @role('Author')
+                        Author
+                        @endrole
+
+                        @unlessrole(['Author'])
+                        @role('Reviewer')
+                        Reviewer
+                        @endrole
+                        @endrole
+
+                        Dashboard
                     </h1>
-                </div>
+                </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -89,7 +99,7 @@
                             <h3 class="card-title">Change Settings</h3>
                         </div>
                         <div class="card-body">
-                            {{--
+                        {{--
                             <form action="{{ route('admin.settings.change') }}" method="post" id="form" enctype="multipart/form-data" class="needs-validation" novalidate>
                                 @csrf
                                 <div class="row">
@@ -98,8 +108,9 @@
                                         <select class="form-select select2 form-control" name="role" id="role" required>
                                             <option selected disabled value="">Select Role</option>
                                             @foreach($roles as $role)
-                                            <option value="{{ $role->id }}"
-                                                {{ ($selectedRole->role_id == $role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
+                                                <option value="{{ $role->id }}" 
+                                                    {{ ($selectedRole->role_id == $role->id) ? 'selected' : '' }}
+                                                >{{ $role->name }}</option>
                                             @endforeach()
                                             <!-- <option value="reviewer">Reviewer</option> -->
                                         </select>

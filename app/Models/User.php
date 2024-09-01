@@ -61,6 +61,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    
+
 
      /**
      * Get the user's full_name.
@@ -80,10 +82,11 @@ class User extends Authenticatable
      */
     protected function getActiveRoleAttribute($value)
     {
-        $activeRole = sHelper::activeLoggedInUserRole(Auth::user());
-        $activeRoleId = $activeRole->role_id;
-        $userActiveRole = $this->roles->where('id', $activeRoleId)->first();
+        return $this->user_type;
+        // $activeRole = sHelper::activeLoggedInUserRole(Auth::user());
+        // $activeRoleId = $activeRole->role_id;
+        // $userActiveRole = $this->roles->where('id', $activeRoleId)->first();
         
-        return $userActiveRole->slug;
+        // return $userActiveRole->slug;
     }
 }
