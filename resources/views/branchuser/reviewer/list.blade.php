@@ -6,14 +6,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <a href="{{ url('admin/reviewers/create') }}" 
+                    <a href="{{ url('branch-user/employees/create') }}" 
                         class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-                        <i class=" fa-sm text-white-50"></i>Create Reviewers </a>
+                        <i class=" fa-sm text-white-50"></i>Create Employee </a>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Reviewer List</li>
+                        <li class="breadcrumb-item active">Employees List</li>
                     </ol>
                 </div>
             </div>
@@ -31,7 +31,7 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Reviewer List</h3>
+                <h3 class="card-title">Employee List</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -71,7 +71,7 @@
 
         new DataTable('#reviewers-list', {
             ajax: {
-                url: "{{ url('admin/reviewers/list') }}",
+                url: "{{ url('branch-user/employees/list') }}",
                 data: function(d) {
                     //d.myKey = 'myValue';
                     // d.custom = $('#myInput').val();

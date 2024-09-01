@@ -17,6 +17,10 @@
 composer install <br />
 php artisan migrate <br />
 php artisan db:seed <br />
+php artisan db:seed --class=CountrySeeder <br />
+php artisan db:seed --class=StateSeeder <br />
+php artisan db:seed --class=CitySeeder <br />
+
 
 ### Dependency Packages
 
