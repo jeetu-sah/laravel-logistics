@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('booking', function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->id('paid_booking_id');
             $table->unsignedBigInteger('consignor_branch_name')->nullable();
             $table->string('consignor_name')->nullable();

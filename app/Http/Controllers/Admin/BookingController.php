@@ -23,6 +23,7 @@ class BookingController extends Controller
 
         return view('admin.booking.create-paid-booking', $data);
     }
+
     public function to_pay_booking()
     {
         $data['branch'] = Branch::all();
@@ -33,6 +34,7 @@ class BookingController extends Controller
 
         return view('admin.booking.create-to-pay-booking', $data);
     }
+
     public function to_client_booking()
     {
         $data['branch'] = Branch::all();
@@ -57,6 +59,8 @@ class BookingController extends Controller
      */
     public function paid_booking(Request $request)
     {
+        echo "<pre>";
+        print_r($request->all());exit;
         // Validate the form data
         $request->validate([
             'consignor_branch_name' => 'nullable|exists:branch,id',
