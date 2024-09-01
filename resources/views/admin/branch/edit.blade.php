@@ -13,13 +13,13 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Create Branch</li>
+                        <li class="breadcrumb-item active">Edit Branch</li>
                     </ol>
                 </div>
             </div>
-        </div>
-        <div class="row mb-2">
-            @include('common.notification')
+            <div class="row mb-2">
+                @include('common.notification')
+            </div>
         </div>
     </section>
 
@@ -28,20 +28,23 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Create Branch</h3>
+                <h3 class="card-title">Edit Branch</h3>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <form action="{{ route('admin.store') }}" method="post" id="form" name="pForm"
+                    <form action="{{ route('admin.update', ['id' => $branch->id]) }}" method="post" id="form" name="pForm"
                         enctype="multipart/form-data" class="needs-validation" novalidate>
                         @csrf
                         <div class="form-row">
-
                             <!-- Branch Name -->
                             <div class="col-md-4 mb-2">
                                 <label for="branch_name" class="form-label">Branch Name</label>
-                                <input class="form-control" name="branch_name" id="branch_name"
-                                    placeholder="Branch Name" required>
+                                <input class="form-control"
+                                    name="branch_name"
+                                    id="branch_name"
+                                    placeholder="Branch Name"
+                                    value="{{ $branch->branch_name ?? ''}}"
+                                    required />
                                 <div class="invalid-feedback">Enter Branch name</div>
                                 @error('branch_name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -51,8 +54,12 @@
                             <!-- Branch Code -->
                             <div class="col-md-4 mb-2">
                                 <label for="branch_code" class="form-label">Branch Code</label>
-                                <input class="form-control" name="branch_code" id="branch_code"
-                                    placeholder="Branch Code" required>
+                                <input class="form-control"
+                                    name="branch_code"
+                                    id="branch_code"
+                                    placeholder="Branch Code"
+                                    value="{{ $branch->branch_code ?? ''}}"
+                                    required />
                                 <div class="invalid-feedback">Enter Branch code</div>
                                 @error('branch_code')
                                 <span class="text-danger">{{ $message }}</span>
@@ -62,8 +69,12 @@
                             <!-- Branch Owner Name -->
                             <div class="col-md-4 mb-2">
                                 <label for="owner_name" class="form-label">Branch Owner Name</label>
-                                <input class="form-control" name="owner_name" id="owner_name" placeholder="Owner Name"
-                                    required>
+                                <input class="form-control"
+                                    name="owner_name"
+                                    id="owner_name"
+                                    placeholder="Owner Name"
+                                    value="{{ $branch->owner_name ?? ''}}"
+                                    required />
                                 <div class="invalid-feedback">Enter Owner name</div>
                                 @error('owner_name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -73,8 +84,12 @@
                             <!-- Contact Number -->
                             <div class="col-md-6 mb-2">
                                 <label for="contact" class="form-label">Contact Number</label>
-                                <input class="form-control" name="contact" id="contact" placeholder="Contact Number"
-                                    required>
+                                <input class="form-control"
+                                    name="contact"
+                                    id="contact"
+                                    placeholder="Contact Number"
+                                    value="{{ $branch->contact ?? ''}}"
+                                    required />
                                 <div class="invalid-feedback">Enter contact number</div>
                                 @error('contact')
                                 <span class="text-danger">{{ $message }}</span>
@@ -84,8 +99,13 @@
                             <!-- GST No. -->
                             <div class="col-md-6 mb-2">
                                 <label for="gst" class="form-label">GST No.</label>
-                                <input class="form-control" name="gst" id="gst" placeholder="GST No."
-                                    required>
+                                <input
+                                    class="form-control"
+                                    name="gst"
+                                    id="gst"
+                                    placeholder="GST No."
+                                    value="{{ $branch->gst ?? ''}}"
+                                    required />
                                 <div class="invalid-feedback">Enter GST No.</div>
                                 @error('gst')
                                 <span class="text-danger">{{ $message }}</span>
@@ -99,7 +119,9 @@
                                     required>
                                     <option selected disabled value="">Select Country</option>
                                     @foreach($countries as $country)
-                                    <option value="{{$country->id ?? '--'}}">{{$country->name ?? '--'}}</option>
+                                    <option
+                                        {{ ($branch->country_name == $country->id) ? 'selected' : '' }}
+                                        value="{{$country->id ?? '--'}}">{{$country->name ?? '--'}}</option>
                                     @endforeach
                                 </select>
                                 <div class="invalid-feedback">Select Country</div>
@@ -138,7 +160,10 @@
                             <!-- Address 1 -->
                             <div class="col-md-6 mb-2">
                                 <label for="address1" class="form-label">Address 1</label>
-                                <textarea class="form-control" name="address1" id="address1" placeholder="Address 1" required></textarea>
+                                <textarea class="form-control"
+                                    name="address1"
+                                    id="address1"
+                                    placeholder="Address 1" required>{{ $branch->address1 ?? ''}}</textarea>
                                 <div class="invalid-feedback">Enter Address 1</div>
                                 @error('address1')
                                 <span class="text-danger">{{ $message }}</span>
@@ -148,7 +173,10 @@
                             <!-- Address 2 -->
                             <div class="col-md-6 mb-2">
                                 <label for="address2" class="form-label">Address 2</label>
-                                <textarea class="form-control" name="address2" id="address2" placeholder="Address 2"></textarea>
+                                <textarea class="form-control"
+                                    name="address2"
+                                    id="address2"
+                                    placeholder="Address 2">{{ $branch->address2 ?? ''}}</textarea>
                                 <div class="invalid-feedback">Enter Address 2</div>
                                 @error('address2')
                                 <span class="text-danger">{{ $message }}</span>
@@ -160,8 +188,8 @@
                                 <select class="form-select form-control" name="user_status" id="user_status"
                                     required>
                                     <option selected disabled value="">Select Status</option>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
+                                    <option value="active" {{ ($branch->user_status == 'active') ? 'selected' : '' }}>Active</option>
+                                    <option value="inactive" {{ ($branch->user_status == 'inactive') ? 'selected' : '' }}>Inactive</option>
                                 </select>
                                 @error('user_status')
                                 <span class="text-danger">{{ $message }}</span>
@@ -171,7 +199,6 @@
                         </div>
                         <button class="btn btn-primary mt-3" type="submit">Submit</button>
                     </form>
-
                 </div>
             </div>
             <!-- /.card-body -->
@@ -181,10 +208,7 @@
     </section>
     <!-- /.content -->
 </div>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-
 @endsection
-
 
 @section('script')
 @parent
@@ -198,6 +222,7 @@
 
 
     $(document).ready(function() {
+
         $(document).on('change', '#country', function() {
             //on chnage country
             var countryId = $(this).val();
@@ -220,8 +245,8 @@
             }
         });
 
-        $('#states').on('change', function() {
 
+        $(document).on('change', '#states', function() {
             var stateId = $(this).val();
             // alert(stateId)
             if (stateId) {
@@ -245,6 +270,66 @@
                 $('#district_name').append('<option selected disabled value="">Select District</option>');
             }
         });
+
+
+        /*onload country and state and city selected start*/
+        const selectedCountryId = "{{ $branch->country_name}}";
+        const selectedStateId = "{{ $branch->state_name}}";
+        const selectedCityId = "{{ $branch->city_name}}";
+
+        //selected state
+        $(function() {
+            /*Selected State start*/
+            if (selectedCountryId) {
+                console.log('selectedCountryId', selectedCountryId)
+                $.ajax({
+                    url: '{{ url("admin/get-states") }}/' + selectedCountryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#states').empty();
+                        $('#states').append('<option selected disabled value="">Select State</option>');
+                        let selectedState;
+                        $.each(data, function(key, value) {
+                            selectedState = (value.id == selectedStateId) ? 'selected' : ''
+                            $('#states').append('<option value="' + value.id + '" ' + selectedState + '>' + value.name + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error: ', error);
+                    }
+                });
+            }
+            /*Selected State End*/
+
+
+            if (selectedStateId) {
+                $.ajax({
+                    url: '{{ url("admin/get-districts") }}/' + selectedStateId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#district_name').empty();
+                        $('#district_name').append('<option selected disabled value="">Select District</option>');
+                        let selectedCity;
+                        $.each(data, function(key, value) {
+                            selectedCity = (value.id == selectedCityId) ? 'selected' : ''
+                            $('#district_name').append('<option value="' + value.id + '" ' + selectedCity + '>' + value.name + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error: ', error);
+                    }
+                });
+            } else {
+                $('#district_name').empty();
+                $('#district_name').append('<option selected disabled value="">Select District</option>');
+            }
+        });
+
+
+        /*onload country and state and city selected end*/
+
     });
 </script>
 

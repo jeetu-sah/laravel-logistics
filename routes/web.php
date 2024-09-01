@@ -44,8 +44,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/settings/change', [SettingsController::class, 'changeSettings'])->name('admin.settings.change');
         // Branch 
         Route::get('/branches', [BranchController::class, 'index']);
-        Route::get('/branches/create', [BranchController::class, 'create']);
         Route::get('/branches/list', [BranchController::class, 'list']);
+        Route::get('/branches/create', [BranchController::class, 'create']);
+        Route::get('/branches/edit/{branchId}', [BranchController::class, 'edit']);
+        Route::post('/branches/update/{id}', [BranchController::class, 'update'])->name('admin.update');
         Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
         
         // booking 

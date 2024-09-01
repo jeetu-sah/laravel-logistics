@@ -16,6 +16,7 @@ class BranchController extends Controller
      */
     public function index()
     {
+
         $data['branchDetails'] = Branch::all();
         return view('admin.branch.list', $data);
     }
@@ -37,26 +38,68 @@ class BranchController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Branch $Branch)
-    {
-        $data['branchDetails'] = Branch::all();
-        return view('admin.branch.list', $data);
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Branch $Branch)
+    public function edit($id)
     {
-        //
+        $data['message'] = [];
+        $data['branch'] = Branch::find($id);
+        $data['countries'] =  DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
+        return view('admin.branch.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Branch $Branch)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'branch_name' => 'required|string|max:255',
+            'branch_code' => 'required|string|max:255',
+            'owner_name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
+            'gst' => 'required|string|max:255',
+            'country_name' => 'required|string',
+            'state_name' => 'required|integer',
+            'district_name' => 'required|integer',
+            'address1' => 'required|string',
+            'address2' => 'nullable|string',
+            'user_status' => 'required|string',
+        ]);
+
+        // Create a new Branch instance and save the data
+        $branch = Branch::find($id);
+        if ($branch != null) {
+            $branch->branch_name = $request->branch_name;
+            $branch->branch_code = $request->branch_code;
+            $branch->owner_name = $request->owner_name;
+            $branch->contact = $request->contact;
+            $branch->gst = $request->gst;
+            $branch->country_name = $request->country_name;
+            $branch->state_name = $request->state_name;
+            $branch->city_name = $request->district_name;
+            $branch->address1 = $request->address1;
+            $branch->address2 = $request->address2;
+            $branch->user_status = $request->user_status;
+        }
+
+        if ($branch->save()) {
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Branch updated successfully', 'type' => 'success']
+            ]);
+        } else {
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => [
+                    'message' => 'Something went wrong, please try after sometime',
+                    'type' => 'success'
+                ]
+            ]);
+        }
     }
 
     /**
@@ -100,7 +143,10 @@ class BranchController extends Controller
         ]);
 
         // Redirect or return a response
-        return redirect('admin/branch/list')->with('success', 'Branch created successfully!');
+        return redirect('admin/branch/list')->with([
+            "alertMessage" => true,
+            "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
+        ]);
     }
 
 
@@ -120,12 +166,13 @@ class BranchController extends Controller
                 $row = [];
                 $row['sn'] =  $branch->id;
                 $row['branch_name'] = $branch->branch_name;
-                $row['branch_code'] = '<a href="' . url("admin/roles/user_permission/$branch->id?page=roles") . '">' . $branch->branch_code . '</a>';
+                $row['branch_code'] = '<a href="' . url("admin/branches/edit/$branch->id") . '">' . $branch->branch_code . '</a>';
                 $row['owner_name'] = $branch->owner_name;
                 $row['contact'] = $branch->contact;
                 $row['gst'] = $branch->gst;
                 $row['user_status'] = $branch->user_status;
-                $row['action'] = 'action';
+                $row['action'] = '<a 
+                                    href="' . url("admin/branches/edit/$branch->id") . '" class="btn btn-primary">Edit</a>';
                 $row['created_at'] = Carbon::parse($branch->craeted_at)->format('d/m/Y'); //->format();
 
                 $rows[] = $row;
@@ -138,9 +185,6 @@ class BranchController extends Controller
             "recordsFiltered" => intval($totalRecord),
             "data"            => $rows
         );
-        // echo "<pre>";
-        // print_r($json_data);exit;
         return json_encode($json_data);
-        exit;
     }
 }
