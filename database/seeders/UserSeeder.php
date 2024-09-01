@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $password = "@Admin@123#";
-        
+
         $user = User::create([
             'first_name' => 'Journal',
             'last_name' => 'Journal',
@@ -31,9 +31,9 @@ class UserSeeder extends Seeder
             'remember_token' => 222221,
         ]);
 
-        if($user != NULL) {
-            $user->assignRole('author'); 
-            $user->assignRole('reviewer'); 
+        if ($user != NULL) {
+            $user->assignRole('author');
+            $user->assignRole('reviewer');
         }
     }
 }

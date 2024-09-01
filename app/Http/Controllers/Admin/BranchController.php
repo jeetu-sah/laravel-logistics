@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -30,20 +31,14 @@ class BranchController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
      */
     public function show(Branch $Branch)
     {
-        return view('admin.branch.branch-list');
+        $data['branchDetails'] = Branch::all();
+        return view('admin.branch.branch-list', $data);
     }
 
     /**
@@ -68,5 +63,52 @@ class BranchController extends Controller
     public function destroy(Branch $Branch)
     {
         //
+    }
+
+    public function getDistricts($stateId)
+    {
+        // Using the query builder to fetch districts based on the state ID
+        $districts = DB::table('district')
+            ->where('state_id', $stateId)
+            ->get(['district_id', 'district_name']);
+
+        // Return the districts as a JSON response
+        return response()->json($districts);
+    }
+
+    public function store(Request $request)
+    {
+        // Validate the form data
+        $request->validate([
+            'branch_name' => 'required|string|max:255',
+            'branch_code' => 'required|string|max:255',
+            'owner_name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
+            'gst' => 'required|string|max:255',
+            'country_name' => 'required|string',
+            'state_name' => 'required|integer',
+            'district_name' => 'required|integer',
+            'address1' => 'required|string',
+            'address2' => 'nullable|string',
+            'user_status' => 'required|string',
+        ]);
+
+        // Create a new Branch instance and save the data
+        Branch::create([
+            'branch_name' => $request->input('branch_name'),
+            'branch_code' => $request->input('branch_code'),
+            'owner_name' => $request->input('owner_name'),
+            'contact' => $request->input('contact'),
+            'gst' => $request->input('gst'),
+            'country_name' => $request->input('country_name'),
+            'state_name' => $request->input('state_name'),
+            'city_name' => $request->input('district_name'),
+            'address1' => $request->input('address1'),
+            'address2' => $request->input('address2'),
+            'user_status' => $request->input('user_status'),
+        ]);
+
+        // Redirect or return a response
+        return redirect('admin/branch/branch-list')->with('success', 'Branch created successfully!');
     }
 }

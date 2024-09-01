@@ -33,7 +33,7 @@
                             <table class="table table-bordered table-striped" id="reviewers-list">
                                 <thead>
                                     <tr>
-                                        <th>Sr.no</th>
+                                        <th>Sr. No</th>
                                         <th>Branch Name</th>
                                         <th>Branch Code</th>
                                         <th>Branch Owner Name</th>
@@ -44,13 +44,38 @@
                                         <th>City</th>
                                         <th>Address 1</th>
                                         <th>Address 2</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
+                                    @php $i = 1; @endphp
+                                    @foreach ($branchDetails as $branch)
+                                        <tr>
+                                            <td>{{ $i++ }}</td>
+                                            <td>{{ $branch->branch_name }}</td>
+                                            <td>{{ $branch->branch_code }}</td>
+                                            <td>{{ $branch->owner_name }}</td>
+                                            <td>{{ $branch->contact }}</td>
+                                            <td>{{ $branch->gst }}</td>
+                                            <td>{{ $branch->country_name }}</td>
+                                            <td>{{ $branch->state_name }}</td>
+                                            <td>{{ $branch->city_name }}</td>
+                                            <td>{{ $branch->address1 }}</td>
+                                            <td>{{ $branch->address2 }}</td>
+                                            <td>{{ $branch->user_status }}</td>
+                                            <td>
+                                                {{-- {{ route('admin.edit-branch', $branch->id) }} --}}
+
+                                                <a href="" class="btn btn-warning btn-sm">Edit</a>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
@@ -81,47 +106,47 @@
                 },
                 columns: [{
                         data: 'sn',
-                        
+
                     },
                     {
                         data: 'branch_code',
-                       
+
                     },
                     {
                         data: 'owner_name',
-                      
+
                     },
                     {
                         data: 'contact_number',
-                       
+
                     },
                     {
                         data: 'gst',
-                      
+
                     },
                     {
                         data: 'country',
-                     
+
                     },
                     {
                         data: 'state',
-                       
+
                     },
                     {
                         data: 'city',
-                      
+
                     },
                     {
                         data: 'address1',
-                       
+
                     },
                     {
                         data: 'address2',
-                        
+
                     },
                     {
                         data: 'action',
-                      
+
                         orderable: false
                     }
                 ],

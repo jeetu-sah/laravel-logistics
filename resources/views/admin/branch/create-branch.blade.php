@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <a href="{{ url('admin/branch/branch-list') }}" 
+                        <a href="{{ url('admin/branch/branch-list') }}"
                             class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                                 class=" fa-sm text-white-50"></i> Branch List</a>
                     </div>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <form action="{{ route('admin.add_reviewers') }}" method="post" id="form" name="pForm"
+                        <form action="{{ route('admin.create-new-branch') }}" method="post" id="form" name="pForm"
                             enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
                             <div class="form-row">
@@ -95,6 +95,7 @@
                                     <select class="form-select select2 form-control" name="country_name" id="country_name"
                                         required>
                                         <option selected disabled value="">Select Country</option>
+                                        <option value="1">India</option>
                                         <!-- Add countries here -->
                                     </select>
                                     <div class="invalid-feedback">Select Country</div>
@@ -121,14 +122,14 @@
 
                                 <!-- City -->
                                 <div class="col-md-4 mb-2">
-                                    <label for="city_name" class="form-label">City</label>
-                                    <select class="form-select select2 form-control" name="city_name" id="city_name"
+                                    <label for="district_name" class="form-label">City</label>
+                                    <select class="form-select select2 form-control" name="district_name" id="district_name"
                                         required>
                                         <option selected disabled value="">Select City</option>
                                         <!-- Add cities here -->
                                     </select>
                                     <div class="invalid-feedback">Select City</div>
-                                    @error('city_name')
+                                    @error('district_name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -152,6 +153,8 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                <!-- Status -->
                                 <div class="col-md-4">
                                     <label for="user_status" class="form-label">Status</label>
                                     <select class="form-select select2 form-control" name="user_status" id="user_status"
@@ -179,4 +182,33 @@
         </section>
         <!-- /.content -->
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#state_name').on('change', function() {
+                var stateId = $(this).val();
+                // alert(stateId)
+                if (stateId) {
+                    $.ajax({
+                        url: '{{ url("admin/branch/get-districts") }}/' + stateId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#district_name').empty();
+                            $('#district_name').append('<option selected disabled value="">Select District</option>');
+                            $.each(data, function(key, value) {
+                                $('#district_name').append('<option value="' + value.district_id + '">' + value.district_name + '</option>');
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error: ', error);
+                        }
+                    });
+                } else {
+                    $('#district_name').empty();
+                    $('#district_name').append('<option selected disabled value="">Select District</option>');
+                }
+            });
+        });
+    </script>
 @endsection

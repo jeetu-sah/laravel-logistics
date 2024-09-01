@@ -47,9 +47,16 @@ Route::group(['middleware' => ['auth']], function () {
     // Branch 
     Route::get('admin/branch/create', [BranchController::class, 'index']);
     Route::get('admin/branch/branch-list', [BranchController::class, 'show']);
+
+    Route::get('admin/branch/get-districts/{stateId}', [BranchController::class, 'getDistricts']);
+    Route::post('/admin/create-new-branch', [BranchController::class, 'store'])->name('admin.create-new-branch');
     // booking 
     Route::get('admin/booking/create', [BookingController::class, 'index']);
+    Route::get('admin/booking/to-pay-booking', [BookingController::class, 'to_pay_booking']);
+    Route::get('admin/booking/to-client-booking', [BookingController::class, 'to_client_booking']);
     Route::get('admin/booking/branch-list', [BookingController::class, 'show']);
+    Route::post('admin/booking/paid-booking', [BookingController::class, 'paid_booking']);
+
 
     Route::get('admin/article/create', [ArticleController::class, 'index']);
 

@@ -13,16 +13,32 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Create New Booking</li>
+                            <li class="breadcrumb-item active"><b>Paid Booking</b></li>
                         </ol>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <section class="content">
             <div class="container-fluid">
-                <form>
+                <form action="{{ url('admin/booking/paid-booking') }}" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-md-6">
 
@@ -31,79 +47,73 @@
                                     <h3 class="card-title">Consignor</h3>
                                 </div>
 
-
                                 <div class="card-body">
                                     <div class="row">
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <select class="form-control select2" name="branch" style="width: 100%;">
-                                                    <option value="1">Branch Name </option>
+                                                <select class="form-control select2" name="consignor_branch_name"
+                                                    style="width: 100%;">
+                                                    <option value="">Select Branch Name</option>
+                                                    @foreach ($branch as $branchList)
+                                                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                <input type="text" class="form-control" name="consignor_name"
                                                     placeholder="Consignor Name">
                                             </div>
                                         </div>
 
-
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea class="form-control" name="address" placeholder="Address"></textarea>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                <input type="text" class="form-control" name="phone_number_1"
                                                     placeholder="Phone Number 1">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
+                                                <input type="text" class="form-control" name="phone_number_2"
                                                     placeholder="Phone Number 2">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                <input type="email" class="form-control" name="email"
                                                     placeholder="Email">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                <input type="text" class="form-control" name="gst_number"
                                                     placeholder="GST Number">
                                             </div>
                                         </div>
                                     </div>
 
+
                                     <div class="form-group">
-                                        {{-- <label for="exampleInputPassword1">Address</label> --}}
-                                        <textarea class="form-control" id="exampleInputPassword1" placeholder="Address"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        {{-- <label for="exampleInputFile">Pin Code</label> --}}
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="text" class="form-control" id="exampleInputPassword1"
+                                                <input type="text" class="form-control" name="pin_code"
                                                     placeholder="Pin code">
-                                                {{-- <label class="custom-file-label" for="">Choose file</label> --}}
                                             </div>
-
                                         </div>
                                     </div>
 
                                 </div>
-
-
-
                             </div>
 
                         </div>
-
 
                         <div class="col-md-6">
 
@@ -117,70 +127,67 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <select class="form-control select2" name="branch" style="width: 100%;">
-                                                    <option value="1">Branch Name </option>
+                                                <select class="form-control select2" name="consignee_branch_name"
+                                                    style="width: 100%;">
+                                                    <option value="">Select Branch Name</option>
+                                                    @foreach ($branch as $branchList)
+                                                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
+
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                <input type="text" class="form-control" name="consignee_name"
                                                     placeholder="Consignee Name">
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea class="form-control" name="consignee_address" placeholder="Address"></textarea>
+                                            </div>
+                                        </div>
 
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="Phone Number 1">
+                                                <input type="text" class="form-control"
+                                                    name="consignee_phone_number_1" placeholder="Phone Number 1">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="Phone Number 2">
+                                                <input type="text" class="form-control"
+                                                    name="consignee_phone_number_2" placeholder="Phone Number 2">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                <input type="email" class="form-control" name="consignee_email"
                                                     placeholder="Email">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                <input type="text" class="form-control" name="consignee_gst_number"
                                                     placeholder="GST Number">
                                             </div>
                                         </div>
                                     </div>
 
+
                                     <div class="form-group">
-                                        {{-- <label for="exampleInputPassword1">Address</label> --}}
-                                        <textarea class="form-control" id="exampleInputPassword1" placeholder="Address"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        {{-- <label for="exampleInputFile">Pin Code</label> --}}
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="text" class="form-control" id="exampleInputPassword1"
+                                                <input type="text" class="form-control" name="consignee_pin_code"
                                                     placeholder="Pin code">
-                                                {{-- <label class="custom-file-label" for="">Choose file</label> --}}
                                             </div>
-
                                         </div>
                                     </div>
 
                                 </div>
-
-
-
-
                             </div>
 
                         </div>
@@ -190,240 +197,200 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Other Details</h3>
                                 </div>
-                                <form>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-
-                                                    <input type="email" class="form-control" id="exampleInputEmail1"
-                                                        placeholder="Dest Pin code">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <select class="custom-select">
-                                                        <option value="">Select Mode of Payment </option>
-                                                        <option>Paid</option>
-                                                        <option>To Pay</option>
-                                                        <option>To Client</option>
-
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-
-                                                    <input type="test" class="form-control" id="exampleInputEmail1"
-                                                        placeholder="Services Line">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-
-                                                    <input type="test" class="form-control" id="exampleInputEmail1"
-                                                        placeholder="No Of Pkg">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-
-                                                    <input type="test" class="form-control" id="exampleInputEmail1"
-                                                        placeholder="Actule weight">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-
-                                                    <input type="test" class="form-control" id="exampleInputEmail1"
-                                                        placeholder="Gate Way">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-
-                                                    <input type="test" class="form-control" id="exampleInputEmail1"
-                                                        placeholder="Packing Type">
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-                                    </div>
-
-
-                                </form>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-dark">
-                                <div class="card-header">
-                                    <h3 class="card-title">E-Way Bills</h3>
-                                </div>
 
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Description</label>
-
+                                                <input type="text" class="form-control" name="dest_pin_code"
+                                                    placeholder="Dest Pin code">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Amount</label>
-
+                                                <input type="text" class="form-control" name="services_line"
+                                                    placeholder="Services Line">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Freight</label>
-
+                                                <input type="text" class="form-control" name="no_of_pkg"
+                                                    placeholder="No Of Pkg">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <input type="text" class="form-control" name="actual_weight"
+                                                    placeholder="Actual weight">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="gateway"
+                                                    placeholder="Gate Way">
+                                            </div>
+                                        </div>
 
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="packing_type"
+                                                    placeholder="Packing Type">
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card card-dark">
+                                <div class="card-header">
+                                    <h3 class="card-title">Bills</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Other form fields -->
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="freight">Freight</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control bill-input"
+                                                    name="freight_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="os">O.S</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control bill-input" name="os_amount"
                                                     placeholder="₹.00">
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">O.S</label>
-
+                                                <label for="fov">FOV</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
+                                                <input type="text" class="form-control bill-input" name="fov_amount"
                                                     placeholder="₹.00">
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">FOV</label>
-
+                                                <label for="transhipment">Transhipment</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <input type="text" class="form-control bill-input"
+                                                    name="transhipment_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
 
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="₹.00">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="handling_charge">Handling Charge</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Transhipment</label>
+                                                <input type="text" class="form-control bill-input"
+                                                    name="handling_charge_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
 
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="loading_charge">Loading Charge</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <input type="text" class="form-control bill-input"
+                                                    name="loading_charge_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
 
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="₹.00">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="misc_charge">Misc Charge</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Hendling Charge</label>
+                                                <input type="text" class="form-control bill-input"
+                                                    name="misc_charge_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
 
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="other_charge">Other Charges</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <input type="text" class="form-control bill-input"
+                                                    name="other_charge_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
 
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="₹.00">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="grand_total">Grand Total</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Loading Charge</label>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="₹.00">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Misc Charge</label>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="₹.00">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Other Charges</label>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="₹.00">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Grand Total</label>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-
-                                                <input type="text" class="form-control" id="exampleInputEmail1"
-                                                    placeholder="₹.00">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-
-                                                <button type="submit"
-                                                    class="form-control btn btn-success">Submit</button>
+                                                <input type="text" class="form-control" name="grand_total_amount"
+                                                    id="grand_total_amount" placeholder="₹.00" readonly>
                                             </div>
                                         </div>
 
                                     </div>
-
-
-
-
                                 </div>
-
-
-
-
                             </div>
-
                         </div>
 
+                        <script>
+                            function calculateTotal() {
+                                let total = 0;
+                                document.querySelectorAll('.bill-input').forEach(input => {
+                                    let value = parseFloat(input.value) || 0;
+                                    total += value;
+                                });
+                                document.getElementById('grand_total_amount').value = `${total.toFixed(2)}`;
+                            }
+
+                            document.querySelectorAll('.bill-input').forEach(input => {
+                                input.addEventListener('input', calculateTotal);
+                            });
+                        </script>
 
                     </div>
-                </form>
 
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            {{-- <a href="{{ url('admin/booking/create') }}" class="btn btn-secondary">Reset</a> --}}
+                            <input type="submit" value="Save Booking" class="btn btn-success float-right">
+                        </div>
+                    </div>
+                </form>
             </div>
         </section>
     </div>
