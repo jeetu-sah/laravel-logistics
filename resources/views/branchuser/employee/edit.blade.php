@@ -16,11 +16,7 @@
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    @if(Session::has('msg'))
-                    {!! Session::get("msg") !!}
-                    @endif
-                </div>
+                @include('common.notification')
             </div>
         </div>
     </section>
@@ -32,7 +28,7 @@
                 <h3 class="card-title">Edit Employees</h3>
             </div>
             <div class="card-body">
-                <form action='{{ url("admin/reviewers/update/$reviwer->id") }}' method="post" id="form" name="pForm" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form action='{{ url("branch-user/employees/update/$reviwer->id") }}' method="post" id="form" name="pForm" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf
                     <div class="row">
                         <div class="col-md-6">

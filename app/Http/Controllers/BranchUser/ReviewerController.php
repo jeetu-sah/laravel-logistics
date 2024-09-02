@@ -17,7 +17,7 @@ class ReviewerController extends Controller
     public function index()
     {
         $data['title'] = 'Employee | Create';
-        
+
         return view('branchuser.employee.create')->with($data);
     }
 
@@ -62,7 +62,7 @@ class ReviewerController extends Controller
 
         try {
             $userId = sHelper::fetchEmployeeNewUserId();
-          
+
 
             $user = new User([
                 'first_name' => $request->first_name,
@@ -84,19 +84,23 @@ class ReviewerController extends Controller
             if ($user->save()) {
 
                 //assigned roles
-                $roles = Role::where('slug','employee')->get();
+                $roles = Role::where('slug', 'employee')->get();
                 $user->assignRole($roles);
-                
-                return redirect('/branch-user/employees')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong> Reviewer addedd Successfully !!! </div>" ]);  
+
+
+                return redirect('/branch-user/employees')->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Reviewer addedd Successfully', 'type' => 'success']
+                ]);
             }
-
-
         } catch (\Exception $e) {
             // Log the exception
             $e->getMessage();
 
-            // Redirect back with an error message
-            return redirect()->back()->with(["msg"=>"<div class='callout callout-danger'><strong>Wrong </strong> Something went wrong, please try again!!! </div>" ]);  
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
+            ]);
         }
     }
 
@@ -113,7 +117,7 @@ class ReviewerController extends Controller
         $data['title'] = 'Reviewer | Edit';
         $data['reviwer'] = User::with('roles')->find($id);
         $data['roles'] = Role::all();
-      
+
         return view('branchuser.employee.edit')->with($data);
     }
 
@@ -121,7 +125,7 @@ class ReviewerController extends Controller
     {
         $data['title'] = 'Reviewer | update';
         $user = User::find($id);
-        if($user != NULL) {
+        if ($user != NULL) {
             $user->first_name = $request->first_name ?? '';
             $user->last_name = $request->last_name ?? '';
             $user->email = $request->email ?? '';
@@ -133,30 +137,36 @@ class ReviewerController extends Controller
             $user->department = $request->department ?? '';
             $user->reason = $request->reason ?? '';
 
-            $user->save(); 
+            $user->save();
 
             $roleIdArr = $request->roles;
-    
+
             //unassigned, assigned roles
             $assignedRoles = $user->roles;
-            if($assignedRoles->count() > 0) {
-                foreach($assignedRoles as $assignedRole) {
+            if ($assignedRoles->count() > 0) {
+                foreach ($assignedRoles as $assignedRole) {
                     $user->removeRole($assignedRole);
                 }
             }
 
             //unassigned, assigned roles
-            if($user != NULL) {
-                if(count($roleIdArr) > 0) {
+            if ($user != NULL) {
+                if (count($roleIdArr) > 0) {
                     //assigned, assigned roles
                     $roles = Role::whereIn('id', $roleIdArr)->get();
                     $user->assignRole($roles);
                 }
             }
-    
-            return redirect()->back()->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Record update Successfully  !!! </div>"]); 
-        } else{
-            return redirect()->back()->with(["msg"=>"<div class='callout callout-danger'><strong>Info </strong>  Something went wrong, please try again.  !!! </div>"]); 
+
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Record update Successfully', 'type' => 'success']
+            ]);
+        } else {
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
+            ]);
         }
     }
 
@@ -175,18 +185,18 @@ class ReviewerController extends Controller
             $i = 1;
             foreach ($users as $user) {
                 $change_credential = NULL;
-                $edit_btn = '<a href="' . url("admin/reviewers/edit/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-primary" style="margin-right: 5px;">
+                $edit_btn = '<a href="' . url("branch-user/employees/edit/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-primary" style="margin-right: 5px;">
 						<i class="fas fa-edit"></i> 
 					  </a>';
 
                 //if(Auth::user()->isAbleTo('change-user-credential')){
                 $change_credential = '';
                 // $change_credential = '<a href="' . url("admin/edit_credential/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-success" style="margin-right: 5px;">
-				// 		<i class="fas fa-key"></i> 
-				// 	  </a>';
+                // 		<i class="fas fa-key"></i> 
+                // 	  </a>';
                 //}
                 $row = [];
-                $row['sn'] = '<a href="' . url("admin/reviewers/edit/$user->id") . '">' . $user->userId . '</a>';;
+                $row['sn'] = '<a href="' . url("branch-user/employees/edit/$user->id") . '">' . $user->userId . '</a>';;
 
                 $row['name'] = $user->first_name;
                 $row['email'] = $user->email;

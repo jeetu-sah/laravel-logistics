@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <a href="{{ url('branch-user/employees/create') }}" 
+                    <a href="{{ url('branch-user/employees/create') }}"
                         class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
                         <i class=" fa-sm text-white-50"></i>Create Employee </a>
                 </div>
@@ -18,11 +18,7 @@
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    @if(Session::has('msg'))
-                    {!! Session::get("msg") !!}
-                    @endif
-                </div>
+                @include('common.notification')
             </div>
         </div>
     </section>

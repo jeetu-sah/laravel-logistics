@@ -16,11 +16,7 @@
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    @if(Session::has('msg'))
-                    {!! Session::get("msg") !!}
-                    @endif
-                </div>
+                @include('common.notification')
             </div>
         </div>
     </section>
