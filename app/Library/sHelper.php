@@ -208,7 +208,7 @@ class sHelper
 			])->first();
 	}
 
-	public static function fetchNewUserId()
+	public static function fetchEmployeeNewUserId()
 	{
 		$userMaxID =  User::max('userId');
 		if ($userMaxID == NULL) {

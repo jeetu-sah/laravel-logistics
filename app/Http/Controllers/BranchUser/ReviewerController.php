@@ -18,7 +18,7 @@ class ReviewerController extends Controller
     {
         $data['title'] = 'Employee | Create';
         
-        return view('branchuser.reviewer.create')->with($data);
+        return view('branchuser.employee.create')->with($data);
     }
 
     public function store(Request $request)
@@ -61,7 +61,7 @@ class ReviewerController extends Controller
         );
 
         try {
-            $userId = sHelper::fetchNewUserId();
+            $userId = sHelper::fetchEmployeeNewUserId();
           
 
             $user = new User([
@@ -74,7 +74,7 @@ class ReviewerController extends Controller
                 'position' => $request->position,
                 'department' => $request->department,
                 'reason' => $request->reason,
-                'user_type' => 'reviewer',
+                'user_type' => User::EMPLOYEE,
                 'password' => Hash::make($request->password),
                 'user_status' => $request->user_status,
                 'term_and_condition' => 1,
@@ -105,7 +105,7 @@ class ReviewerController extends Controller
     public function show()
     {
         $data['title'] = 'Reviewer | List';
-        return view('branchuser.reviewer.list')->with($data);
+        return view('branchuser.employee.list')->with($data);
     }
 
     public function edit(Request $request, $id)
@@ -114,7 +114,7 @@ class ReviewerController extends Controller
         $data['reviwer'] = User::with('roles')->find($id);
         $data['roles'] = Role::all();
       
-        return view('branchuser.reviewer.edit')->with($data);
+        return view('branchuser.employee.edit')->with($data);
     }
 
     public function update(Request $request, $id)
@@ -167,6 +167,7 @@ class ReviewerController extends Controller
         $totalRecord = User::count();
 
         $usersQuery = User::query();
+        $usersQuery = $usersQuery->where('user_type', User::EMPLOYEE);
         $users = $usersQuery->skip($start)->take($limit)->get();
 
         $row = [];
@@ -179,9 +180,10 @@ class ReviewerController extends Controller
 					  </a>';
 
                 //if(Auth::user()->isAbleTo('change-user-credential')){
-                $change_credential = '<a href="' . url("admin/edit_credential/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-success" style="margin-right: 5px;">
-						<i class="fas fa-key"></i> 
-					  </a>';
+                $change_credential = '';
+                // $change_credential = '<a href="' . url("admin/edit_credential/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-success" style="margin-right: 5px;">
+				// 		<i class="fas fa-key"></i> 
+				// 	  </a>';
                 //}
                 $row = [];
                 $row['sn'] = '<a href="' . url("admin/reviewers/edit/$user->id") . '">' . $user->userId . '</a>';;

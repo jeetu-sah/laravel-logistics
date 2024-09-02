@@ -3,7 +3,7 @@
     <a href="{{ url('/') }}" class="brand-link">
         <img src="{{ asset('admin_webu/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Journal</span>
+        <span class="brand-text font-weight-light">Logistics</span>
     </a>
 
     <!-- Sidebar -->
@@ -15,7 +15,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Journal</a>
+                <a href="#" class="d-block">Logistics</a>
             </div>
         </div>
 
@@ -85,7 +85,7 @@
 
 
 
-                <li class="nav-item has-treeview">
+                <!-- <li class="nav-item has-treeview">
                     <a href="{{ url('admin/article') }}"
                         class="nav-link {{ request()->is('admin/article*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
@@ -108,7 +108,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 @role('Admin')
                 <li class="nav-item has-treeview">
                     <a href="{{ url('admin/admin/role-list') }}"
