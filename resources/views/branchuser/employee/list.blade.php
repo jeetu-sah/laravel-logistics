@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <a href="{{ url('branch-user/employees/create') }}" 
+                    <a href="{{ url('branch-user/employees/create') }}"
                         class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
                         <i class=" fa-sm text-white-50"></i>Create Employee </a>
                 </div>
@@ -18,11 +18,7 @@
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    @if(Session::has('msg'))
-                    {!! Session::get("msg") !!}
-                    @endif
-                </div>
+                @include('common.notification')
             </div>
         </div>
     </section>
@@ -36,7 +32,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="table-responsive ">
-                        <table class="table table-bordered table-striped" id="reviewers-list">
+                        <table class="display" id="employee-list">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -65,11 +61,11 @@
 @section('script')
 @parent
 <!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
-<script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
 <script>
     $(document).ready(function(e) {
 
-        new DataTable('#reviewers-list', {
+        new DataTable('#employee-list', {
             ajax: {
                 url: "{{ url('branch-user/employees/list') }}",
                 data: function(d) {
@@ -107,5 +103,5 @@
 
 @section('styles')
 @parent
-<link href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
 @endsection
