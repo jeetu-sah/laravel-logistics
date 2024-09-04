@@ -21,10 +21,25 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
         <section class="content">
             <div class="container-fluid">
-                <form>
+                <form action="{{ url('admin/booking/to-pay-booking') }}" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-md-6">
 
@@ -359,7 +374,7 @@
                                     let value = parseFloat(input.value) || 0;
                                     total += value;
                                 });
-                                document.getElementById('grand_total_amount').value = `₹.${total.toFixed(2)}`;
+                                document.getElementById('grand_total_amount').value = `${total.toFixed(2)}`;
                             }
 
                             document.querySelectorAll('.bill-input').forEach(input => {
@@ -371,7 +386,7 @@
 
                     <div class="row mb-3">
                         <div class="col-12">
-                            <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a>
+                            {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a> --}}
                             <input type="submit" value="Save Booking" class="btn btn-success float-right">
                         </div>
                     </div>

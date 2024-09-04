@@ -52,7 +52,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <select class="form-control select2" name="consignor_branch_name"
+                                                <select class="form-control select2" name="consignor_branch_id"
                                                     style="width: 100%;">
                                                     <option value="">Select Branch Name</option>
                                                     @foreach ($branch as $branchList)
@@ -127,7 +127,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <select class="form-control select2" name="consignee_branch_name"
+                                                <select class="form-control select2" name="consignee_branch_id"
                                                     style="width: 100%;">
                                                     <option value="">Select Branch Name</option>
                                                     @foreach ($branch as $branchList)

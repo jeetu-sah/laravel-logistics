@@ -19,10 +19,25 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <section class="content">
             <div class="container-fluid">
-                <form>
+                <form action="{{ url('admin/booking/to-client-booking') }}" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-md-6">
 
@@ -137,8 +152,8 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input type="text" class="form-control" name="consignee_phone_number_1"
-                                                    placeholder="Phone Number 1">
+                                                <input type="text" class="form-control"
+                                                    name="consignee_phone_number_1" placeholder="Phone Number 1">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -357,7 +372,7 @@
                                     let value = parseFloat(input.value) || 0;
                                     total += value;
                                 });
-                                document.getElementById('grand_total_amount').value = `₹.${total.toFixed(2)}`;
+                                document.getElementById('grand_total_amount').value = `${total.toFixed(2)}`;
                             }
 
                             document.querySelectorAll('.bill-input').forEach(input => {

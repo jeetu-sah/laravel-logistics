@@ -9,11 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id('paid_booking_id');
-            $table->unsignedBigInteger('consignor_branch_name')->nullable();
+            $table->bigInteger('consignor_branch_id')->nullable();
             $table->string('consignor_name')->nullable();
             $table->text('address')->nullable();
             $table->string('phone_number_1')->nullable();
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('gst_number')->nullable();
             $table->string('pin_code')->nullable();
-            $table->unsignedBigInteger('consignee_branch_name')->nullable();
+            $table->bigInteger('consignee_branch_id')->nullable();
             $table->string('consignee_name')->nullable();
             $table->text('consignee_address')->nullable();
             $table->string('consignee_phone_number_1')->nullable();
@@ -47,20 +48,14 @@ return new class extends Migration
             $table->tinyInteger('booking_type')->default(1);
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
-
-            // Define foreign keys
-            $table->foreign('consignor_branch_name')->references('id')->on('branch')->onDelete('set null');
-            $table->foreign('consignee_branch_name')->references('id')->on('branch')->onDelete('set null');
         });
     }
-
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('booking');
+        Schema::dropIfExists('bookings');
     }
 };

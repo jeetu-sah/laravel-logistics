@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PermissionSeeder::class,
             ArticleTypeSeeder::class,
+            CountrySeeder::class,
+            StateSeeder::class,
+            CitySeeder::class,
         ]);
     }
 }

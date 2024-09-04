@@ -24,9 +24,9 @@ class RoleSeeder extends Seeder
             ],
             [
 
-                'name' => 'Branch user',
+                'name' => 'Branchuser',
                 'guard_name' => 'web',
-                'slug' => 'branch-user',
+                'slug' => 'branchuser',
                 'created_at' => date('Y-m-d'),
             ],
             [
