@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Branches;
+use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class BranchesController extends Controller
+class BranchController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        $data['branchDetails'] = Branches::all();
+        $data['title'] = 'Branch list';
         return view('admin.branch.list', $data);
     }
 
@@ -24,8 +24,7 @@ class BranchesController extends Controller
      */
     public function create()
     {
-        $data['heading']  = 'Create Branch';
-        $data['listUrl'] = 'admin/branch/branch-list';
+    
         $data['countries'] =  DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
         $data['states'] =  DB::table('country_states')->get();
 
@@ -52,7 +51,7 @@ class BranchesController extends Controller
         ]);
 
         // Create a new Branch instance and save the data
-        Branches::create([
+        Branch::create([
             'branch_name' => $request->input('branch_name'),
             'branch_code' => $request->input('branch_code'),
             'owner_name' => $request->input('owner_name'),
@@ -79,10 +78,10 @@ class BranchesController extends Controller
         $start = $request->input('start', 0);   // Default to 0 if 'start' is not provided
 
         // Get total record count
-        $totalRecord = Branches::count(); // Simplified to directly get the count
+        $totalRecord = Branch::count(); // Simplified to directly get the count
 
         // Create a query builder instance and apply pagination
-        $branches = Branches::skip($start)->take($limit)->get();
+        $branches = Branch::skip($start)->take($limit)->get();
 
         $rows = [];
         if ($branches->count() > 0) {
@@ -116,7 +115,7 @@ class BranchesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Branches $branches)
+    public function show(Branch $branches)
     {
         //
     }
@@ -127,7 +126,7 @@ class BranchesController extends Controller
     public function edit($id)
     {
         $data['message'] = [];
-        $data['branch'] = Branches::find($id);
+        $data['branch'] = Branch::find($id);
         $data['countries'] =  DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
         return view('admin.branch.edit', $data);
     }
@@ -136,7 +135,7 @@ class BranchesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Branches $branches)
+    public function destroy(Branch $branches)
     {
         //
     }
@@ -158,7 +157,7 @@ class BranchesController extends Controller
         ]);
 
         // Create a new Branch instance and save the data
-        $branch = Branches::find($id);
+        $branch = Branch::find($id);
         if ($branch != null) {
             $branch->branch_name = $request->branch_name;
             $branch->branch_code = $request->branch_code;
