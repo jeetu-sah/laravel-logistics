@@ -8,7 +8,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\BranchesController;
+use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
 
 
@@ -43,12 +43,12 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::post('/settings/change', [SettingsController::class, 'changeSettings'])->name('admin.settings.change');
         // Branch 
-        Route::get('/branches', [BranchesController::class, 'index']);
-        Route::get('/branches/list', [BranchesController::class, 'list']);
-        Route::get('/branches/create', [BranchesController::class, 'create']);
-        Route::get('/branches/edit/{branchId}', [BranchesController::class, 'edit']);
-        Route::post('/branches/update/{id}', [BranchesController::class, 'update'])->name('admin.update');
-        Route::post('/branches/store', [BranchesController::class, 'store'])->name('admin.store');
+        Route::get('/branches', [BranchController::class, 'index']);
+        Route::get('/branches/list', [BranchController::class, 'list']);
+        Route::get('/branches/create', [BranchController::class, 'create']);
+        Route::get('/branches/edit/{branchId}', [BranchController::class, 'edit']);
+        Route::post('/branches/update/{id}', [BranchController::class, 'update'])->name('admin.update');
+        Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
 
         // paid booking 
         Route::get('/booking/create', [BookingController::class, 'index']);
