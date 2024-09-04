@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bookings;
-use App\Models\Branches;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -16,7 +16,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $data['branch'] = Branches::all();
+        $data['branch'] = Branch::all();
 
         $data['heading']  = 'Add New Booking';
         $data['listUrl'] = 'admin/booking/booking-list';
@@ -27,7 +27,7 @@ class BookingController extends Controller
 
     public function to_pay_booking()
     {
-        $data['branch'] = Branches::all();
+        $data['branch'] = Branch::all();
 
         $data['heading']  = 'Add New Booking';
         $data['listUrl'] = 'admin/booking/booking-list';
@@ -38,7 +38,7 @@ class BookingController extends Controller
 
     public function to_client_booking()
     {
-        $data['branch'] = Branches::all();
+        $data['branch'] = Branch::all();
 
         $data['heading']  = 'Add New Booking';
         $data['listUrl'] = 'admin/booking/booking-list';
