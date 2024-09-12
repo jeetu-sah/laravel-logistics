@@ -73,7 +73,8 @@
                             <!-- Contact Number -->
                             <div class="col-md-6 mb-2">
                                 <label for="contact" class="form-label">Contact Number</label>
-                                <input class="form-control" name="contact" id="contact" placeholder="Contact Number"
+                                <input class="form-control" onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)" minlength="10"
+                                maxlength="10" name="contact" id="contact" placeholder="Contact Number"
                                     required>
                                 <div class="invalid-feedback">Enter contact number</div>
                                 @error('contact')

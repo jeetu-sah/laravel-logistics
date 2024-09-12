@@ -66,7 +66,7 @@ class BranchController extends Controller
         ]);
 
         // Redirect or return a response
-        return redirect('admin/branches/list')->with([
+        return redirect('admin/branches')->with([
             "alertMessage" => true,
             "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
         ]);
