@@ -3,7 +3,7 @@
     <a href="{{ url('/') }}" class="brand-link">
         <img src="{{ asset('admin_webu/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Journal</span>
+        <span class="brand-text font-weight-light">Logistics</span>
     </a>
 
     <!-- Sidebar -->
@@ -15,7 +15,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Journal</a>
+                <a href="#" class="d-block">Logistics</a>
             </div>
         </div>
 
@@ -33,56 +33,59 @@
                         </p>
                     </a>
                 </li>
-                @role('Author')
-                    <li class="nav-item has-treeview">
-                        <a href="{{ url('/') }}"
-                            class="nav-link {{ sHelper::activeSideBar(Request::path(), ['admin/role-list']) }}">
-                            <i class="nav-icon fas fa-chart-pie"></i>
-                            <p>
-                                Manage Roles
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('admin/role-list') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Roles</p>
-                                </a>
-                            </li>
+                @role('Admin')
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('/') }}"
+                        class="nav-link {{ sHelper::activeSideBar(Request::path(), ['admin/role-list']) }}">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Manage Roles
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('admin/role-list') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Roles</p>
+                            </a>
+                        </li>
 
-                        </ul>
-                    </li>
-                    <li class="nav-item has-treeview">
-                        <a href="{{ url('admin/admin/role-list') }}"
-                            class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-edit"></i>
-                            <p>
-                                Manage Reviewers
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ url('admin/reviewers') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Reviewers List</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ url('admin/reviewers/create') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Create Reviewers </p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    </ul>
+                </li>
+                @endrole
+
+                @role('Branchuser')
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('branch-user/branch-user/employees') }}"
+                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Manage Employees
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('branch-user/employees') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Employees List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('branch-user/employees/create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Employees </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 @endrole
 
 
 
 
-                <li class="nav-item has-treeview">
+                <!-- <li class="nav-item has-treeview">
                     <a href="{{ url('admin/article') }}"
                         class="nav-link {{ request()->is('admin/article*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
@@ -105,7 +108,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
+                @role('Admin')
                 <li class="nav-item has-treeview">
                     <a href="{{ url('admin/admin/role-list') }}"
                         class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
@@ -117,19 +121,22 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/branch/create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create Branch</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/branch/branch-list') }}" class="nav-link">
+                            <a href="{{ url('admin/branches') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Branch List</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/branches/create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Branch</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
+                @endrole
+                @role('Branchuser')
                 <li class="nav-item has-treeview">
                     <a href="{{ url('admin/admin/role-list') }}"
                         class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
@@ -141,7 +148,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/booking/create') }}" class="nav-link">
+                            <a href="{{ url('admin/bookings') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Booking List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/booking/paid-booking') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Paid Booking </p>
                             </a>
@@ -158,14 +171,10 @@
                                 <p>To client Booking </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/booking/booking-list') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Booking List</p>
-                            </a>
-                        </li>
+
                     </ul>
                 </li>
+                @endrole
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

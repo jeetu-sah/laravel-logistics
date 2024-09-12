@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Library\sHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -16,7 +17,6 @@ class AdminController extends Controller
         $data['title'] = 'dashboard';
         $data['roles'] = Auth::user()->roles;
         $data['selectedRole'] = sHelper::activeLoggedInUserRole(Auth::user());
-     
         return view('admin.dashboard.dashboard', $data);
     }
 
@@ -45,4 +45,25 @@ class AdminController extends Controller
         //
     }
 
+
+    public function getStates(Request $request, $countryId)
+    {
+        $districts = DB::table('country_states')
+            ->where('country_id', $countryId)
+            ->get(['id', 'name']);
+
+        // Return the state as a JSON response
+        return response()->json($districts);
+    }
+
+    public function getDistricts(Request $request, $stateId)
+    {
+        // Using the query builder to fetch districts based on the state ID
+        $districts = DB::table('state_cities')
+            ->where('state_id', $stateId)
+            ->get(['id', 'name']);
+
+        // Return the districts as a JSON response
+        return response()->json($districts);
+    }
 }

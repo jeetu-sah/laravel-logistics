@@ -6,37 +6,41 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <!-- <a href="{{ url('admin/reviewers/create') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-                        <i class=" fa-sm text-white-50"></i>Create Reviewers </a> -->
+                    <a href="{{ url('branch-user/employees/create') }}"
+                        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                        <i class=" fa-sm text-white-50"></i>Create Employee </a>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Role List</li>
+                        <li class="breadcrumb-item active">Employees List</li>
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+            <div class="row mb-2">
+                @include('common.notification')
+            </div>
+        </div>
     </section>
 
     <!-- Main content -->
     <section class="content">
-        <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Role List</h3>
+                <h3 class="card-title">Employee List</h3>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="table-responsive ">
-                        <table class="display" id="role-list">
+                        <table class="display" id="employee-list">
                             <thead>
                                 <tr>
-                                    <th>S.no</th>
-                                    <th>Role</th>
-                                    <th>Slug</th>
-                                    <th>Guard</th>
-                                    <th>Creation Date</th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email / Login ID</th>
+                                    <th>Mobile</th>
+                                    <th>User Type</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,7 +51,10 @@
             </div>
             <!-- /.card-body -->
         </div>
+        <!-- /.card -->
+
     </section>
+    <!-- /.content -->
 </div>
 @endsection
 
@@ -55,14 +62,12 @@
 @parent
 <!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
 <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
-
 <script>
     $(document).ready(function(e) {
 
-        new DataTable('#role-list', {
-            responsive: true,
+        new DataTable('#employee-list', {
             ajax: {
-                url: "{{ url('admin/role/list') }}",
+                url: "{{ url('branch-user/employees/list') }}",
                 data: function(d) {
                     //d.myKey = 'myValue';
                     // d.custom = $('#myInput').val();
@@ -76,13 +81,16 @@
                     data: 'name'
                 },
                 {
-                    data: 'slug'
+                    data: 'email'
                 },
                 {
-                    data: 'guard'
+                    data: 'mobile'
                 },
                 {
-                    data: 'created_at',
+                    data: 'user_type'
+                },
+                {
+                    data: 'action',
                     orderable: false
                 }
             ],

@@ -11,16 +11,12 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Edit Reviewer</li>
+                        <li class="breadcrumb-item active">Edit Employees</li>
                     </ol>
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    @if(Session::has('msg'))
-                    {!! Session::get("msg") !!}
-                    @endif
-                </div>
+                @include('common.notification')
             </div>
         </div>
     </section>
@@ -29,10 +25,10 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Edit Reviewer</h3>
+                <h3 class="card-title">Edit Employees</h3>
             </div>
             <div class="card-body">
-                <form action='{{ url("admin/reviewers/update/$reviwer->id") }}' method="post" id="form" name="pForm" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form action='{{ url("branch-user/employees/update/$reviwer->id") }}' method="post" id="form" name="pForm" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf
                     <div class="row">
                         <div class="col-md-6">

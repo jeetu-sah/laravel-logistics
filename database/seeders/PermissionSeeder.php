@@ -18,19 +18,19 @@ class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'add reviwer']);
-        Permission::create(['name' => 'delete reviwer']);
-        Permission::create(['name' => 'publish reviwer']);
-        Permission::create(['name' => 'unpublish reviwer']);
+        Permission::updateOrCreate(['name' => 'add reviwer'], ['name' => 'add reviwer']);
+        Permission::updateOrCreate(['name' => 'delete reviwer'], ['name' => 'delete reviwer']);
+        Permission::updateOrCreate(['name' => 'publish reviwer'], ['name' => 'publish reviwer']);
+        Permission::updateOrCreate(['name' => 'unpublish reviwer'], ['name' => 'unpublish reviwer']);
 
         // create roles and assign existing permissions
-        $role = Role::where(['name' => 'author'])->first();
+        $role = Role::where(['name' => 'admin'])->first();
       
         $role->givePermissionTo('add reviwer');
         $role->givePermissionTo('delete reviwer');
 
         // create demo users
-        $user = \App\Models\User::where('email', 'author@gmail.com')->first();
+        $user = \App\Models\User::where('email', 'admin@gmail.com')->first();
         // echo "<pre>";
         // print_r($user);exit;
 

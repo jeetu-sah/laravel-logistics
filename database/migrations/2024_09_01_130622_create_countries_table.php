@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('branches', function (Blueprint $table) {
-            //
+        Schema::create('countries', function (Blueprint $table) {
+            $table->id();
+            $table->char('code', 5);
+            $table->string('name');
+            $table->mediumInteger('phonecode');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('branches', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('countries');
     }
 };

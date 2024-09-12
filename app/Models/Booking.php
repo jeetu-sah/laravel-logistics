@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Branch;
 
 class Booking extends Model
 {
     use HasFactory;
 
     // Specify the table name
-    protected $table = 'booking';
+    protected $table = 'bookings';
 
     // Specify the primary key (if it's not 'id')
     protected $primaryKey = 'paid_booking_id';
@@ -23,7 +24,7 @@ class Booking extends Model
 
     // Allow mass assignment for these fields
     protected $fillable = [
-        'consignor_branch_name',
+        'consignor_branch_id',
         'consignor_name',
         'address',
         'phone_number_1',
@@ -31,7 +32,7 @@ class Booking extends Model
         'email',
         'gst_number',
         'pin_code',
-        'consignee_branch_name',
+        'consignee_branch_id',
         'consignee_name',
         'consignee_address',
         'consignee_phone_number_1',
@@ -39,11 +40,8 @@ class Booking extends Model
         'consignee_email',
         'consignee_gst_number',
         'consignee_pin_code',
-        'dest_pin_code',
-        'services_line',
         'no_of_pkg',
         'actual_weight',
-        'gateway',
         'packing_type',
         'freight_amount',
         'os_amount',
@@ -78,11 +76,11 @@ class Booking extends Model
     // Define the relationships if there are any
     public function consignorBranch()
     {
-        return $this->belongsTo(Branch::class, 'consignor_branch_name');
+        return $this->belongsTo(Branch::class, 'consignor_branch_id');
     }
 
     public function consigneeBranch()
     {
-        return $this->belongsTo(Branch::class, 'consignee_branch_name');
+        return $this->belongsTo(Branch::class, 'consignee_branch_id');
     }
 }

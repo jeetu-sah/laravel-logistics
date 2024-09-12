@@ -23,9 +23,18 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/') }}"><b>Journal </b></a>
+            <a href="{{ url('/') }}"><b>Logistics </b></a>
         </div>
         <!-- /.login-logo -->
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
@@ -33,7 +42,7 @@
                 <form action="{{ url('login') }}" method="POST">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email" name="email" value="author@gmail.com" />
+                        <input type="email" class="form-control" placeholder="Email" name="email" value="admin@gmail.com" />
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -41,27 +50,10 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" name="password" value="@Admin@123#" />
+                        <input type="password" class="form-control" placeholder="Password" name="password" value="Admin@123#" />
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-
-                        <select class="form-control" name="role">
-                            @foreach($roles as $role) 
-                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                            @endforeach
-                            <!-- <option value="reviewer">Reviewer</option>
-                            <option value="editor">Editor</option>
-                            <option value="publisher">Publisher</option> -->
-                        </select>
-
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
                             </div>
                         </div>
                     </div>

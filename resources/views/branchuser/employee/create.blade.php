@@ -6,21 +6,17 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <a href="{{ url('admin/reviewers') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class=" fa-sm text-white-50"></i> Reviewers List</a>
+                    <a href="{{ url('branch-user/employees') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class=" fa-sm text-white-50"></i> Employees List</a>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Create Reviewer</li>
+                        <li class="breadcrumb-item active">Create Employee</li>
                     </ol>
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    @if(Session::has('msg'))
-                    {!! Session::get("msg") !!}
-                    @endif
-                </div>
+                @include('common.notification')
             </div>
         </div>
     </section>
@@ -30,10 +26,10 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Create Reviewer</h3>
+                <h3 class="card-title">Create Employee</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.add_reviewers') }}" method="post" id="form" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form action="{{ route('branch-user.add_employee') }}" method="post" id="form" enctype="multipart/form-data" class="needs-validation" novalidate>
                     @csrf
                     <div class="row">
                         <div class="col-md-6">

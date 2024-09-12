@@ -4,13 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogOutController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\admin\ReviewerController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,32 +34,53 @@ Route::group(['middleware' => ['guest']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('admin', [AdminController::class, 'index']);
-    Route::get('admin/adminlayout', [AdminController::class, 'adminlayout']);
+    Route::prefix('admin')->group(function () {
 
-    Route::get('admin/reviewers', [ReviewerController::class, 'show']);
-    Route::get('admin/reviewers/list', [ReviewerController::class, 'list']);
-    Route::get('admin/reviewers/create', [ReviewerController::class, 'index']);
-    Route::get('admin/reviewers/edit/{id}', [ReviewerController::class, 'edit']);
-    Route::post('admin/reviewers/update/{id}', [ReviewerController::class, 'update']);
-    Route::post('admin/reviewers/store', [ReviewerController::class, 'store'])->name('admin.add_reviewers');
-    Route::post('admin/settings/change', [SettingsController::class, 'changeSettings'])->name('admin.settings.change');
-    // Branch 
-    Route::get('admin/branch/create', [BranchController::class, 'index']);
-    Route::get('admin/branch/branch-list', [BranchController::class, 'show']);
+        Route::get('/', [AdminController::class, 'index']);
+        Route::get('/adminlayout', [AdminController::class, 'adminlayout']);
+        Route::get('/get-states/{countryId}', [AdminController::class, 'getStates']);
+        Route::get('/get-districts/{stateId}', [AdminController::class, 'getDistricts']);
 
-    Route::get('admin/branch/get-districts/{stateId}', [BranchController::class, 'getDistricts']);
-    Route::post('/admin/create-new-branch', [BranchController::class, 'store'])->name('admin.create-new-branch');
-    // booking 
-    Route::get('admin/booking/create', [BookingController::class, 'index']);
-    Route::get('admin/booking/to-pay-booking', [BookingController::class, 'to_pay_booking']);
-    Route::get('admin/booking/to-client-booking', [BookingController::class, 'to_client_booking']);
-    Route::get('admin/booking/branch-list', [BookingController::class, 'show']);
-    Route::post('admin/booking/paid-booking', [BookingController::class, 'paid_booking']);
+        Route::post('/settings/change', [SettingsController::class, 'changeSettings'])->name('admin.settings.change');
+        // Branch
+        Route::get('/branches', [BranchController::class, 'index']);
+        Route::get('/branches/list', [BranchController::class, 'list']);
+        Route::get('/branches/create', [BranchController::class, 'create']);
+        Route::get('/branches/edit/{branchId}', [BranchController::class, 'edit']);
+        Route::post('/branches/update/{id}', [BranchController::class, 'update'])->name('admin.update');
+        Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
+
+        // paid booking
+        Route::get('/bookings', [BookingController::class, 'index']);
+        Route::get('/bookings/list', [BookingController::class, 'list']);
+        //  Route::get('/booking/create', [BookingController::class, 'index']);
+        Route::get('/booking/paid-booking', [BookingController::class, 'bookings']);
+        // // Route::post('/booking/paid-booking', [BookingController::class, 'paid_booking']);
+        // // to paid booking
+        Route::get('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking']);
+        // Route::post('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
+        // // to client booking
+        // Route::post('/booking/to-client-booking', [BookingController::class, 'to_client_booking_save']);
+        Route::get('/booking/to-client-booking', [BookingController::class, 'to_client_booking']);
 
 
-    Route::get('admin/article/create', [ArticleController::class, 'index']);
 
+
+
+        Route::get('admin/article/create', [ArticleController::class, 'index']);
+    });
+
+    Route::prefix('branch-user/')->group(function () {
+
+        Route::get('dashboard', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
+
+        Route::get('employees', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
+        Route::get('employees/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);
+        Route::get('employees/create', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'index']);
+        Route::get('employees/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
+        Route::post('employees/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
+        Route::post('employees/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
+    });
 
     //Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);
     //Route::get('admin/reviewers-list', [ReviewerController::class, 'show']);

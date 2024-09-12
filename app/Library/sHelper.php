@@ -199,6 +199,7 @@ class sHelper
 
 	public static function activeLoggedInUserRole(User $user)
 	{
+		
 		return DB::table('model_has_roles')
 			->where([
 				['model_type', '=', 'App\Models\User'],
@@ -207,7 +208,7 @@ class sHelper
 			])->first();
 	}
 
-	public static function fetchNewUserId()
+	public static function fetchEmployeeNewUserId()
 	{
 		$userMaxID =  User::max('userId');
 		if ($userMaxID == NULL) {

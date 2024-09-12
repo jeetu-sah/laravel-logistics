@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('states', function (Blueprint $table) {
-            $table->id('state_id');
-            $table->string('state_name', 30);
-            $table->string('code', 10);
-            $table->text('hindi_name');
-            $table->enum('status', [1, 2])->default(1)->comment('1 For Active , 2 For Inactive');
+        Schema::create('state_cities', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100);
+            $table->string('code', 10)->nullable();
+            $table->text('hindi_name')->nullable();
+            $table->integer('state_id');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('state');
+        Schema::dropIfExists('cities');
     }
 };
