@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Branch;
 
-class Bookings extends Model
+class Booking extends Model
 {
     use HasFactory;
 
@@ -39,11 +40,8 @@ class Bookings extends Model
         'consignee_email',
         'consignee_gst_number',
         'consignee_pin_code',
-        'dest_pin_code',
-        'services_line',
         'no_of_pkg',
         'actual_weight',
-        'gateway',
         'packing_type',
         'freight_amount',
         'os_amount',
@@ -78,11 +76,11 @@ class Bookings extends Model
     // Define the relationships if there are any
     public function consignorBranch()
     {
-        return $this->belongsTo(Branches::class, 'consignor_branch_id');
+        return $this->belongsTo(Branch::class, 'consignor_branch_id');
     }
 
     public function consigneeBranch()
     {
-        return $this->belongsTo(Branches::class, 'consignee_branch_id');
+        return $this->belongsTo(Branch::class, 'consignee_branch_id');
     }
 }

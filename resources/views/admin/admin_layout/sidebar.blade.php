@@ -148,7 +148,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/booking/create') }}" class="nav-link">
+                            <a href="{{ url('admin/bookings') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Booking List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/booking/paid-booking') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Paid Booking </p>
                             </a>
@@ -165,12 +171,7 @@
                                 <p>To client Booking </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/booking/booking-list') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Booking List</p>
-                            </a>
-                        </li>
+
                     </ul>
                 </li>
                 @endrole

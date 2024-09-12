@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/get-districts/{stateId}', [AdminController::class, 'getDistricts']);
 
         Route::post('/settings/change', [SettingsController::class, 'changeSettings'])->name('admin.settings.change');
-        // Branch 
+        // Branch
         Route::get('/branches', [BranchController::class, 'index']);
         Route::get('/branches/list', [BranchController::class, 'list']);
         Route::get('/branches/create', [BranchController::class, 'create']);
@@ -50,16 +50,20 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/branches/update/{id}', [BranchController::class, 'update'])->name('admin.update');
         Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
 
-        // paid booking 
-        Route::get('/booking/create', [BookingController::class, 'index']);
-        Route::post('/booking/paid-booking', [BookingController::class, 'paid_booking']);
-        // to paid booking 
+        // paid booking
+        Route::get('/bookings', [BookingController::class, 'index']);
+        Route::get('/bookings/list', [BookingController::class, 'list']);
+        //  Route::get('/booking/create', [BookingController::class, 'index']);
+        Route::get('/booking/paid-booking', [BookingController::class, 'bookings']);
+        // // Route::post('/booking/paid-booking', [BookingController::class, 'paid_booking']);
+        // // to paid booking
         Route::get('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking']);
-        Route::post('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
-        // to client booking 
-        Route::post('/booking/to-client-booking', [BookingController::class, 'to_client_booking_save']);
+        // Route::post('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
+        // // to client booking
+        // Route::post('/booking/to-client-booking', [BookingController::class, 'to_client_booking_save']);
         Route::get('/booking/to-client-booking', [BookingController::class, 'to_client_booking']);
-        Route::get('/booking/booking-list', [BookingController::class, 'LIST'])->name('booking.create');
+
+
 
 
 
