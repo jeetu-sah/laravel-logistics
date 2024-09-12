@@ -8,6 +8,7 @@ use App\Models\ItemType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
 
 class ArticleController extends Controller
 {
