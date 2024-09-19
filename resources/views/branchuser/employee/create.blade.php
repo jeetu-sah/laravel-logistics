@@ -75,28 +75,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="degree" class="form-label">Degree</label>
-                                <input type="text" class="form-control" name="degree" id="degree" placeholder="Degree" value="{{ old('degree') }}" required>
-                                @error('degree')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <div class="invalid-feedback">Enter Degree</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="institution" class="form-label">Institution</label>
-                                <input type="text" name="institution" class="form-control" id="institution" value="{{ old('institution') }}" placeholder="Institution" required>
-                                @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <div class="invalid-feedback">Enter Email</div>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -119,23 +98,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="position" class="form-label">Reason</label>
-                                <textarea type="text" class="form-control" name="reason" id="reason" placeholder="Reason">{{ old('reason') }}</textarea>
-                                @error('reason')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <div class="invalid-feedback">Enter Position</div>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="text" name="password" class="form-control" id="password" value="{{ old('password') }}" placeholder="Password" required>
+                                <input type="text" name="password"
+                                    class="form-control"
+                                    id="password"
+                                    value="123456789"
+                                    placeholder="Password" required>
                                 @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -158,7 +130,17 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="position" class="form-label">Comment</label>
+                                <textarea type="text" class="form-control" name="comment" id="comment" placeholder="Comment">{{ old('comment') }}</textarea>
+                                @error('comment')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                     <button class="btn btn-primary mt-3" type="submit">Submit</button>
                 </form>
             </div>

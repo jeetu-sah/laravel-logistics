@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use PHPUnit\Event\TestRunner\ExecutionAborted;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
-use App\Library\sHelper;
 
 
 class ReviewerController extends Controller
@@ -23,18 +21,14 @@ class ReviewerController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate(
             [
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
                 'mobile' => 'required|digits:10|unique:users',
                 'email' => 'required|string|email|max:255|unique:users',
-                'degree' => 'required|string',
-                'institution' => 'required|string',
                 'position' => 'required|string',
                 'department' => 'required|string',
-                'reason' => 'required|string',
                 'password' => 'required',
                 'user_status' => 'required|string',
             ],
@@ -61,9 +55,6 @@ class ReviewerController extends Controller
         );
 
         try {
-            $userId = sHelper::fetchEmployeeNewUserId();
-
-
             $user = new User([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -73,12 +64,12 @@ class ReviewerController extends Controller
                 'institution' => $request->institution,
                 'position' => $request->position,
                 'department' => $request->department,
-                'reason' => $request->reason,
+                'reason' => $request->comment,
                 'user_type' => User::EMPLOYEE,
                 'password' => Hash::make($request->password),
                 'user_status' => $request->user_status,
                 'term_and_condition' => 1,
-                'userId' => $userId,
+                'branch_user_id' => Auth::user()->id
             ]);
 
             if ($user->save()) {
@@ -90,7 +81,7 @@ class ReviewerController extends Controller
 
                 return redirect('/branch-user/employees')->with([
                     "alertMessage" => true,
-                    "alert" => ['message' => 'Reviewer addedd Successfully', 'type' => 'success']
+                    "alert" => ['message' => 'Record addedd Successfully', 'type' => 'success']
                 ]);
             }
         } catch (\Exception $e) {
@@ -131,32 +122,30 @@ class ReviewerController extends Controller
             $user->email = $request->email ?? '';
             $user->mobile = $request->mobile ?? '';
             $user->user_status = $request->user_status ?? '';
-            $user->degree = $request->degree ?? '';
-            $user->institution = $request->institution ?? '';
             $user->position = $request->position ?? '';
             $user->department = $request->department ?? '';
-            $user->reason = $request->reason ?? '';
+            $user->reason = $request->comment ?? '';
 
             $user->save();
 
-            $roleIdArr = $request->roles;
+            //$roleIdArr = $request->roles;
 
             //unassigned, assigned roles
-            $assignedRoles = $user->roles;
-            if ($assignedRoles->count() > 0) {
-                foreach ($assignedRoles as $assignedRole) {
-                    $user->removeRole($assignedRole);
-                }
-            }
+            // $assignedRoles = $user->roles;
+            // if ($assignedRoles->count() > 0) {
+            //     foreach ($assignedRoles as $assignedRole) {
+            //         $user->removeRole($assignedRole);
+            //     }
+            // }
 
             //unassigned, assigned roles
-            if ($user != NULL) {
-                if (count($roleIdArr) > 0) {
-                    //assigned, assigned roles
-                    $roles = Role::whereIn('id', $roleIdArr)->get();
-                    $user->assignRole($roles);
-                }
-            }
+            // if ($user != NULL) {
+            //     if (count($roleIdArr) > 0) {
+            //         //assigned, assigned roles
+            //         $roles = Role::whereIn('id', $roleIdArr)->get();
+            //         $user->assignRole($roles);
+            //     }
+            // }
 
             return redirect()->back()->with([
                 "alertMessage" => true,
@@ -177,7 +166,10 @@ class ReviewerController extends Controller
         $totalRecord = User::count();
 
         $usersQuery = User::query();
-        $usersQuery = $usersQuery->where('user_type', User::EMPLOYEE);
+        $usersQuery = $usersQuery->where([
+            ['user_type', '=', User::EMPLOYEE],
+            ['branch_user_id', '=', Auth::user()->id]
+        ]);
         $users = $usersQuery->skip($start)->take($limit)->get();
 
         $row = [];
@@ -202,6 +194,7 @@ class ReviewerController extends Controller
                 $row['email'] = $user->email;
                 $row['mobile'] = $user->mobile;
                 $row['user_type'] = $user->user_type;
+                $row['user_status'] = $user->user_status;
 
                 $row['action'] = $edit_btn . " " . $change_credential;
 

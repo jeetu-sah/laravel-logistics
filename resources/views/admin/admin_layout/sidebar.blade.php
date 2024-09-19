@@ -174,6 +174,15 @@
 
                     </ul>
                 </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ url('branch-user/settings') }}"
+                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Settings
+                        </p>
+                    </a>
+                </li>
                 @endrole
             </ul>
         </nav>

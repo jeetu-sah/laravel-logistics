@@ -80,6 +80,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('employees/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
         Route::post('employees/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
         Route::post('employees/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
+       
+        Route::get('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
+        Route::post('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
     });
 
     //Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);
