@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <a href="{{ url('admin/reviewers') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class=" fa-sm text-white-50"></i> Reviewers List</a>
+                    <a href="{{ url('branch-user/employees') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class=" fa-sm text-white-50"></i> Reviewers List</a>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -78,34 +78,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="degree" class="form-label">Degree</label>
-                                <input type="text" class="form-control" name="degree" id="degree" value="{{$reviwer->degree ?? ''}}" placeholder="Degree" required>
-                                @error('degree')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <div class="invalid-feedback">Enter Degree</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="institution" class="form-label">Institution</label>
-                                <input type="text" name="institution" class="form-control" id="institution" value="{{$reviwer->institution ?? ''}}" placeholder="Institution" required>
-                                @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <div class="invalid-feedback">Enter Email</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label for="position" class="form-label">Position</label>
                                 <input type="text" class="form-control" name="position" id="position" placeholder="Position" value="{{$reviwer->position ?? ''}}" required>
                                 @error('position')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
-                                <div class="invalid-feedback">Enter Position</div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -115,7 +92,6 @@
                                 @error('department')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
-                                <div class="invalid-feedback">Enter Email</div>
                             </div>
                         </div>
                     </div>
@@ -131,7 +107,6 @@
                                 @error('user_status')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
-                                <div class="invalid-feedback">Select Status</div>
                             </div>
                         </div>
                    
@@ -140,16 +115,15 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="position" class="form-label">Reason</label>
-                                <textarea type="text" class="form-control" name="reason" id="reason" placeholder="Reason">{{$reviwer->reason ?? ''}}</textarea>
-                                @error('reason')
+                                <label for="comment" class="form-label">Comment</label>
+                                <textarea type="text" class="form-control" name="comment" id="comment" placeholder="Comment">{{$reviwer->reason ?? ''}}</textarea>
+                                @error('comment')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
-                                <div class="invalid-feedback">Enter Position</div>
                             </div>
                         </div>
                     </div>
-
+<!-- 
                     <div class="form-row">
                         <div class="ml-3">
                             @foreach($roles as $role)
@@ -161,7 +135,7 @@
                             </div>
                             @endforeach
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <button class="btn btn-primary mt-3" type="submit">Submit</button>
                     </div>

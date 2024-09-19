@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('user_status')->default('active')->comment('active, inactive');
             $table->tinyInteger('term_and_condition')->default(1)->comment('1: agreed, 2: disagreed');
             $table->tinyInteger('is_signed')->default(1)->comment('1: signedIn, 2: LogOut');
-
+            $table->integer('branch_user_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -39,7 +39,7 @@
                                     <th>Name</th>
                                     <th>Email / Login ID</th>
                                     <th>Mobile</th>
-                                    <th>User Type</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -87,7 +87,15 @@
                     data: 'mobile'
                 },
                 {
-                    data: 'user_type'
+                    data: 'user_status',
+                    render: function(user_status, type, row, meta) {
+                        if (user_status == 'active') {
+                            user_status = '<td><span class="status-active status">' + user_status + '</span></td>'
+                        } else if (user_status == 'inactive') {
+                            user_status = '<td><span class="status-inactive status">' + user_status + '</span></td>'
+                        }
+                        return user_status;
+                    }
                 },
                 {
                     data: 'action',
@@ -104,4 +112,5 @@
 @section('styles')
 @parent
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+
 @endsection
