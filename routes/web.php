@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\HomeController;
 
 
 /*
@@ -28,7 +29,8 @@ use App\Http\Controllers\Admin\BookingController;
 
 
 Route::group(['middleware' => ['guest']], function () {
-    Route::get('/', [LoginController::class, 'index'])->name('/');
+    Route::get('/', [HomeController::class, 'index'])->name('/');
+    Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
 });
 
