@@ -7,13 +7,13 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <a href="{{ url('admin/branches/create') }}"
-                            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-                            <i class=" fa-sm text-white-50"></i>Create Branch </a>
+                            class="d-none d-sm-inline-block shadow-sm">
+                            <i class=" fa-sm text-white-50"></i> </a>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Branch List</li>
+                            <li class="breadcrumb-item active">Booking List</li>
                         </ol>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Branch List</h3>
+                    <h3 class="card-title">Booking List</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -34,13 +34,14 @@
                                 <thead>
                                     <tr>
                                         <th>SN.</th>
+                                        <th>Bilti Number</th>
                                         <th>From</th>
                                         <th>Consignor Name</th>
                                         <th>Consignee Name</th>
                                         <th>Destinaton</th>
                                         <th>Consignee Address</th>
                                         <th>Consignee Phone</th>
-                                        <th>Booking Type</th>
+                                        <th>Payment Mode</th>
                                         <th>Creation Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -81,6 +82,9 @@
                 },
                 columns: [{
                         data: 'sn'
+                    },
+                    {
+                        data: 'bilti_number'
                     },
                     {
                         data: 'consignor_branch_id'

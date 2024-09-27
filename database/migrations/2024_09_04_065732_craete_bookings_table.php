@@ -4,17 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
 
-    public function up(): void
+     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('paid_booking_id');
-            $table->bigInteger('consignor_branch_id')->nullable();
+            $table->id(); // Auto-incrementing ID
+
+            // Consignor Information
+            $table->string('bilti_number')->nullable();
+            $table->foreignId('consignor_branch_id')
+                ->nullable()
+                ->constrained('consignor_branches') // Specify the referenced table
+                ->onDelete('set null'); // Action on delete
+
             $table->string('consignor_name')->nullable();
             $table->text('address')->nullable();
             $table->string('phone_number_1')->nullable();
@@ -22,7 +28,13 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('gst_number')->nullable();
             $table->string('pin_code')->nullable();
-            $table->bigInteger('consignee_branch_id')->nullable();
+
+            // Consignee Information
+            $table->foreignId('consignee_branch_id')
+                ->nullable()
+                ->constrained('consignee_branches') // Specify the referenced table
+                ->onDelete('set null'); // Action on delete
+
             $table->string('consignee_name')->nullable();
             $table->text('consignee_address')->nullable();
             $table->string('consignee_phone_number_1')->nullable();
@@ -30,23 +42,34 @@ return new class extends Migration
             $table->string('consignee_email')->nullable();
             $table->string('consignee_gst_number')->nullable();
             $table->string('consignee_pin_code')->nullable();
-            $table->string('dest_pin_code')->nullable();
-            $table->string('services_line')->nullable();
+
+            // Other Details
             $table->integer('no_of_pkg')->nullable();
-            $table->string('actual_weight')->nullable(); // Updated to string
-            $table->string('gateway')->nullable();
+            $table->integer('no_of_artical')->nullable(); // Consider using integer if this represents a count
+            $table->decimal('actual_weight', 10, 2)->nullable();
             $table->string('packing_type')->nullable();
-            $table->decimal('freight_amount', 8, 2)->nullable();
-            $table->decimal('os_amount', 8, 2)->nullable();
-            $table->decimal('fov_amount', 8, 2)->nullable();
-            $table->decimal('transhipment_amount', 8, 2)->nullable();
-            $table->decimal('handling_charge_amount', 8, 2)->nullable();
-            $table->decimal('loading_charge_amount', 8, 2)->nullable();
-            $table->decimal('misc_charge_amount', 8, 2)->nullable();
-            $table->decimal('other_charge_amount', 8, 2)->nullable();
+
+            // Transhipment Details (if these are meant to be foreign IDs, use foreignId)
+            $table->foreignId('transhipmen_one')->nullable()->constrained('transhipments')->onDelete('set null');
+            $table->foreignId('transhipmen_two')->nullable()->constrained('transhipments')->onDelete('set null');
+            $table->foreignId('transhipment_three')->nullable()->constrained('transhipments')->onDelete('set null');
+
+            // Billing Information
+            $table->decimal('good_of_value', 10, 2)->nullable();
+            $table->decimal('fov_amount', 10, 2)->nullable();
+            $table->decimal('freight_amount', 10, 2)->nullable();
+            $table->decimal('os_amount', 10, 2)->nullable();
+            $table->decimal('transhipmen_one_amount', 10, 2)->nullable();
+            $table->decimal('transhipmen_two_amount', 10, 2)->nullable();
+            $table->decimal('transhipment_three_amount', 10, 2)->nullable();
+            $table->decimal('loading_charge_amount', 10, 2)->nullable();
+            $table->decimal('misc_charge_amount', 10, 2)->nullable();
+            $table->decimal('other_charge_amount', 10, 2)->nullable();
             $table->decimal('grand_total_amount', 10, 2)->nullable();
-            $table->tinyInteger('booking_type')->default(1);
-            $table->tinyInteger('status')->default(1);
+
+            // Additional Fields
+            $table->tinyInteger('booking_type')->default(1); // 1: Paid, 2: Unpaid, etc.
+            $table->tinyInteger('status')->default(1); // 1: Active, 0: Inactive
             $table->timestamps();
         });
     }
