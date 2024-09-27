@@ -15,7 +15,36 @@
     <link rel="stylesheet" href="{{ asset('admin_webu/dist/css/adminlte.min.css') }}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        .status {
+            margin: 0 auto;
+            padding: 5px;
+            font-size: 14px;
+            border-radius: 3px;
+            text-transform: capitalize;
+            width: 90px;
+            display: block;
+            text-align: center;
+            color: #fff;
+        }
+
+        .status-active {
+            background-color: #3c7534;
+            border-color: transparent;
+        }
+
+        /* .inactive {
+        background-color: #23d160;
+        border-color: transparent;
+    } */
+
+        .status-inactive {
+            background-color: #dc3545;
+            border-color: transparent;
+        }
+    </style>
     @section('styles')
+
     @show
 </head>
 
@@ -30,10 +59,10 @@
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="{{ url('/') }}" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
-                </li>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">Contact</a>
+            </li>
             </ul> --}}
 
             <!-- SEARCH FORM -->
@@ -79,11 +108,11 @@
                                 <!-- <i class="far fa-user"></i>  -->
                                 <span>Role</span>
                                 <div class="media-body">
-                                <h3 class="dropdown-item-title">
+                                    <h3 class="dropdown-item-title">
                                         <span class="float-right">{{ ucfirst(auth::user()->active_role) ?? '--'}}</span>
-                                    </h3> 
+                                    </h3>
                                 </div>
-                                
+
                             </div>
                             <!-- Message End -->
                         </a>
@@ -99,7 +128,7 @@
                                         <span class="float-right">English</span>
                                     </h3>
                                 </div>
-                                
+
                             </div>
                             <!-- Message End -->
                         </a>
@@ -113,7 +142,7 @@
                                         <span class="float-right">English</span>
                                     </h3> -->
                                 </div>
-                                
+
                             </div>
                             <!-- logout End -->
                         </a>

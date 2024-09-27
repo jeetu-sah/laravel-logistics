@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('position')->nullable()->after('institution');
             $table->string('department')->nullable()->after('position');
             $table->text('reason')->nullable()->after('department');
-            $table->text('userId')->nullable()->after('reason');
+            $table->string('userId')->nullable()->after('reason');
         });
     }
 

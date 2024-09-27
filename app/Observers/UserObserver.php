@@ -3,6 +3,9 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Models\BranchSetting;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserObserver
 {
@@ -11,7 +14,14 @@ class UserObserver
      */
     public function created(User $user): void
     {
-       
+        $employeeIDPrefix = 'EMP';
+        $settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
+        if ($settings != NULL) {
+            $employeeIDPrefix = $settings?->prefix_employee_id;
+        }
+        $userId = $employeeIDPrefix . '' . $user->id;
+      
+
         if ($user->user_type == 'admin') {
             $user->assignRole('admin');
         }
@@ -19,6 +29,10 @@ class UserObserver
         if ($user->user_type == 'branch-user') {
             $user->assignRole('branchuser');
         }
+
+        //manage user ID
+        $user->userId = $userId;
+        $user->save();
     }
 
     /**

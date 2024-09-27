@@ -3,10 +3,9 @@
 namespace App\Library;
 
 use App\Models\User;
-use Auth;
-use Illuminate\Support\Facades\Route;
-use App\PlotPaymentHistory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\BranchSetting;
 
 class sHelper
 {
@@ -210,6 +209,8 @@ class sHelper
 
 	public static function fetchEmployeeNewUserId()
 	{
+		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
+		
 		$userMaxID =  User::max('userId');
 		if ($userMaxID == NULL) {
 			return (1000 + 1);
