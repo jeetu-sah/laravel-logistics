@@ -648,6 +648,12 @@
                                     <a href="#" class="nav-link p-0 whitecolor whitecoloritem">Contact</a>
                                 </div>
                             </li>
+                            <li class="nav-item mb-2 ">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <i class="fa-solid fa-circle-arrow-right"></i>
+                                    <a target="_blank" href="{{ url('/login') }}" class="nav-link p-0 whitecolor whitecoloritem">Login</a>
+                                </div>
+                            </li>
 
                         </ul>
                     </div>

@@ -7,23 +7,13 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">
-                        @role('Author')
-                        Author
-                        @endrole
-
-                        @unlessrole(['Author'])
-                        @role('Reviewer')
-                        Reviewer
-                        @endrole
-                        @endrole
-
-                        Dashboard
+                        Branch Dashboard
                     </h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
+                        <li class="breadcrumb-item active">Branch Dashboard</li>
                     </ol>
                 </div>
             </div>
@@ -46,7 +36,7 @@
                             <span class="info-box-icon bg-info elevation-1"><i class="fas fa-list"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">New Submissions</span>
+                                <span class="info-box-text">Total Employee</span>
                                 <span class="info-box-number">
                                     10
                                     <small>%</small>
@@ -63,7 +53,7 @@
                             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">Revisions</span>
+                                <span class="info-box-text">Total Booking</span>
                                 <span class="info-box-number">41,410</span>
                             </div>
                             <!-- /.info-box-content -->
