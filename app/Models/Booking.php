@@ -14,7 +14,7 @@ class Booking extends Model
     protected $table = 'bookings';
 
     // Specify the primary key (if it's not 'id')
-    protected $primaryKey = 'paid_booking_id';
+    protected $primaryKey = 'id';
 
     // Indicate that the primary key is not an auto-incrementing integer
     public $incrementing = true;
@@ -83,4 +83,7 @@ class Booking extends Model
     {
         return $this->belongsTo(Branch::class, 'consignee_branch_id');
     }
+
+
+    
 }

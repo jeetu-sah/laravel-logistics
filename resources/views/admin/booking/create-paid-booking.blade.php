@@ -24,8 +24,8 @@
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                    @foreach ($error->all() as $errors)
+                        <li>{{ $errors }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -163,7 +163,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="misc_charge">Consignee Mobile</label>
-                                                <input required type="text" class="form-control" name="consignee_phone_number_1"
+                                                <input required type="text" class="form-control"
+                                                    name="consignee_phone_number_1"
                                                     onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
                                                     minlength="10" maxlength="10" placeholder="Phone Number 1">
                                             </div>
@@ -171,7 +172,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="misc_charge">Consignee Mobile 2</label>
-                                                <input type="text" class="form-control" name="consignee_phone_number_2"
+                                                <input type="text" class="form-control"
+                                                    name="consignee_phone_number_2"
                                                     onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
                                                     minlength="10" maxlength="10" placeholder="Phone Number 2">
                                             </div>
@@ -179,23 +181,23 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="misc_charge">Consignee Email</label>
-                                                <input required type="email" class="form-control" name="consignee_email"
-                                                    placeholder="Email">
+                                                <input required type="email" class="form-control"
+                                                    name="consignee_email" placeholder="Email">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="misc_charge">Consignee GST No.</label>
-                                                <input required type="text" class="form-control" name="consignee_gst_number"
-                                                    placeholder="GST Number">
+                                                <input required type="text" class="form-control"
+                                                    name="consignee_gst_number" placeholder="GST Number">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
 
-                                                <label for="misc_charge">Designation Pin Code</label>
-                                                <input required type="text" class="form-control" name="consignee_pin_code"
-                                                    placeholder="Pin code">
+                                                <label for="misc_charge"> Pin Code</label>
+                                                <input required type="text" class="form-control"
+                                                    name="consignee_pin_code" placeholder="Pin code">
                                             </div>
                                         </div>
                                     </div>
@@ -217,15 +219,17 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="misc_charge">Quantity</label>
-                                                <input required type="text" class="form-control" name="no_of_pkg"
-                                                    placeholder="No Of Pkg">
+                                                <label for="misc_charge">No of Artical</label>
+                                                <input required type="text" onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
+                                                class="form-control" name="no_of_artical"
+                                                    placeholder="No Of artical">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="misc_charge">Actual weight</label>
-                                                <input required type="text" class="form-control" name="actual_weight"
+                                                <input required type="text" onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
+                                                 class="form-control" name="actual_weight"
                                                     placeholder="Actual weight">
                                             </div>
                                         </div>
@@ -242,7 +246,7 @@
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 1</label>
                                                 <select class="form-select select2 form-control js-select2"
-                                                    name="transhipmen_one" id="transhipmen_one" >
+                                                    name="transhipmen_one" id="transhipmen_one">
                                                     <option value="">Select Branch Name</option>
                                                     @foreach ($branch as $branchList)
                                                         <option value="{{ $branchList->id }}">
@@ -256,7 +260,7 @@
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 2</label>
                                                 <select class="form-select select2 form-control js-select2"
-                                                    name="transhipmen_two" id="transhipmen_two" >
+                                                    name="transhipmen_two" id="transhipmen_two">
                                                     <option value="">Select Branch Name</option>
                                                     @foreach ($branch as $branchList)
                                                         <option value="{{ $branchList->id }}">
@@ -270,7 +274,7 @@
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 3</label>
                                                 <select class="form-select select2 form-control js-select2"
-                                                    name="transhipment_three" id="transhipment_three" >
+                                                    name="transhipment_three" id="transhipment_three">
                                                     <option value="">Select Branch Name</option>
                                                     @foreach ($branch as $branchList)
                                                         <option value="{{ $branchList->id }}">
@@ -298,13 +302,35 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="freight">Freight</label>
+                                                <label for="good_of_value">Good Of Value</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <input required type="number" class="form-control bill-input"
-                                                    name="freight_amount" placeholder="₹.00">
+                                                    name="good_of_value" placeholder="₹.00">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="fov">FOV</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control bill-input"
+                                                    name="fov_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="freight">Freight</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input  type="number" class="form-control bill-input"
+                                                    name="freight_amount" value="700" placeholder="₹.00">
                                             </div>
                                         </div>
 
@@ -315,46 +341,47 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input" name="os_amount"
-                                                    placeholder="₹.00">
+                                                <input  type="number" class="form-control bill-input"
+                                                    name="os_amount" placeholder="₹.00">
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="fov">FOV</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input required type="number" class="form-control bill-input" name="fov_amount"
-                                                    placeholder="₹.00">
-                                            </div>
-                                        </div>
+
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="transhipment">Transhipment</label>
+                                                <label for="transhipment_one_amount">Transhipment 1</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
-                                                    name="transhipment_amount" placeholder="₹.00">
+                                                <input type="number" class="form-control bill-input"
+                                                    name="transhipment_one_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="transhipment_two_amount">Transhipment 2</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control bill-input"
+                                                    name="transhipment_two_amount" placeholder="₹.00">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="transhipment_three_amount">Transhipment 3</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input  type="number" class="form-control bill-input"
+                                                    name="transhipment_three_amount" placeholder="₹.00">
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="handling_charge">Handling Charge</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
-                                                    name="handling_charge_amount" placeholder="₹.00">
-                                            </div>
-                                        </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -363,7 +390,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
+                                                <input type="number" class="form-control bill-input"
                                                     name="loading_charge_amount" placeholder="₹.00">
                                             </div>
                                         </div>
@@ -375,7 +402,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
+                                                <input type="number" class="form-control bill-input"
                                                     name="misc_charge_amount" placeholder="₹.00">
                                             </div>
                                         </div>
@@ -387,7 +414,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
+                                                <input type="number" class="form-control bill-input"
                                                     name="other_charge_amount" placeholder="₹.00">
                                             </div>
                                         </div>
@@ -399,8 +426,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control" name="grand_total_amount"
-                                                    id="grand_total_amount" placeholder="₹.00" readonly>
+                                                <input type="number" class="form-control"
+                                                    name="grand_total_amount" id="grand_total_amount" placeholder="₹.00"
+                                                    readonly>
                                             </div>
                                         </div>
 
@@ -408,21 +436,59 @@
                                 </div>
                             </div>
                         </div>
-
                         <script>
                             function calculateTotal() {
                                 let total = 0;
+
+                                // Get values from inputs
+                                let noOfArtical = parseFloat(document.querySelector('input[name="no_of_artical"]').value) || 0;
+
+                                // O.S = 50 * No of Artical
+                                let oSValue = 50 * noOfArtical;
+                                // Good Of Value = 2000 * No of Artical
+                                let goodOfValue = 2000 * noOfArtical;
+
+                                // Set the O.S amount to the calculated value
+                                document.querySelector('input[name="os_amount"]').value = `${oSValue.toFixed(2)}`;
+                                // Set the Good Of Value
+                                document.querySelector('input[name="good_of_value"]').value = `${goodOfValue.toFixed(2)}`;
+
+                                // Calculate FOV as 3% of Good Of Value
+                                let fov = goodOfValue * 0.03;
+                                document.querySelector('input[name="fov_amount"]').value = `${fov.toFixed(2)}`;
+
+                                // Add O.S value, Good Of Value, and FOV to the total
+                            
+
+                                // Update total with other bill inputs (if any)
                                 document.querySelectorAll('.bill-input').forEach(input => {
                                     let value = parseFloat(input.value) || 0;
                                     total += value;
                                 });
+
+                                // Set the total to the grand total field
                                 document.getElementById('grand_total_amount').value = `${total.toFixed(2)}`;
                             }
 
+                            // Add event listeners to all inputs to trigger the calculation
                             document.querySelectorAll('.bill-input').forEach(input => {
                                 input.addEventListener('input', calculateTotal);
                             });
+
+                            // Also add event listener to 'No of Artical' input for change
+                            document.querySelector('input[name="no_of_artical"]').addEventListener('input', calculateTotal);
+
+                            // Trigger calculation on page load
+                            window.addEventListener('DOMContentLoaded', (event) => {
+                                calculateTotal();
+                            });
                         </script>
+
+
+
+
+
+
 
                     </div>
 
