@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\HomeController;
 
 
 /*
@@ -28,7 +29,8 @@ use App\Http\Controllers\Admin\BookingController;
 
 
 Route::group(['middleware' => ['guest']], function () {
-    Route::get('/', [LoginController::class, 'index'])->name('/');
+    Route::get('/', [HomeController::class, 'index'])->name('/');
+    Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
 });
 
@@ -50,12 +52,16 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/branches/update/{id}', [BranchController::class, 'update'])->name('admin.update');
         Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
 
+      
+        // Define the route for the bilti view
+        Route::get('admin/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
+        
         // paid booking
         Route::get('/bookings', [BookingController::class, 'index']);
         Route::get('/bookings/list', [BookingController::class, 'list']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
         Route::get('/booking/paid-booking', [BookingController::class, 'bookings']);
-        // // Route::post('/booking/paid-booking', [BookingController::class, 'paid_booking']);
+        Route::post('/booking/paid-booking', [BookingController::class, 'paid_booking']);
         // // to paid booking
         Route::get('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking']);
         // Route::post('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
@@ -80,6 +86,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('employees/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
         Route::post('employees/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
         Route::post('employees/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
+       
+        Route::get('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
+        Route::post('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
     });
 
     //Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);

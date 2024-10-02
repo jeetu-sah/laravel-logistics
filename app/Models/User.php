@@ -6,13 +6,17 @@ namespace App\Models;
 
 use App\Library\sHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Auth;
+use App\Observers\UserObserver;
 
+
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
@@ -42,7 +46,8 @@ class User extends Authenticatable
         'user_status',
         'term_and_condition',
         'is_signed',
-        'userId'
+        'userId',
+        'branch_user_id'
     ];
 
     /**
