@@ -26,7 +26,7 @@
                 data-accordion="false">
                 <li class="nav-item">
                     <a href="{{ url('/') }}"
-                        class="nav-link {{ sHelper::activeSideBar(Request::path(), ['admin']) }}">
+                        class="nav-link {{ sHelper::activeSideBar(Request::path(), ['branch-user/dashboard', 'admin/dashboard']) }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -34,7 +34,7 @@
                     </a>
                 </li>
                 @role('Admin')
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview {{ request()->is('admin/role-list*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('/') }}"
                         class="nav-link {{ sHelper::activeSideBar(Request::path(), ['admin/role-list']) }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
@@ -45,7 +45,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/role-list') }}" class="nav-link">
+                            <a href="{{ url('admin/role-list') }}" class="nav-link {{ request()->is('admin/role-list') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Roles</p>
                             </a>
@@ -56,9 +56,9 @@
                 @endrole
 
                 @role('Branchuser')
-                <li class="nav-item has-treeview">
-                    <a href="{{ url('branch-user/branch-user/employees') }}"
-                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ request()->is('branch-user/employees*') ? 'menu-open' : '' }} ">
+                    <a href="{{ url('branch-user/employees') }}"
+                        class="nav-link {{ request()->is('branch-user/employees*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Manage Employees
@@ -67,13 +67,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('branch-user/employees') }}" class="nav-link">
+                            <a href="{{ url('branch-user/employees') }}" class="nav-link {{ request()->is('branch-user/employees') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Employees List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('branch-user/employees/create') }}" class="nav-link">
+                            <a href="{{ url('branch-user/employees/create') }}" class="nav-link {{ request()->is('branch-user/employees/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Employees </p>
                             </a>
@@ -110,9 +110,9 @@
                     </ul>
                 </li> -->
                 @role('Admin')
-                <li class="nav-item has-treeview">
-                    <a href="{{ url('admin/admin/role-list') }}"
-                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ request()->is('admin/branches*') ? 'menu-open' : '' }}">
+                    <a href="{{ url('admin/branches') }}"
+                        class="nav-link {{ request()->is('admin/branches*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Branch
@@ -121,13 +121,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/branches') }}" class="nav-link">
+                            <a href="{{ url('admin/branches') }}" class="nav-link {{ request()->is('admin/branches') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Branch List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/branches/create') }}" class="nav-link">
+                            <a href="{{ url('admin/branches/create') }}" class="nav-link {{ request()->is('admin/branches/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Branch</p>
                             </a>
@@ -137,9 +137,9 @@
                 </li>
                 @endrole
                 @role('Branchuser')
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview {{ request()->is('admin/bookings*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('admin/admin/role-list') }}"
-                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('admin/bookings*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Booking
@@ -148,25 +148,25 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/bookings') }}" class="nav-link">
+                            <a href="{{ url('admin/bookings') }}" class="nav-link {{ request()->is('admin/bookings') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Booking List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/booking/paid-booking') }}" class="nav-link">
+                            <a href="{{ url('admin/bookings/paid-booking') }}" class="nav-link {{ request()->is('admin/bookings/paid-booking') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Paid Booking </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/booking/to-pay-booking') }}" class="nav-link">
+                            <a href="{{ url('admin/bookings/to-pay-booking') }}" class="nav-link {{ request()->is('admin/bookings/to-pay-booking') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>To Pay Booking </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/booking/to-client-booking') }}" class="nav-link">
+                            <a href="{{ url('admin/bookings/to-client-booking') }}" class="nav-link {{ request()->is('admin/bookings/to-client-booking') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>To client Booking </p>
                             </a>
@@ -176,7 +176,7 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="{{ url('branch-user/settings') }}"
-                        class="nav-link {{ request()->is('admin/reviewers*') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('branch-user/settings') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>
                             Settings

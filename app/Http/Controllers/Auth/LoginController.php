@@ -58,7 +58,7 @@ class LoginController extends BaseController
                     // sHelper::activateLoggedInUserRole($user, $role);
 					Auth::login($user , $remember); 
                     if($user->user_type == 'admin') {
-                        return redirect('/admin')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Login Successfully !!! </div>" ]);  
+                        return redirect('/admin/dashboard')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Login Successfully !!! </div>" ]);  
                         
                     } else if($user->user_type == 'branch-user') {
                         return redirect('/branch-user/dashboard')->with(["msg"=>"<div class='callout callout-success'><strong>Success </strong>  Login Successfully !!! </div>" ]);  

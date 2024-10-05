@@ -15,6 +15,6 @@ class LogOutController extends Controller
     {
         $data['title'] = 'logout';
         Auth::logout();
-        return redirect('/');
+        return redirect('/login');
     }
 }

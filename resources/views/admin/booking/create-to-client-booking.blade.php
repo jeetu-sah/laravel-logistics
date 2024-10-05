@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <a href="{{ url('admin/branch/branch-list') }}"
+                        <a href="{{ url('admin/bookings') }}"
                             class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                                 class=" fa-sm text-white-50"></i> <b>Booking List</b></a>
                     </div>

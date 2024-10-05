@@ -61,10 +61,10 @@
 
                             <!-- Branch Owner Name -->
                             <div class="col-md-4 mb-2">
-                                <label for="owner_name" class="form-label">Branch Owner Name</label>
+                                <label for="owner_name" class="form-label">Franchise / Branch Owner Name</label>
                                 <input class="form-control" name="owner_name" id="owner_name" placeholder="Owner Name"
                                     required>
-                                <div class="invalid-feedback">Enter Owner name</div>
+                                <div class="invalid-feedback">Enter Franchise / Branch Owner Name</div>
                                 @error('owner_name')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
