@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <a href="{{ url('admin/branch/branch-list') }}"
+                        <a href="{{ url('admin/bookings') }}"
                             class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                                 class=" fa-sm text-white-50"></i> <b>Booking List</b></a>
                     </div>
@@ -251,7 +251,7 @@
                                                     placeholder="Packing Type">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 1</label>
                                                 <select class="form-select select2 form-control js-select2"
@@ -265,7 +265,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 2</label>
                                                 <select class="form-select select2 form-control js-select2"
@@ -279,7 +279,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 3</label>
                                                 <select class="form-select select2 form-control js-select2"

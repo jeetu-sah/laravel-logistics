@@ -24,12 +24,9 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-
-
-
+Route::get('/', [HomeController::class, 'index'])->name('/');
 
 Route::group(['middleware' => ['guest']], function () {
-    Route::get('/', [HomeController::class, 'index'])->name('/');
     Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
 });
@@ -38,7 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('admin')->group(function () {
 
-        Route::get('/', [AdminController::class, 'index']);
+        Route::get('/dashboard', [AdminController::class, 'index']);
         Route::get('/adminlayout', [AdminController::class, 'adminlayout']);
         Route::get('/get-states/{countryId}', [AdminController::class, 'getStates']);
         Route::get('/get-districts/{stateId}', [AdminController::class, 'getDistricts']);
@@ -60,14 +57,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings', [BookingController::class, 'index']);
         Route::get('/bookings/list', [BookingController::class, 'list']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
-        Route::get('/booking/paid-booking', [BookingController::class, 'bookings']);
-        Route::post('/booking/paid-booking', [BookingController::class, 'paid_booking']);
+        Route::get('/bookings/paid-booking', [BookingController::class, 'bookings']);
+        Route::post('/bookings/paid-booking', [BookingController::class, 'paid_booking']);
         // // to paid booking
-        Route::get('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking']);
+        Route::get('/bookings/to-pay-booking', [BookingController::class, 'to_pay_booking']);
         // Route::post('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
         // // to client booking
         // Route::post('/booking/to-client-booking', [BookingController::class, 'to_client_booking_save']);
-        Route::get('/booking/to-client-booking', [BookingController::class, 'to_client_booking']);
+        Route::get('/bookings/to-client-booking', [BookingController::class, 'to_client_booking']);
 
 
 

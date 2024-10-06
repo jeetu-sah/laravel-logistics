@@ -97,11 +97,6 @@ class BookingController extends Controller
     public function to_pay_booking()
     {
         $data['branch'] = Branch::all();
-
-        $data['heading'] = 'Add New Booking';
-        $data['listUrl'] = 'admin/booking/booking-list';
-        // $data['states'] =  DB::table('states')->get();
-
         return view('admin.booking.create-to-pay-booking', $data);
     }
 

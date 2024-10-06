@@ -35,12 +35,9 @@
                                     <tr>
                                         <th>SN.</th>
                                         <th>Bilti Number</th>
-                                        <th>From</th>
-                                        <th>Consignor Name</th>
                                         <th>Consignee Name</th>
                                         <th>Destinaton</th>
                                         <th>Consignee Address</th>
-                                        <th>Consignee Phone</th>
                                         <th>Payment Mode</th>
                                         <th>Creation Date</th>
                                         <th>Action</th>
@@ -87,12 +84,6 @@
                         data: 'bilti_number'
                     },
                     {
-                        data: 'consignor_branch_id'
-                    },
-                    {
-                        data: 'consignor_name'
-                    },
-                    {
                         data: 'consignee_name'
                     },
                     {
@@ -101,10 +92,6 @@
                     },
                     {
                         data: 'consignee_address'
-
-                    },
-                    {
-                        data: 'consignee_phone_number_1'
 
                     },
                     {
