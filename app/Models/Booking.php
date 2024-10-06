@@ -83,7 +83,5 @@ class Booking extends Model
     {
         return $this->belongsTo(Branch::class, 'consignee_branch_id');
     }
-
-
-    
+   
 }

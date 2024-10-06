@@ -251,7 +251,7 @@
                                                     placeholder="Packing Type">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 1</label>
                                                 <select class="form-select select2 form-control js-select2"
@@ -265,7 +265,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 2</label>
                                                 <select class="form-select select2 form-control js-select2"
@@ -279,7 +279,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 3</label>
                                                 <select class="form-select select2 form-control js-select2"
