@@ -62,7 +62,8 @@ class BookingController extends Controller
                 }
 
                 // Action column
-                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>';
+                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-warning">Print</a>'; 
+
 
                 // Format the creation date
                 $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y');
@@ -83,17 +84,13 @@ class BookingController extends Controller
 
         return response()->json($json_data); // Return a JSON response
     }
+
     public function bookings()
     {
         $data['branch'] = Branch::all();
-
-        $data['heading'] = 'Add New Booking';
-        $data['listUrl'] = 'admin/booking/booking-list';
-        // $data['states'] =  DB::table('states')->get();
-
         return view('admin.booking.create-paid-booking', $data);
-        ;
     }
+
     public function to_pay_booking()
     {
         $data['branch'] = Branch::all();
@@ -106,13 +103,12 @@ class BookingController extends Controller
 
         $data['heading'] = 'Add New Booking';
         $data['listUrl'] = 'admin/booking/booking-list';
-        // $data['states'] =  DB::table('states')->get();
-
         return view('admin.booking.create-to-client-booking', $data);
     }
 
     public function paid_booking(Request $request)
     {
+       
         // Validate the incoming request data
         $request->validate([
             // Consignor
@@ -150,16 +146,16 @@ class BookingController extends Controller
             'other_charge_amount' => 'nullable|numeric',
             'grand_total_amount' => 'required|numeric',
         ]);
-
+      
         if ($request->consignor_branch_id == $request->consignee_branch_id) {
             return redirect()->back()->with(['error' => 'Consignor and consignee branches must be different.'])->withInput();
         }
         // genrate bilti_number
         $lastBilti = DB::table('bookings')->latest('id')->value('bilti_number');
         $nextBiltiNumber = $this->generateBiltiNumber($lastBilti);
-
+       
         // Insert into the database
-        DB::table('bookings')->insert([
+        Booking::insert([
             // consignor
             'bilti_number' => $nextBiltiNumber,
             'consignor_branch_id' => $request->consignor_branch_id,
@@ -201,7 +197,10 @@ class BookingController extends Controller
             'created_at' => date('d-m-y'),
         ]);
 
-        return redirect('admin/bookings')->with('success', 'Booking Created Successfully');
+        return redirect('admin/bookings')->with([
+            "alertMessage" => true,
+            "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
+        ]);
     }
 
 
@@ -258,7 +257,7 @@ class BookingController extends Controller
         ]);
 
         // Insert into the database
-        DB::table('bookings')->insert([
+        Booking::insert([
             'consignor_branch_id' => $request->consignor_branch_id,
             'consignor_name' => $request->consignor_name,
             'address' => $request->address,
@@ -299,6 +298,7 @@ class BookingController extends Controller
 
         return redirect()->route('booking.create')->with('success', 'Paid booking saved successfully!');
     }
+
     public function to_client_booking_save(Request $request)
     {
 
@@ -336,7 +336,7 @@ class BookingController extends Controller
         ]);
 
         // Insert into the database
-        DB::table('bookings')->insert([
+        Booking::insert([
             'consignor_branch_id' => $request->consignor_branch_id,
             'consignor_name' => $request->consignor_name,
             'address' => $request->address,

@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\HomeController;
-
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +32,15 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/dashboard', function() {
+        $user = Auth::user();
+        if($user->user_type == 'admin') {
+            return redirect('/admin/dashboard');
+            
+        } else if($user->user_type == 'branch-user') {
+            return redirect('/branch-user/dashboard');
+        }
+    });
 
     Route::prefix('admin')->group(function () {
 
@@ -51,7 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
 
       
         // Define the route for the bilti view
-        Route::get('admin/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
+        Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
         
         // paid booking
         Route::get('/bookings', [BookingController::class, 'index']);

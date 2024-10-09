@@ -12,14 +12,11 @@ return new class extends Migration {
      public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing ID
+            $table->id();
 
             // Consignor Information
             $table->string('bilti_number')->nullable();
-            $table->foreignId('consignor_branch_id')
-                ->nullable()
-                ->constrained('consignor_branches') // Specify the referenced table
-                ->onDelete('set null'); // Action on delete
+            $table->bigInteger('consignor_branch_id')->nullable();
 
             $table->string('consignor_name')->nullable();
             $table->text('address')->nullable();
@@ -30,11 +27,7 @@ return new class extends Migration {
             $table->string('pin_code')->nullable();
 
             // Consignee Information
-            $table->foreignId('consignee_branch_id')
-                ->nullable()
-                ->constrained('consignee_branches') // Specify the referenced table
-                ->onDelete('set null'); // Action on delete
-
+            $table->bigInteger('consignee_branch_id')->nullable();
             $table->string('consignee_name')->nullable();
             $table->text('consignee_address')->nullable();
             $table->string('consignee_phone_number_1')->nullable();
@@ -50,9 +43,9 @@ return new class extends Migration {
             $table->string('packing_type')->nullable();
 
             // Transhipment Details (if these are meant to be foreign IDs, use foreignId)
-            $table->foreignId('transhipmen_one')->nullable()->constrained('transhipments')->onDelete('set null');
-            $table->foreignId('transhipmen_two')->nullable()->constrained('transhipments')->onDelete('set null');
-            $table->foreignId('transhipment_three')->nullable()->constrained('transhipments')->onDelete('set null');
+            $table->bigInteger('transhipmen_one')->nullable();
+            $table->bigInteger('transhipmen_two')->nullable();
+            $table->bigInteger('transhipment_three')->nullable();
 
             // Billing Information
             $table->decimal('good_of_value', 10, 2)->nullable();

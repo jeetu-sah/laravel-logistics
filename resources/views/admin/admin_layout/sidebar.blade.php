@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ url('/') }}" class="brand-link">
+    <a href="{{ url('/dashboard') }}" class="brand-link">
         <img src="{{ asset('admin_webu/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Logistics</span>
@@ -15,7 +15,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Logistics</a>
+                <a href="{{ url('/dashboard') }}" class="d-block">Logistics</a>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ url('/') }}"
+                    <a href="{{ url('/dashboard') }}"
                         class="nav-link {{ sHelper::activeSideBar(Request::path(), ['branch-user/dashboard', 'admin/dashboard']) }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
