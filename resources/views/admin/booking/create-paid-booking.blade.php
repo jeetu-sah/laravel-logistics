@@ -19,7 +19,10 @@
 
 
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
+        <div class="row mb-2">
+            @include('common.notification')
+        </div>
     </section>
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -31,183 +34,14 @@
     </div>
     @endif
 
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
     <section class="content">
         <div class="container-fluid">
             <form action="{{ url('admin/bookings/paid-booking') }}" method="POST">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    @include('admin.booking.shared.consigner_details')
 
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Consignor</h3>
-                            </div>
-
-                            <div class="card-body">
-                                <div class="row">
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="form_branch">From</label>
-                                            <select class="form-select select2 form-control js-select2"
-                                                name="consignor_branch_id" id="form_branch" required>
-                                                <option value="">Select Branch Name</option>
-                                                @foreach ($branch as $branchList)
-                                                <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="consignor_name">Consignor Name</label>
-                                            <input required type="text" class="form-control" name="consignor_name"
-                                                placeholder="Consignor Name">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignor Address</label>
-                                            <textarea required class="form-control" name="address" placeholder="Address"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignor Mobile</label>
-                                            <input required type="text" class="form-control" name="phone_number_1"
-                                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                                minlength="10" maxlength="10" placeholder="Phone Number 1">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignor Mobile 2</label>
-                                            <input type="text" class="form-control" name="phone_number_2"
-                                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                                minlength="10" maxlength="10" placeholder="Phone Number 2">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignor Email</label>
-                                            <input required type="email" class="form-control" name="email"
-                                                placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="misc_charge">GST No.</label>
-                                            <input required type="text" class="form-control" name="gst_number"
-                                                placeholder="GST Number">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-
-                                            <label for="misc_charge">Pin Code</label>
-                                            <input required type="text" class="form-control" name="pin_code"
-                                                placeholder="Pin code">
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-6">
-
-                        <div class="card card-success">
-                            <div class="card-header">
-                                <h3 class="card-title">Consignee</h3>
-                            </div>
-
-                            <div class="card-body">
-                                <div class="row">
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Destination</label>
-                                            <select class="form-select select2 form-control js-select2"
-                                                name="consignee_branch_id" id="designation" required>
-                                                <option value="">Select Branch Name</option>
-                                                @foreach ($branch as $branchList)
-                                                <option value="{{ $branchList->id }}">
-                                                    {{ $branchList->branch_name }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignee Name</label>
-                                            <input required type="text" class="form-control" name="consignee_name"
-                                                placeholder="Consignor Name">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignee Address</label>
-                                            <textarea required class="form-control" name="consignee_address" placeholder="Address"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignee Mobile</label>
-                                            <input required type="text" class="form-control"
-                                                name="consignee_phone_number_1"
-                                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                                minlength="10" maxlength="10" placeholder="Phone Number 1">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignee Mobile 2</label>
-                                            <input type="text" class="form-control"
-                                                name="consignee_phone_number_2"
-                                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                                minlength="10" maxlength="10" placeholder="Phone Number 2">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignee Email</label>
-                                            <input required type="email" class="form-control"
-                                                name="consignee_email" placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="misc_charge">Consignee GST No.</label>
-                                            <input required type="text" class="form-control"
-                                                name="consignee_gst_number" placeholder="GST Number">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-
-                                            <label for="misc_charge"> Pin Code</label>
-                                            <input required type="text" class="form-control"
-                                                name="consignee_pin_code" placeholder="Pin code">
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
+                
                     <div class="col-md-6">
                         <div class="card card-danger">
                             <div class="card-header">
@@ -220,7 +54,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="misc_charge">No of Artical</label>
-                                            <input required type="number" 
+                                            <input required type="number"
                                                 onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
                                                 class="form-control" name="no_of_artical"
                                                 placeholder="No Of artical">
@@ -484,7 +318,6 @@
                             calculateTotal();
                         });
                     </script>
-
                 </div>
 
                 <div class="row mb-3">
@@ -509,6 +342,15 @@
         //Initialize Select2 Elements
         $('.select2').select2()
     })
+
+    $(document).ready(function() {
+        $(document).on('click', '.dropdown-mobile-code', function(e) {
+            e.preventDefault()
+            const mobileNumberCode = $(this).text();
+            $(this).parent().parent().find('button').text(mobileNumberCode);
+            $(this).parent().parent().find('.mobileNumberCode').val(mobileNumberCode);
+        });
+    });
 </script>
 @endsection
 
