@@ -62,7 +62,7 @@ class BookingController extends Controller
                 }
 
                 // Action column
-                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-warning">Print</a>'; 
+                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>'; 
 
 
                 // Format the creation date

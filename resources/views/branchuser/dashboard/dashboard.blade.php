@@ -48,13 +48,13 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-12 col-sm-6 col-md-4">
-                    <a href="#" class="dashboard-link" style="color:black;">
+                    <a href="{{ url('/admin/bookings') }}" class="dashboard-link" style="color:black;">
                         <div class="info-box mb-3">
                             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-list"></i></span>
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Total Booking</span>
-                                <span class="info-box-number">41,410</span>
+                                <span class="info-box-number">{{ $totalBooking ?? 0}}</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
