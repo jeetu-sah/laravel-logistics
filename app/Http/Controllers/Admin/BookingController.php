@@ -16,8 +16,6 @@ class BookingController extends Controller
      */
     public function index()
     {
-
-
         $data['title'] = 'Bookings';
         return view('admin.booking.booking-list', $data);
     }

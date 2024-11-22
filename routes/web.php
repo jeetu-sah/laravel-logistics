@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\ChallanController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,7 +75,11 @@ Route::group(['middleware' => ['auth']], function () {
         // // to client booking
         // Route::post('/booking/to-client-booking', [BookingController::class, 'to_client_booking_save']);
         Route::get('/bookings/to-client-booking', [BookingController::class, 'to_client_booking']);
-
+        
+        //challan routes
+        Route::get('/challans', [ChallanController::class, 'index']);
+        Route::get('/challans/create', [ChallanController::class, 'create']);
+        
 
 
 
