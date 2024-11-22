@@ -174,68 +174,28 @@
 
                     </ul>
                 </li>
-                <li class="nav-item has-treeview {{ request()->is('admin/bookings*') ? 'menu-open' : '' }} ">
-                    <a href="{{ url('admin/admin/role-list') }}"
-                        class="nav-link {{ request()->is('admin/bookings*') ? 'active' : '' }}">
+                <li class="nav-item has-treeview {{ request()->is('admin/challans*') ? 'menu-open' : '' }} ">
+                    <a href="{{ url('admin/challans') }}"
+                        class="nav-link {{ request()->is('admin/challans*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
-                            Challan Management
+                            Loading Challan
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/bookings') }}" class="nav-link {{ request()->is('admin/bookings') ? 'active' : '' }}">
+                            <a href="{{ url('admin/challans/create') }}" class="nav-link {{ request()->is('admin/challans/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Challan</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/bookings/paid-booking') }}" class="nav-link {{ request()->is('admin/bookings/paid-booking') ? 'active' : '' }}">
+                            <a href="{{ url('admin/challans') }}" class="nav-link {{ request()->is('admin/challans') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Paid Booking </p>
+                                <p>Challan List</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/bookings/to-pay-booking') }}" class="nav-link {{ request()->is('admin/bookings/to-pay-booking') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>To Pay Booking </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/bookings/to-client-booking') }}" class="nav-link {{ request()->is('admin/bookings/to-client-booking') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>To client Booking </p>
-                            </a>
-                        </li>
-
-                    </ul>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ url('admin/bookings') }}" class="nav-link {{ request()->is('admin/bookings') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create Challan</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/bookings/paid-booking') }}" class="nav-link {{ request()->is('admin/bookings/paid-booking') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Paid Booking </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/bookings/to-pay-booking') }}" class="nav-link {{ request()->is('admin/bookings/to-pay-booking') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>To Pay Booking </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/bookings/to-client-booking') }}" class="nav-link {{ request()->is('admin/bookings/to-client-booking') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>To client Booking </p>
-                            </a>
-                        </li>
-
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
