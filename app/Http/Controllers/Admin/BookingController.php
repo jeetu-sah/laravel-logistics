@@ -23,6 +23,8 @@ class BookingController extends Controller
     public function list(Request $request)
     {
         // echo "<pre>";
+        // print_r($request->bilti_list_type);exit;
+        // echo "<pre>";
         // $branch = Branch::find(1);
         // print_r($branch->fromBookings);exit;
 
@@ -34,8 +36,18 @@ class BookingController extends Controller
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
+                // echo "<pre>";
+                // print_r($booking->id);exit;
                 $row = [];
-                $row['sn'] = $start + $index + 1; // Corrected SN to start from the current page's start index
+                if ($request->bilti_list_type === 'challan') {
+                    $row['sn'] = '<div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
+                                            <label class="form-check-label" for="exampleCheck1"></label>
+                                        </div>';
+                } else {
+                    $row['sn'] = $start + $index + 1; // Corrected SN to start from the current page's start index
+                }
+
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
@@ -56,15 +68,15 @@ class BookingController extends Controller
                 } elseif ($booking->booking_type == 3) {
                     $row['booking_type'] = 'Client ';
                 } else {
-                    $row['booking_type'] = 'Unknown'; // In case a different value is present
+                    $row['booking_type'] = 'Unknown';
                 }
 
                 // Action column
-                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>'; 
+                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
 
 
                 // Format the creation date
-                $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y');
+                $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y  h:i:s');
 
                 // Append row to the array
                 $rows[] = $row;
@@ -77,6 +89,87 @@ class BookingController extends Controller
             "draw" => intval($request->input('draw')),
             "recordsTotal" => $totalRecord,
             "recordsFiltered" => $totalRecord, // Adjust this if you implement search/filter functionality
+            "data" => $rows,
+        ];
+
+        return response()->json($json_data); // Return a JSON response
+    }
+
+
+    public function challanBookingList(Request $request)
+    {
+        // echo "<pre>";
+        // print_r($request->all());exit;
+  
+        $limit = $request->input('length', 10);
+        $start = $request->input('start', 0);
+        $totalRecord = Booking::count();
+
+        $bookingQuery = Booking::whereNotExists(function ($query) {
+            $query->select(DB::raw(1))->from('loading_challan_booking')->whereRaw('loading_challan_booking.booking_id = bookings.id');
+        });
+
+        $bookingsCount = $bookingQuery->count();
+
+        $bookings = $bookingQuery->get();
+
+
+        $rows = [];
+        if ($bookings->count() > 0) {
+            foreach ($bookings as $index => $booking) {
+                // echo "<pre>";
+                // print_r($booking->id);exit;
+                $row = [];
+                if ($request->bilti_list_type === 'challan') {
+                    $row['sn'] = '<div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
+                                            <label class="form-check-label" for="exampleCheck1"></label>
+                                        </div>';
+                } else {
+                    $row['sn'] = $start + $index + 1; // Corrected SN to start from the current page's start index
+                }
+
+                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
+
+                $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
+                $row['consignor_name'] = $booking->consignor_name;
+                $row['address'] = $booking->address;
+                $row['phone_number_1'] = $booking->phone_number_1;
+                $row['gst_number'] = $booking->gst_number;
+                $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
+                $row['consignee_name'] = $booking->consignee_name;
+                $row['consignee_address'] = $booking->consignee_address;
+                $row['consignee_phone_number_1'] = $booking->consignee_phone_number_1;
+
+                // Conditional logic for booking_type
+                if ($booking->booking_type == 1) {
+                    $row['booking_type'] = 'Paid ';
+                } elseif ($booking->booking_type == 2) {
+                    $row['booking_type'] = 'To Pay ';
+                } elseif ($booking->booking_type == 3) {
+                    $row['booking_type'] = 'Client ';
+                } else {
+                    $row['booking_type'] = 'Unknown';
+                }
+
+                // Action column
+                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
+
+
+                // Format the creation date
+                $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y  h:i:s');
+
+                // Append row to the array
+                $rows[] = $row;
+            }
+        }
+
+
+        // Prepare the JSON response with correct record counts
+        $json_data = [
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => $bookingsCount,
+            "recordsFiltered" => $bookingsCount,
             "data" => $rows,
         ];
 
@@ -106,7 +199,6 @@ class BookingController extends Controller
 
     public function paid_booking(Request $request)
     {
-       
         // Validate the incoming request data
         $request->validate([
             // Consignor
@@ -144,14 +236,14 @@ class BookingController extends Controller
             'other_charge_amount' => 'nullable|numeric',
             'grand_total_amount' => 'required|numeric',
         ]);
-      
+
         if ($request->consignor_branch_id == $request->consignee_branch_id) {
             return redirect()->back()->with(['error' => 'Consignor and consignee branches must be different.'])->withInput();
         }
         // genrate bilti_number
         $lastBilti = DB::table('bookings')->latest('id')->value('bilti_number');
         $nextBiltiNumber = $this->generateBiltiNumber($lastBilti);
-       
+
         // Insert into the database
         Booking::insert([
             // consignor

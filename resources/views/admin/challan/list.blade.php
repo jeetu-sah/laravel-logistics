@@ -35,11 +35,7 @@
                                     <tr>
                                         <th>SN.</th>
                                         <th>Challan Number</th>
-                                        <th>Consignee Name</th>
-                                        <th>Destinaton</th>
-                                        <th>Consignee Address</th>
-                                        <th>Payment Mode</th>
-                                        <th>Creation Date</th>
+                                        <th>Created date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -70,7 +66,7 @@
             new DataTable('#booking-list', {
                 responsive: true,
                 ajax: {
-                    url: "{{ url('admin/bookings/list') }}",
+                    url: "{{ url('admin/challans/list') }}",
                     data: function(d) {
                         //d.myKey = 'myValue';
                         // d.custom = $('#myInput').val();
@@ -81,30 +77,13 @@
                         data: 'sn'
                     },
                     {
-                        data: 'bilti_number'
-                    },
-                    {
-                        data: 'consignee_name'
-                    },
-                    {
-                        data: 'consignee_branch_id'
-
-                    },
-                    {
-                        data: 'consignee_address'
-
-                    },
-                    {
-                        data: 'booking_type'
-
+                        data: 'challan_number'
                     },
                     {
                         data: 'created_at'
-
                     },
                     {
                         data: 'action',
-
                         orderable: false
                     }
                 ],
