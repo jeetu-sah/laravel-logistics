@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth']], function () {
         // paid booking
         Route::get('/bookings', [BookingController::class, 'index']);
         Route::get('/bookings/list', [BookingController::class, 'list']);
+        Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
         Route::get('/bookings/paid-booking', [BookingController::class, 'bookings']);
         Route::post('/bookings/paid-booking', [BookingController::class, 'paid_booking']);
@@ -78,7 +79,9 @@ Route::group(['middleware' => ['auth']], function () {
         
         //challan routes
         Route::get('/challans', [ChallanController::class, 'index']);
+        Route::get('/challans/list', [ChallanController::class, 'list']);
         Route::get('/challans/create', [ChallanController::class, 'create']);
+        Route::post('/challans/create', [ChallanController::class, 'store']);
         
 
 

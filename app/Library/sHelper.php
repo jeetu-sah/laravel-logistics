@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\BranchSetting;
+use App\Models\LoadingChallan;
 
 class sHelper
 {
@@ -217,6 +218,18 @@ class sHelper
 			
 		}
 		return $userMaxID + 1;
+	}
+
+	public static function fetchChallanNumber()
+	{
+		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
+		
+		$challanMaxID =  LoadingChallan::max('challan_number');
+		if ($challanMaxID == NULL) {
+			return (1000 + 1);
+			
+		}
+		return $challanMaxID + 1;
 	}
 
 
