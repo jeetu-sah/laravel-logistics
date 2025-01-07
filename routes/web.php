@@ -79,8 +79,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         //challan routes
         // In routes/web.php
-        //  Route::get('challans/{challan_number}', [ChallanController::class, 'show']);
-
+        // Route::get('challans/{challan_number}', [ChallanController::class, 'show']);
         Route::get('/challans', [ChallanController::class, 'index']);
         Route::get('/challans/list', [ChallanController::class, 'list']);
         Route::get('/challans/create', [ChallanController::class, 'create']);

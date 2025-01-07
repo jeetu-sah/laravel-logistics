@@ -93,22 +93,10 @@
 
             // Handle click on challan_number
             $(document).on('click', '.challan-number', function(e) {
-                e.preventDefault(); // Prevent default anchor click behavior
-
-                // Get the challan number from the `data-challan-number` attribute
                 var challanNumber = $(this).data('challan-number');
-
-                if (!challanNumber) {
-                    alert('Challan number not found!');
-                    return;
-                }
-
-                // Show a loading indicator or message
-                alert('Fetching details for Challan Number: ' + challanNumber);
-
                 // Use Ajax to fetch challan details
                 $.ajax({
-                    url: "/admin/challans/" + challanNumber, // Update to your URL format
+                    url: "{{ url('admin/challans') }}/" + challanNumber,
                     method: 'GET',
                     success: function(response) {
                         // Show challan details in a modal or any other UI component
@@ -120,7 +108,6 @@
                     }
                 });
             });
-
         });
     </script>
 @endsection

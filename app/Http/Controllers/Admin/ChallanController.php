@@ -107,8 +107,7 @@ class ChallanController extends Controller
      
                  $row = [];
                  $row['sn'] = '<a href="' . url("admin/roles/user_permission/$loadingChallan->id?page=roles") . '">' . $loadingChallan->id . '</a>';
-                 $row['challan_number'] = '<a href="#" data-value="' . $loadingChallan->challan_number . '" class="challan-number">' . $loadingChallan->challan_number . '</a>';
-
+                 $row['challan_number'] = '<a href="' . url('admin/challans', ['id' => $loadingChallan->challan_number]) . '">' . $loadingChallan->challan_number . '</a>';
                  $row['busNumber'] = strtoupper($loadingChallan->busNumber);
                  $row['created_at'] = Carbon::parse($loadingChallan->created_at)->format('d/m/Y  h:i:s');
                  $row['action'] = $edit_btn . " " . $change_credential;

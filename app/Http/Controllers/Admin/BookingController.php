@@ -8,7 +8,7 @@ use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+
 class BookingController extends Controller
 {
     /**
@@ -28,8 +28,7 @@ class BookingController extends Controller
         $start = $request->input('start', 0);
         $totalRecord = Booking::count();
         $bookingQuery = Booking::query();
-        $bookingQuery->where('consignor_branch_id', Auth::user()->id);
-        $bookingQuery->orWhere('consignee_branch_id', Auth::user()->id);
+        // $bookingQuery->where('consignor_branch_id',Auth::user()->id)
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
