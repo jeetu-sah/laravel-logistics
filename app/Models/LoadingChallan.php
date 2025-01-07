@@ -16,6 +16,10 @@ class LoadingChallan extends Model
     protected $fillable = [
         'id',
         'challan_number',
+        'busNumber',
+        'driverName',
+        'driverMobile',
+        'locknumber',
         'created_by',
         'deleted_at',
         'created_at',

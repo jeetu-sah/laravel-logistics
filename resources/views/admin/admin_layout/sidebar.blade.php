@@ -199,6 +199,15 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
+                    <a href="{{ url('admin/delevery') }}"
+                        class="nav-link {{ request()->is('admin/delevery') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Delevery
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
                     <a href="{{ url('branch-user/settings') }}"
                         class="nav-link {{ request()->is('branch-user/settings') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cog"></i>

@@ -6,8 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <a href="{{ url('admin/branches/create') }}"
-                            class="d-none d-sm-inline-block shadow-sm">
+                        <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
                             <i class=" fa-sm text-white-50"></i> </a>
                     </div>
                     <div class="col-sm-6">
@@ -35,6 +34,7 @@
                                     <tr>
                                         <th>SN.</th>
                                         <th>Challan Number</th>
+                                        <th>Vehicle Number</th>
                                         <th>Created date</th>
                                         <th>Action</th>
                                     </tr>
@@ -61,16 +61,13 @@
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
 
     <script>
-        $(document).ready(function(e) {
-
-            new DataTable('#booking-list', {
+        $(document).ready(function() {
+            var table = new DataTable('#booking-list', {
                 responsive: true,
                 ajax: {
                     url: "{{ url('admin/challans/list') }}",
                     data: function(d) {
-                        //d.myKey = 'myValue';
-                        // d.custom = $('#myInput').val();
-                        // etc
+                        // Optional: You can send more parameters here if needed.
                     }
                 },
                 columns: [{
@@ -80,6 +77,9 @@
                         data: 'challan_number'
                     },
                     {
+                        data: 'busNumber'
+                    },
+                    {
                         data: 'created_at'
                     },
                     {
@@ -87,10 +87,40 @@
                         orderable: false
                     }
                 ],
-
                 processing: true,
                 serverSide: true
             });
+
+            // Handle click on challan_number
+            $(document).on('click', '.challan-number', function(e) {
+                e.preventDefault(); // Prevent default anchor click behavior
+
+                // Get the challan number from the `data-challan-number` attribute
+                var challanNumber = $(this).data('challan-number');
+
+                if (!challanNumber) {
+                    alert('Challan number not found!');
+                    return;
+                }
+
+                // Show a loading indicator or message
+                alert('Fetching details for Challan Number: ' + challanNumber);
+
+                // Use Ajax to fetch challan details
+                $.ajax({
+                    url: "/admin/challans/" + challanNumber, // Update to your URL format
+                    method: 'GET',
+                    success: function(response) {
+                        // Show challan details in a modal or any other UI component
+                        $('#challanDetailsModal').html(response);
+                        $('#challanDetailsModal').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error fetching challan details!');
+                    }
+                });
+            });
+
         });
     </script>
 @endsection
