@@ -33,6 +33,10 @@ class Branch extends Model
     {
         return $this->hasMany(Booking::class, 'consignor_branch_id');
     }
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'state_id'); // assuming state_id is the foreign key in Branch
+    }
 
 
 }
