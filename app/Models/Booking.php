@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Branch;
 
+
 class Booking extends Model
 {
     use HasFactory;
@@ -83,6 +84,7 @@ class Booking extends Model
     {
         return $this->belongsTo(Branch::class, 'consignee_branch_id');
     }
-    
+
    
+
 }

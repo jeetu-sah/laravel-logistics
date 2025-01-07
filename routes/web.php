@@ -33,12 +33,12 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/dashboard', function() {
+    Route::get('/dashboard', function () {
         $user = Auth::user();
-        if($user->user_type == 'admin') {
+        if ($user->user_type == 'admin') {
             return redirect('/admin/dashboard');
-            
-        } else if($user->user_type == 'branch-user') {
+
+        } else if ($user->user_type == 'branch-user') {
             return redirect('/branch-user/dashboard');
         }
     });
@@ -59,10 +59,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/branches/update/{id}', [BranchController::class, 'update'])->name('admin.update');
         Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
 
-      
+
         // Define the route for the bilti view
         Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
-        
+
         // paid booking
         Route::get('/bookings', [BookingController::class, 'index']);
         Route::get('/bookings/list', [BookingController::class, 'list']);
@@ -76,13 +76,16 @@ Route::group(['middleware' => ['auth']], function () {
         // // to client booking
         // Route::post('/booking/to-client-booking', [BookingController::class, 'to_client_booking_save']);
         Route::get('/bookings/to-client-booking', [BookingController::class, 'to_client_booking']);
-        
+
         //challan routes
+        // In routes/web.php
+        //  Route::get('challans/{challan_number}', [ChallanController::class, 'show']);
+
         Route::get('/challans', [ChallanController::class, 'index']);
         Route::get('/challans/list', [ChallanController::class, 'list']);
         Route::get('/challans/create', [ChallanController::class, 'create']);
         Route::post('/challans/create', [ChallanController::class, 'store']);
-        
+
 
 
 
@@ -100,7 +103,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('employees/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
         Route::post('employees/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
         Route::post('employees/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
-       
+
         Route::get('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
         Route::post('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
     });

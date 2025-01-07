@@ -6,8 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <a href="{{ url('admin/branches/create') }}"
-                            class="d-none d-sm-inline-block shadow-sm">
+                        <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
                             <i class=" fa-sm text-white-50"></i> </a>
                     </div>
                     <div class="col-sm-6">
@@ -35,9 +34,13 @@
                                     <tr>
                                         <th>SN.</th>
                                         <th>Bilti Number</th>
+                                        <th>Consinger Name</th>
+                                        <th>Consinger Address</th>
+                                        <th>Consinger Branch</th>
                                         <th>Consignee Name</th>
                                         <th>Destinaton</th>
                                         <th>Consignee Address</th>
+
                                         <th>Payment Mode</th>
                                         <th>Creation Date</th>
                                         <th>Action</th>
@@ -72,9 +75,9 @@
                 ajax: {
                     url: "{{ url('admin/bookings/list') }}",
                     data: function(d) {
-                        //d.myKey = 'myValue';
-                        // d.custom = $('#myInput').val();
-                        // etc
+                        // Custom parameters can be added here if needed
+                        // Example:
+                        // d.filter = $('#filter-input').val();
                     }
                 },
                 columns: [{
@@ -82,6 +85,17 @@
                     },
                     {
                         data: 'bilti_number'
+                    },
+                    {
+                        data: 'consignor_name'
+                    },
+                    {
+                        data: 'address'
+
+                    },
+                    {
+                        data: 'consignor_branch_id'
+
                     },
                     {
                         data: 'consignee_name'
@@ -94,6 +108,7 @@
                         data: 'consignee_address'
 
                     },
+
                     {
                         data: 'booking_type'
 

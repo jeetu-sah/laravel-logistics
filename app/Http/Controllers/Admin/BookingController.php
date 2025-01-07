@@ -8,7 +8,7 @@ use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
 class BookingController extends Controller
 {
     /**
@@ -22,16 +22,20 @@ class BookingController extends Controller
 
     public function list(Request $request)
     {
-        // echo "<pre>";
-        // print_r($request->bilti_list_type);exit;
-        // echo "<pre>";
-        // $branch = Branch::find(1);
-        // print_r($branch->fromBookings);exit;
 
+        $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
         $totalRecord = Booking::count();
-        $bookings = Booking::skip($start)->take($limit)->get();
+        $bookingQuery = Booking::query();
+        $bookingQuery->where('consignor_branch_id', Auth::user()->id);
+        $bookingQuery->orWhere('consignee_branch_id', Auth::user()->id);
+        if ($search) {
+            $bookingQuery->where('bilti_number', 'like', "%$search%")
+                ->orWhere('consignor_name', 'like', "%$search%")
+                ->orWhere('consignee_name', 'like', "%$search%");
+        }
+        $bookings = $bookingQuery->skip($start)->take($limit)->get();
 
         $rows = [];
         if ($bookings->count() > 0) {
@@ -48,7 +52,7 @@ class BookingController extends Controller
                     $row['sn'] = $start + $index + 1; // Corrected SN to start from the current page's start index
                 }
 
-                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
+                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
@@ -100,7 +104,7 @@ class BookingController extends Controller
     {
         // echo "<pre>";
         // print_r($request->all());exit;
-  
+
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
         $totalRecord = Booking::count();
@@ -129,7 +133,7 @@ class BookingController extends Controller
                     $row['sn'] = $start + $index + 1; // Corrected SN to start from the current page's start index
                 }
 
-                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
+                $row['bilti_number'] = '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
@@ -468,10 +472,55 @@ class BookingController extends Controller
         return redirect()->route('booking.create')->with('success', 'Paid booking saved successfully!');
     }
 
-
     public function bilti($id)
     {
+        // Fetch the booking data
         $data['booking'] = Booking::findOrFail($id);
+
+        // Get the branch codes from the booking
+        $branchCode1 = $data['booking']->consignor_branch_id;
+        $branchCode2 = $data['booking']->consignee_branch_id;
+
+        // Find the branches using the branch codes
+        $branch1 = Branch::find($branchCode1);
+
+        $branch2 = Branch::find($branchCode2);
+
+        // Initialize state and city names for consignor and consignee
+        $consignorState = 'State not found';
+        $consignorCity = 'City not found';
+        $consigneeState = 'State not found';
+        $consigneeCity = 'City not found';
+
+        // Fetch state and city for consignor
+        if ($branch1) {
+
+            $consignorState = DB::table('country_states')->where('id', $branch1->state_name)->value('name') ?? 'State not found';
+            $consignorCity = DB::table('state_cities')->where('id', $branch1->city_name)->value('name') ?? 'City not found';
+
+        }
+
+        // Fetch state and city for consignee
+        if ($branch2) {
+            $consigneeState = DB::table('country_states')->where('id', $branch2->state_name)->value('name') ?? 'State not found';
+            $consigneeCity = DB::table('state_cities')->where('id', $branch2->city_name)->value('name') ?? 'City not found';
+
+        }
+
+        // Add the details to the $data array for use in the view
+        $data['consignorState'] = $consignorState;
+        $data['consignorCity'] = $consignorCity;
+        $data['consigneeState'] = $consigneeState;
+        $data['consigneeCity'] = $consigneeCity;
+
+        // Return the view with the data
         return view('admin.booking.bilti', $data);
     }
+
+
+
+
+
+
+
 }
