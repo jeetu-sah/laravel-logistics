@@ -74,7 +74,7 @@
                             <div class="col-md-6 mb-2">
                                 <label for="contact" class="form-label">Contact Number</label>
                                 <input class="form-control" onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)" minlength="10"
-                                maxlength="10" name="contact" id="contact" placeholder="Contact Number"
+                                    maxlength="10" name="contact" id="contact" placeholder="Contact Number"
                                     required>
                                 <div class="invalid-feedback">Enter contact number</div>
                                 @error('contact')
@@ -156,7 +156,7 @@
                                 @enderror
                             </div>
                             <!-- Status -->
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <label for="user_status" class="form-label">Status</label>
                                 <select class="form-select form-control" name="user_status" id="user_status"
                                     required>
@@ -168,6 +168,28 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                                 <div class="invalid-feedback">Select Status</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="gst" class="form-label">Login Id</label>
+                                <input class="form-control" name="loginId" id="loginId" placeholder="Login Id"
+                                    required>
+                                <div class="invalid-feedback">Enter Login id.</div>
+                                @error('loginId')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label for="gst" class="form-label">Password</label>
+                                <input class="form-control"
+                                    name="password"
+                                    id="password"
+                                    placeholder="Password"
+                                    value="123456789"
+                                    required>
+                                <div class="invalid-feedback">Enter Password</div>
+                                @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <button class="btn btn-primary mt-3" type="submit">Submit</button>

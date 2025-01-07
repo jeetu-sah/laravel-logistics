@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -24,7 +25,7 @@ class BranchController extends Controller
      */
     public function create()
     {
-    
+
         $data['countries'] =  DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
         $data['states'] =  DB::table('country_states')->get();
 
@@ -48,10 +49,12 @@ class BranchController extends Controller
             'address1' => 'required|string',
             'address2' => 'nullable|string',
             'user_status' => 'required|string',
+            'loginId' => 'required',
+            'password' => 'required',
         ]);
 
         // Create a new Branch instance and save the data
-        Branch::create([
+        $branch = Branch::create([
             'branch_name' => $request->input('branch_name'),
             'branch_code' => $request->input('branch_code'),
             'owner_name' => $request->input('owner_name'),
@@ -65,11 +68,32 @@ class BranchController extends Controller
             'user_status' => $request->input('user_status'),
         ]);
 
-        // Redirect or return a response
-        return redirect('admin/branches')->with([
-            "alertMessage" => true,
-            "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
-        ]);
+        if ($branch) {
+            User::create([
+                'first_name' => $branch->branch_name,
+                'last_name' => $branch->owner_name,
+                'email'=> $request->loginId,
+                'email_verified_at' => Carbon::now(),
+                'mobile' => $branch->contact,
+                'mobile_verified_at' => Carbon::now(),
+                'password' => $request->password,
+                'user_type' => 'branch-user',
+                'user_status' => 'active',
+                'term_and_condition' => 1,
+                'branch_user_id' => $branch->id,
+            ]);
+            // Redirect or return a response
+            return redirect('admin/branches')->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
+            ]);
+            
+        } else {
+            return redirect('admin/branches')->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
+            ]);
+        }
     }
 
     public function list(Request $request)
@@ -131,7 +155,7 @@ class BranchController extends Controller
         return view('admin.branch.edit', $data);
     }
 
-   
+
     /**
      * Remove the specified resource from storage.
      */

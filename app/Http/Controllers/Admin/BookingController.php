@@ -117,8 +117,7 @@ class BookingController extends Controller
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
-                // echo "<pre>";
-                // print_r($booking->id);exit;
+               
                 $row = [];
                 if ($request->bilti_list_type === 'challan') {
                     $row['sn'] = '<div class="form-check">
@@ -126,7 +125,7 @@ class BookingController extends Controller
                                             <label class="form-check-label" for="exampleCheck1"></label>
                                         </div>';
                 } else {
-                    $row['sn'] = $start + $index + 1; // Corrected SN to start from the current page's start index
+                    $row['sn'] = $start + $index + 1;
                 }
 
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
