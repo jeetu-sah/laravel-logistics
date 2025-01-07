@@ -45,13 +45,14 @@ class LoginController extends BaseController
              'email.email' => 'Please enter a valid email address.',
              'password.required' => 'Password is required.',
          ]);
-
+         
          // Step 2: Attempt to find the admin in the database
          $user = User::where('email', $request->email)->first();
-     
+        
          if ($user != NULL) {
             if($user->user_status == 'active'){
 				if(Hash::check($request->password, $user->password)){
+                    
 					$remember = $request->remeber_me;
                     // $role = $user->user_type;
                     

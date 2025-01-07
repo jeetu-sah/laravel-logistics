@@ -8,7 +8,7 @@
                 <div class="col-sm-6">
                     <a href="{{ url('admin/branches') }}"
                         class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-                            class=" fa-sm text-white-50"></i> Branch List</a>
+                            class="fa-sm text-white-50"></i> Branch List</a>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
