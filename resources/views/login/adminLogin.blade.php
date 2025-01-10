@@ -25,7 +25,7 @@
         <div class="login-logo">
             <a href="{{ url('/login') }}"><b>Logistics </b></a>
         </div>
-        <!-- /.login-logo -->
+
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -35,11 +35,12 @@
             </ul>
         </div>
         @endif
+
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
                 @if(Session::has('msg'))
-                {!!  Session::get("msg") !!}
+                {!! Session::get("msg") !!}
                 @endif
                 <form action="{{ url('login') }}" method="POST">
                     @csrf
