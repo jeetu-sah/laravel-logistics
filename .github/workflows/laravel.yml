@@ -1,22 +1,5 @@
-name: Laravel
-
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
-
-jobs:
-  steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
-  DeployProd:
-    name: Deploy to Production
-    if: github.event.name == 'pull_request'
-    runs-on: ubuntu-latest
-    environment: 
-      name: Production 
-      url: https://vikaslogistic.in
-
-    
-
-    
+    branches: [ main ]
