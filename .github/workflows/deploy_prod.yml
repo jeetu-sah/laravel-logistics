@@ -1,0 +1,25 @@
+name: Deploy Prod
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "config/**"
+      - "database/**"
+      - "routes/**"
+      - "resources/**"
+      - "tests/**"
+jobs:
+  deploy:
+    name: Deploy Prod
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to Prod
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ secrets.USER }}
+          host: ${{ secrets.HOST }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
+          script: "cd /var/www/project &&  sudo sh deploy.sh"
