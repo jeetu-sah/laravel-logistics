@@ -8,13 +8,12 @@ on:
 
 jobs:
   DeployProd:
-	name: Deploy to Production
- 	if: github.event.name == 'pull_request'
-	needs: [Build]
-	runs-on: ubuntu-latest
-	environment: 
-		name: Development 
-		url: https://vikaslogistic.in
+    name: Deploy to Production
+    if: github.event.name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: 
+      name: Production 
+      url: https://vikaslogistic.in
 
     
 
