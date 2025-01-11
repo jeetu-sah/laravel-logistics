@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  DeployProd
+  Deploy Production
 	name: Deploy to prod
 	if: github.event.name == 'pull_request'
 	needs: [Build]
