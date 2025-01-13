@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+
 class BookingController extends Controller
 {
     /**
@@ -26,7 +26,7 @@ class BookingController extends Controller
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        $totalRecord = Booking::count();
+        $totalRecord = Booking::where('status', 1)->count();
         $bookingQuery = Booking::query();
         $bookingQuery->where('consignor_branch_id', Auth::user()->id);
         $bookingQuery->orWhere('consignee_branch_id', Auth::user()->id);
@@ -35,7 +35,7 @@ class BookingController extends Controller
                 ->orWhere('consignor_name', 'like', "%$search%")
                 ->orWhere('consignee_name', 'like', "%$search%");
         }
-        $bookings = $bookingQuery->skip($start)->take($limit)->get();
+        $bookings = $bookingQuery->skip($start)->take($limit)->where('status', 1)->get();
 
         $rows = [];
         if ($bookings->count() > 0) {
@@ -80,7 +80,8 @@ class BookingController extends Controller
 
 
                 // Format the creation date
-                $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y  h:i:s');
+                $row['created_at'] = date('d-m-Y', strtotime($booking->created_at));
+
 
                 // Append row to the array
                 $rows[] = $row;
@@ -121,7 +122,7 @@ class BookingController extends Controller
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
-               
+
                 $row = [];
                 if ($request->bilti_list_type === 'challan') {
                     $row['sn'] = '<div class="form-check">
@@ -202,6 +203,7 @@ class BookingController extends Controller
 
     public function paid_booking(Request $request)
     {
+        // dd($request->all());
         // Validate the incoming request data
         $request->validate([
             // Consignor
@@ -226,11 +228,9 @@ class BookingController extends Controller
             'no_of_artical' => 'required|integer',
             'actual_weight' => 'required|numeric',
             'packing_type' => 'required|string',
-            'transhipmen_one' => 'nullable|exists:branches,id',
-            'transhipmen_two' => 'nullable|exists:branches,id',
-            'transhipment_three' => 'nullable|exists:branches,id',
-            // Bills
             'good_of_value' => 'required|numeric',
+            // Bills
+            
             'fov_amount' => 'required|numeric',
             'freight_amount' => 'required|numeric',
             'os_amount' => 'nullable|numeric',
@@ -247,8 +247,9 @@ class BookingController extends Controller
         $lastBilti = DB::table('bookings')->latest('id')->value('bilti_number');
         $nextBiltiNumber = $this->generateBiltiNumber($lastBilti);
 
+
         // Insert into the database
-        Booking::insert([
+        $bookingId = DB::table('bookings')->insertGetId([
             // consignor
             'bilti_number' => $nextBiltiNumber,
             'consignor_branch_id' => $request->consignor_branch_id,
@@ -272,28 +273,31 @@ class BookingController extends Controller
             'no_of_artical' => $request->no_of_artical,
             'actual_weight' => $request->actual_weight,
             'packing_type' => $request->packing_type,
+            'good_of_value' => $request->good_of_value,
             'transhipmen_one' => $request->transhipmen_one,
             'transhipmen_two' => $request->transhipmen_two,
             'transhipment_three' => $request->transhipment_three,
             // bills
-            'good_of_value' => $request->good_of_value,
-            'fov_amount' => $request->fov_amount,
+            
             'freight_amount' => $request->freight_amount,
-            'os_amount' => $request->os_amount,
-            'transhipmen_one_amount' => $request->transhipmen_one_amount,
-            'transhipmen_two_amount' => $request->transhipmen_two_amount,
-            'loading_charge_amount' => $request->loading_charge_amount,
-            'transhipment_three_amount' => $request->transhipment_three_amount,
+            'fov_amount' => $request->fov_amount,
+            'loading_charge_amount' => $request->hamali,
+            'bilti_charges' => $request->bilti_charges,
             'misc_charge_amount' => $request->misc_charge_amount,
             'other_charge_amount' => $request->other_charge_amount,
             'grand_total_amount' => $request->grand_total_amount,
-            'created_at' => date('d-m-y'),
+            'created_at' => date('Y-m-d'),
+            'status' => '1'
         ]);
 
-        return redirect('admin/bookings')->with([
-            "alertMessage" => true,
-            "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
-        ]);
+
+        // Redirect to the specified route with the ID
+        return redirect()->route('bookings.bilti', ['id' => $bookingId]);
+
+        // return redirect('admin/bookings')->with([
+        //     "alertMessage" => true,
+        //     "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
+        // ]);
     }
 
 

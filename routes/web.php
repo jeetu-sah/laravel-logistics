@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\ChallanController;
+use App\Http\Controllers\Admin\DeliveryController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,6 +61,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
 
 
+
         // Define the route for the bilti view
         Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
 
@@ -79,18 +81,27 @@ Route::group(['middleware' => ['auth']], function () {
 
         //challan routes
         // In routes/web.php
-        //  Route::get('challans/{challan_number}', [ChallanController::class, 'show']);
-
         Route::get('/challans', [ChallanController::class, 'index']);
         Route::get('/challans/list', [ChallanController::class, 'list']);
         Route::get('/challans/create', [ChallanController::class, 'create']);
         Route::post('/challans/create', [ChallanController::class, 'store']);
+        Route::get('challans/{id}', [ChallanController::class, 'show']);
 
 
-
+        Route::post('/booking/recived', [ChallanController::class, 'recived']);
 
 
         Route::get('admin/article/create', [ArticleController::class, 'index']);
+
+        // delivery 
+
+        Route::get('delivery', [DeliveryController::class, 'index']);
+        Route::get('delivery/list', [DeliveryController::class, 'list']);
+        Route::get('delivery/ready-to-deliver/{id}', action: [DeliveryController::class, 'ready_to_deliver']);
+        Route::post('delivery/deliverd', action: [DeliveryController::class, 'store']);
+        Route::get('admin/delivery/delivered/view/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.deliverd.view');
+
+
     });
 
     Route::prefix('branch-user/')->group(function () {

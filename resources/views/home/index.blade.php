@@ -436,12 +436,12 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image3.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/employee-images/aman.jpg') }}" alt="" class="img-fluid">
                         </div>
 
-                        <p class="air-freight">Full Name</p>
-                        <p class="lightblack">Designation.</p>
-                        <div class="read-more">
+                        <p class="air-freight">Aman</p>
+                        {{-- <p class="lightblack">Designation.</p> --}}
+                        {{-- <div class="read-more">
                             <div class="share">
                                 <i class="fa-solid fa-share" aria-hidden="true"></i>
                                 <span class="d-flex">
@@ -450,6 +450,54 @@
                                     <a href=""><i class="fa-brands fa-instagram"></i></a>
                                 </span>
                             </div>
+                        </div> --}}
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mt-5 col-sm-12">
+                <div class="p-3 our-service">
+                    <div>
+                        <div class="box-overflow">
+                            <img src="{{ asset('site/img/employee-images/aniketsoni.jpg') }}" alt="" class="img-fluid">
+                        </div>
+
+                        <p class="air-freight">Aniket Soni</p>
+                        {{-- <p class="lightblack">Designation.</p> --}}
+                        {{-- <div class="read-more">
+                            <div class="share">
+                                <i class="fa-solid fa-share" aria-hidden="true"></i>
+                                <span class="d-flex">
+                                    <a href=""><i class="fa-brands fa-facebook-f"></i></a>
+                                    <a href=""><i class="fa-brands fa-twitter"></i></a>
+                                    <a href=""><i class="fa-brands fa-instagram"></i></a>
+                                </span>
+                            </div>
+                        </div> --}}
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mt-5 col-sm-12">
+                <div class="p-3 our-service">
+                    <div>
+                        <div class="box-overflow">
+                            <img src="{{ asset('site/img/employee-images/asrafali.jpg') }}" alt="" class="img-fluid">
+                        </div>
+
+                        <p class="air-freight">Asraf ali</p>
+                        {{-- <p class="lightblack">Designation.</p> --}}
+                        <div class="read-more">
+                            {{-- <div class="share">
+                                <i class="fa-solid fa-share" aria-hidden="true"></i>
+                                <span class="d-flex">
+                                    <a href=""><i class="fa-brands fa-facebook-f"></i></a>
+                                    <a href=""><i class="fa-brands fa-twitter"></i></a>
+                                    <a href=""><i class="fa-brands fa-instagram"></i></a>
+                                </span>
+                            </div> --}}
                         </div>
 
                     </div>
@@ -460,20 +508,20 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image9.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/employee-images/kaptan.jpg') }}" alt="" class="img-fluid">
                         </div>
 
-                        <p class="air-freight">Full Name</p>
-                        <p class="lightblack">Designation.</p>
+                        <p class="air-freight">Kaptan</p>
+                        {{-- <p class="lightblack">Designation.</p> --}}
                         <div class="read-more">
-                            <div class="share">
+                            {{-- <div class="share">
                                 <i class="fa-solid fa-share" aria-hidden="true"></i>
                                 <span class="d-flex">
                                     <a href=""><i class="fa-brands fa-facebook-f"></i></a>
                                     <a href=""><i class="fa-brands fa-twitter"></i></a>
                                     <a href=""><i class="fa-brands fa-instagram"></i></a>
                                 </span>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>
@@ -484,20 +532,20 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image10.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/employee-images/pintusingh.jpg') }}" alt="" class="img-fluid">
                         </div>
 
-                        <p class="air-freight">Full Name</p>
-                        <p class="lightblack">Designation.</p>
+                        <p class="air-freight">Pintu Singh</p>
+                        {{-- <p class="lightblack">Designation.</p> --}}
                         <div class="read-more">
-                            <div class="share">
+                            {{-- <div class="share">
                                 <i class="fa-solid fa-share" aria-hidden="true"></i>
                                 <span class="d-flex">
                                     <a href=""><i class="fa-brands fa-facebook-f"></i></a>
                                     <a href=""><i class="fa-brands fa-twitter"></i></a>
                                     <a href=""><i class="fa-brands fa-instagram"></i></a>
                                 </span>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>
@@ -508,20 +556,20 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image11.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/employee-images/unknown.jpg') }}" alt="" class="img-fluid">
                         </div>
 
                         <p class="air-freight">Full Name</p>
-                        <p class="lightblack">Designation.</p>
+                        {{-- <p class="lightblack">Designation.</p> --}}
                         <div class="read-more">
-                            <div class="share">
+                            {{-- <div class="share">
                                 <i class="fa-solid fa-share" aria-hidden="true"></i>
                                 <span class="d-flex">
                                     <a href=""><i class="fa-brands fa-facebook-f"></i></a>
                                     <a href=""><i class="fa-brands fa-twitter"></i></a>
                                     <a href=""><i class="fa-brands fa-instagram"></i></a>
                                 </span>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>
