@@ -69,9 +69,7 @@
                 <form action="{{ url('admin/challans/create') }}" method="POST" id="challanForm">
                     @csrf
                     <div class="card-body">
-                        <button type="submit" style="margin-top:8px;" class="btn btn-primary" id="openModalBtn">
-                            <i class="nav-icon fas fa-save"></i>&nbsp;Save
-                        </button>
+                        
                         <div class="row">
 
                             <div class="col-md-4">
@@ -139,6 +137,9 @@
                                         <!-- Data will be dynamically populated by DataTable -->
                                     </tbody>
                                 </table>
+                                <button type="submit" style="margin-top:8px;" class="btn btn-primary float-right" id="openModalBtn">
+                                    <i class="nav-icon fas fa-save"></i>&nbsp;Save & Print
+                                </button>
                             </div>
                         </div>
                     </div>

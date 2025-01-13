@@ -65,7 +65,7 @@
     }
 
     .font24 {
-        font-size: 24px;
+        font-size: 20px;
     }
 
     .td {
@@ -85,18 +85,45 @@
     }
 
     .address {
-        font-size: 40px;
-        padding-left: 10rem;
+        font-size: 30px;
+        /* padding-left: 10rem; */
         font-weight: color;
         font-weight: bold;
         color: #000;
-        margin-top: 28px;
+        /* margin-top: 28px; */
 
     }
 </style>
+<style>
+    /* Add your print-specific CSS here */
+    @media print {
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .no-print {
+            display: none;
+        }
+    }
+
+    /* @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        width: 210mm;
+        height: 297mm;
+        margin: 20mm;
+    } */
+</style>
 
 <body>
-    <div class="container header-color" >
+    <p class="no-print">
+        <a href="{{ url('admin/bookings') }}" class="btn btn-primary">Go Back</a>
+        <button onclick="window.print()" class="btn btn-danger">Print</button>
+    </p>
+    <div class="container header-color">
         <table class="table-head">
             <tbody>
                 <tr class="header-color">
@@ -113,13 +140,12 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        CIN:G3011RJ2013PTC042841
-                                    </td>
-                                    <td>
+                                        CIN:G3011RJ2013PTC042841<br>
                                         (Sole lincencee:U.P.S.R.T.C., Uttar Pradesh & R.S.R.T.C Deluxe Depol Rajasthan )
                                     </td>
+
                                 </tr>
-                               
+
                             </tbody>
                         </table>
                         <hr>
@@ -141,7 +167,7 @@
                             <tr class="header-color">
                                 <td><strong> From: {{ $consignorCity }}</strong> </td>
                                 <td><strong> To: {{ $consigneeCity }}</strong></td>
-                                <td><strong> KM:</strong> 513</td>
+                                <td><strong> KM:</strong> </td>
                                 <td><strong> Offline Number:</strong> 88403 54461</td>
                                 <td><strong> Date:</strong> {{ $booking->created_at }}</td>
                                 <td colspan="2"><strong> Office Copy</strong></td>
@@ -175,7 +201,7 @@
                                                                     <td class="p-2">
                                                                         <table border="2">
                                                                             <tbody>
-                                                                                <tr >
+                                                                                <tr>
                                                                                     <td class="text-center"> CONSIGNOR
                                                                                     </td>
                                                                                 </tr>
@@ -309,45 +335,29 @@
                                                     <th> <span class="flaotRight">Amount(Rs.)</span> </th>
                                                 </tr>
                                                 <tr>
-                                                    <td>Goods of value</td>
-                                                    <td><span class="flaotRight">{{ $booking->good_of_value }}</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>fov amount</td>
-                                                    <td><span class="flaotRight">{{ $booking->fov_amount }}</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>freight amount</td>
+                                                    <td>Freight Amount</td>
                                                     <td><span class="flaotRight">{{ $booking->freight_amount }}</span>
                                                     </td>
                                                 </tr>
+                                                
                                                 <tr>
-                                                    <td>OS Amount</td>
-                                                    <td><span class="flaotRight">{{ $booking->os_amount }}</span></td>
+                                                    <td>Fov Amount</td>
+                                                    <td><span class="flaotRight">{{ $booking->fov_amount }}</span></td>
                                                 </tr>
+                                               
+                                              
+                                              
+                                               
                                                 <tr>
-                                                    <td>Transshipment-1</td>
-                                                    <td><span
-                                                            class="flaotRight">{{ $booking->transhipmen_one_amount }}</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Transshipment-2</td>
-                                                    <td><span
-                                                            class="flaotRight">{{ $booking->transhipmen_two_amount }}</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Transshipment-3</td>
-                                                    <td><span
-                                                            class="flaotRight">{{ $booking->transhipmen_three_amount }}</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Loading Charges</td>
+                                                    <td>Hamali Charges</td>
                                                     <td><span
                                                             class="flaotRight">{{ $booking->loading_charge_amount }}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Bilty Charges</td>
+                                                    <td><span
+                                                            class="flaotRight">{{ $booking->bilti_charges }}</span>
                                                     </td>
                                                 </tr>
 
@@ -372,9 +382,9 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Grand Total In words</th>
-                                                    <th class="font18">
+                                                    <th class="font15">
                                                         <span
-                                                            class="floatRight">{{ numberToWords($booking->grand_total_amount) }}
+                                                            class="float-right">{{ numberToWords($booking->grand_total_amount) }}
                                                             Only</span>
                                                     </th>
                                                 </tr>

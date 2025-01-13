@@ -199,11 +199,11 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="{{ url('admin/delevery') }}"
-                        class="nav-link {{ request()->is('admin/delevery') ? 'active' : '' }}">
+                    <a href="{{ url('admin/delivery ') }}"
+                        class="nav-link {{ request()->is('admin/delivery ') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>
-                            Delevery
+                            delivery 
                         </p>
                     </a>
                 </li>

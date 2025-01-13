@@ -51,20 +51,8 @@
 
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label required for="misc_charge">Dest Pin code</label>
-                                                <input type="text" class="form-control" name="dest_pin_code"
-                                                    placeholder="Dest Pin code">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="misc_charge">Services Line</label>
-                                                <input required type="text" class="form-control" name="services_line"
-                                                    placeholder="Services Line">
-                                            </div>
-                                        </div>
+                                        
+                                       
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="misc_charge">No Of Pkg</label>
@@ -279,7 +267,7 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a> --}}
-                            <input type="submit" value="Save Booking" class="btn btn-success float-right">
+                            <input type="submit" value="Save & Print" class="btn btn-success float-right">
                         </div>
                     </div>
                 </form>

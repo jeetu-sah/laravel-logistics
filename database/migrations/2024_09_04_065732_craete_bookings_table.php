@@ -61,8 +61,8 @@ return new class extends Migration {
             $table->decimal('grand_total_amount', 10, 2)->nullable();
 
             // Additional Fields
-            $table->tinyInteger('booking_type')->default(1); // 1: Paid, 2: Unpaid, etc.
-            $table->tinyInteger('status')->default(1); // 1: Active, 0: Inactive
+            $table->tinyInteger('booking_type')->default(1); 
+            $table->tinyInteger('status')->default(1); 
             $table->timestamps();
         });
     }
