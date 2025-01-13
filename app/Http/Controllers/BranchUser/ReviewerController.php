@@ -172,7 +172,7 @@ class ReviewerController extends Controller
         ]);
         $users = $usersQuery->skip($start)->take($limit)->get();
 
-        $row = [];
+        $rows = [];
         if ($users->count() > 0) {
             $i = 1;
             foreach ($users as $user) {

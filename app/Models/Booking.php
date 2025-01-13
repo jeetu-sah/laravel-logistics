@@ -14,6 +14,11 @@ class Booking extends Model
     // Specify the table name
     protected $table = 'bookings';
 
+    const BOOKED = 1;
+    const DISPATCH = 2;
+    const ACCEPT = 3;
+    const DELIVERED_TO_CLIENT = 4;
+
     // Specify the primary key (if it's not 'id')
     protected $primaryKey = 'id';
 
@@ -73,6 +78,9 @@ class Booking extends Model
         'other_charge_amount' => 'decimal:2',
         'grand_total_amount' => 'decimal:2',
     ];
+   
+
+
 
     // Define the relationships if there are any
     public function consignorBranch()
