@@ -191,7 +191,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/challans') }}" class="nav-link {{ request()->is('admin/challans') ? 'active' : '' }}">
+                            <a href="{{ url('admin/challans') }}" class="nav-link {{ request()->is('admin/challans') ||  request()->is('admin/challans')  ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Challan List</p>
                             </a>
@@ -199,9 +199,9 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="{{ url('admin/delivery ') }}"
-                        class="nav-link {{ request()->is('admin/delivery ') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-cog"></i>
+                    <a href="{{ url('admin/delivery') }}"
+                        class="nav-link {{ request()->is('admin/delivery') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-edit"></i>
                         <p>
                             delivery 
                         </p>
