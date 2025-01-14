@@ -60,13 +60,14 @@
                     </div>
                 </div>
 
-                
+
                 <div class="card-body">
 
                     <div class="row">
-                        <form id="bookingForm" action="{{ url('admin/booking/recived') }}" method="post" enctype="multipart/form-data">
+                        <form id="bookingForm" action="{{ url('admin/booking/recived') }}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
-                            <input  type="hidden" value="{{  $bookings[0]->chalanId }}" name="chalan_id">
+                            <input type="hidden" value="{{ $bookings[0]->chalanId }}" name="chalan_id">
                             <div class="table-responsive ">
                                 <table id="example" class="table table-striped" style="width:100%">
                                     <thead>
@@ -99,7 +100,7 @@
                                         @foreach ($bookings as $booking)
                                             <tr>
                                                 <td>{{ $i++ }}</td>
-                                                @if (Auth::user()->id == $booking->consignee_branch_id)
+                                                @if (Auth::user()->id == $booking->consignee_branch_id && $bookings[0]->chalanStatus == 'Accept')
                                                     <td>
                                                         <input type="checkbox" class="form-check-input"
                                                             name="selectedBookings[]" value="{{ $booking->id }}">
