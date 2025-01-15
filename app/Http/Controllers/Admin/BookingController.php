@@ -26,16 +26,21 @@ class BookingController extends Controller
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        $totalRecord = Booking::where('status', 1)->count();
+        
+       
         $bookingQuery = Booking::query();
-        $bookingQuery->where('consignor_branch_id', Auth::user()->id);
-        $bookingQuery->orWhere('consignee_branch_id', Auth::user()->id);
+        $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
+        $bookingQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
                 ->orWhere('consignee_name', 'like', "%$search%");
         }
-        $bookings = $bookingQuery->skip($start)->take($limit)->where('status', 1)->get();
+        $bookingQuery->where('status', Booking::BOOKED);
+
+        $totalRecord = $bookingQuery->count();
+
+        $bookings = $bookingQuery->skip($start)->take($limit)->get();
 
         $rows = [];
         if ($bookings->count() > 0) {
@@ -103,9 +108,6 @@ class BookingController extends Controller
 
     public function challanBookingList(Request $request)
     {
-        // echo "<pre>";
-        // print_r($request->all());exit;
-
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
         $totalRecord = Booking::count();

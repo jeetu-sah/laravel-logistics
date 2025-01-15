@@ -69,7 +69,6 @@
 
     <script>
         $(document).ready(function(e) {
-
             new DataTable('#booking-list', {
                 responsive: true,
                 ajax: {
