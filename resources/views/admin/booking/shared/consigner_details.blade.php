@@ -10,12 +10,12 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="form_branch">From</label>
-                        <select class="form-select select2 form-control js-select2"
-                            name="consignor_branch_id" id="form_branch" required>
+                        <select class="form-select select2 form-control js-select2" name="consignor_branch_id"
+                            id="form_branch" required>
                             <option value="">Select Branch Name</option>
                             @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                            </option>
+                                <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -39,11 +39,10 @@
                         <label for="mobileCode">Consignor Mobile</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <input type="hidden"
-                                    value="+91"
-                                    name="consignorMobileCodeFirst"
+                                <input type="hidden" value="+91" name="consignorMobileCodeFirst"
                                     class="mobileNumberCode" />
-                                <button type="button" class="btn btn-default dropdown-toggle mobile-number-code" data-toggle="dropdown" id="consignerMobileNumberCodeFirst">
+                                <button type="button" class="btn btn-default dropdown-toggle mobile-number-code"
+                                    data-toggle="dropdown" id="consignerMobileNumberCodeFirst">
                                     +91
                                 </button>
                                 <div class="dropdown-menu">
@@ -53,8 +52,8 @@
                             </div>
                             <!-- /btn-group -->
                             <input required type="text" class="form-control" name="phone_number_1"
-                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                minlength="10" maxlength="10" placeholder="Phone Number 1">
+                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)" minlength="10"
+                                maxlength="10" placeholder="Phone Number 1">
                         </div>
                     </div>
                 </div>
@@ -64,13 +63,11 @@
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <input type="hidden" value="+91"
-                                    name="consignorMobileCodeTwo"
+                                <input type="hidden" value="+91" name="consignorMobileCodeTwo"
                                     class="mobileNumberCode" />
 
                                 <button type="button" class="btn btn-default dropdown-toggle mobile-number-code"
-                                    data-toggle="dropdown"
-                                    id="consignorMobileNumberCodeSecond">
+                                    data-toggle="dropdown" id="consignorMobileNumberCodeSecond">
                                     +91
                                 </button>
                                 <div class="dropdown-menu">
@@ -80,16 +77,15 @@
                             </div>
                             <!-- /btn-group -->
                             <input type="text" class="form-control" name="phone_number_2"
-                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                minlength="10" maxlength="10" placeholder="Phone Number 2">
+                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)" minlength="10"
+                                maxlength="10" placeholder="Phone Number 2">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="misc_charge">Consignor Email</label>
-                        <input required type="email" class="form-control" name="email"
-                            placeholder="Email">
+                        <input required type="email" class="form-control" name="email" placeholder="Email">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -103,8 +99,7 @@
                     <div class="form-group">
 
                         <label for="misc_charge">Pin Code</label>
-                        <input required type="text" class="form-control" name="pin_code"
-                            placeholder="Pin code">
+                        <input required type="text" class="form-control" name="pin_code" placeholder="Pin code">
                     </div>
                 </div>
             </div>
@@ -125,13 +120,13 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="misc_charge">Destination</label>
-                        <select class="form-select select2 form-control js-select2"
-                            name="consignee_branch_id" id="designation" required>
+                        <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
+                            id="designation" required>
                             <option value="">Select Branch Name</option>
                             @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">
-                                {{ $branchList->branch_name }}
-                            </option>
+                                <option value="{{ $branchList->id }}">
+                                    {{ $branchList->branch_name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -155,12 +150,10 @@
                         <label for="misc_charge">Consignee Mobile</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <input type="hidden" value="+91"
-                                    name="consignee_mobile_code_first"
+                                <input type="hidden" value="+91" name="consignee_mobile_code_first"
                                     class="mobileNumberCode" />
                                 <button type="button" class="btn btn-default dropdown-toggle mobile-number-code"
-                                    data-toggle="dropdown"
-                                    id="consignorMobileNumberCodeSecond">
+                                    data-toggle="dropdown" id="consignorMobileNumberCodeSecond">
                                     +91
                                 </button>
                                 <div class="dropdown-menu">
@@ -169,10 +162,9 @@
                                 </div>
                             </div>
                             <!-- /btn-group -->
-                            <input required type="text" class="form-control"
-                                name="consignee_phone_number_1"
-                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                minlength="10" maxlength="10" placeholder="Phone Number 1">
+                            <input required type="text" class="form-control" name="consignee_phone_number_1"
+                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)" minlength="10"
+                                maxlength="10" placeholder="Phone Number 1">
                         </div>
                     </div>
                 </div>
@@ -181,12 +173,10 @@
                         <label for="misc_charge">Consignee Mobile 2</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <input type="hidden" value="+91"
-                                    name="consignee_mobile_code_second"
+                                <input type="hidden" value="+91" name="consignee_mobile_code_second"
                                     class="mobileNumberCode" />
                                 <button type="button" class="btn btn-default dropdown-toggle mobile-number-code"
-                                    data-toggle="dropdown"
-                                    id="consignorMobileNumberCodeSecond">
+                                    data-toggle="dropdown" id="consignorMobileNumberCodeSecond">
                                     +91
                                 </button>
                                 <div class="dropdown-menu">
@@ -195,10 +185,9 @@
                                 </div>
                             </div>
                             <!-- /btn-group -->
-                            <input type="text" class="form-control"
-                                name="consignee_phone_number_2"
-                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                minlength="10" maxlength="10" placeholder="Phone Number 2">
+                            <input type="text" class="form-control" name="consignee_phone_number_2"
+                                onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)" minlength="10"
+                                maxlength="10" placeholder="Phone Number 2">
                         </div>
 
                     </div>
@@ -206,23 +195,23 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="misc_charge">Consignee Email</label>
-                        <input required type="email" class="form-control"
-                            name="consignee_email" placeholder="Email">
+                        <input required type="email" class="form-control" name="consignee_email"
+                            placeholder="Email">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="misc_charge">Consignee GST No.</label>
-                        <input required type="text" class="form-control"
-                            name="consignee_gst_number" placeholder="GST Number">
+                        <input required type="text" class="form-control" name="consignee_gst_number"
+                            placeholder="GST Number">
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
 
                         <label for="misc_charge"> Pin Code</label>
-                        <input required type="text" class="form-control"
-                            name="consignee_pin_code" placeholder="Pin code">
+                        <input required type="text" class="form-control" name="consignee_pin_code"
+                            placeholder="Pin code">
                     </div>
                 </div>
             </div>

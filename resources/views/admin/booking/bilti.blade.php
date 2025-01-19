@@ -139,10 +139,10 @@
 
                                 </tr>
                                 <tr>
-                                    <td>
+                                    {{-- <td>
                                         CIN:G3011RJ2013PTC042841<br>
                                         (Sole lincencee:U.P.S.R.T.C., Uttar Pradesh & R.S.R.T.C Deluxe Depol Rajasthan )
-                                    </td>
+                                    </td> --}}
 
                                 </tr>
 
@@ -154,11 +154,16 @@
                     <td width="15%"></td>
                 </tr>
                 <tr class="header-color">
-                    <td colspan="3">
+                    <td colspan="2">
                         <div>
                             <p class="address">
                                 {{ $consignorCity }} To: {{ $consigneeCity }} ({{ $booking->created_at }})</p>
                         </div>
+                    </td>
+                    <td colspan="1">
+                        <div>
+                            <p class="" style="font-size: 20px;">
+                                 <b>LR No.- {{ $booking->bilti_number }}</b> </p>
                     </td>
                 </tr>
                 <tr class="header-color">
@@ -168,7 +173,7 @@
                                 <td><strong> From: {{ $consignorCity }}</strong> </td>
                                 <td><strong> To: {{ $consigneeCity }}</strong></td>
                                 <td><strong> KM:</strong> </td>
-                                <td><strong> Offline Number:</strong> 88403 54461</td>
+                                <td><strong> Offline Bilty No.:</strong> {{ $booking->manual_bilty_number ?: '-' }}</td>
                                 <td><strong> Date:</strong> {{ $booking->created_at }}</td>
                                 <td colspan="2"><strong> Office Copy</strong></td>
                             </tr>
@@ -285,9 +290,7 @@
                                                                         consignor):</td>
                                                                     <td> {{ $booking->packing_type }}</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td class="width65 " colspan="2">Remarks:</td>
-                                                                </tr>
+                                                                
                                                                 <tr>
                                                                     <td class="width65 ">Value Declared by Consignor:
                                                                     </td>
@@ -296,6 +299,14 @@
                                                                 <tr>
                                                                     <td class="width65 ">GSTIN:</td>
                                                                     <td> {{ $booking->gst_number }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="width65 ">Privet Mark</td>
+                                                                    <td> {{ $booking->privet_mark }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="width65 "> Remark</td>
+                                                                    <td> {{ $booking->remark }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="width65 fw-bold" colspan="2">Delivery

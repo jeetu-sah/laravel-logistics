@@ -20,7 +20,7 @@ class UserObserver
             $employeeIDPrefix = $settings?->prefix_employee_id;
         }
         $userId = $employeeIDPrefix . '' . $user->id;
-      
+
 
         if ($user->user_type == 'admin') {
             $user->assignRole('admin');

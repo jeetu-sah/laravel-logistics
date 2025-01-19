@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\ChallanController;
 use App\Http\Controllers\Admin\DeliveryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InquiryController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -32,6 +33,10 @@ Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
 });
+Route::get('/get-districts-user/{stateId}', [HomeController::class, 'getDistricts']);
+Route::post('/inquiry', [InquiryController::class, 'store']);
+
+
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', function () {

@@ -58,11 +58,14 @@ class AdminController extends Controller
 
     public function getDistricts(Request $request, $stateId)
     {
+      
         // Using the query builder to fetch districts based on the state ID
         $districts = DB::table('state_cities')
             ->where('state_id', $stateId)
             ->get(['id', 'name']);
-
+        // echo "<pre>";
+        // print_r($districts);
+        // exit;
         // Return the districts as a JSON response
         return response()->json($districts);
     }

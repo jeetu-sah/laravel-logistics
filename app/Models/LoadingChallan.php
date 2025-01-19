@@ -20,6 +20,7 @@ class LoadingChallan extends Model
         'driverName',
         'driverMobile',
         'locknumber',
+        'coLoder',
         'created_by',
         'deleted_at',
         'created_at',

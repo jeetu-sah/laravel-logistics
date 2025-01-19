@@ -26,8 +26,8 @@ class BookingController extends Controller
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        
-       
+
+
         $bookingQuery = Booking::query();
         $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
         $bookingQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
@@ -40,7 +40,7 @@ class BookingController extends Controller
 
         $totalRecord = $bookingQuery->count();
 
-        $bookings = $bookingQuery->skip($start)->take($limit)->get();
+        $bookings = $bookingQuery->skip($start)->take($limit)  ->orderBy('created_at', 'desc')->get();
 
         $rows = [];
         if ($bookings->count() > 0) {
@@ -232,7 +232,7 @@ class BookingController extends Controller
             'packing_type' => 'required|string',
             'good_of_value' => 'required|numeric',
             // Bills
-            
+
             'fov_amount' => 'required|numeric',
             'freight_amount' => 'required|numeric',
             'os_amount' => 'nullable|numeric',
@@ -240,6 +240,10 @@ class BookingController extends Controller
             'misc_charge_amount' => 'nullable|numeric',
             'other_charge_amount' => 'nullable|numeric',
             'grand_total_amount' => 'required|numeric',
+            'manual_bilty_number' => 'required',
+            'invoice_number' => 'required',
+            'privet_mark' => 'required',
+            'remark' => 'required',
         ]);
 
         if ($request->consignor_branch_id == $request->consignee_branch_id) {
@@ -279,8 +283,12 @@ class BookingController extends Controller
             'transhipmen_one' => $request->transhipmen_one,
             'transhipmen_two' => $request->transhipmen_two,
             'transhipment_three' => $request->transhipment_three,
+            'manual_bilty_number' => $request->manual_bilty_number,
+            'invoice_number' => $request->invoice_number,
+            'privet_mark' => $request->privet_mark,
+            'remark' => $request->remark,
             // bills
-            
+
             'freight_amount' => $request->freight_amount,
             'fov_amount' => $request->fov_amount,
             'loading_charge_amount' => $request->hamali,
@@ -288,7 +296,7 @@ class BookingController extends Controller
             'misc_charge_amount' => $request->misc_charge_amount,
             'other_charge_amount' => $request->other_charge_amount,
             'grand_total_amount' => $request->grand_total_amount,
-            'created_at' => date('Y-m-d'),
+            'created_at' => now(),
             'status' => '1'
         ]);
 
