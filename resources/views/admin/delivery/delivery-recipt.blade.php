@@ -148,9 +148,12 @@
                         <hr>
 
                     </td>
-                    <td width="10%">
-
+                    <td width="10%">Recipt Number
+                        {{ $deliveryReceipt->delivery_number }}
                     </td>
+                    {{-- <td width="10%">
+
+                    </td> --}}
                 </tr>
                 <tr class="header-color">
                     <td width="10%">
@@ -280,8 +283,9 @@
 
                                                 <!-- Row 3 -->
                                                 <tr>
-                                                    <td><label for="delivery_station_3">Date Of Booking -
-                                                        </label></td>
+                                                    <td><label for="delivery_station_3">Date Of Booking - {{ \Carbon\Carbon::parse($deliveryReceipt->bookingDate)->format('d-m-Y') }}</label></td>
+
+
                                                     <td><label for="particular_3">Demruge Charges</label></td>
                                                     <td>{{ $deliveryReceipt->demruge_charges }}</td>
                                                 </tr>

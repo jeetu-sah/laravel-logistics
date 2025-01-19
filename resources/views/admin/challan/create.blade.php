@@ -74,7 +74,7 @@
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="busNumber">Bus Number</label>
+                                    <label for="busNumber">Vechile Number</label>
                                     <input type="text" placeholder="Bus Number" class="form-control" id="busNumber"
                                         name="busNumber" required>
                                 </div>
@@ -101,10 +101,17 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label for="locknumber">Select Status</label>
+                                <div class="form-group">
+                                    <label for="co-loder">Co-Loder</label>
+                                    <input type="text" placeholder="Co Loder" class="form-control" id="co-loder"
+                                        name="coLoder" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="status">Select Status</label>
                                 <select class="form-control" >
                                     <option value="">Select Status</option>
-                                    <option value="Dipasture">Dipasture</option>
+                                    <option value="Dispatch">Dispatch</option>
                                     <option value="Pending">Pending</option>
                                    
                                 </select>

@@ -50,6 +50,7 @@ class ChallanController extends Controller
                 'driverName' => $request->driverName,
                 'driverMobile' => $request->driverMobile,
                 'locknumber' => $request->locknumber,
+                'coLoder' => $request->coLoder,
                 'created_by' => Auth::user()->id
             ]);
 
@@ -144,14 +145,14 @@ class ChallanController extends Controller
     {
         $data['title'] = 'Challan List';
         $data['challan_id'] = $id;
-      
+
         // Fetch the challan bookings based on the challan ID
         $challanBookings = LoadingChallanBooking::where('loading_challans_id', $id)
             ->join('loading_challans', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
             ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
             //->where('bookings.status', 2)
             // ->where('loading_challans.status', 'Accept')
-            ->select('loading_challan_booking.*', 'loading_challans.status as chalanStatus','loading_challans.id as chalanId', 'loading_challans.challan_number', 'loading_challans.busNumber', 'loading_challans.driverName', 'loading_challans.driverMobile', 'loading_challans.locknumber', 'loading_challans.created_at') // Include the challan_number field
+            ->select('loading_challan_booking.*', 'loading_challans.status as chalanStatus', 'loading_challans.id as chalanId', 'loading_challans.challan_number', 'loading_challans.busNumber', 'loading_challans.driverName', 'loading_challans.driverMobile', 'loading_challans.locknumber', 'loading_challans.created_at') // Include the challan_number field
             ->get();
         // echo "<pre>";
         // print_r($challanBookings);exit;
@@ -187,10 +188,10 @@ class ChallanController extends Controller
         }
         // echo "<pre>";
         // print_r($bookingDetails);exit;
-    
+
         $data['bookings'] = $bookingDetails;
-        $data['selectAllButtonDisable'] = collect($bookingDetails)->where('status','!=', Booking::ACCEPT);
-      
+        $data['selectAllButtonDisable'] = collect($bookingDetails)->where('status', '!=', Booking::ACCEPT);
+
         //$data['allSelectDisabled'] = $bookingDetails->where()
         return view('admin.challan.delevery-booking', $data);
     }
