@@ -40,7 +40,7 @@ class BookingController extends Controller
 
         $totalRecord = $bookingQuery->count();
 
-        $bookings = $bookingQuery->skip($start)->take($limit)  ->orderBy('created_at', 'desc')->get();
+        $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
 
         $rows = [];
         if ($bookings->count() > 0) {
@@ -240,10 +240,10 @@ class BookingController extends Controller
             'misc_charge_amount' => 'nullable|numeric',
             'other_charge_amount' => 'nullable|numeric',
             'grand_total_amount' => 'required|numeric',
-            'manual_bilty_number' => 'required',
-            'invoice_number' => 'required',
-            'privet_mark' => 'required',
-            'remark' => 'required',
+            'manual_bilty_number' => '',
+            'invoice_number' => '',
+            'privet_mark' => '',
+            'remark' => '',
         ]);
 
         if ($request->consignor_branch_id == $request->consignee_branch_id) {
@@ -283,10 +283,10 @@ class BookingController extends Controller
             'transhipmen_one' => $request->transhipmen_one,
             'transhipmen_two' => $request->transhipmen_two,
             'transhipment_three' => $request->transhipment_three,
-            'manual_bilty_number' => $request->manual_bilty_number,
-            'invoice_number' => $request->invoice_number,
-            'privet_mark' => $request->privet_mark,
-            'remark' => $request->remark,
+            'manual_bilty_number' => $request->manual_bilty_number ?: "NA",
+            'invoice_number' => $request->invoice_number ?: "NA",
+            'privet_mark' => $request->privet_mark ?: "NA",
+            'remark' => $request->remark ?: "NA",
             // bills
 
             'freight_amount' => $request->freight_amount,
@@ -302,16 +302,15 @@ class BookingController extends Controller
 
 
         // Redirect to the specified route with the ID
+        // $url = route('bookings.bilti', );
         return redirect()->route('bookings.bilti', ['id' => $bookingId]);
 
-        // return redirect('admin/bookings')->with([
-        //     "alertMessage" => true,
-        //     "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
-        // ]);
+
     }
 
 
-    private function generateBiltiNumber($lastBiltiNumber)
+
+    private function generateBiltiNumber($lastBiltiNumber): string
     {
         // Extract the numeric part from the last bilti number, if it exists
         if ($lastBiltiNumber) {
@@ -487,6 +486,7 @@ class BookingController extends Controller
 
     public function bilti($id)
     {
+       
         // Fetch the booking data
         $data['booking'] = Booking::findOrFail($id);
 

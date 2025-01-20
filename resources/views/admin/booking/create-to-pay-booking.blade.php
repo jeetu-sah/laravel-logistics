@@ -13,13 +13,16 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active"><b>To Pay Booking</b></li>
+                            <li class="breadcrumb-item active"><b>Paid Booking</b></li>
                         </ol>
                     </div>
 
 
                 </div>
-            </div><!-- /.container-fluid -->
+            </div>
+            <div class="row mb-2">
+                @include('common.notification')
+            </div>
         </section>
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -31,17 +34,13 @@
             </div>
         @endif
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
         <section class="content">
             <div class="container-fluid">
-                <form action="{{ url('admin/booking/to-pay-booking') }}" method="POST">
+                <form action="{{ url('admin/bookings/paid-booking') }}" method="POST">
                     @csrf
                     <div class="row">
                         @include('admin.booking.shared.consigner_details')
+
 
                         <div class="col-md-6">
                             <div class="card card-danger">
@@ -51,36 +50,44 @@
 
                                 <div class="card-body">
                                     <div class="row">
-                                        
-                                       
+
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="misc_charge">No Of Pkg</label>
-                                                <input required type="text" class="form-control" name="no_of_pkg"
-                                                    placeholder="No Of Pkg">
+                                                <label for="misc_charge">No. of Artical</label>
+                                                <input required type="number"
+                                                    onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
+                                                    class="form-control" name="no_of_artical" placeholder="No. of artical">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="misc_charge">Actual weight</label>
-                                                <input required type="text" class="form-control" name="actual_weight"
-                                                    placeholder="Actual weight">
+                                                <label for="misc_charge">Actual Weight</label>
+                                                <input required type="text"
+                                                    onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
+                                                    class="form-control" name="actual_weight" placeholder="Actual weight">
                                             </div>
                                         </div>
 
 
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="misc_charge">Packing Type</label>
+                                                <label for="misc_charge">Contain</label>
                                                 <input required type="text" class="form-control" name="packing_type"
                                                     placeholder="Packing Type">
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="good_of_value">Goods Of Value</label>
+                                                <input required type="number" class="form-control " name="good_of_value"
+                                                    placeholder="₹.00">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 1</label>
                                                 <select class="form-select select2 form-control js-select2"
-                                                    name="transhipmen_one" id="transhipmen_one" >
+                                                    name="transhipmen_one" id="transhipmen_one">
                                                     <option value="">Select Branch Name</option>
                                                     @foreach ($branch as $branchList)
                                                         <option value="{{ $branchList->id }}">
@@ -90,11 +97,11 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 2</label>
                                                 <select class="form-select select2 form-control js-select2"
-                                                    name="transhipmen_two" id="transhipmen_two" >
+                                                    name="transhipmen_two" id="transhipmen_two">
                                                     <option value="">Select Branch Name</option>
                                                     @foreach ($branch as $branchList)
                                                         <option value="{{ $branchList->id }}">
@@ -108,7 +115,7 @@
                                             <div class="form-group">
                                                 <label for="misc_charge">Transhipment 3</label>
                                                 <select class="form-select select2 form-control js-select2"
-                                                    name="transhipment_three" id="transhipment_three" >
+                                                    name="transhipment_three" id="transhipment_three">
                                                     <option value="">Select Branch Name</option>
                                                     @foreach ($branch as $branchList)
                                                         <option value="{{ $branchList->id }}">
@@ -118,6 +125,48 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="row">
+                                            <!-- Manual Bilty Number -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="manual_bilty_number">Offline Bilty Number (OPTIONAL)</label>
+                                                    <input type="text" class="form-control js-select2"
+                                                        placeholder="Manual Bilty Number" name="manual_bilty_number"
+                                                        id="manual_bilty_number">
+                                                </div>
+                                            </div>
+
+                                            <!-- Invoice Number -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="invoice_number">#Invoice Number (Bill Number)
+                                                        (OPTIONAL)</label>
+                                                    <input type="text" class="form-control js-select2"
+                                                        placeholder="Invoice Number" name="invoice_number"
+                                                        id="invoice_number">
+                                                </div>
+                                            </div>
+
+                                            <!-- Remark -->
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="mark">Privet mark</label>
+                                                    <input class="form-control" type="text"
+                                                        placeholder="Add your mark here" name="privet_mark"
+                                                        id="mark" rows="3">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="remark">Remark</label>
+                                                    <textarea class="form-control" placeholder="Add your remarks here" name="remark" id="remark" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
 
                                 </div>
@@ -141,20 +190,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
-                                                    name="freight_amount" placeholder="₹.00">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="os">O.S</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input required type="number" class="form-control bill-input" name="os_amount"
-                                                    placeholder="₹.00">
+                                                <input type="number" class="form-control bill-input"
+                                                    name="freight_amount" value="700" placeholder="₹.00">
                                             </div>
                                         </div>
 
@@ -165,44 +202,33 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input" name="fov_amount"
+                                                <input type="number" class="form-control bill-input" name="fov_amount"
+                                                    placeholder="₹.00">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="os">Hamali Charges</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control bill-input" name="hamali"
                                                     placeholder="₹.00">
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="transhipment">Transhipment</label>
+                                                <label for="loading_charge">Bilty Charge</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
-                                                    name="transhipment_amount" placeholder="₹.00">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="handling_charge">Handling Charge</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
-                                                    name="handling_charge_amount" placeholder="₹.00">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="loading_charge">Loading Charge</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
-                                                    name="loading_charge_amount" placeholder="₹.00">
+                                                <input type="number" class="form-control bill-input"
+                                                    name="bilti_charges" placeholder="₹.00" value="20">
                                             </div>
                                         </div>
 
@@ -213,8 +239,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
-                                                    name="misc_charge_amount" placeholder="₹.00">
+                                                <input type="number" class="form-control bill-input"
+                                                    name="misc_charge_amount" value="00" placeholder="₹.00">
                                             </div>
                                         </div>
 
@@ -225,8 +251,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control bill-input"
-                                                    name="other_charge_amount" placeholder="₹.00">
+                                                <input type="number" class="form-control bill-input"
+                                                    name="other_charge_amount" value="00" placeholder="₹.00">
                                             </div>
                                         </div>
 
@@ -237,7 +263,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input required type="number" class="form-control" name="grand_total_amount"
+                                                <input type="number" class="form-control" name="grand_total_amount"
                                                     id="grand_total_amount" placeholder="₹.00" readonly>
                                             </div>
                                         </div>
@@ -246,22 +272,55 @@
                                 </div>
                             </div>
                         </div>
-
                         <script>
                             function calculateTotal() {
                                 let total = 0;
+
+                                // Get values from inputs
+                                let noOfArtical = parseFloat(document.querySelector('input[name="no_of_artical"]').value) || 0;
+
+                                // O.S = 50 * No of Artical
+                                let oSValue = 20 * noOfArtical;
+                                // Good Of Value = 2000 * No of Artical
+                                let goodOfValue = 2000 * noOfArtical;
+                                let freight_amount = noOfArtical * 700;
+
+                                // Set the O.S amount to the calculated value
+                                document.querySelector('input[name="hamali"]').value = `${oSValue.toFixed(2)}`;
+                                document.querySelector('input[name="freight_amount"]').value = `${freight_amount.toFixed(2)}`;
+                                // Set the Good Of Value
+                                document.querySelector('input[name="good_of_value"]').value = `${goodOfValue.toFixed(2)}`;
+
+                                // Calculate FOV as 3% of Good Of Value
+                                let fov = goodOfValue * 0.03;
+                                document.querySelector('input[name="fov_amount"]').value = `${fov.toFixed(2)}`;
+
+                                // Add O.S value, Good Of Value, and FOV to the total
+
+
+                                // Update total with other bill inputs (if any)
                                 document.querySelectorAll('.bill-input').forEach(input => {
                                     let value = parseFloat(input.value) || 0;
                                     total += value;
                                 });
+
+                                // Set the total to the grand total field
                                 document.getElementById('grand_total_amount').value = `${total.toFixed(2)}`;
                             }
 
+                            // Add event listeners to all inputs to trigger the calculation
                             document.querySelectorAll('.bill-input').forEach(input => {
                                 input.addEventListener('input', calculateTotal);
                             });
-                        </script>
 
+                            // Also add event listener to 'No of Artical' input for change
+                            document.querySelector('input[name="no_of_artical"]').addEventListener('input', calculateTotal);
+
+                            // Trigger calculation on page load
+                            window.addEventListener('DOMContentLoaded', (event) => {
+                                calculateTotal();
+                            });
+                        </script>
                     </div>
 
                     <div class="row mb-3">
@@ -287,15 +346,14 @@
             $('.select2').select2()
         })
 
-        
-    $(document).ready(function() {
-        $(document).on('click', '.dropdown-mobile-code', function(e) {
-            e.preventDefault()
-            const mobileNumberCode = $(this).text();
-            $(this).parent().parent().find('button').text(mobileNumberCode);
-            $(this).parent().parent().find('.mobileNumberCode').val(mobileNumberCode);
+        $(document).ready(function() {
+            $(document).on('click', '.dropdown-mobile-code', function(e) {
+                e.preventDefault()
+                const mobileNumberCode = $(this).text();
+                $(this).parent().parent().find('button').text(mobileNumberCode);
+                $(this).parent().parent().find('.mobileNumberCode').val(mobileNumberCode);
+            });
         });
-    });
     </script>
 @endsection
 

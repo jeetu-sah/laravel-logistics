@@ -138,10 +138,10 @@
                                     <h2>Vikash Logistic Pvt. Ltd.</h2>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    {{-- <td>
                                         CIN: G3011RJ2013PTC042841<br>
                                         (Sole licensee: U.P.S.R.T.C., Uttar Pradesh & R.S.R.T.C Deluxe Depot Rajasthan)
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             </tbody>
                         </table>

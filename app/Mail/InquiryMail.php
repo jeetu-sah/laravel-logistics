@@ -37,7 +37,7 @@ class InquiryMail extends Mailable
 
         // Pass the data to the view
         return $this->view('email.inquiryMail')
-            ->with('inquiry', $this->inquiry) // Pass the inquiry data to the view
-            ->subject('Thank You for Your Submission');
+            ->with(['name' => $this->inquiry['name'], 'email' => $this->inquiry['email']]) // Pass the inquiry data to the view
+            ->subject('Thank You for Your Submission');
     }
 }
