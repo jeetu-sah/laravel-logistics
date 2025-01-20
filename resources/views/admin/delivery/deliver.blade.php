@@ -62,7 +62,7 @@
                                                         {{ $booking->consignor_branch_name }}</label></td>
                                                 <td><label for="particular_1">Freight Charges</label></td>
                                                 <td><input type="number" class="form-control" id="rs_amount_1"
-                                                        value="" required name="freight_charges" placeholder="₹.00"
+                                                     readonly   value="{{ $booking->freight_amount }}" required name="freight_charges" placeholder="₹.00"
                                                         oninput="calculateTotal()"></td>
                                             </tr>
 
@@ -98,7 +98,7 @@
 
                                             <!-- Row 5 (Grand Total) -->
                                             <tr>
-                                                <td><label for="delivery_station_5">Privet Mark</label></td>
+                                                <td><label for="delivery_station_5">Privet Mark - {{ $booking->privet_mark }}</label></td>
                                                 <td><label for="particular_5">Grand Total</label></td>
                                                 <td><input type="number" class="form-control" id="grand_total"
                                                         value="" required name="grand_total" placeholder="₹.00"
@@ -119,13 +119,13 @@
                                     <script>
                                         function calculateTotal() {
                                             // Get values from each input field
-                                            var freightCharges = parseFloat(document.getElementById('rs_amount_1').value) || 0;
+                                            // var freightCharges = parseFloat(document.getElementById('rs_amount_1').value) || 0;
                                             var hamaliCharges = parseFloat(document.getElementById('rs_amount_2').value) || 0;
                                             var demrugeCharges = parseFloat(document.getElementById('rs_amount_3').value) || 0;
                                             var otherCharges = parseFloat(document.getElementById('rs_amount_4').value) || 0;
 
                                             // Calculate grand total
-                                            var grandTotal = freightCharges + hamaliCharges + demrugeCharges + otherCharges;
+                                            var grandTotal =  hamaliCharges + demrugeCharges + otherCharges;
 
                                             // Set the calculated grand total in the grand total field
                                             document.getElementById('grand_total').value = grandTotal.toFixed(2);
@@ -158,14 +158,14 @@
     <script>
         function calculateTotal() {
             // Get values from each input field
-            var freightCharges = parseFloat(document.getElementById('rs_amount_1').value) || 0;
+            // var freightCharges = parseFloat(document.getElementById('rs_amount_1').value) || 0;
             var hamaliCharges = parseFloat(document.getElementById('rs_amount_2').value) || 0;
             var demrugeCharges = parseFloat(document.getElementById('rs_amount_3').value) || 0;
             var otherCharges = parseFloat(document.getElementById('rs_amount_4').value) || 0;
 
 
             // Calculate grand total
-            var grandTotal = freightCharges + hamaliCharges + demrugeCharges + otherCharges;
+            var grandTotal =  hamaliCharges + demrugeCharges + otherCharges;
 
             // Set the calculated grand total in the grand total field
             document.getElementById('grand_total').value = grandTotal.toFixed(2);

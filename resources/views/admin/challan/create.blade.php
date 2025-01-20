@@ -104,7 +104,7 @@
                                 <div class="form-group">
                                     <label for="co-loder">Co-Loder</label>
                                     <input type="text" placeholder="Co Loder" class="form-control" id="co-loder"
-                                        name="coLoder" required>
+                                        name="coLoder" >
                                 </div>
                             </div>
                             <div class="col-md-4">
