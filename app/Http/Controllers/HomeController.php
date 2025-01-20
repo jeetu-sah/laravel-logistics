@@ -18,7 +18,7 @@ class HomeController extends Controller
 
     public function getDistricts(Request $request, $stateId)
     {
-
+        
         // Using the query builder to fetch districts based on the state ID
         $districts = DB::table('state_cities')
             ->where('state_id', $stateId)

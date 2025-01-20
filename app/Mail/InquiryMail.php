@@ -15,7 +15,7 @@ class InquiryMail extends Mailable
      * Create a new message instance.
      *
      * @param array $inquiry
-     */
+    */
     public function __construct($inquiry)
     {
         // Store the inquiry data
