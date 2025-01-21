@@ -214,7 +214,7 @@ class BookingController extends Controller
             'address' => 'required',
             'phone_number_1' => 'required',
             'phone_number_2' => 'nullable',
-            'email' => 'required|email',
+            'email' => 'required',
             'gst_number' => 'required',
             'pin_code' => 'required',
             // Consignee
@@ -223,7 +223,7 @@ class BookingController extends Controller
             'consignee_address' => 'required',
             'consignee_phone_number_1' => 'required',
             'consignee_phone_number_2' => 'nullable',
-            'consignee_email' => 'required|email',
+            'consignee_email' => 'required',
             'consignee_gst_number' => 'required',
             'consignee_pin_code' => 'required',
             // Other Details
@@ -240,10 +240,10 @@ class BookingController extends Controller
             'misc_charge_amount' => 'nullable|numeric',
             'other_charge_amount' => 'nullable|numeric',
             'grand_total_amount' => 'required|numeric',
-            'manual_bilty_number' => '',
-            'invoice_number' => '',
-            'privet_mark' => '',
-            'remark' => '',
+            'manual_bilty_number' => 'required',
+            'invoice_number' => 'required',
+            'privet_mark' => 'required',
+            'remark' => 'required',
         ]);
 
         if ($request->consignor_branch_id == $request->consignee_branch_id) {
@@ -262,27 +262,27 @@ class BookingController extends Controller
             'consignor_name' => $request->consignor_name,
             'address' => $request->address,
             'phone_number_1' => $request->phone_number_1,
-            'phone_number_2' => $request->phone_number_2,
-            'email' => $request->email,
-            'gst_number' => $request->gst_number,
-            'pin_code' => $request->pin_code,
+            'phone_number_2' => $request->phone_number_2?: "NA",
+            'email' => $request->email?: "NA",
+            'gst_number' => $request->gst_number?: "NA",
+            'pin_code' => $request->pin_code?: "NA",
             // consignee
             'consignee_branch_id' => $request->consignee_branch_id,
             'consignee_name' => $request->consignee_name,
             'consignee_address' => $request->consignee_address,
             'consignee_phone_number_1' => $request->consignee_phone_number_1,
-            'consignee_phone_number_2' => $request->consignee_phone_number_2,
-            'consignee_email' => $request->consignee_email,
-            'consignee_gst_number' => $request->consignee_gst_number,
-            'consignee_pin_code' => $request->consignee_pin_code,
+            'consignee_phone_number_2' => $request->consignee_phone_number_2?: "NA",
+            'consignee_email' => $request->consignee_email ?: "NA",
+            'consignee_gst_number' => $request->consignee_gst_number?: "NA",
+            'consignee_pin_code' => $request->consignee_pin_code?: "NA",
             // others details
             'no_of_artical' => $request->no_of_artical,
             'actual_weight' => $request->actual_weight,
             'packing_type' => $request->packing_type,
             'good_of_value' => $request->good_of_value,
-            'transhipmen_one' => $request->transhipmen_one,
-            'transhipmen_two' => $request->transhipmen_two,
-            'transhipment_three' => $request->transhipment_three,
+            'transhipmen_one' => $request->transhipmen_one?: "NA",
+            'transhipmen_two' => $request->transhipmen_two?: "NA",
+            'transhipment_three' => $request->transhipment_three?: "NA",
             'manual_bilty_number' => $request->manual_bilty_number ?: "NA",
             'invoice_number' => $request->invoice_number ?: "NA",
             'privet_mark' => $request->privet_mark ?: "NA",
@@ -322,7 +322,9 @@ class BookingController extends Controller
         }
 
         // Format it to your needs (for example, "BILTI-0001")
-        return 'BILTI-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        // return 'BILTI-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        return date('y') . date('m') . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
     }
 
 

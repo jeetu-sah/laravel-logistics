@@ -53,7 +53,7 @@ class InquiryController extends Controller
                 'destination_district_id' => $request->destination_district_name,
                 'description' => $request->description,
             ]);
-            Mail::to($request->email)->send(new InquiryMail($inquiry));
+            Mail::to($request->email)->send(new  InquiryMail($inquiry));
 
             return redirect('/')->with('success', 'Inquiry submitted and email sent successfully.');
 
