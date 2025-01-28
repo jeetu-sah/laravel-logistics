@@ -20,6 +20,7 @@ class InquiryMail extends Mailable
     {
         // Store the inquiry data
         $this->inquiry = $inquiry;
+       
         // echo "<pre>";print_r($inquiryData);exit;
     }
 
@@ -37,7 +38,7 @@ class InquiryMail extends Mailable
 
         // Pass the data to the view
         return $this->view('email.inquiryMail')
-            ->with(['name' => $this->inquiry['name'], 'email' => $this->inquiry['email']]) // Pass the inquiry data to the view
+            ->with(['name' => $this->inquiry['name'], 'email' => $this->inquiry['email']]) 
             ->subject('Thank You for Your Submission');
     }
 }
