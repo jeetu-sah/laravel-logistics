@@ -375,7 +375,7 @@
             document.getElementById('transhipmen_one_amount').innerText = "Amount: 0 Rupees";
         } else {
             // If tans_one is not blank, calculate transshipment value as noOfArticles * 2
-            var transshipmentValue = noOfArticles * 2;
+            var transshipmentValue = noOfArticles * 20;
             document.getElementById('transhipmen_one_amount').value = transshipmentValue ;
         }
     }
