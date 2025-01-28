@@ -2,28 +2,7 @@
 @section('main_content')
     <div class="content-wrapper" style="min-height: 1419.51px;">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <a href="{{ url('admin/bookings') }}"
-                            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-                                class=" fa-sm text-white-50"></i> <b>Booking List</b></a>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active"><b>Paid Booking</b></li>
-                        </ol>
-                    </div>
 
-
-                </div>
-            </div>
-            <div class="row mb-2">
-                @include('common.notification')
-            </div>
-        </section>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -40,240 +19,223 @@
                     @csrf
                     <div class="row">
                         @include('admin.booking.shared.consigner_details')
-
-
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="card card-danger">
                                 <div class="card-header">
-                                    <h3 class="card-title">Other Details</h3>
+                                    <h3 class="card-title">Invoice</h3>
                                 </div>
-
                                 <div class="card-body">
                                     <div class="row">
-
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="misc_charge">No. of Artical</label>
-                                                <input required type="number"
-                                                    onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                                    class="form-control" name="no_of_artical" placeholder="No. of artical">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="misc_charge">Actual Weight</label>
-                                                <input required type="text"
-                                                    onkeypress="return /^-?[0-9]*$/.test(this.value+event.key)"
-                                                    class="form-control" name="actual_weight" placeholder="Actual weight">
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="misc_charge">Contain</label>
-                                                <input required type="text" class="form-control" name="packing_type"
-                                                    placeholder="Packing Type">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="good_of_value">Goods Of Value</label>
-                                                <input required type="number" class="form-control " name="good_of_value"
-                                                    placeholder="₹.00">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="misc_charge">Transhipment 1</label>
-                                                <select class="form-select select2 form-control js-select2"
-                                                    name="transhipmen_one" id="transhipmen_one">
-                                                    <option value="">Select Branch Name</option>
-                                                    @foreach ($branch as $branchList)
-                                                        <option value="{{ $branchList->id }}">
-                                                            {{ $branchList->branch_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="misc_charge">Transhipment 2</label>
-                                                <select class="form-select select2 form-control js-select2"
-                                                    name="transhipmen_two" id="transhipmen_two">
-                                                    <option value="">Select Branch Name</option>
-                                                    @foreach ($branch as $branchList)
-                                                        <option value="{{ $branchList->id }}">
-                                                            {{ $branchList->branch_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="misc_charge">Transhipment 3</label>
-                                                <select class="form-select select2 form-control js-select2"
-                                                    name="transhipment_three" id="transhipment_three">
-                                                    <option value="">Select Branch Name</option>
-                                                    @foreach ($branch as $branchList)
-                                                        <option value="{{ $branchList->id }}">
-                                                            {{ $branchList->branch_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <!-- Manual Bilty Number -->
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="manual_bilty_number">Offline Bilty Number (OPTIONAL)</label>
-                                                    <input type="text" 
-                                                           class="form-control js-select2" 
-                                                           placeholder="Manual Bilty Number" 
-                                                           name="manual_bilty_number" 
-                                                           id="manual_bilty_number">
-                                                </div>
-                                            </div>
-                                        
-                                            <!-- Invoice Number -->
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="invoice_number">#Invoice Number (Bill Number) (OPTIONAL)</label>
-                                                    <input type="text" 
-                                                           class="form-control js-select2" 
-                                                           placeholder="Invoice Number" 
-                                                           name="invoice_number" 
-                                                           id="invoice_number">
-                                                </div>
-                                            </div>
-                                        
-                                            <!-- Remark -->
-                                            
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="mark">Privet mark</label>
-                                                    <input class="form-control" type="text"
-                                                              placeholder="Add your mark here" 
-                                                              name="privet_mark" 
-                                                              id="mark" 
-                                                              rows="3">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="remark">Remark</label>
-                                                    <textarea class="form-control" 
-                                                              placeholder="Add your remarks here" 
-                                                              name="remark" 
-                                                              id="remark" 
-                                                              rows="3"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                       
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card card-dark">
-                                <div class="card-header">
-                                    <h3 class="card-title">Bills</h3>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="row">
-                                        <!-- Other form fields -->
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="freight">Freight</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="number" class="form-control bill-input"
-                                                    name="freight_amount" value="700" placeholder="₹.00">
+                                            <div class="">
+                                                <label for="date">Distance (KM):</label>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="fov">FOV</label>
+                                            <div class="">
+                                                <input type="text" value="" name="distance"
+                                                    class="form-control mb-1" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="number" class="form-control bill-input" name="fov_amount"
-                                                    placeholder="₹.00">
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="os">Hamali Charges</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="number" class="form-control bill-input" name="hamali"
-                                                    placeholder="₹.00">
+                                            <div class="">
+                                                <label for="date">Freight</label>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="loading_charge">Bilty Charge</label>
+                                            <div class="">
+                                                <input type="text" value="" name="freight"
+                                                    class="form-control mb-1" />
                                             </div>
                                         </div>
+
+
+
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="number" class="form-control bill-input"
-                                                    name="bilti_charges" placeholder="₹.00" value="20">
+                                            <div class="">
+                                                <label for="date">FOV</label>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="misc_charge">Misc Charge</label>
+                                            <div class="">
+                                                <input type="text" value="" name="fov_amount"
+                                                    class="form-control mb-1" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="number" class="form-control bill-input"
-                                                    name="misc_charge_amount" value="00" placeholder="₹.00">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="other_charge">Other Charges</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="number" class="form-control bill-input"
-                                                    name="other_charge_amount" value="00" placeholder="₹.00">
+                                            <div class="">
+                                                <label for="date">Transhipment 1</label>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="grand_total">Grand Total</label>
+                                            <div class="">
+                                                <input type="text" value="" name="transhipmen_one_amount" id="transhipmen_one_amount"
+                                                    class="form-control mb-1" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="number" class="form-control" name="grand_total_amount"
-                                                    id="grand_total_amount" placeholder="₹.00" readonly>
+                                            <div class="">
+                                                <label for="date">Transhipment 2</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" value="" name="transhipmen_two_amount"
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Transhipment 3</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" value="" name="transhipment_three_amount"
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Pickup Charges</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" value="" name="pickup_charges"
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Hamali Charges</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" name="hamali_Charges" value=""
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Discount</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" name="discount" value=""
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Company charges<label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" value="" name="compney_charges"
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Sub Total<label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <input type="text" value="" name="sub_total"
+                                                class="form-control mb-1" />
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">CGST<label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" name="cgst" value=""
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">SGST<label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" name="sgst" value=""
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">IGST<label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" name="igst" value=""
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Grand Total<label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" value="" name="grand_total"
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Misc. Charges<label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" value="" name="misc_charge_amount"
+                                                    class="form-control mb-1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <label for="date">Final Amount<label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="">
+                                                <input type="text" name="grand_total_amount" value=""
+                                                    class="form-control mb-1" />
                                             </div>
                                         </div>
 
@@ -281,55 +243,6 @@
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            function calculateTotal() {
-                                let total = 0;
-
-                                // Get values from inputs
-                                let noOfArtical = parseFloat(document.querySelector('input[name="no_of_artical"]').value) || 0;
-
-                                // O.S = 50 * No of Artical
-                                let oSValue = 20 * noOfArtical;
-                                // Good Of Value = 2000 * No of Artical
-                                let goodOfValue = 2000 * noOfArtical;
-                                let freight_amount = noOfArtical * 700;
-
-                                // Set the O.S amount to the calculated value
-                                document.querySelector('input[name="hamali"]').value = `${oSValue.toFixed(2)}`;
-                                document.querySelector('input[name="freight_amount"]').value = `${freight_amount.toFixed(2)}`;
-                                // Set the Good Of Value
-                                document.querySelector('input[name="good_of_value"]').value = `${goodOfValue.toFixed(2)}`;
-
-                                // Calculate FOV as 3% of Good Of Value
-                                let fov = goodOfValue * 0.03;
-                                document.querySelector('input[name="fov_amount"]').value = `${fov.toFixed(2)}`;
-
-                                // Add O.S value, Good Of Value, and FOV to the total
-
-
-                                // Update total with other bill inputs (if any)
-                                document.querySelectorAll('.bill-input').forEach(input => {
-                                    let value = parseFloat(input.value) || 0;
-                                    total += value;
-                                });
-
-                                // Set the total to the grand total field
-                                document.getElementById('grand_total_amount').value = `${total.toFixed(2)}`;
-                            }
-
-                            // Add event listeners to all inputs to trigger the calculation
-                            document.querySelectorAll('.bill-input').forEach(input => {
-                                input.addEventListener('input', calculateTotal);
-                            });
-
-                            // Also add event listener to 'No of Artical' input for change
-                            document.querySelector('input[name="no_of_artical"]').addEventListener('input', calculateTotal);
-
-                            // Trigger calculation on page load
-                            window.addEventListener('DOMContentLoaded', (event) => {
-                                calculateTotal();
-                            });
-                        </script>
                     </div>
 
                     <div class="row mb-3">
@@ -348,7 +261,7 @@
 @section('script')
     @parent
     <script src="{{ asset('admin_webu/plugins/select2/js/select2.full.min.js') }} "></script>
-
+   
     <script>
         $(function() {
             //Initialize Select2 Elements

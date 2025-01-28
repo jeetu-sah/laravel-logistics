@@ -53,27 +53,21 @@
                     <li class="nav-item">
                         <a class="nav-link font20 bottom-border" aria-current="page" href="#service">Services</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle font20" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Pages
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link font20 bottom-border" aria-current="page" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font20 bottom-border" aria-current="page" href="#shipment">Track Shipment</a>
                     </li>
                 </ul>
                 <div class="me-4">
                     <i class="fa-solid fa-headphones primarycolor font20"></i>
                     <a href="tel:+91-8840354461" class="font20 blackcolor">+91-8840354461</a>
+                </div>
+                <div class="me-4">
+                    <button class="btn btn-warning"> <a target="_blank" href="{{ url('/login') }}"
+                            class="nav-link p-0 whitecolor whitecoloritem">Login</a></button>
                 </div>
             </div>
         </div>
@@ -89,29 +83,29 @@
                             <!-- Carousel Items -->
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="{{ asset('site/img/slider-image1.jpg') }}" class="d-block w-100"
-                                        alt="Slide 1">
-                                    <div class="carousel-caption kb-caption kb-caption-left">
+                                    <img src="{{ asset('site/img/What-Is-Freight-Forwarder.jpg') }}"
+                                        class="d-block w-100" alt="Slide 1">
+                                    {{-- <div class="carousel-caption kb-caption kb-caption-left">
                                         <h1 data-animation="animated">Ken Burns</h1>
                                         <h3 data-animation="animated">A zoom effect with CSS3</h3>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="{{ asset('site/img/slider-image2.jpg') }}" class="d-block w-100"
-                                        alt="Slide 2">
-                                    <div class="carousel-caption kb-caption kb-caption-right">
+                                    <img src="{{ asset('site/img/role-of-a-freight-fowarding-software-and-efficiency-michigan.jpg') }}"
+                                        class="d-block w-100" alt="Slide 2">
+                                    {{-- <div class="carousel-caption kb-caption kb-caption-right">
                                         <h1 data-animation="animated">Catch Your Eye</h1>
                                         <h3 data-animation="animated">It attracts the attention of customers</h3>
-                                    </div>
+                                    </div> --}}
                                 </div>
-                                <div class="carousel-item">
-                                    <img src="{{ asset('site/img/slider-image1.jpg') }}" class="d-block w-100"
+                                {{-- <div class="carousel-item">
+                                    <img src="{{ asset('site/img/1686136310745.jpeg') }}" class="d-block w-100"
                                         alt="Slide 3">
                                     <div class="carousel-caption kb-caption kb-caption-center">
                                         <h1 data-animation="animated">Super Effect</h1>
                                         <h3 data-animation="animated">Demonstrate your benefits</h3>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
 
                             <!-- Carousel Arrows -->
@@ -131,8 +125,198 @@
             </div>
         </section>
 
-
     </main>
+    <style>
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px
+        }
+
+        .card {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.10rem
+        }
+
+        .card-header:first-child {
+            border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0
+        }
+
+        .card-header {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 0;
+            background-color: #fff;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+        }
+
+        .track {
+            position: relative;
+            background-color: #ddd;
+            height: 7px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            margin-bottom: 60px;
+            margin-top: 50px
+        }
+
+        .track .step {
+            -webkit-box-flex: 1;
+            -ms-flex-positive: 1;
+            flex-grow: 1;
+            width: 25%;
+            margin-top: -18px;
+            text-align: center;
+            position: relative
+        }
+
+        .track .step.active:before {
+            background: #FF5722
+        }
+
+        .track .step::before {
+            height: 7px;
+            position: absolute;
+            content: "";
+            width: 100%;
+            left: 0;
+            top: 18px
+        }
+
+        .track .step.active .icon {
+            background: #ee5435;
+            color: #fff
+        }
+
+        .track .icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            border-radius: 100%;
+            background: #ddd
+        }
+
+        .track .step.active .text {
+            font-weight: 400;
+            color: #000
+        }
+
+        .track .text {
+            display: block;
+            margin-top: 7px
+        }
+
+        .itemside {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            width: 100%
+        }
+
+        .itemside .aside {
+            position: relative;
+            -ms-flex-negative: 0;
+            flex-shrink: 0
+        }
+
+        .img-sm {
+            width: 80px;
+            height: 80px;
+            padding: 7px
+        }
+
+        ul.row,
+        ul.row-sm {
+            list-style: none;
+            padding: 0
+        }
+
+        .itemside .info {
+            padding-left: 15px;
+            padding-right: 7px
+        }
+
+        .itemside .title {
+            display: block;
+            margin-bottom: 5px;
+            color: #212529
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1rem
+        }
+
+        .btn-warning {
+            color: #ffffff;
+            background-color: #ee5435;
+            border-color: #ee5435;
+            border-radius: 1px
+        }
+
+        .btn-warning:hover {
+            color: #ffffff;
+            background-color: #ff2b00;
+            border-color: #ff2b00;
+            border-radius: 1px
+        }
+    </style>
+    <div class="container">
+        <div class="row mt-lg-3 margintop" id="shipment-head">
+            <div>
+                <p class="color font30 text-center fw-bold">Track your Shipment</p>
+            </div>
+        </div>
+        
+        <div class="row margintop" id="shipment">
+            <article class="card">
+                <div class="card-header"> My Orders / Tracking<br> <input type="Search.." class="card-header col-md-2" placeholder=" Shipment Number"> </div>
+                
+                <div class="card-body">
+                    <h6>Order ID: OD45345345435</h6>
+                    <article class="card">
+                        <div class="card-body row">
+                            <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
+                            <div class="col"> <strong>Shipping BY:</strong> <br> Vikas Logistic, | <i
+                                    class="fa fa-phone"></i>
+                                +91-8840354461 </div>
+                            <div class="col"> <strong>Status:</strong> <br> Picked by the courier </div>
+                            <div class="col"> <strong>Tracking #:</strong> <br> BD045903594059 </div>
+                        </div>
+                    </article>
+                    <div class="track">
+                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span
+                                class="text">Order Booked</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span
+                                class="text">Dispatch</span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span
+                                class="text"> On the way </span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span
+                                class="text">Ready for delivery</span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-check"></i> </span> <span
+                                class="text"> Delivered</span> </div>
+                    </div>
+                    <hr>
+
+
+                </div>
+            </article>
+        </div>
+    </div>
     <div class="row margintop" id="about">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
             <div class="left-about padding10">
@@ -146,9 +330,11 @@
                     <h6 class="mt-lg-3 fw-bold primarycolor">About Us</h6>
                     <p class="blackcolor font30 width75 fw-bold">Quick Transport and Logistics Solutions</p>
                     <p class="lightblack">
-                        Vikas Logistics is a company that specializes in efficient, reliable, and timely transportation
-                        and
-                        logistics services. They offer a range of solutions including:</p>
+                        At Vikas Logistics, we specialize in providing quick, reliable, and efficient transport and
+                        logistics solutions tailored to your needs. With a commitment to excellence, we ensure seamless
+                        movement of goods across air, sea, road, and rail, backed by our expertise in customs clearance
+                        and warehousing. Your trust drives our journey toward delivering success, one shipment at a
+                        time. 🚛🌍📦</p>
                 </div>
                 <div class="row mt-4">
                     <div class="col-lg-6 col-md-6">
@@ -156,19 +342,19 @@
                             <i class="fa-solid fa-globe globe"></i>
                             <div class="mt-3">
                                 <h5>Global Coverage</h5>
-                                <p class="lightblack">Delivering goods across borders via air, sea, or land with access
-                                    to
-                                    major shipping routes and hubs.</p>
+                                <p class="lightblack">Vikas Logistics ensures seamless transportation and logistics
+                                    solutions across the globe. With our extensive network and expertise, we connect
+                                    businesses to international markets efficiently and reliably. 🌍✈️🚢</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <i class="fa-solid fa-truck-fast globe"></i>
                         <div class="mt-3">
-                            <h5>Global Coverage</h5>
-                            <p class="lightblack">Delivering goods across borders via air, sea, or land with access to
-                                major
-                                shipping routes and hubs.</p>
+                            <h5>Pan-India Coverage</h5>
+                            <p class="lightblack">Vikas Logistics proudly serves all corners of India, offering
+                                seamless transportation and logistics solutions across the country. No matter where you
+                                are, we ensure your goods reach their destination efficiently and on time. 🇮🇳🚛📦</p>
                         </div>
                     </div>
                 </div>
@@ -188,11 +374,13 @@
                         <h6 class="mt-3 fw-bold primarycolor">Some Facts</h6>
                         <p class="blackcolor font30  fw-bold">#1 Place To Manage All Of Your Shipments</p>
                         <p class="lightblack">
-                            #1 Place to Manage All of Your Shipments is your ultimate hub for organizing, tracking, and
-                            optimizing all aspects of your shipping process. Whether you're managing domestic or
-                            international freight, this solution offers a centralized platform to streamline your
-                            logistics. With real-time tracking, automated notifications, and detailed reporting, it
-                            ensures you have complete control and visibility over your shipments.</p>
+                            Vikas Logistics is the ultimate destination for managing all your shipments, providing a
+                            seamless and efficient experience from start to finish. Whether you're shipping locally or
+                            internationally, our advanced tracking systems and reliable services give you complete
+                            control over your shipments. Our platform ensures transparency, real-time updates, and
+                            smooth coordination for every stage of the process. Trust Vikas Logistics to handle your
+                            logistics needs with precision and care, ensuring your goods arrive on time and in perfect
+                            condition. 📦🚚🌍</p>
                     </div>
                     <div class="d-flex gap-5">
                         <div class="headphone"><i class="fa-solid fa-headphones "></i></div>
@@ -208,7 +396,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="client-box">
                             <i class="fa-solid fa-users"></i>
-                            <p class="mt-4 fw-bold " id="counter">0</p>
+                            <p class="mt-4 fw-bold " id="counter">2,00,000</p>
                             <h5>Happy Clients</h5>
                         </div>
                         <div class="client-box mt-4 bg-info">
@@ -240,11 +428,12 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image1.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/air.jpg') }}" alt="" class="img-fluid">
                         </div>
 
                         <p class="air-freight">Air Freight</p>
-                        <p class="lightblack">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.
+                        <p class="lightblack">Air Freight ensures fast and reliable transportation of goods across
+                            global destinations, offering efficient solutions for time-sensitive shipments. 🌍✈️
                         </p>
                         <div class="read-more">
                             <a href="#"><i class="fa-solid fa-arrow-right"></i><span>Read More</span></a>
@@ -258,11 +447,12 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image4.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/ocean.jpg') }}" alt="" class="img-fluid">
                         </div>
 
                         <p class="air-freight">Ocean Freight</p>
-                        <p class="lightblack">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.
+                        <p class="lightblack">Ocean Freight offers cost-effective and reliable solutions for
+                            transporting goods in bulk across international waters. 🚢🌊
                         </p>
                         <div class="read-more">
                             <a href="#"><i class="fa-solid fa-arrow-right"></i><span>Read More</span></a>
@@ -276,11 +466,12 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image5.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/road-freeight-1.jpg') }}" alt="" class="img-fluid">
                         </div>
 
                         <p class="air-freight">Road Freight</p>
-                        <p class="lightblack">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.
+                        <p class="lightblack">Road Freight ensures flexible and efficient transportation of goods over
+                            short and long distances with door-to-door service. 🚛🛣️
                         </p>
                         <div class="read-more">
                             <a href="#"><i class="fa-solid fa-arrow-right"></i><span>Read More</span></a>
@@ -295,11 +486,13 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image6.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/transportation_research_board_1.jpg') }}" alt=""
+                                class="img-fluid">
                         </div>
 
                         <p class="air-freight">Train Freight</p>
-                        <p class="lightblack">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.
+                        <p class="lightblack">Train Freight offers reliable and eco-friendly transportation for heavy
+                            and bulk goods across vast distances. 🚂📦
                         </p>
                         <div class="read-more">
                             <a href="#"><i class="fa-solid fa-arrow-right"></i><span>Read More</span></a>
@@ -313,11 +506,13 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image7.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/Custom-Clearance-Container-1.jpg') }}" alt=""
+                                class="img-fluid">
                         </div>
 
                         <p class="air-freight">Customs Clearance</p>
-                        <p class="lightblack">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.
+                        <p class="lightblack">Customs Clearance ensures smooth processing of import and export goods by
+                            handling all legal and regulatory requirements. 🛃📑
                         </p>
                         <div class="read-more">
                             <a href="#"><i class="fa-solid fa-arrow-right"></i><span>Read More</span></a>
@@ -331,11 +526,12 @@
                 <div class="p-3 our-service">
                     <div>
                         <div class="box-overflow">
-                            <img src="{{ asset('site/img/image8.jpg') }}" alt="" class="img-fluid">
+                            <img src="{{ asset('site/img/Warehousing.jpeg') }}" alt="" class="img-fluid">
                         </div>
 
                         <p class="air-freight">Warehouse Solutions</p>
-                        <p class="lightblack">Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.
+                        <p class="lightblack">Warehouse Solutions provide secure storage, efficient inventory
+                            management, and streamlined distribution for your goods. 🏢📦
                         </p>
                         <div class="read-more">
                             <a href="#"><i class="fa-solid fa-arrow-right"></i><span>Read More</span></a>
@@ -350,44 +546,71 @@
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <div>
                     <h6 class="mt-3 fw-bold primarycolor">Our Features</h6>
-                    <p class="blackcolor font30  fw-bold">We Are Trusted Logistics Company Since 1990</p>
+                    <p class="blackcolor font30  fw-bold">At Vikas Logistics, we offer a range of features designed to
+                        streamline your shipping experience:</p>
                     <div>
                         <div class="our-features mt-5">
                             <div>
-                                <i class="fa-solid fa-globe globe"></i>
+                                <p style="font-size:30px;"> 📍</p>
                             </div>
                             <div>
-                                <h6>Worldwide Service</h6>
-                                <p class="lightblack">Diam dolor ipsum sit amet eos erat ipsum lorem sed stet lorem sit
-                                    clita duo justo magna erat amet</p>
+                                <h6>End-to-End Tracking</h6>
+                                <p class="lightblack">Stay updated with real-time tracking of your shipments, ensuring
+                                    complete transparency and control. </p>
                             </div>
 
 
                         </div>
                         <div class="our-features mt-5">
                             <div>
-                                <i class="fa-solid fa-truck-fast globe"></i>
+                                <p style="font-size:30px;">⏰</p>
                             </div>
                             <div>
-                                <h6>Worldwide Service</h6>
-                                <p class="lightblack">Diam dolor ipsum sit amet eos erat ipsum lorem sed stet lorem sit
-                                    clita duo justo magna erat amet</p>
+                                <h6>Timely Deliveries: </h6>
+                                <p class="lightblack">We prioritize punctuality, ensuring your goods reach their
+                                    destination on time, every time. </p>
                             </div>
 
 
                         </div>
                         <div class="our-features mt-5">
                             <div>
-                                <i class="fa-solid fa-headphones globe"></i>
+                                <p style="font-size:30px;">🇮🇳</p>
                             </div>
                             <div>
-                                <h6>Worldwide Service</h6>
-                                <p class="lightblack">Diam dolor ipsum sit amet eos erat ipsum lorem sed stet lorem sit
-                                    clita duo justo magna erat amet</p>
+                                <h6>Nationwide Coverage:</h6>
+                                <p class="lightblack">From north to south, east to west, we offer logistics solutions
+                                    across India, making your business operations smoother.</p>
                             </div>
 
 
                         </div>
+
+                        <div class="our-features mt-5">
+                            <div>
+                                <p style="font-size:30px;">🏢</p>
+                            </div>
+                            <div>
+                                <h6>Warehousing Solutions:</h6>
+                                <p class="lightblack">Secure and efficient storage solutions, with proper inventory
+                                    management and easy access to goods. </p>
+                            </div>
+
+
+                        </div>
+                        <div class="our-features mt-5">
+                            <div>
+                                <p style="font-size:30px;">🚛</p>
+                            </div>
+                            <div>
+                                <h6>Flexible Transport Options: </h6>
+                                <p class="lightblack">Air, sea, road, or rail—choose the mode of transport that suits
+                                    your needs and budget. </p>
+                            </div>
+
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -402,9 +625,21 @@
             <div class="col-lg-5 col-md-12 col-sm-12 mt-5">
                 <div>
                     <h6 class="mt-3 fw-bold primarycolor">Get A Quote</h6>
-                    <p class="blackcolor font30  fw-bold">Request A Free Qoute!</p>
-                    <p class="lightblack mt-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam
-                        amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo erat amet
+
+                    <p class="lightblack mt-4">Looking for reliable and efficient logistics solutions? Request a free
+                        quote today! Simply fill out the form with your shipment details, and our team at Vikas
+                        Logistics will provide you with a customized, competitive quote tailored to your needs. Let us
+                        help you streamline your logistics with transparent pricing and exceptional service. 📦✈️🚚
+                    </p>
+
+                </div>
+                <div>
+                    <h6 class="mt-3 fw-bold primarycolor">Request A Free Quote!</h6>
+
+                    <p class="lightblack mt-4">Looking for reliable and efficient logistics solutions? Request a free
+                        quote today! Simply fill out the form with your shipment details, and our team at Vikas
+                        Logistics will provide you with a customized, competitive quote tailored to your needs. Let us
+                        help you streamline your logistics with transparent pricing and exceptional service. 📦✈️🚚
                     </p>
                     <div class="d-flex gap-5">
                         <div class="headphone"><i class="fa-solid fa-headphones " aria-hidden="true"></i></div>
@@ -696,8 +931,8 @@
                                         <i class="fa-solid fa-location-dot me-3 "></i>
                                     </div>
 
-                                    <a href="" class="whitecolor whitecoloritem">Shop no 20 c shankar market
-                                        delhi</a>
+                                    <a href="" class="whitecolor whitecoloritem">Corporate Address:
+                                        256 Damodar Nagar Kanpur Nagar</a>
                                 </div>
                             </li>
                             <li class="nav-item mb-2">
@@ -708,7 +943,7 @@
 
                                     <span>
                                         <a href="tel: +91-8840354461"
-                                            class="whitecolor whitecoloritem">+91-8840354461</a> /
+                                            class="whitecolor whitecoloritem">+91-8840354461</a>
                                         {{-- <a href="tel: +91-7271920999"
                                             class="whitecolor whitecoloritem">+91-7271920999</a> /
                                         <a href="tel: +91-7860578111"
@@ -780,7 +1015,7 @@
 
                         </ul>
                     </div>
-
+                    {{-- 
                     <div class="col-lg-3 mt-5  mt-lg-0">
                         <form>
                             <h5 class="textcenter">Newsletter</h5>
@@ -792,8 +1027,8 @@
                                     type="button">Subscribe</button>
                             </div>
                         </form>
-                    </div>
-                    <div class="col-lg-4 mt-5 mt-lg-0">
+                    </div> --}}
+                    <div class="col-lg-7 mt-5 mt-lg-0">
                         <div>
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6080913.846100792!2d72.7170415!3d25.0728932!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399c47b2bbe70b55%3A0x6ef3694e3392a949!2sChandramukhi%20Guest%20House!5e1!3m2!1sen!2sin!4v1726860901196!5m2!1sen!2sin"
