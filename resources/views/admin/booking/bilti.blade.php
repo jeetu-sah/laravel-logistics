@@ -2992,9 +2992,6 @@
                         <div class="tm_invoice_left">
                             <div class="tm_logo"><img src="{{ asset('site/img/logo-log.png') }}" alt="Logo"
                                     width="40px;"></div>
-                                    <br>
-                        <p class="tm_invoice_number tm_m0">LR No.-<b class="tm_primary_color">
-                            {{ $booking->bilti_number }}</b></p>
                         </div>
                         <div class="tm_invoice_right tm_text_right">
                             <div class="tm_primary_color tm_f30 tm_text_uppercase">Vikas Logistic Pvt. ltd.</div>
@@ -3004,12 +3001,12 @@
                     </div>
                     <div class="tm_invoice_info tm_mb20">
                         <p class="tm_invoice_seperator tm_primary_color"><b>{{ $consignorCity }} To:
-                                {{ $consigneeCity }} ({{ $booking->created_at->format('d-m-Y H:m:s') }})</b></p>
+                                {{ $consigneeCity }} ({{ $booking->created_at }})</b></p>
                         <div class="tm_invoice_info_list">
-                          
+                            <p class="tm_invoice_number tm_m0">LR No.-<b class="tm_primary_color">
+                                    {{ $booking->bilti_number }}</b></p>
                             <p class="tm_invoice_date tm_m0">Date: <b
-                                    class="tm_primary_color">{{ $booking->created_at->format('d-m-Y') }}
-                                </b></p>
+                                    class="tm_primary_color">{{ $booking->created_at }}</b></p>
                             <p class="tm_invoice_date tm_m0">Booking: <b class="tm_primary_color">
                                     @if ($booking->booking_type == 1)
                                         Paid
@@ -3068,10 +3065,12 @@
                                     </thead>
                                     <tbody>
                                         <tr class="tm_table_baseline">
-                                            <th class="tm_width_3 tm_primary_color">{{ $booking->packing_type }}</th>
-                                            <th class="tm_width_4">{{ $booking->good_of_value }}</th>
-                                            <th class="tm_width_1 tm_text_right">{{ $booking->no_of_artical }}</th>
-                                            <th class="tm_width_1 tm_text_right">{{ $booking->packing_type }}</th>
+                                            <td class="tm_width_3 tm_primary_color">{{ $booking->packing_type }}</td>
+                                            <td class="tm_width_4">{{ $booking->good_of_value }}</td>
+
+                                         
+                                            <td class="tm_width_2 tm_text_right">{{ $booking->no_of_artical }}</td>
+                                            <td class="tm_width_2 tm_text_right">{{ $booking->packing_type }}</td>
                                         </tr>
 
 
