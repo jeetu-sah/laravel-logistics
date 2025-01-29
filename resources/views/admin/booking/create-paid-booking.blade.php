@@ -26,223 +26,240 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
+                                        <!-- Distance -->
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Distance (KM):</label>
-                                            </div>
+                                            <label for="distance">Distance (KM):</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="distance" id="distance" class="form-control mb-1"
+                                                oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Freight -->
+                                        <div class="col-md-6">
+                                            <label for="freight_amount">Freight:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="freight_amount" id="freight_amount"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- WBC -->
+                                        <div class="col-md-6">
+                                            <label for="wbc_charges">WBC:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" readonly name="wbc_charges" id="wbc_charges"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Handling Charges -->
+                                        <div class="col-md-6">
+                                            <label for="handling_charges">Handling Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="handling_charges" id="handling_charges"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- FOV -->
+                                        <div class="col-md-6">
+                                            <label for="fov_amount">FOV:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" readonly name="fov_amount" id="fov_amount"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Fuel Charges -->
+                                        <div class="col-md-6">
+                                            <label for="fuel_amount">Fuel Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" value="150" name="fuel_amount" id="fuel_amount"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Transhipment 1 -->
+                                        <div class="col-md-6">
+                                            <label for="transhipmen_one_amount">Transhipment 1:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" readonly name="transhipmen_one_amount" id="transhipmen_one_amount"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Transhipment 2 -->
+                                        <div class="col-md-6">
+                                            <label for="transhipmen_two_amount">Transhipment 2:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" readonly name="transhipmen_two_amount" id="transhipmen_two_amount"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Transhipment 3 -->
+                                        <div class="col-md-6">
+                                            <label for="transhipment_three_amount">Transhipment 3:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" readonly name="transhipment_three_amount"
+                                                id="transhipment_three_amount" class="form-control mb-1"
+                                                oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Pickup Charges -->
+                                        <div class="col-md-6">
+                                            <label for="pickup_charges">Pickup Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="pickup_charges" id="pickup_charges"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Hamali Charges -->
+                                        <div class="col-md-6">
+                                            <label for="hamali_Charges">Hamali Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" readonly name="hamali_Charges" id="hamali_Charges"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Bilti Charges -->
+                                        <div class="col-md-6">
+                                            <label for="bilti_Charges">Bilti Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" readonly value="10" name="bilti_Charges" id="bilti_Charges"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Discount -->
+                                        <div class="col-md-6">
+                                            <label for="discount">Discount:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="discount" id="discount"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Company Charges -->
+                                        <div class="col-md-6">
+                                            <label for="compney_charges">Company Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="compney_charges" id="compney_charges"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                        </div>
+
+                                        <!-- Sub Total -->
+                                        <div class="col-md-6">
+                                            <label for="sub_total">Sub Total:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="sub_total" id="sub_total"
+                                                class="form-control mb-1" readonly />
+                                        </div>
+
+                                        <!-- GST: CGST, SGST, IGST -->
+                                        <div class="col-md-6">
+                                            <label for="cgst">CGST:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="cgst" id="cgst"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="distance"
-                                                    class="form-control mb-1" />
-                                            </div>
+                                            <label for="sgst">SGST:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Freight</label>
-                                            </div>
+                                            <input type="text" name="sgst" id="sgst"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="freight"
-                                                    class="form-control mb-1" />
-                                            </div>
+                                            <label for="igst">IGST:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="igst" id="igst"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
-
-
+                                        <!-- Grand Total -->
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">FOV</label>
-                                            </div>
+                                            <label for="grand_total">Grand Total:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="grand_total" id="grand_total"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
+                                        <!-- Misc Charges -->
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="fov_amount"
-                                                    class="form-control mb-1" />
-                                            </div>
+                                            <label for="misc_charge_amount">Misc. Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Transhipment 1</label>
-                                            </div>
+                                            <input type="text" name="misc_charge_amount" id="misc_charge_amount"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
                                         </div>
 
+                                        <!-- Final Amount -->
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="transhipmen_one_amount" id="transhipmen_one_amount"
-                                                    class="form-control mb-1" />
-                                            </div>
+                                            <label for="grand_total_amount">Final Amount:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Transhipment 2</label>
-                                            </div>
+                                            <input type="text" name="grand_total_amount" id="grand_total_amount"
+                                                class="form-control mb-1" readonly />
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="transhipmen_two_amount"
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Transhipment 3</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="transhipment_three_amount"
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Pickup Charges</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="pickup_charges"
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Hamali Charges</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" name="hamali_Charges" value=""
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Discount</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" name="discount" value=""
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Company charges<label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="compney_charges"
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Sub Total<label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <input type="text" value="" name="sub_total"
-                                                class="form-control mb-1" />
-
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">CGST<label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" name="cgst" value=""
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">SGST<label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" name="sgst" value=""
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">IGST<label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" name="igst" value=""
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Grand Total<label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="grand_total"
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Misc. Charges<label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" value="" name="misc_charge_amount"
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <label for="date">Final Amount<label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="">
-                                                <input type="text" name="grand_total_amount" value=""
-                                                    class="form-control mb-1" />
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <script>
+                            function calculateInvoice() {
+                                let freight = parseFloat(document.getElementById('freight_amount').value) || 0;
+                                let wbc = parseFloat(document.getElementById('wbc_charges').value) || 0;
+                                let handling = parseFloat(document.getElementById('handling_charges').value) || 0;
+                                let fov = parseFloat(document.getElementById('fov_amount').value) || 0;
+                                let fuel = parseFloat(document.getElementById('fuel_amount').value) || 0;
+                                let transhipment1 = parseFloat(document.getElementById('transhipmen_one_amount').value) || 0;
+                                let transhipment2 = parseFloat(document.getElementById('transhipmen_two_amount').value) || 0;
+                                let transhipment3 = parseFloat(document.getElementById('transhipment_three_amount').value) || 0;
+                                let pickup = parseFloat(document.getElementById('pickup_charges').value) || 0;
+                                let hamali = parseFloat(document.getElementById('hamali_Charges').value) || 0;
+                                let bilti = parseFloat(document.getElementById('bilti_Charges').value) || 0;
+                                let discount = parseFloat(document.getElementById('discount').value) || 0;
+                                let companyCharges = parseFloat(document.getElementById('compney_charges').value) || 0;
+                                let miscCharges = parseFloat(document.getElementById('misc_charge_amount').value) || 0;
+
+                                // Subtotal calculation
+                                let subtotal = freight + wbc + handling + fov + fuel + transhipment1 + transhipment2 + transhipment3 + pickup +
+                                    hamali + bilti + companyCharges + miscCharges - discount;
+
+                                // GST calculation (example, adjust as needed)
+                                let cgst = freight * 2.5 / 100; // Example 9% CGST
+                                let sgst = freight *  2.5 / 100;// Example 9% SGST
+                                let igst = 0; // If applicable
+
+                                // Grand Total calculation
+                                let grandTotal = subtotal + cgst + sgst + igst;
+
+                                // Update fields
+                                document.getElementById('sub_total').value = subtotal.toFixed(2);
+                                document.getElementById('cgst').value = cgst.toFixed(2);
+                                document.getElementById('sgst').value = sgst.toFixed(2);
+                                document.getElementById('igst').value = igst.toFixed(2);
+                                document.getElementById('grand_total').value = grandTotal.toFixed(2);
+                                document.getElementById('grand_total_amount').value = grandTotal.toFixed(2);
+                            }
+
+                            // Initialize the calculations when the page loads
+                            window.onload = calculateInvoice;
+                        </script>
+
                     </div>
 
                     <div class="row mb-3">
@@ -261,7 +278,7 @@
 @section('script')
     @parent
     <script src="{{ asset('admin_webu/plugins/select2/js/select2.full.min.js') }} "></script>
-   
+
     <script>
         $(function() {
             //Initialize Select2 Elements
