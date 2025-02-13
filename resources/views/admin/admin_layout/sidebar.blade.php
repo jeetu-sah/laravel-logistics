@@ -113,6 +113,33 @@
                     </ul>
                 </li> -->
                 @role('Admin')
+                    <li class="nav-item has-treeview {{ request()->is('admin/distances*') ? 'menu-open' : '' }}">
+                        <a href="{{ url('admin/distances') }}"
+                            class="nav-link {{ request()->is('admin/distances*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>
+                                Branch Distances
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ url('admin/distances') }}"
+                                    class="nav-link {{ request()->is('admin/distances') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Branch Distances List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('admin/distances/create') }}"
+                                    class="nav-link {{ request()->is('admin/distances/create') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create Branch Distances</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
                     <li class="nav-item has-treeview {{ request()->is('admin/branches*') ? 'menu-open' : '' }}">
                         <a href="{{ url('admin/branches') }}"
                             class="nav-link {{ request()->is('admin/branches*') ? 'active' : '' }}">
@@ -140,8 +167,46 @@
 
                         </ul>
                     </li>
+                    <li class="nav-item has-treeview {{ request()->is('admin/clients*') ? 'menu-open' : '' }} ">
+                        <a href="{{ url('admin/admin/role-list') }}"
+                            class="nav-link {{ request()->is('admin/clients*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>
+                                Client
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ url('admin/clients') }}"
+                                    class="nav-link {{ request()->is('admin/clients') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Client List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('admin/clients/create') }}"
+                                    class="nav-link {{ request()->is('admin/clients/create') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>New Client </p>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
                 @endrole
                 @role('Branchuser')
+                    <li class="nav-item has-treeview">
+                        <a href="{{ url('admin/bookings/noBill') }}"
+                            class="nav-link {{ request()->is('admin/bookings/noBill') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>
+                                NB Booking
+                            </p>
+                        </a>
+                    </li>
+
                     <li class="nav-item has-treeview {{ request()->is('admin/bookings*') ? 'menu-open' : '' }} ">
                         <a href="{{ url('admin/admin/role-list') }}"
                             class="nav-link {{ request()->is('admin/bookings*') ? 'active' : '' }}">
@@ -160,26 +225,27 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/bookings/paid-booking') }}"
-                                    class="nav-link {{ request()->is('admin/bookings/paid-booking') ? 'active' : '' }}">
+                                <a href="{{ url('admin/bookings/create ') }}"
+                                    class="nav-link {{ request()->is('admin/bookings/create ') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Paid Booking </p>
+                                    <p>Booking </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ url('admin/bookings/to-pay-booking') }}"
                                     class="nav-link {{ request()->is('admin/bookings/to-pay-booking') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>To Pay Booking </p>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item">
-                                <a href="{{ url('admin/bookings/to-client-booking') }}"
-                                    class="nav-link {{ request()->is('admin/bookings/to-client-booking') ? 'active' : '' }}">
+                                <a href="{{ url('admin/bookings/clients') }}"
+                                    class="nav-link {{ request()->is('admin/bookings/clients') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>To client Booking </p>
+                                    <p> Client Booking </p>
                                 </a>
                             </li>
+                            
 
                         </ul>
                     </li>
@@ -188,7 +254,7 @@
                             class="nav-link {{ request()->is('admin/challans*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-edit"></i>
                             <p>
-                               Manifest
+                                Manifest
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>

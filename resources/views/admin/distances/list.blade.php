@@ -12,7 +12,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Booking List</li>
+                            <li class="breadcrumb-item active">{{ $tittle }}</li>
                         </ol>
                     </div>
                 </div>
@@ -29,13 +29,12 @@
                 {{ session('error') }}
             </div>
         @endif
-
         <!-- Main content -->
         <section class="content">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Booking List</h3>
+                    <h3 class="card-title">{{ $tittle }}</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -44,17 +43,11 @@
                                 <thead>
                                     <tr>
                                         <th>SN.</th>
-                                        <th>Bilti Number</th>
-                                        <th>Consinger Name</th>
-                                        <th>Consinger Address</th>
-                                        <th>Consinger Branch</th>
-                                        <th>Consignee Name</th>
-                                        <th>Destinaton</th>
-                                        <th>Consignee Address</th>
-
-                                        <th>Payment Mode</th>
-                                        <th>Creation Date</th>
-                                        <th>Action</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Distance</th>
+                                        <th>Status</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -83,7 +76,7 @@
             new DataTable('#booking-list', {
                 responsive: true,
                 ajax: {
-                    url: "{{ url('admin/bookings/list') }}",
+                    url: "{{ url('admin/distances/list') }}",
                     data: function(d) {
                         // Custom parameters can be added here if needed
                         // Example:
@@ -93,45 +86,24 @@
                 columns: [{
                         data: 'sn'
                     },
-                    {
-                        data: 'bilti_number'
-                    },
-                    {
-                        data: 'consignor_name'
-                    },
-                    {
-                        data: 'address'
 
-                    },
                     {
-                        data: 'consignor_branch_id'
-
-                    },
-                    {
-                        data: 'consignee_name'
-                    },
-                    {
-                        data: 'consignee_branch_id'
-
-                    },
-                    {
-                        data: 'consignee_address'
-
+                        data: 'from_branch_id'
                     },
 
                     {
-                        data: 'booking_type'
+                        data: 'to_branch_id'
+                    },
+                    {
+                        data: 'distance'
 
                     },
                     {
-                        data: 'created_at'
+                        data: 'status'
 
                     },
-                    {
-                        data: 'action',
-
-                        orderable: false
-                    }
+                   
+                    
                 ],
 
                 processing: true,

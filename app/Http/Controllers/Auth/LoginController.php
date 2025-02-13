@@ -37,7 +37,7 @@ class LoginController extends BaseController
      {
          // Step 1: Validate the request data
          $validatedData = $request->validate([
-             'email' => 'required|email',
+             'email' => 'required',
              'password' => 'required',
          ], [
              // Custom error messages
