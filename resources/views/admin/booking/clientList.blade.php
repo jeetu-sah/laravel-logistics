@@ -12,7 +12,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Booking List</li>
+                            <li class="breadcrumb-item active">{{ $tittle }}</li>
                         </ol>
                     </div>
                 </div>
@@ -29,13 +29,12 @@
                 {{ session('error') }}
             </div>
         @endif
-
         <!-- Main content -->
         <section class="content">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Booking List</h3>
+                    <h3 class="card-title">{{ $tittle }}</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -44,7 +43,7 @@
                                 <thead>
                                     <tr>
                                         <th>SN.</th>
-                                        <th>Bilti Number</th>
+                                        <th>Client Id</th>
                                         <th>Consinger Name</th>
                                         <th>Consinger Address</th>
                                         <th>Consinger Branch</th>
@@ -52,7 +51,6 @@
                                         <th>Destinaton</th>
                                         <th>Consignee Address</th>
 
-                                        <th>Payment Mode</th>
                                         <th>Creation Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -83,7 +81,7 @@
             new DataTable('#booking-list', {
                 responsive: true,
                 ajax: {
-                    url: "{{ url('admin/bookings/list') }}",
+                    url: "{{ url('admin/bookings/clientsList') }}",
                     data: function(d) {
                         // Custom parameters can be added here if needed
                         // Example:
@@ -93,14 +91,16 @@
                 columns: [{
                         data: 'sn'
                     },
+
                     {
-                        data: 'bilti_number'
+                        data: 'client_id'
                     },
+
                     {
                         data: 'consignor_name'
                     },
                     {
-                        data: 'address'
+                        data: 'consignor_address'
 
                     },
                     {
@@ -119,10 +119,7 @@
 
                     },
 
-                    {
-                        data: 'booking_type'
 
-                    },
                     {
                         data: 'created_at'
 

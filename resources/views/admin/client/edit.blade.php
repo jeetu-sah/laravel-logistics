@@ -15,10 +15,11 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form action="{{ url('admin/bookings/paid-booking') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ url('admin/clients/update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        @include('admin.booking.shared.consigner_details')
+                        <input type="hidden" name="client_id" value=" {{ $client->id }}">
+                        @include('admin.booking.shared.edit_client_details')
                         <div class="col-md-3">
                             <div class="card card-danger">
                                 <div class="card-header">
@@ -31,244 +32,230 @@
                                             <label for="distance">Distance (KM):</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="distance" id="distance" class="form-control mb-1"
-                                                oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->distance }}" name="distance" id="distance" class="form-control mb-1" />
                                         </div>
-
+                                    
                                         <!-- Freight -->
                                         <div class="col-md-6">
                                             <label for="freight_amount">Freight:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="freight_amount" id="freight_amount"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->freight_amount }}" name="freight_amount" id="freight_amount" class="form-control mb-1" readonly />
                                         </div>
-
+                                    
                                         <!-- WBC -->
                                         <div class="col-md-6">
                                             <label for="wbc_charges">WBC:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" readonly name="wbc_charges" id="wbc_charges"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input value="{{ $client->wbc_charges }}" type="text" name="wbc_charges" id="wbc_charges" class="form-control mb-1" />
                                         </div>
-
+                                    
                                         <!-- Handling Charges -->
                                         <div class="col-md-6">
                                             <label for="handling_charges">Handling Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="handling_charges" id="handling_charges"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input value="{{ $client->handling_charges }}" type="text" name="handling_charges" id="handling_charges" class="form-control mb-1" />
                                         </div>
-
-                                        <!-- FOV -->
-                                        <div class="col-md-6">
-                                            <label for="fov_amount">FOV:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" readonly name="fov_amount" id="fov_amount"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
-                                        </div>
-
+                                    
                                         <!-- Fuel Charges -->
                                         <div class="col-md-6">
                                             <label for="fuel_amount">Fuel Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="150" name="fuel_amount" id="fuel_amount"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->fuel_amount }}" name="fuel_amount" id="fuel_amount" class="form-control mb-1" />
                                         </div>
-
-                                        <!-- Transhipment 1 -->
-                                        <div class="col-md-6">
-                                            <label for="transhipmen_one_amount">Transhipment 1:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" readonly name="transhipmen_one_amount" id="transhipmen_one_amount"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
-                                        </div>
-
-                                        <!-- Transhipment 2 -->
-                                        <div class="col-md-6">
-                                            <label for="transhipmen_two_amount">Transhipment 2:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" readonly name="transhipmen_two_amount" id="transhipmen_two_amount"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
-                                        </div>
-
-                                        <!-- Transhipment 3 -->
-                                        <div class="col-md-6">
-                                            <label for="transhipment_three_amount">Transhipment 3:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" readonly name="transhipment_three_amount"
-                                                id="transhipment_three_amount" class="form-control mb-1"
-                                                oninput="calculateInvoice()" />
-                                        </div>
-
+                                    
                                         <!-- Pickup Charges -->
                                         <div class="col-md-6">
                                             <label for="pickup_charges">Pickup Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="pickup_charges" id="pickup_charges"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->pickup_charges }}" name="pickup_charges" id="pickup_charges" class="form-control mb-1" />
                                         </div>
-
+                                    
                                         <!-- Hamali Charges -->
                                         <div class="col-md-6">
                                             <label for="hamali_Charges">Hamali Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" readonly name="hamali_Charges" id="hamali_Charges"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->hamali_Charges }}" name="hamali_Charges" id="hamali_Charges" class="form-control mb-1" />
                                         </div>
-
+                                    
                                         <!-- Bilti Charges -->
                                         <div class="col-md-6">
                                             <label for="bilti_Charges">Bilti Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" readonly value="10" name="bilti_Charges" id="bilti_Charges"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->bilti_Charges }}" name="bilti_Charges" id="bilti_Charges" class="form-control mb-1" />
                                         </div>
-
+                                    
                                         <!-- Discount -->
                                         <div class="col-md-6">
                                             <label for="discount">Discount:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="discount" id="discount"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->discount }}" name="discount" id="discount" class="form-control mb-1" />
                                         </div>
-
+                                    
                                         <!-- Company Charges -->
                                         <div class="col-md-6">
                                             <label for="compney_charges">Company Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="compney_charges" id="compney_charges"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->compney_charges }}" name="compney_charges" id="compney_charges" class="form-control mb-1" />
                                         </div>
-
+                                    
                                         <!-- Sub Total -->
                                         <div class="col-md-6">
                                             <label for="sub_total">Sub Total:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="sub_total" id="sub_total"
-                                                class="form-control mb-1" readonly />
+                                            <input type="text" value="{{ $client->sub_total }}" name="sub_total" id="sub_total" class="form-control mb-1" readonly />
                                         </div>
-
+                                    
                                         <!-- GST: CGST, SGST, IGST -->
                                         <div class="col-md-6">
                                             <label for="cgst">CGST:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="cgst" id="cgst"
-                                                class="form-control mb-1" readonly />
+                                            <input type="text" value="{{ $client->cgst }}" name="cgst" id="cgst" class="form-control mb-1" readonly />
                                         </div>
-
+                                    
                                         <div class="col-md-6">
                                             <label for="sgst">SGST:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="sgst" id="sgst"
-                                                class="form-control mb-1" readonly />
+                                            <input type="text" value="{{ $client->sgst }}" name="sgst" id="sgst" class="form-control mb-1" readonly />
                                         </div>
-
+                                    
                                         <div class="col-md-6">
                                             <label for="igst">IGST:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="igst" id="igst"
-                                                class="form-control mb-1" readonly />
+                                            <input type="text" value="{{ $client->igst }}" name="igst" id="igst" class="form-control mb-1" readonly />
                                         </div>
-
+                                    
                                         <!-- Grand Total -->
                                         <div class="col-md-6">
                                             <label for="grand_total">Grand Total:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="grand_total" id="grand_total"
-                                                class="form-control mb-1" readonly />
+                                            <input type="text" value="{{ $client->grand_total }}" name="grand_total" id="grand_total" class="form-control mb-1" readonly />
                                         </div>
-
+                                    
                                         <!-- Misc Charges -->
                                         <div class="col-md-6">
                                             <label for="misc_charge_amount">Misc. Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="misc_charge_amount" id="misc_charge_amount"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="{{ $client->misc_charge_amount }}" name="misc_charge_amount" id="misc_charge_amount" class="form-control mb-1" />
                                         </div>
-
+                                    
                                         <!-- Final Amount -->
                                         <div class="col-md-6">
                                             <label for="grand_total_amount">Final Amount:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" name="grand_total_amount" id="grand_total_amount"
-                                                class="form-control mb-1" readonly />
+                                            <input type="text" value="{{ $client->grand_total_amount }}" name="grand_total_amount" id="grand_total_amount" class="form-control mb-1" readonly />
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
 
-                        <script>
-                            function calculateInvoice() {
-                                let freight = parseFloat(document.getElementById('freight_amount').value) || 0;
-                                let wbc = parseFloat(document.getElementById('wbc_charges').value) || 0;
-                                let handling = parseFloat(document.getElementById('handling_charges').value) || 0;
-                                let fov = parseFloat(document.getElementById('fov_amount').value) || 0;
-                                let fuel = parseFloat(document.getElementById('fuel_amount').value) || 0;
-                                let transhipment1 = parseFloat(document.getElementById('transhipmen_one_amount').value) || 0;
-                                let transhipment2 = parseFloat(document.getElementById('transhipmen_two_amount').value) || 0;
-                                let transhipment3 = parseFloat(document.getElementById('transhipment_three_amount').value) || 0;
-                                let pickup = parseFloat(document.getElementById('pickup_charges').value) || 0;
-                                let hamali = parseFloat(document.getElementById('hamali_Charges').value) || 0;
-                                let bilti = parseFloat(document.getElementById('bilti_Charges').value) || 0;
-                                let discount = parseFloat(document.getElementById('discount').value) || 0;
-                                let companyCharges = parseFloat(document.getElementById('compney_charges').value) || 0;
-                                let miscCharges = parseFloat(document.getElementById('misc_charge_amount').value) || 0;
+                        
 
-                                // Subtotal calculation
-                                let subtotal = freight + wbc + handling + fov + fuel + transhipment1 + transhipment2 + transhipment3 + pickup +
-                                    hamali + bilti + companyCharges + miscCharges - discount;
-
-                                // GST calculation (example, adjust as needed)
-                                let cgst = freight * 2.5 / 100; // Example 9% CGST
-                                let sgst = freight *  2.5 / 100;// Example 9% SGST
-                                let igst = 0; // If applicable
-
-                                // Grand Total calculation
-                                let grandTotal = subtotal + cgst + sgst + igst;
-
-                                // Update fields
-                                document.getElementById('sub_total').value = subtotal.toFixed(2);
-                                document.getElementById('cgst').value = cgst.toFixed(2);
-                                document.getElementById('sgst').value = sgst.toFixed(2);
-                                document.getElementById('igst').value = igst.toFixed(2);
-                                document.getElementById('grand_total').value = grandTotal.toFixed(2);
-                                document.getElementById('grand_total_amount').value = grandTotal.toFixed(2);
-                            }
-
-                            // Initialize the calculations when the page loads
-                            window.onload = calculateInvoice;
-                        </script>
 
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-12">
                             {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a> --}}
-                            <input type="submit" value="Save & Print" class="btn btn-success float-right">
+                            <input type="submit" value="Update" class="btn btn-success float-right">
                         </div>
                     </div>
                 </form>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        function calculateInvoice() {
+                            // Retrieve the input distance value
+                            const distance = parseFloat(document.getElementById('distance').value) || 0; // Input distance in kilometers
+                            const perKmRate = 0.20; // Freight rate per kilometer in rupees
+                
+                            // Calculate the freight charge based on the distance
+                            const freight = distance * perKmRate;
+                            document.getElementById('freight_amount').value = freight.toFixed(2); // Setting freight value in the input field
+                
+                            // GST rates for Freight
+                            const cgstRate = 2.5; // CGST rate percentage
+                            const sgstRate = 2.5; // SGST rate percentage
+                            const igstRate = 5; // IGST rate percentage (if applicable)
+                
+                            // Calculate GST for Freight (CGST and SGST for intra-state, IGST for inter-state)
+                            const freightCgst = (freight * cgstRate) / 100;
+                            const freightSgst = (freight * sgstRate) / 100;
+                
+                            // If both CGST and SGST are 0, we calculate IGST (for inter-state transactions)
+                            let freightIgst = 0;
+                            if (freightCgst === 0 && freightSgst === 0) {
+                                freightIgst = (freight * igstRate) / 100;
+                            }
+                
+                            // Display the calculated GST values
+                            document.getElementById('cgst').value = freightCgst.toFixed(2);
+                            document.getElementById('sgst').value = freightSgst.toFixed(2);
+                            document.getElementById('igst').value = freightIgst.toFixed(2);
+                
+                            // Retrieve other charges as before
+                            const wbc = parseFloat(document.getElementById('wbc_charges').value) || 0;
+                            const handling = parseFloat(document.getElementById('handling_charges').value) || 0;
+                            const fuel = parseFloat(document.getElementById('fuel_amount').value) || 0;
+                            const pickup = parseFloat(document.getElementById('pickup_charges').value) || 0;
+                            const hamali = parseFloat(document.getElementById('hamali_Charges').value) || 0;
+                            const bilti = parseFloat(document.getElementById('bilti_Charges').value) || 0;
+                            const discount = parseFloat(document.getElementById('discount').value) || 0;
+                            const companyCharges = parseFloat(document.getElementById('compney_charges').value) || 0;
+                            const miscCharges = parseFloat(document.getElementById('misc_charge_amount').value) || 0;
+                
+                            // Calculate Sub Total (without GST, but including other charges)
+                            const subTotal = wbc + handling + fuel + pickup + hamali + bilti + companyCharges + miscCharges + freight;
+                            document.getElementById('sub_total').value = subTotal.toFixed(2);
+                
+                            // Calculate Grand Total including Freight GST (CGST and SGST, or IGST)
+                            const grandTotal = subTotal + freightCgst + freightSgst + freightIgst;
+                
+                            // Final Amount after applying discount
+                            const finalAmount = grandTotal - discount;
+                
+                            // Set the Grand Total and Final Amount
+                            document.getElementById('grand_total').value = grandTotal.toFixed(2);
+                            document.getElementById('grand_total_amount').value = finalAmount.toFixed(2);
+                        }
+                
+                        // Add event listeners to input fields to recalculate totals when values change
+                        const fields = [
+                            'distance', 'wbc_charges', 'handling_charges', 'fuel_amount', 'pickup_charges',
+                            'hamali_Charges', 'bilti_Charges', 'discount', 'compney_charges', 'misc_charge_amount'
+                        ];
+                
+                        // Add event listeners for all fields to trigger the calculation on change
+                        fields.forEach(fieldId => {
+                            const field = document.getElementById(fieldId);
+                            if (field) {
+                                field.addEventListener('input', calculateInvoice);
+                            } else {
+                                console.warn(`Element with ID ${fieldId} not found.`);
+                            }
+                        });
+                
+                        // Initialize the calculation on page load
+                        calculateInvoice();
+                    });
+                </script>
+                
             </div>
         </section>
     </div>

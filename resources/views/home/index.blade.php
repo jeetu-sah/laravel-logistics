@@ -284,7 +284,7 @@
         
         <div class="row margintop" id="shipment">
             <article class="card">
-                <div class="card-header"> My Orders / Tracking<br> <input type="Search.." class="card-header col-md-2" placeholder=" Shipment Number"> </div>
+                <div class="card-header"> My Orders / Tracking<br> <input type="Search.." class="card-header col-md-2" placeholder=" Shipment Number"> <button class="btn btn-primary">Track</button></div>
                 
                 <div class="card-body">
                     <h6>Order ID: OD45345345435</h6>
@@ -886,7 +886,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-5">
+        {{-- <div class="row mt-5">
             <div>
                 <div>
                     <h6 class="mt-3 fw-bold primarycolor text-center">Testimonial</h6>
@@ -916,7 +916,7 @@
 
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
     <div class="footercolor">
         <div class="container">

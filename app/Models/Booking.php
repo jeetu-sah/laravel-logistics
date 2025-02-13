@@ -37,6 +37,8 @@ class Booking extends Model
         'consignee_branch_id',
         'transhipment_three',
         'no_of_artical',
+        'actual_weight',
+        'cantain',
         'good_of_value',
         'consignor_name',
         'consignee_name',
@@ -54,32 +56,49 @@ class Booking extends Model
         'remark',
         'photo_id',
         'parcel_image',
-        'handling_charge_amount',
-        'loading_charge_amount',
+        'distance',
+        'freight_amount',
+        'wbc_charges',
+        'handling_charges',
+        'fov_amount',
+        'fuel_amount',
+        'transhipmen_one_amount',
+        'transhipmen_two_amount',
+        'transhipment_three_amount',
+        'pickup_charges',
+        'hamali_Charges',
+        'bilti_Charges',
+        'discount',
+        'compney_charges',
+        'sub_total',
+        'cgst',
+        'sgst',
+        'igst',
+        'grand_total',
         'misc_charge_amount',
-        'other_charge_amount',
         'grand_total_amount',
-        'booking_type',
-        'status'
+        'bilti_number',        // Add this line
+        'status',              // Add this line
+        'booking_type',        // Add this line
     ];
 
     // If you want to hide attributes from arrays
     protected $hidden = [];
 
     // If you want to cast attributes to a different type
-    protected $casts = [
-        'actual_weight' => 'string', // This is needed if actual_weight is a string in the schema
-        'freight_amount' => 'decimal:2',
-        'os_amount' => 'decimal:2',
-        'fov_amount' => 'decimal:2',
-        'transhipment_amount' => 'decimal:2',
-        'handling_charge_amount' => 'decimal:2',
-        'loading_charge_amount' => 'decimal:2',
-        'misc_charge_amount' => 'decimal:2',
-        'other_charge_amount' => 'decimal:2',
-        'grand_total_amount' => 'decimal:2',
-    ];
-   
+    // protected $casts = [
+    //     'actual_weight' => 'string', // This is needed if actual_weight is a string in the schema
+    //     'freight_amount' => 'decimal:2',
+    //     'os_amount' => 'decimal:2',
+    //     'fov_amount' => 'decimal:2',
+    //     'transhipment_amount' => 'decimal:2',
+    //     'handling_charge_amount' => 'decimal:2',
+    //     'loading_charge_amount' => 'decimal:2',
+    //     'misc_charge_amount' => 'decimal:2',
+    //     'other_charge_amount' => 'decimal:2',
+    //     'grand_total_amount' => 'decimal:2',
+    // ];
+
 
 
 
@@ -94,6 +113,6 @@ class Booking extends Model
         return $this->belongsTo(Branch::class, 'consignee_branch_id');
     }
 
-   
+
 
 }

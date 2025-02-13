@@ -13,7 +13,9 @@ use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\ChallanController;
 use App\Http\Controllers\Admin\DeliveryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\Admin\BranchDistace;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -60,6 +62,7 @@ Route::group(['middleware' => ['auth']], function () {
         // Branch
         Route::get('/branches', [BranchController::class, 'index']);
         Route::get('/branches/list', [BranchController::class, 'list']);
+        Route::get('/branches/deletebranch/{id}', [BranchController::class, 'deletebranch']);
         Route::get('/branches/create', [BranchController::class, 'create']);
         Route::get('/branches/edit/{branchId}', [BranchController::class, 'edit']);
         Route::post('/branches/update/{id}', [BranchController::class, 'update'])->name('admin.update');
@@ -72,26 +75,51 @@ Route::group(['middleware' => ['auth']], function () {
 
         // paid booking
         Route::get('/bookings', [BookingController::class, 'index']);
-        Route::get('/bookings/list', [BookingController::class, 'list']);
+        Route::get('/bookings/create', [BookingController::class, 'create']);
+        Route::post('/bookings/store', [BookingController::class, 'store']);
+        
+        Route::get('/bookings/list', action: [BookingController::class, 'list']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
-        Route::get('/bookings/paid-booking', [BookingController::class, 'bookings']);
+        Route::get('/bookings/noBill', [BookingController::class, 'noBill']);
+
         Route::post('/bookings/paid-booking', [BookingController::class, 'paid_booking']);
         // // to paid booking
         Route::get('/bookings/to-pay-booking', [BookingController::class, 'to_pay_booking']);
-        // Route::post('/booking/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
+        Route::post('/bookings/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
         // // to client booking
-        // Route::post('/booking/to-client-booking', [BookingController::class, 'to_client_booking_save']);
-        Route::get('/bookings/to-client-booking', [BookingController::class, 'to_client_booking']);
+        Route::get('/bookings/clients', [BookingController::class, 'Clientshow']);
+        Route::get('/bookings/clientsList', [BookingController::class, 'clientList']);
+        Route::get('/bookings/to-client-booking/{id}', [BookingController::class, 'to_client_booking']);
+        Route::post('/bookings/to-client-booking', [BookingController::class, 'to_client_booking_save']);
 
-        //challan routes
-        // In routes/web.php
         Route::get('/challans', [ChallanController::class, 'index']);
         Route::get('/challans/list', [ChallanController::class, 'list']);
         Route::get('/challans/create', [ChallanController::class, 'create']);
         Route::post('/challans/create', [ChallanController::class, 'store']);
         Route::get('challans/{id}', [ChallanController::class, 'show']);
+        //Client routes
 
+        Route::get('/clients', [ClientController::class, 'show']);
+        Route::get('/clients/create', [ClientController::class, 'index']);
+        Route::post('/clients/store', [ClientController::class, 'store']);
+        Route::get('/clients/list', [ClientController::class, 'list']);
+        Route::get('clients/edit/{id}', [ClientController::class, 'edit']);
+        Route::post('clients/update', [ClientController::class, 'update']);
+        Route::get('clients/delete/{id}', [ClientController::class, 'delete']);
+        Route::get('get-distance', [ClientController::class, 'getDistance']);
+
+
+
+
+        // /Distance
+        Route::get('distances', [BranchDistace::class, 'index']);
+        Route::get('distances/create', [BranchDistace::class, 'create']);
+        Route::post('distances/store', [BranchDistace::class, 'store']);
+        Route::get('distances/list', [BranchDistace::class, 'list']);
+        Route::get('distances/edit/{id}', [BranchDistace::class, 'edit']);
+        Route::post('distances/update', [BranchDistace::class, 'update']);
+        Route::get('distances/delete/{id}', [BranchDistace::class, 'delete']);
 
         Route::post('/booking/recived', [ChallanController::class, 'recived']);
 

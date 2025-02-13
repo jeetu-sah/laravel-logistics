@@ -421,13 +421,13 @@
 
     p,
     div {
-        margin-top: 0;
+
         line-height: 1.5em;
     }
 
-    p {
+    /* p {
         margin-bottom: 15px;
-    }
+    } */
 
     ul {
         margin: 0 0 25px 0;
@@ -503,12 +503,12 @@
     }
 
     td {
-        padding: 10px 15px;
+        padding: 5px 10px;
         line-height: 1.55em;
     }
 
     th {
-        padding: 10px 15px;
+        padding: 5px 10px;
         line-height: 1.55em;
     }
 
@@ -746,9 +746,9 @@
         margin-bottom: 19px;
     }
 
-    .tm_mb20 {
+    /* .tm_mb20 {
         margin-bottom: 20px;
-    }
+    } */
 
     .tm_mb21 {
         margin-bottom: 21px;
@@ -815,7 +815,7 @@
     }
 
     .tm_width_1 {
-        width: 8.33333333%;
+        width: 53.33333333%;
     }
 
     .tm_width_2 {
@@ -823,11 +823,11 @@
     }
 
     .tm_width_3 {
-        width: 25%;
+        /* width: 15%; */
     }
 
     .tm_width_4 {
-        width: 33.33333333%;
+        width: 15%;
     }
 
     .tm_width_5 {
@@ -1145,7 +1145,7 @@
     .tm_invoice {
         background: #fff;
         border-radius: 10px;
-        padding: 50px;
+        padding: 20px;
     }
 
     .tm_invoice_footer {
@@ -1159,7 +1159,7 @@
     }
 
     .tm_invoice_footer .tm_left_footer {
-        width: 58%;
+        width: 71%;
         padding: 10px 15px;
         -webkit-box-flex: 0;
         -ms-flex: none;
@@ -1201,7 +1201,7 @@
         -webkit-box-flex: 0;
         -ms-flex: none;
         flex: none;
-        width: 60%;
+        /* width: 60%; */
     }
 
     .tm_invoice.tm_style1 .tm_invoice_table {
@@ -1233,7 +1233,7 @@
         display: flex;
         -webkit-box-align: center;
         -ms-flex-align: center;
-        align-items: center;
+
         -webkit-box-pack: justify;
         -ms-flex-pack: justify;
         justify-content: space-between;
@@ -2989,91 +2989,93 @@
             <div class="tm_invoice tm_style1" id="tm_download_section">
                 <div class="tm_invoice_in">
                     <div class="tm_invoice_head tm_align_center tm_mb20">
+
                         <div class="tm_invoice_left">
+                            <b>Reg. UDYAM-UP-43-0045811</b>
                             <div class="tm_logo"><img src="{{ asset('site/img/logo-log.png') }}" alt="Logo"
                                     width="40px;"></div>
                         </div>
-                        <div class="tm_invoice_right tm_text_right">
-                            <div class="tm_primary_color tm_f30 tm_text_uppercase">Vikas Logistic Pvt. ltd.</div>
-                            <p><b>Reg. UDYAM-UP-43-0045811</b></p>
-                            <p><b>GSTIN: 09AHQPV3722R2Z7</b></p>
+                        <div class="tm_invoice_center" style="text-align: center; margin-top:-50px; width: 400px;">
+                            <div class="tm_logo">
+                                <div class="tm_primary_color tm_f30 tm_text_uppercase">Vikas Logistics</div>
+                            </div>
+                            <span style="">{{ $consignorAddress }}</span>
+                        </div>
+                        <div class="tm_invoice_right tm_text_right" style="margin-top:-47px;">
+
+                            <p><b>GSTIN: 09AHQPV3722R2Z7</b></p><span style="font-size: 20px;">
+                                @if ($booking->booking_type == 'Paid')
+                                    Paid
+                                @elseif($booking->booking_type == 'Topay')
+                                    To Pay
+                                @elseif($booking->booking_type == 'Toclient')
+                                    To Client
+                                @else
+                                    Unknown
+                                @endif
+                                <b> <br>LR No:
+                                    {{ $booking->bilti_number }}</b>
+                            </span>
+
                         </div>
                     </div>
                     <div class="tm_invoice_info tm_mb20">
                         <p class="tm_invoice_seperator tm_primary_color"><b>{{ $consignorCity }} To:
                                 {{ $consigneeCity }} ({{ $booking->created_at }})</b></p>
                         <div class="tm_invoice_info_list">
-                            <p class="tm_invoice_number tm_m0">LR No.-<b class="tm_primary_color">
-                                    {{ $booking->bilti_number }}</b></p>
-                            <p class="tm_invoice_date tm_m0">Date: <b
-                                    class="tm_primary_color">{{ $booking->created_at }}</b></p>
-                            <p class="tm_invoice_date tm_m0">Booking: <b class="tm_primary_color">
-                                    @if ($booking->booking_type == 1)
-                                        Paid
-                                    @elseif($booking->booking_type == 2)
-                                        To Pay
-                                    @else
-                                        Unknown
-                                    @endif
-                                </b></p>
+
+
+
                         </div>
                     </div>
-                    <div class="tm_invoice_head tm_mb10">
-                        <div class="tm_invoice_left">
-                            <p class="tm_mb2"><b class="tm_primary_color">CONSIGNOR:</b></p>
-                            <p>
-                                {{ ucfirst($booking->consignor_name) }}<br> {{ $consignorCity }} <br>
-                                {{ $booking->address }}
-                                <br>{{ $booking->gst_number }} /
-                                {{ $booking->phone_number_1 }} <br>
-                                <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                    data-cfemail="f79b9880929b9bb7909a969e9bd994989a">{{ $booking->email }}
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tm_invoice_right tm_text_right">
-                            <p class="tm_mb2"><b class="tm_primary_color">CONSIGNEE:</b></p>
-                            <p>{{ ucfirst($booking->consignee_name) }}<br>
-                                {{ $consigneeCity }} <br>
-                                {{ $booking->consignee_address }}<br>
-                                {{ $booking->consignee_gst_number }} /
-                                {{ $booking->consignee_phone_number_1 }} <br>
-                                <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                    data-cfemail="3054555d5f70575d51595c1e535f5d">{{ $booking->consignee_email }}</a>
-                            </p>
-                        </div>
-                    </div>
+
                     <div class="tm_table tm_style1">
                         <div class="tm_round_border tm_radius_0">
                             <div class="tm_table_responsive">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th class="tm_width_3 tm_semi_bold tm_primary_color tm_gray_bg"> Goods
-                                                Contained (Declare by
-                                                consignor):</th>
-                                            <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">Value
-                                                Declared by Consignor:
-                                            </th>
-                                          
-                                            <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">No of
-                                                Article</th>
-                                            <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">Packing Type
-                                            </th>
-
-                                        </tr>
-                                    </thead>
+                                <table border="1">
                                     <tbody>
-                                        <tr class="tm_table_baseline">
-                                            <td class="tm_width_3 tm_primary_color">{{ $booking->packing_type }}</td>
-                                            <td class="tm_width_4">{{ $booking->good_of_value }}</td>
+                                        <tr>
+                                            <th class="tm_width_2 tm_semi_bold tm_primary_color tm_gray_bg"> From:
+                                                {{ $consignorCity }}</th>
+                                            <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">To :
+                                                {{ $consigneeCity }}
+                                            </th>
 
-                                         
-                                            <td class="tm_width_2 tm_text_right">{{ $booking->no_of_artical }}</td>
-                                            <td class="tm_width_2 tm_text_right">{{ $booking->packing_type }}</td>
+                                            <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">KM :
+                                                {{ $booking->distance }}
+                                            </th>
+                                            <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">
+                                                Transhipment 1: {{ $transhipment1  }}
+                                                |
+
+                                                Transhipment 2: {{ $transhipment2  }} |
+
+                                                Transhipment 3:{{ $transhipment3  }}
+
+
+
+
+                                            </th>
+
                                         </tr>
+                                        <tr>
+                                            <th class="tm_width_3 tm_semi_bold tm_primary_color tm_gray_bg">
+                                                {{ $branch1Contact }}
+                                            </th>
+                                            <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">
+                                                {{ $branch2Contact }}
+                                            </th>
 
+                                            <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">Article:
+                                                {{ $booking->no_of_artical }}
+                                            </th>
+                                            <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">Act.Wt:
+                                                {{ $booking->actual_weight }} Kg. | Goods Of Value :
+                                                {{ $booking->good_of_value }}
 
+                                            </th>
+
+                                        </tr>
 
                                     </tbody>
                                 </table>
@@ -3081,10 +3083,171 @@
                         </div>
                         <div class="tm_invoice_footer tm_border_left tm_border_left_none_md">
                             <div class="tm_left_footer tm_padd_left_15_md">
-                                <p class="tm_mb2"><b class="tm_primary_color">Privet mark</b></p>
-                                <p class="tm_m0">{{ $booking->privet_mark }} <br></p>
-                                <p class="tm_mb2"><b class="tm_primary_color">Remark</b></p>
-                                <p class="tm_m0">{{ $booking->remark }} <br></p>
+                                <div style="display: flex; justify-content: space-between;">
+
+                                    <table>
+                                        <tbody>
+                                            <tr style="text-align:center; border: 1px solid #111;"
+                                                class="tm_gray_bg tm_border_top tm_border_left tm_border_right">
+                                                <td class="tm_primary_color tm_border_none tm_bold">
+                                                    C O N S I G N O R
+                                                </td>
+
+                                            </tr>
+                                            <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Name:
+                                                    {{ $booking->consignor_name }}
+                                                    <span class="tm_ternary_color"></span>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Address:
+                                                    {{ $booking->consignor_address }}
+                                                    <span class="tm_ternary_color"></span>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Mobile:
+                                                    {{ $booking->consignor_phone_number }}
+                                                    <span class="tm_ternary_color"></span>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">GST:
+                                                    {{ $booking->consignor_gst_number }}
+                                                    <span class="tm_ternary_color"></span>
+                                                </td>
+
+                                            </tr>
+
+
+
+                                        </tbody>
+
+                                    </table>
+                                    <table>
+                                        <tbody>
+                                            <tr style="text-align:center; border: 1px solid #111;"
+                                                class="tm_gray_bg tm_border_top tm_border_left tm_border_right">
+                                                <td class="tm_primary_color tm_border_none tm_bold">
+                                                    C O N S I G N O R
+                                                </td>
+
+                                            </tr>
+                                            <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Name:
+                                                    {{ $booking->consignee_name }}
+                                                    <span class="tm_ternary_color"></span>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Address:
+                                                    {{ $booking->consignee_address }}
+                                                    <span class="tm_ternary_color"></span>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Mobile:
+                                                    {{ $booking->consignee_phone_number }}
+                                                    <span class="tm_ternary_color"></span>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">GST:
+                                                    {{ $booking->consignor_gst_number }}
+                                                    <span class="tm_ternary_color"></span>
+                                                </td>
+
+                                            </tr>
+
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+                                <table border="1" style="margin-top: 5px; font-size: 12px;">
+                                    <tbody>
+                                        <tr>
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">Invoice No.</th>
+
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">
+                                                {{ $booking->invoice_number }}
+                                            </th>
+
+                                        </tr>
+                                        <tr>
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">Goods Contained (Declare
+                                                by Consignor)</th>
+
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">{{ $booking->cantain }}
+                                            </th>
+
+                                        </tr>
+
+
+                                        <tr>
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">Privet Mark</th>
+
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">{{ $booking->mark }}
+
+                                            </th>
+
+                                        </tr>
+                                        <tr>
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg"> Remark</th>
+
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">{{ $booking->mark }}
+
+                                            </th>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                               
+                                <div style="display: flex; align-items: center;">
+                                    <p style="margin-left: 10px; padding-right: 20px;">
+                                        <b> Ac- 5530142311<br>
+                                            Bank Name - Central Bank of India<br>
+                                            IFSC - CBIN0283681<br>
+                                            Account Holder - Vikas Logistics</b>
+                                    </p>
+                                
+                                    <p style="margin-left: 20px; margin-right: 20px; line-height: 1.6;">
+                                        <img src="{{ asset('site/img/indianQr.jpg') }}" width="150px" height="auto" />
+                                    </p>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <p style="margin-left: 10px; border-right: 1px solid; padding-right: 20px;">
+                                        <b>Head Office:<br>
+                                            256 Damodar Nagar Barra<br>
+                                            Kanpur Nagar - 27<br>
+                                            Uttar Pradesh<br>
+                                            Contact: +91 88403 54461<br>
+                                            Email: vikaslogistics14320@gmail.com
+                                        </b>
+                                    </p>
+                                
+                                    <p style="margin-left: 20px; margin-right: 20px; line-height: 1.6;">
+                                        <b>Help Line:<br>
+                                            Contact: +91 7860578111<br>
+                                            WhatsApp: +91 7271920999
+                                        </b>
+                                    </p>
+                                </div>
+                                
+                                
+
+
                             </div>
                             <div class="tm_right_footer">
                                 <table>
@@ -3097,68 +3260,162 @@
                                                 Amount(Rs.)</td>
                                         </tr>
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Freight Amount
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Freight
                                                 <span class="tm_ternary_color"></span>
                                             </td>
                                             <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
                                                 {{ $booking->freight_amount }}</td>
                                         </tr>
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Fov Amount
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">WBC Chg.
                                                 <span class="tm_ternary_color"></span>
                                             </td>
-                                            <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->wbc_charges }}</td>
+                                        </tr>
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Handling Chg.
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->handling_charges }}</td>
+                                        </tr>
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">FOV
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
                                                 {{ $booking->fov_amount }}</td>
                                         </tr>
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Fuel Amount
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->fuel_amount }}</td>
+                                        </tr>
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Transhipment
+                                                1
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->transhipmen_one_amount }}</td>
+                                        </tr>
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Transhipment
+                                                2
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->transhipmen_two_amount }}</td>
+                                        </tr>
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Transhipment
+                                                3
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->transhipment_three_amount }}</td>
+                                        </tr>
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Pickup Chg.
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->pickup_charges }}</td>
+                                        </tr>
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
                                             <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Hamali
-                                                Charges<span class="tm_ternary_color"></span></td>
-                                            <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">
-                                                {{ $booking->loading_charge_amount }} </td>
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->hamali_Charges }}</td>
                                         </tr>
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Bilty
-                                                Charges<span class="tm_ternary_color"></span></td>
-                                            <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">
-                                                {{ $booking->bilti_charges }} </td>
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Bilti Chg.
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->bilti_Charges }}</td>
                                         </tr>
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Misc.
-                                                Charges<span class="tm_ternary_color"></span></td>
-                                            <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">
-                                                {{ $booking->misc_charge_amount }} </td>
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Compney Chg.
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->compney_charges }}</td>
                                         </tr>
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Others
-                                                Charges<span class="tm_ternary_color"></span></td>
-                                            <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">
-                                                {{ $booking->other_charge_amount }} </td>
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">misc Chg.
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->misc_charge_amount }}</td>
                                         </tr>
+
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Sub Total
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
+                                                {{ $booking->sub_total }}</td>
+                                        </tr>
+
+
+
+
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">CGST
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td
+                                                class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">
+                                                {{ $booking->cgst }} </td>
+                                        </tr>
+                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">SGST
+                                                <span class="tm_ternary_color"></span>
+                                            </td>
+                                            <td
+                                                class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">
+                                                {{ $booking->sgst }} </td>
+                                        </tr>
+
+
                                         <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color">Grand
+                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color">
+                                                Grand
                                                 Total </td>
                                             <td
                                                 class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right">
                                                 {{ $booking->grand_total_amount }}</td>
                                         </tr>
+
                                     </tbody>
+
                                 </table>
+
+                                <p class=" tm_border_top_0 tm_bold tm_f16 tm_primary_color">Rs.
+                                    {{ numberToWords($booking->grand_total_amount) }}
+                                    Only</p>
+
+                                </tr>
+
                             </div>
+
                         </div>
                     </div>
+                    <Small><b>Note : 1)Material must have been insured by owner in case of total value is more than
+                            Rs.5000. (2)Party shall have to
+                            collect the goods within three days, there after company shall not be responsible and have
+                            to pay demurrage. (3)In
+                            case of loss or damage, we are liable for only risk cover value for transit which declared
+                            at the time of booking.
+                            (4)Terms & Conditions Apply.</b>
+                    </Small>
                     <hr class="tm_mb20">
-                    <div class="tm_text_center">
-                        <p class="tm_mb5"><b class="tm_primary_color">Terms & Conditions:</b></p>
-                        <p class="tm_m0">Delivery
-                            shall
-                            be made only at parcel office. <br class="tm_hide_print">Consignor
-                            has
-                            to
-                            pay loading charge at booking station.<br>Consignee
-                            has
-                            to
-                            pay Delivery charge at delivery station.</p>
-                    </div><!-- .tm_note -->
+
                 </div>
             </div>
             <div class="tm_invoice_btns tm_hide_print">

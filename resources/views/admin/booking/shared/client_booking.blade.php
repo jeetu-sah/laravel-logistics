@@ -6,7 +6,7 @@
 
         <div class="card-body">
             <div class="row">
-              
+                <input type="hidden" name="client_id" value="{{ $client->id }}">
                 <div class="col-md-2">
                     <div class="">
                         <label for="date">Paid:</label>
@@ -103,13 +103,11 @@
                 <div class="col-md-3 mb-1">
                     <select class="form-select select2 form-control js-select2" name="consignor_branch_id"
                         id="consignor_branch_id">
-                        <option value="">Select Branch Name</option>
-                        @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}" @if ($branchList->id != $user->branch_user_id) disabled @endif
-                                @if ($branchList->id == $user->branch_user_id) selected @endif>
-                                {{ $branchList->branch_name }}
-                            </option>
-                        @endforeach
+
+
+                        <option value="{{ $client->consignor_branch_id }}">{{ $client->consignor_branch_name }}
+                        </option>
+
                     </select>
 
                 </div>
@@ -140,14 +138,13 @@
                 </div>
                 <div class="col-md-3">
                     <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
-                    id="consignee_branch_id">
-                    <option value="">Select Branch Name</option>
-                    @foreach ($branch as $branchList)
-                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                        </option>
-                    @endforeach
+                        id="consignee_branch_id">
 
-                </select>
+                        <option value="{{ $client->consignee_branch_id }}">{{ $client->consignee_branch_name }}
+                        </option>
+                       
+                         
+                        </select>
 
 
 
@@ -226,7 +223,7 @@
 
                 </div>
                 <div class="col-md-3">
-                    <input type="text" name="consignor_name" value=""
+                    <input type="text" name="consignor_name" value="{{ $client->consignor_name }}"
                         class="form-control mb-1" />
                 </div>
 
@@ -237,7 +234,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_name"
+                    <input type="text" value="{{ $client->consignee_name }}" name="consignee_name"
                         class="form-control mb-1" />
 
                 </div>
@@ -251,7 +248,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignor_address"
+                    <input type="text" value="{{ $client->consignor_address }}" name="consignor_address"
                         class="form-control mb-1" />
 
                 </div>
@@ -263,7 +260,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_address"
+                    <input type="text" value="{{ $client->consignee_address }}" name="consignee_address"
                         class="form-control mb-1" />
 
                 </div>
@@ -277,7 +274,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value=""
+                    <input type="text" value="{{ $client->consignor_phone_number }}"
                         name="consignor_phone_number" class="form-control mb-1" />
 
                 </div>
@@ -289,7 +286,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value=""
+                    <input type="text" value="{{ $client->consignee_phone_number }}"
                         name="consignee_phone_number" class="form-control mb-1" />
 
                 </div>
@@ -303,7 +300,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignor_gst_number"
+                    <input type="text" value="{{ $client->consignor_gst_number }}" name="consignor_gst_number"
                         class="form-control mb-1" />
 
                 </div>
@@ -315,7 +312,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_gst_number"
+                    <input type="text" value="{{ $client->consignee_address }}" name="consignee_gst_number"
                         class="form-control mb-1" />
 
                 </div>
@@ -329,7 +326,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignor_email"
+                    <input type="text" value="{{ $client->consignor_email }}" name="consignor_email"
                         class="form-control mb-1" />
 
                 </div>
@@ -341,7 +338,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_email"
+                    <input type="text" value="{{ $client->consignee_email }}" name="consignee_email"
                         class="form-control mb-1" />
 
                 </div>
@@ -375,7 +372,7 @@
                 <div class="col-md-4">
 
                     <label for="date">Aadhar card</label>
-                    <input type="text" value="" name="aadhar_card"
+                    <input type="text" value="{{ $client->aadhar_card }}" name="aadhar_card"
                         class="form-control mb-1 mb-1" />
 
 

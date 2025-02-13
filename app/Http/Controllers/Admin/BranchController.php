@@ -26,8 +26,8 @@ class BranchController extends Controller
     public function create()
     {
 
-        $data['countries'] =  DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
-        $data['states'] =  DB::table('country_states')->get();
+        $data['countries'] = DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
+        $data['states'] = DB::table('country_states')->get();
 
         return view('admin.branch.create', $data);
     }
@@ -72,7 +72,7 @@ class BranchController extends Controller
             User::create([
                 'first_name' => $branch->branch_name,
                 'last_name' => $branch->owner_name,
-                'email'=> $request->loginId,
+                'email' => $request->loginId,
                 'email_verified_at' => Carbon::now(),
                 'mobile' => $branch->contact,
                 'mobile_verified_at' => Carbon::now(),
@@ -87,7 +87,7 @@ class BranchController extends Controller
                 "alertMessage" => true,
                 "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
             ]);
-            
+
         } else {
             return redirect('admin/branches')->with([
                 "alertMessage" => true,
@@ -118,7 +118,9 @@ class BranchController extends Controller
                 $row['contact'] = $branch->contact;
                 $row['gst'] = $branch->gst;
                 $row['user_status'] = $branch->user_status;
-                $row['action'] = '<a href="' . url("admin/branches/edit/{$branch->id}") . '" class="btn btn-primary">Edit</a>';
+                $row['action'] = '<a href="' . url("admin/branches/edit/{$branch->id}") . '" class="btn btn-primary">Edit</a> ';
+                $row['action'] .= '<a href="' . url("admin/branches/deletebranch/{$branch->id}") . '" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to soft delete this branch?\')">Delete</a>';
+
                 $row['created_at'] = Carbon::parse($branch->created_at)->format('d/m/Y');
 
                 $rows[] = $row;
@@ -127,10 +129,10 @@ class BranchController extends Controller
 
         // Prepare the JSON response with correct record counts
         $json_data = [
-            "draw"            => intval($request->input('draw')),
-            "recordsTotal"    => $totalRecord,
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => $totalRecord,
             "recordsFiltered" => $totalRecord, // Adjust this if you implement search/filter functionality
-            "data"            => $rows,
+            "data" => $rows,
         ];
 
         return response()->json($json_data); // Return a JSON response
@@ -151,7 +153,7 @@ class BranchController extends Controller
     {
         $data['message'] = [];
         $data['branch'] = Branch::find($id);
-        $data['countries'] =  DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
+        $data['countries'] = DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
         return view('admin.branch.edit', $data);
     }
 
@@ -211,4 +213,16 @@ class BranchController extends Controller
             ]);
         }
     }
+
+    public function deletebranch($id)
+    {
+
+        $branch = Branch::findOrFail($id);
+
+        // Soft delete the branch
+        $branch->delete();
+
+        return redirect('admin/branches')->with('success', 'Branch deleted successfully.');
+    }
+
 }
