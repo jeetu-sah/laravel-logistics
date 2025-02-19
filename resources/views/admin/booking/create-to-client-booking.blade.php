@@ -67,7 +67,7 @@
                                             <label for="fov_amount">FOV:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" readonly name="fov_amount" id="fov_amount"
+                                            <input type="text" value=""  name="fov_amount" id="fov_amount"
                                                 class="form-control mb-1" oninput="calculateInvoice()" />
                                         </div>
 

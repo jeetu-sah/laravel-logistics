@@ -142,11 +142,9 @@ class ClientController extends Controller
 
     public function list(Request $request)
     {
-        // Get input values from the request
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        // Start with the query builder
         $clientQuery = Client::query();
        
         // For debugging, let's print the query first to see if it's being built properly
@@ -158,45 +156,44 @@ class ClientController extends Controller
                     ->orWhere('consignee_name', 'like', "%$search%");
             });
         }
-
-        // Filter active clients (status = 1)
-        $clientQuery->where('status', 1);
-
-        // Get the total record count before pagination
+    
+        // Eager load the consignorBranch relationship
+        $clients = $clientQuery->with('consignorBranch') // Eager load
+            ->skip($start)
+            ->take($limit)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
         $totalRecord = $clientQuery->count();
-
-        // Get the paginated results
-        $clients = $clientQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
-       
-        // Prepare data for the response
         $rows = [];
+    
         if ($clients->count() > 0) {
             foreach ($clients as $index => $client) {
                 $row = [];
                 $row['sn'] = $start + $index + 1;
                 $row['client_id'] = '<a href="' . url('admin/bookings/to-client-booking', ['id' => $client->id]) . '">' . $client->id . '</a>';
-
-
-                $row['consignor_branch_id'] = $client->consignorBranch?->branch_name ?? 'N/A';
+    
+                // Accessing consignor branch name safely
+                $row['consignor_branch_id'] = $client->consignorBranch ? $client->consignorBranch->branch_name : 'N/A';
                 $row['consignor_name'] = $client->consignor_name;
                 $row['consignor_address'] = $client->consignor_address;
                 $row['phone_number_1'] = $client->consignor_phone_number;
                 $row['gst_number'] = $client->gst_number;
-                $row['consignee_branch_id'] = $client->consigneeBranch?->branch_name ?? 'N/A';
+                $row['consignee_branch_id'] = $client->consigneeBranch ? $client->consigneeBranch->branch_name : 'N/A';
                 $row['consignee_name'] = $client->consignee_name;
                 $row['consignee_address'] = $client->consignee_address;
                 $row['consignee_phone_number_1'] = $client->consignee_phone_number;
                 $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-                              <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
-
+                                  <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
+    
                 // Format the creation date
                 $row['created_at'] = date('d-m-Y', strtotime($client->created_at));
-
+    
                 // Append the row to the rows array
                 $rows[] = $row;
             }
         }
-
+    
         // Prepare the JSON response with correct record counts
         $json_data = [
             "draw" => intval($request->input('draw')),
@@ -204,10 +201,11 @@ class ClientController extends Controller
             "recordsFiltered" => $totalRecord,
             "data" => $rows,
         ];
-
+    
         // Return the JSON response
         return response()->json($json_data);
     }
+    
 
 
 

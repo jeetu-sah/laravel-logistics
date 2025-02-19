@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -2995,11 +2998,16 @@
                             <div class="tm_logo"><img src="{{ asset('site/img/logo-log.png') }}" alt="Logo"
                                     width="40px;"></div>
                         </div>
-                        <div class="tm_invoice_center" style="text-align: center; margin-top:-50px; width: 400px;">
+                        <div class="tm_invoice_center" style="text-align: center; margin-top:-20px; width: 400px;">
                             <div class="tm_logo">
                                 <div class="tm_primary_color tm_f30 tm_text_uppercase">Vikas Logistics</div>
                             </div>
-                            <span style="">{{ $consignorAddress }}</span>
+                            <span style="">{{ $consignorAddress }}<br> Head Office:
+                                256 Damodar Nagar Barra
+                                Kanpur Nagar - 27
+                                Uttar Pradesh
+                                Contact: +91 88403 54461<br>
+                                Email: vikaslogistics14320@gmail.com<br><b></b></span>
                         </div>
                         <div class="tm_invoice_right tm_text_right" style="margin-top:-47px;">
 
@@ -3014,7 +3022,8 @@
                                     Unknown
                                 @endif
                                 <b> <br>LR No:
-                                    {{ $booking->bilti_number }}</b>
+                                    {{ $booking->bilti_number }} <br>
+                                </b>
                             </span>
 
                         </div>
@@ -3045,13 +3054,13 @@
                                                 {{ $booking->distance }}
                                             </th>
                                             <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">
-                                                Transhipment 1: {{ $transhipment1  }}
+                                                Transhipment 1: {{ $transhipment1 }}
                                                 |
 
-                                                Transhipment 2: {{ $transhipment2  }} |
+                                                Transhipment 2: {{ $transhipment2 }} |
 
-                                                Transhipment 3:{{ $transhipment3  }}
-
+                                                Transhipment 3:{{ $transhipment3 }}
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Offline Bilti: {{ $booking->manual_bilty_number }}
 
 
 
@@ -3195,7 +3204,7 @@
 
 
                                         <tr>
-                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">Privet Mark</th>
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">Actual Goods value declared by consignor</th>
 
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">{{ $booking->mark }}
 
@@ -3213,7 +3222,7 @@
 
                                     </tbody>
                                 </table>
-                               
+
                                 <div style="display: flex; align-items: center;">
                                     <p style="margin-left: 10px; padding-right: 20px;">
                                         <b> Ac- 5530142311<br>
@@ -3221,12 +3230,21 @@
                                             IFSC - CBIN0283681<br>
                                             Account Holder - Vikas Logistics</b>
                                     </p>
-                                
+
                                     <p style="margin-left: 20px; margin-right: 20px; line-height: 1.6;">
-                                        <img src="{{ asset('site/img/indianQr.jpg') }}" width="150px" height="auto" />
+                                        <img src="{{ asset('site/img/indianQr.jpg') }}" width="150px"
+                                            height="auto" />
                                     </p>
                                 </div>
-                                <div style="display: flex; align-items: center;">
+                                <Small><b>Note : 1)Material must have been insured by owner in case of total value is more than
+                                    Rs.2000. (2)Party shall have to
+                                    collect the goods within three days, there after company shall not be responsible and have
+                                    to pay demurrage. (3)In
+                                    case of loss or damage, we are liable for only risk cover value for transit which declared by
+                                   consignor at the time of booking.
+                                    (4) *Terms & Conditions Apply. (5) All Dispute at Kanpur jurisdiction only.</b>
+                            </Small>
+                                {{-- <div style="display: flex; align-items: center;">
                                     <p style="margin-left: 10px; border-right: 1px solid; padding-right: 20px;">
                                         <b>Head Office:<br>
                                             256 Damodar Nagar Barra<br>
@@ -3236,16 +3254,16 @@
                                             Email: vikaslogistics14320@gmail.com
                                         </b>
                                     </p>
-                                
+
                                     <p style="margin-left: 20px; margin-right: 20px; line-height: 1.6;">
                                         <b>Help Line:<br>
                                             Contact: +91 7860578111<br>
                                             WhatsApp: +91 7271920999
                                         </b>
                                     </p>
-                                </div>
-                                
-                                
+                                </div> --}}
+
+
 
 
                             </div>
@@ -3354,17 +3372,7 @@
                                                 {{ $booking->misc_charge_amount }}</td>
                                         </tr>
 
-                                        <tr class="tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Sub Total
-                                                <span class="tm_ternary_color"></span>
-                                            </td>
-                                            <td class="tm_width_3 tm_text_right tm_border_none tm_pt0 tm_danger_color">
-                                                {{ $booking->sub_total }}</td>
-                                        </tr>
-
-
-
-
+                                        
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
                                             <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">CGST
                                                 <span class="tm_ternary_color"></span>
@@ -3406,90 +3414,89 @@
 
                         </div>
                     </div>
-                    <Small><b>Note : 1)Material must have been insured by owner in case of total value is more than
-                            Rs.5000. (2)Party shall have to
-                            collect the goods within three days, there after company shall not be responsible and have
-                            to pay demurrage. (3)In
-                            case of loss or damage, we are liable for only risk cover value for transit which declared
-                            at the time of booking.
-                            (4)Terms & Conditions Apply.</b>
-                    </Small>
+                   
                     <hr class="tm_mb20">
+                    <div style="display: flex; justify-content: space-between; padding: 10px;">
+                        <p><b>Clerk signature</b></p>
+                        <p><b>Consignor signature</b></p>
+                    </div>
 
                 </div>
-            </div>
-            <div class="tm_invoice_btns tm_hide_print">
-                <a href="javascript:window.print()" class="tm_invoice_btn tm_color1">
-                    <span class="tm_btn_icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                            <path
-                                d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24"
-                                fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
-                            <rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32"
-                                fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
-                            <path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none"
-                                stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
-                            <circle cx="392" cy="184" r="24" fill='currentColor' />
-                        </svg>
-                    </span>
-                    <span class="tm_btn_text">Print</span>
-                </a>
-                <button id="tm_download_btn" class="tm_invoice_btn tm_color2">
-                    <span class="tm_btn_icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                            <path
-                                d="M320 336h76c55 0 100-21.21 100-75.6s-53-73.47-96-75.6C391.11 99.74 329 48 256 48c-69 0-113.44 45.79-128 91.2-60 5.7-112 35.88-112 98.4S70 336 136 336h56M192 400.1l64 63.9 64-63.9M256 224v224.03"
-                                fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="32" />
-                        </svg>
-                    </span>
-                    <span class="tm_btn_text">Download</span>
-                </button>
+                <div class="tm_invoice_btns tm_hide_print">
+                    <a href="javascript:window.print()" class="tm_invoice_btn tm_color1">
+                        <span class="tm_btn_icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                                <path
+                                    d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24"
+                                    fill="none" stroke="currentColor" stroke-linejoin="round"
+                                    stroke-width="32" />
+                                <rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32"
+                                    fill="none" stroke="currentColor" stroke-linejoin="round"
+                                    stroke-width="32" />
+                                <path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24"
+                                    fill="none" stroke="currentColor" stroke-linejoin="round"
+                                    stroke-width="32" />
+                                <circle cx="392" cy="184" r="24" fill='currentColor' />
+                            </svg>
+                        </span>
+                        <span class="tm_btn_text">Print</span>
+                    </a>
+                    <button id="tm_download_btn" class="tm_invoice_btn tm_color2">
+                        <span class="tm_btn_icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                                <path
+                                    d="M320 336h76c55 0 100-21.21 100-75.6s-53-73.47-96-75.6C391.11 99.74 329 48 256 48c-69 0-113.44 45.79-128 91.2-60 5.7-112 35.88-112 98.4S70 336 136 336h56M192 400.1l64 63.9 64-63.9M256 224v224.03"
+                                    fill="none" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="32" />
+                            </svg>
+                        </span>
+                        <span class="tm_btn_text">Download</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jspdf.min.js"></script>
-    <script src="assets/js/html2canvas.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script>
-        (function() {
-            function c() {
-                var b = a.contentDocument || a.contentWindow.document;
-                if (b) {
-                    var d = b.createElement('script');
-                    d.innerHTML =
-                        "window.__CF$cv$params={r:'904d61013ae92450',t:'MTczNzM1ODQzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-                    b.getElementsByTagName('head')[0].appendChild(d)
-                }
-            }
-            if (document.body) {
-                var a = document.createElement('iframe');
-                a.height = 1;
-                a.width = 1;
-                a.style.position = 'absolute';
-                a.style.top = 0;
-                a.style.left = 0;
-                a.style.border = 'none';
-                a.style.visibility = 'hidden';
-                document.body.appendChild(a);
-                if ('loading' !== document.readyState) c();
-                else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c);
-                else {
-                    var e = document.onreadystatechange || function() {};
-                    document.onreadystatechange = function(b) {
-                        e(b);
-                        'loading' !== document.readyState && (document.onreadystatechange = e, c())
+        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jspdf.min.js"></script>
+        <script src="assets/js/html2canvas.min.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script>
+            (function() {
+                function c() {
+                    var b = a.contentDocument || a.contentWindow.document;
+                    if (b) {
+                        var d = b.createElement('script');
+                        d.innerHTML =
+                            "window.__CF$cv$params={r:'904d61013ae92450',t:'MTczNzM1ODQzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+                        b.getElementsByTagName('head')[0].appendChild(d)
                     }
                 }
-            }
-        })();
-    </script>
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-        data-cf-beacon='{"rayId":"904d61013ae92450","version":"2025.1.0","r":1,"token":"6f756f02820545e3be40ddc6eb6154c3","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}'
-        crossorigin="anonymous"></script>
+                if (document.body) {
+                    var a = document.createElement('iframe');
+                    a.height = 1;
+                    a.width = 1;
+                    a.style.position = 'absolute';
+                    a.style.top = 0;
+                    a.style.left = 0;
+                    a.style.border = 'none';
+                    a.style.visibility = 'hidden';
+                    document.body.appendChild(a);
+                    if ('loading' !== document.readyState) c();
+                    else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c);
+                    else {
+                        var e = document.onreadystatechange || function() {};
+                        document.onreadystatechange = function(b) {
+                            e(b);
+                            'loading' !== document.readyState && (document.onreadystatechange = e, c())
+                        }
+                    }
+                }
+            })();
+        </script>
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+            integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+            data-cf-beacon='{"rayId":"904d61013ae92450","version":"2025.1.0","r":1,"token":"6f756f02820545e3be40ddc6eb6154c3","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}'
+            crossorigin="anonymous"></script>
 </body>
 
 </html>

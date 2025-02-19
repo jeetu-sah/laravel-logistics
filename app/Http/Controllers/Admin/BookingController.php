@@ -46,8 +46,6 @@ class BookingController extends Controller
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
-                // echo "<pre>";
-                // print_r($booking->id);exit;
                 $row = [];
                 if ($request->bilti_list_type === 'challan') {
                     $row['sn'] = '<div class="form-check">
@@ -55,25 +53,23 @@ class BookingController extends Controller
                                             <label class="form-check-label" for="exampleCheck1"></label>
                                         </div>';
                 } else {
-                    $row['sn'] = $start + $index + 1; // Corrected SN to start from the current page's start index
+                    $row['sn'] = $start + $index + 1; 
                 }
 
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
-                $row['address'] = $booking->address;
+                $row['address'] = $booking->consignor_address;
                 $row['phone_number_1'] = $booking->phone_number_1;
                 $row['gst_number'] = $booking->gst_number;
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
                 $row['consignee_phone_number_1'] = $booking->consignee_phone_number_1;
-
-                // Conditional logic for booking_type
-                if ($booking->booking_type == 1) {
+                if ($booking->booking_type == 'Paid') {
                     $row['booking_type'] = 'Paid ';
-                } elseif ($booking->booking_type == 2) {
+                } elseif ($booking->booking_type == 'Topay') {
                     $row['booking_type'] = 'To Pay ';
                 } elseif ($booking->booking_type == 3) {
                     $row['booking_type'] = 'Client ';
@@ -81,29 +77,22 @@ class BookingController extends Controller
                     $row['booking_type'] = 'Unknown';
                 }
 
-                // Action column
                 $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
 
-
-                // Format the creation date
                 $row['created_at'] = date('d-m-Y', strtotime($booking->created_at));
 
-
-                // Append row to the array
                 $rows[] = $row;
             }
         }
 
-
-        // Prepare the JSON response with correct record counts
         $json_data = [
             "draw" => intval($request->input('draw')),
             "recordsTotal" => $totalRecord,
-            "recordsFiltered" => $totalRecord, // Adjust this if you implement search/filter functionality
+            "recordsFiltered" => $totalRecord, 
             "data" => $rows,
         ];
 
-        return response()->json($json_data); // Return a JSON response
+        return response()->json($json_data); 
     }
     public function create()
     {
@@ -115,10 +104,12 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+
         try {
             // Validate the request data
             $request->validate([
                 // Consignor
+
                 'booking_date' => 'required|date',
                 'transhipmen_one' => 'nullable',
                 'consignor_branch_id' => 'required|exists:branches,id',
@@ -128,7 +119,6 @@ class BookingController extends Controller
                 'actual_weight' => 'required',
                 'cantain' => 'required',
                 'aadhar_card' => 'nullable',
-
                 'no_of_artical' => 'required|integer',
                 'good_of_value' => 'required|numeric',
                 // Consignee
@@ -145,7 +135,7 @@ class BookingController extends Controller
                 // Other Details
                 'invoice_number' => 'nullable|string',
                 'eway_bill_number' => 'nullable|string',
-                'mark' => 'nullable',
+                'mark' => 'nullable|string',
                 'remark' => 'nullable',
                 'photo_id' => 'nullable|file|mimes:jpg,jpeg,png,pdf', // Add validation as needed
                 'parcel_image' => 'nullable|file|mimes:jpg,jpeg,png,pdf', // Add validation as needed
@@ -172,6 +162,9 @@ class BookingController extends Controller
                 'grand_total' => 'nullable|numeric',
                 'misc_charge_amount' => 'nullable|numeric',
                 'grand_total_amount' => 'required|numeric',
+                'booking' => 'required',
+                'manual_bilty' => 'nullable',
+                'client_id' => 'nullable',
             ]);
 
             // Check for matching consignor and consignee branch IDs
@@ -217,48 +210,49 @@ class BookingController extends Controller
                 'transhipmen_one' => $request->transhipmen_one ?: "",
                 'transhipmen_two' => $request->transhipmen_two ?: "",
                 'transhipment_three' => $request->transhipment_three ?: "",
-                'cantain' => $request->cantain ?: "NA",
-                'actual_weight' => $request->actual_weight ?: "NA",
-                'aadhar_card' => $request->aadhar_card ?: "NA",
-                'distance' => $request->distance ?: "NA",
-                'freight_amount' => $request->freight_amount ?: "NA",
-                'wbc_charges' => $request->wbc_charges ?: "NA",
-                'handling_charges' => $request->handling_charges ?: "NA",
-                'fov_amount' => $request->fov_amount ?: "NA",
-                'fuel_amount' => $request->fuel_amount ?: "NA",
+                'cantain' => $request->cantain ?: "0.00",
+                'actual_weight' => $request->actual_weight ?: "0.00",
+                'aadhar_card' => $request->aadhar_card ?: "0.00",
+                'distance' => $request->distance ?: "0.00",
+                'freight_amount' => $request->freight_amount ?: "0.00",
+                'wbc_charges' => $request->wbc_charges ?: "0.00",
+                'handling_charges' => $request->handling_charges ?: "0.00",
+                'fov_amount' => $request->fov_amount ?: "0.00",
+                'fuel_amount' => $request->fuel_amount ?: "0.00",
                 'transhipmen_one_amount' => $request->transhipmen_one_amount ?: "0.00",
                 'transhipmen_two_amount' => $request->transhipmen_two_amount ?: "0.00",
                 'transhipment_three_amount' => $request->transhipment_three_amount ?: "0.00",
-                'pickup_charges' => $request->pickup_charges ?: "NA",
-                'hamali_Charges' => $request->hamali_Charges ?: "NA",
-                'bilti_Charges' => $request->bilti_Charges ?: "NA",
-                'discount' => $request->discount ?: "NA",
-                'compney_charges' => $request->compney_charges ?: "NA",
-                'sub_total' => $request->sub_total ?: "NA",
-                'cgst' => $request->cgst ?: "NA",
-                'sgst' => $request->sgst ?: "NA",
-                'igst' => $request->igst ?: "NA",
-                'grand_total' => $request->grand_total ?: "NA",
-                'misc_charge_amount' => $request->misc_charge_amount ?: "NA",
+                'pickup_charges' => $request->pickup_charges ?: "0.00",
+                'hamali_Charges' => $request->hamali_Charges ?: "0.00",
+                'bilti_Charges' => $request->bilti_Charges ?: "0.00",
+                'discount' => $request->discount ?: "0.00",
+                'compney_charges' => $request->compney_charges ?: "0.00",
+                'sub_total' => $request->sub_total ?: "0.00",
+                'cgst' => $request->cgst ?: "0.00",
+                'sgst' => $request->sgst ?: "0.00",
+                'igst' => $request->igst ?: "0.00",
+                'grand_total' => $request->grand_total ?: "0.00",
+                'misc_charge_amount' => $request->misc_charge_amount ?: "0.00",
                 'grand_total_amount' => $request->grand_total_amount,
                 'status' => '1',
-                'booking_type' => 'Paid',
+                'booking_type' => $request->booking,
+                'manual_bilty_number' => $request->manual_bilty,
+                'client_id' => $request->client_id,
                 'created_at' => now(),
             ]);
 
             // Redirect to the booking bilti page
-            return redirect()->route('bookings.bilti', ['id' => $bookingId]);
+            // Assuming after inserting the booking, you have the $bookingId
+            return redirect()->route('bookings.bilti', ['id' => $bookingId])->with('bookingId', $bookingId);
+
 
         } catch (\Exception $e) {
-            // Log the exception
-            echo $e->getMessage();
-            exit;
+
 
             // Redirect back with an error message
             return redirect()->back()->with(['error' => 'An error occurred while processing your request. Please try again later.'])->withInput();
         }
     }
-
     public function challanBookingList(Request $request)
     {
         $limit = $request->input('length', 10);
@@ -310,21 +304,11 @@ class BookingController extends Controller
                 } else {
                     $row['booking_type'] = 'Unknown';
                 }
-
-                // Action column
                 $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
-
-
-                // Format the creation date
                 $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y  h:i:s');
-
-                // Append row to the array
                 $rows[] = $row;
             }
         }
-
-
-        // Prepare the JSON response with correct record counts
         $json_data = [
             "draw" => intval($request->input('draw')),
             "recordsTotal" => $bookingsCount,
@@ -335,7 +319,7 @@ class BookingController extends Controller
         return response()->json($json_data); // Return a JSON response
     }
 
-   
+
     public function noBill()
     {
         $data['branch'] = Branch::all();

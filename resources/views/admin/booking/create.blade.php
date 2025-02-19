@@ -15,7 +15,7 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form action="{{ url('admin/bookings/to-client-booking') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ url('admin/bookings/store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         @include('admin.booking.shared.consigner_details')
@@ -31,8 +31,8 @@
                                             <label for="distance">Distance (KM):</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" name="distance"
-                                                id="distance" class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="" name="distance" id="distance"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
                                         </div>
 
                                         <!-- Freight -->
@@ -40,8 +40,8 @@
                                             <label for="freight_amount">Freight:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value=""
-                                                name="freight_amount" id="freight_amount" class="form-control mb-1" />
+                                            <input type="text" value="" name="freight_amount" id="freight_amount"
+                                                class="form-control mb-1" />
                                         </div>
 
                                         <!-- WBC -->
@@ -49,8 +49,8 @@
                                             <label for="wbc_charges">WBC:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" readonly
-                                                name="wbc_charges" id="wbc_charges" class="form-control mb-1" />
+                                            <input type="text" value="40" readonly name="wbc_charges"
+                                                id="wbc_charges" class="form-control mb-1" />
                                         </div>
 
                                         <!-- Handling Charges -->
@@ -58,8 +58,8 @@
                                             <label for="handling_charges">Handling Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value=""
-                                                name="handling_charges" id="handling_charges" class="form-control mb-1" />
+                                            <input type="text" value="20" name="handling_charges"
+                                                id="handling_charges" class="form-control mb-1" />
                                         </div>
 
                                         <!-- FOV -->
@@ -76,8 +76,8 @@
                                             <label for="fuel_amount">Fuel Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" name="fuel_amount"
-                                                id="fuel_amount" class="form-control mb-1" />
+                                            <input type="text" value="150" name="fuel_amount" id="fuel_amount"
+                                                class="form-control mb-1" />
                                         </div>
 
                                         <!-- Transhipment 1 -->
@@ -115,9 +115,8 @@
                                             <label for="pickup_charges">Pickup Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value=""
-                                                name="pickup_charges" id="pickup_charges" class="form-control mb-1"
-                                                oninput="calculateInvoice()" />
+                                            <input type="text" value="" name="pickup_charges" id="pickup_charges"
+                                                class="form-control mb-1" oninput="calculateInvoice()" />
                                         </div>
 
                                         <!-- Hamali Charges -->
@@ -125,8 +124,8 @@
                                             <label for="hamali_Charges">Hamali Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" readonly
-                                                name="hamali_Charges" id="hamali_Charges" class="form-control mb-1" />
+                                            <input type="text" value="20" readonly name="hamali_Charges"
+                                                id="hamali_Charges" class="form-control mb-1" />
                                         </div>
 
                                         <!-- Bilti Charges -->
@@ -134,9 +133,9 @@
                                             <label for="bilti_Charges">Bilti Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" readonly
-                                                value="10" name="bilti_Charges" id="bilti_Charges"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="10" readonly value="10"
+                                                name="bilti_Charges" id="bilti_Charges" class="form-control mb-1"
+                                                oninput="calculateInvoice()" />
                                         </div>
 
                                         <!-- Discount -->
@@ -153,8 +152,8 @@
                                             <label for="compney_charges">Company Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value=""
-                                                name="compney_charges" id="compney_charges" class="form-control mb-1"
+                                            <input type="text" value="30" name="compney_charges"
+                                                id="compney_charges" class="form-control mb-1"
                                                 oninput="calculateInvoice()" />
                                         </div>
 
@@ -163,9 +162,9 @@
                                             <label for="misc_charge_amount">Misc. Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value=""
-                                                name="misc_charge_amount" id="misc_charge_amount"
-                                                class="form-control mb-1" oninput="calculateInvoice()" />
+                                            <input type="text" value="" name="misc_charge_amount"
+                                                id="misc_charge_amount" class="form-control mb-1"
+                                                oninput="calculateInvoice()" />
                                         </div>
 
                                         <!-- Sub Total -->
@@ -173,8 +172,8 @@
                                             <label for="sub_total">Sub Total:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" name="sub_total"
-                                                id="sub_total" class="form-control mb-1" readonly />
+                                            <input type="text" value="" name="sub_total" id="sub_total"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
                                         <!-- GST: CGST, SGST, IGST -->
@@ -182,24 +181,24 @@
                                             <label for="cgst">CGST:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" name="cgst"
-                                                id="cgst" class="form-control mb-1" readonly />
+                                            <input type="text" value="" name="cgst" id="cgst"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
                                         <div class="col-md-6">
                                             <label for="sgst">SGST:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" name="sgst"
-                                                id="sgst" class="form-control mb-1" readonly />
+                                            <input type="text" value="" name="sgst" id="sgst"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
                                         <div class="col-md-6">
                                             <label for="igst">IGST:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" name="igst"
-                                                id="igst" class="form-control mb-1" readonly />
+                                            <input type="text" value="" name="igst" id="igst"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
                                         <!-- Grand Total -->
@@ -207,8 +206,8 @@
                                             <label for="grand_total">Grand Total:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" name="grand_total"
-                                                id="grand_total" class="form-control mb-1" readonly />
+                                            <input type="text" value="" name="grand_total" id="grand_total"
+                                                class="form-control mb-1" readonly />
                                         </div>
 
                                         <!-- Final Amount -->
@@ -216,58 +215,55 @@
                                             <label for="grand_total_amount">Final Amount:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value=""
-                                                name="grand_total_amount" id="grand_total_amount"
-                                                class="form-control mb-1" readonly />
+                                            <input type="text" value="" name="grand_total_amount"
+                                                id="grand_total_amount" class="form-control mb-1" readonly />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            function calculateInvoice() {
-                                let freight = parseFloat(document.getElementById('freight_amount').value) || 0;
-                                let wbc = parseFloat(document.getElementById('wbc_charges').value) || 0;
-                                let handling = parseFloat(document.getElementById('handling_charges').value) || 0;
-                                let fov = parseFloat(document.getElementById('fov_amount').value) || 0;
-                                let fuel = parseFloat(document.getElementById('fuel_amount').value) || 0;
-                                let transhipment1 = parseFloat(document.getElementById('transhipmen_one_amount').value) || 0;
-                                let transhipment2 = parseFloat(document.getElementById('transhipmen_two_amount').value) || 0;
-                                let transhipment3 = parseFloat(document.getElementById('transhipment_three_amount').value) || 0;
-                                let pickup = parseFloat(document.getElementById('pickup_charges').value) || 0;
-                                let hamali = parseFloat(document.getElementById('hamali_Charges').value) || 0;
-                                let bilti = parseFloat(document.getElementById('bilti_Charges').value) || 0;
-                                let discount = parseFloat(document.getElementById('discount').value) || 0;
-                                let companyCharges = parseFloat(document.getElementById('compney_charges').value) || 0;
-                                let miscCharges = parseFloat(document.getElementById('misc_charge_amount').value) || 0;
 
-                                // Subtotal calculation
-                                let subtotal = freight + wbc + handling + fov + fuel + transhipment1 + transhipment2 + transhipment3 + pickup +
-                                    hamali + bilti + companyCharges + miscCharges - discount;
-
-                                // GST calculation (example, adjust as needed)
-                                let cgst = freight * 2.5 / 100; // Example 9% CGST
-                                let sgst = freight * 2.5 / 100; // Example 9% SGST
-                                let igst = 0; // If applicable
-
-                                // Grand Total calculation
-                                let grandTotal = subtotal + cgst + sgst + igst;
-
-                                // Update fields
-                                document.getElementById('sub_total').value = subtotal.toFixed(2);
-                                document.getElementById('cgst').value = cgst.toFixed(2);
-                                document.getElementById('sgst').value = sgst.toFixed(2);
-                                document.getElementById('igst').value = igst.toFixed(2);
-                                document.getElementById('grand_total').value = grandTotal.toFixed(2);
-                                document.getElementById('grand_total_amount').value = grandTotal.toFixed(2);
-                            }
-
-                            // Initialize the calculations when the page loads
-                            window.onload = calculateInvoice;
-                        </script>
 
                     </div>
 
+                    <script>
+                        function calculateInvoice() {
+                            // Get all input values
+                            const distance = parseFloat(document.getElementById('distance').value) || 0;
+                            const freightAmount = parseFloat(document.getElementById('freight_amount').value) || 0;
+                            const wbcCharges = parseFloat(document.getElementById('wbc_charges').value) || 0;
+                            const handlingCharges = parseFloat(document.getElementById('handling_charges').value) || 0;
+                            const fovAmount = parseFloat(document.getElementById('fov_amount').value) || 0;
+                            const fuelAmount = parseFloat(document.getElementById('fuel_amount').value) || 0;
+                            const transhipmentOneAmount = parseFloat(document.getElementById('transhipmen_one_amount').value) || 0;
+                            const transhipmentTwoAmount = parseFloat(document.getElementById('transhipmen_two_amount').value) || 0;
+                            const transhipmentThreeAmount = parseFloat(document.getElementById('transhipment_three_amount').value) || 0;
+                            const pickupCharges = parseFloat(document.getElementById('pickup_charges').value) || 0;
+                            const hamaliCharges = parseFloat(document.getElementById('hamali_Charges').value) || 0;
+                            const biltiCharges = parseFloat(document.getElementById('bilti_Charges').value) || 0;
+                            const discount = parseFloat(document.getElementById('discount').value) || 0;
+                            const companyCharges = parseFloat(document.getElementById('compney_charges').value) || 0;
+                            const miscChargeAmount = parseFloat(document.getElementById('misc_charge_amount').value) || 0;
+
+                            // Calculate Sub Total
+                            const subTotal = freightAmount + wbcCharges + handlingCharges + fovAmount + fuelAmount +
+                                transhipmentOneAmount + transhipmentTwoAmount + transhipmentThreeAmount +
+                                pickupCharges + hamaliCharges + biltiCharges + companyCharges + miscChargeAmount - discount;
+
+                            // Set Sub Total
+                            document.getElementById('sub_total').value = subTotal.toFixed(2);
+
+                            // Calculate Grand Total (without GST)
+                            const grandTotal = subTotal;
+
+                            // Set Grand Total and Final Amount
+                            document.getElementById('grand_total').value = grandTotal.toFixed(2);
+                            document.getElementById('grand_total_amount').value = grandTotal.toFixed(2);
+                        }
+
+                        // Calculate on page load
+                        window.onload = calculateInvoice;
+                    </script>
                     <div class="row mb-3">
                         <div class="col-12">
                             {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a> --}}
@@ -286,76 +282,95 @@
     <script src="{{ asset('admin_webu/plugins/select2/js/select2.full.min.js') }} "></script>
     <script>
         $(document).ready(function() {
+            // Event listener for changes in consignor and consignee branch
             $('#consignor_branch_id, #consignee_branch_id').on('change', function() {
                 var consignor_branch_id = $('#consignor_branch_id').val();
                 var consignee_branch_id = $('#consignee_branch_id').val();
-    
-                // Check if both values are selected
+
                 if (consignor_branch_id && consignee_branch_id) {
-                    // Make an AJAX request to fetch the distance
                     $.ajax({
-                        url: '{{ url('admin/get-distance') }}', // Corrected the duplicate `url` field
+                        url: '{{ url('admin/get-distance') }}', // Correct URL for AJAX request
                         method: 'GET',
                         data: {
                             consignor_branch_id: consignor_branch_id,
                             consignee_branch_id: consignee_branch_id
                         },
                         success: function(response) {
-                            // Check if response contains distance
                             if (response.distance) {
-                                // Update the page with the distance
-                                $('#distance').val(response.distance); // Assuming 'distance' is an input field
-    
-                                // Call calculateInvoice() after updating the distance
-                                calculateInvoice(response.distance);
+                                $('#distance').val(response.distance);
+                                calculateInvoice(response
+                                    .distance
+                                ); // Calculate invoice right after fetching distance
                             } else {
-                                // Handle error if distance is not found
                                 $('#distance').val('');
                                 alert('Error: ' + (response.error || 'Unknown error'));
                             }
                         },
                         error: function() {
-                            // Handle failed request
                             $('#distance').val('');
                             alert('Failed to fetch distance. Please try again.');
                         }
                     });
                 } else {
-                    // If either branch ID is not selected, clear the displayed distance
                     $('#distance').val('');
                 }
             });
+
+            // Event listener for changes in the number of articles
+            $('#no_of_articles').on('input', function() {
+                const noOfArticles = parseFloat($('#no_of_articles').val()) ||
+                    1; // Default to 1 if empty or invalid
+                calculateInvoiceWithArticles(noOfArticles); // Recalculate based on number of articles
+                calculateTransshipment(noOfArticles); // Adjust transshipment charges as well
+                calculateFOV(noOfArticles); // Adjust FOV charges as well
+            });
+
+            // Event listener for goods value (FOV calculation)
+            $('#good_of_value').on('input', function() {
+                calculateFOV(); // Recalculate FOV based on goods value
+            });
         });
-    
-        // Calculate freight based on the distance
-        function calculateInvoice(distance) {
+
+        // Recalculate invoice with number of articles, including transshipment
+        function calculateInvoiceWithArticles(noOfArticles) {
+            const distance = parseFloat($('#distance').val()) || 0;
+            const freightAmount = parseFloat($('#freight_amount').val()) || 0;
+
+            // Call calculateInvoice() directly after updating freight amount based on distance
+            calculateInvoice(distance, noOfArticles);
+        }
+
+        // Calculate freight based on the distance, including transshipment
+        function calculateInvoice(distance, noOfArticles = 1) {
             const perKmRate = 0.20; // Freight rate per kilometer in rupees
-    
-            // Calculate the freight charge based on the distance
+
+            // Calculate freight based on the distance
             const freight = distance * perKmRate;
-            $('#freight_amount').val(freight.toFixed(2)); // Set the freight value in the input field
-    
+            const totalFreight = freight * noOfArticles; // Multiply by number of articles
+            $('#freight_amount').val(totalFreight.toFixed(2)); // Set the freight value
+
             // GST rates for Freight
             const cgstRate = 2.5; // CGST rate percentage
             const sgstRate = 2.5; // SGST rate percentage
-            const igstRate = 5; // IGST rate percentage (if applicable)
-    
-            // Calculate GST for Freight (CGST and SGST for intra-state, IGST for inter-state)
-            const freightCgst = (freight * cgstRate) / 100;
-            const freightSgst = (freight * sgstRate) / 100;
-    
-            // If both CGST and SGST are 0, we calculate IGST (for inter-state transactions)
+            const igstRate = 5; // IGST rate percentage (for inter-state)
+
+            // Calculate GST for Freight
+            const freightCgst = (totalFreight * cgstRate) / 100;
+            const freightSgst = (totalFreight * sgstRate) / 100;
+
+            // For inter-state transactions (no CGST and SGST)
             let freightIgst = 0;
             if (freightCgst === 0 && freightSgst === 0) {
-                freightIgst = (freight * igstRate) / 100;
+                freightIgst = (totalFreight * igstRate) / 100;
             }
-    
+
             // Display the calculated GST values
             $('#cgst').val(freightCgst.toFixed(2));
             $('#sgst').val(freightSgst.toFixed(2));
             $('#igst').val(freightIgst.toFixed(2));
-    
-            // Retrieve other charges as before
+
+            // Retrieve other charges
+            const fovAmount = parseFloat($('#fov_amount').val()) || 0;
             const wbc = parseFloat($('#wbc_charges').val()) || 0;
             const handling = parseFloat($('#handling_charges').val()) || 0;
             const fuel = parseFloat($('#fuel_amount').val()) || 0;
@@ -365,109 +380,164 @@
             const discount = parseFloat($('#discount').val()) || 0;
             const companyCharges = parseFloat($('#compney_charges').val()) || 0;
             const miscCharges = parseFloat($('#misc_charge_amount').val()) || 0;
-    
+            const transhipmentOne = parseFloat($('#transhipmen_one_amount').val()) || 0;
+            const transhipmentTwo = parseFloat($('#transhipmen_two_amount').val()) || 0;
+            const transhipmentThree = parseFloat($('#transhipment_three_amount').val()) || 0;
+
+            // Multiply all charges by the number of articles
+            const totalWbc = wbc * noOfArticles;
+            const totalHandling = handling * noOfArticles;
+            const totalFuel = fuel * noOfArticles;
+            const totalPickup = pickup * noOfArticles;
+            const totalHamali = hamali * noOfArticles;
+            const totalBilti = bilti * noOfArticles;
+            const totalFov = fovAmount * noOfArticles;
+            const totalCompanyCharges = companyCharges * noOfArticles;
+            const totalMiscCharges = miscCharges * noOfArticles;
+            const totalTranshipmentOne = transhipmentOne * noOfArticles;
+            const totalTranshipmentTwo = transhipmentTwo * noOfArticles;
+            const totalTranshipmentThree = transhipmentThree * noOfArticles;
+
+            // Set values for each charge input
+            $('#wbc_charges').val(totalWbc.toFixed(2));
+            $('#handling_charges').val(totalHandling.toFixed(2));
+            $('#fuel_amount').val(totalFuel.toFixed(2));
+            $('#pickup_charges').val(totalPickup.toFixed(2));
+            $('#hamali_Charges').val(totalHamali.toFixed(2));
+            $('#bilti_Charges').val(totalBilti.toFixed(2));
+            $('#fov_amount').val(totalFov.toFixed(2));
+            $('#compney_charges').val(totalCompanyCharges.toFixed(2));
+            $('#misc_charge_amount').val(totalMiscCharges.toFixed(2));
+            $('#transhipmen_one_amount').val(totalTranshipmentOne.toFixed(2));
+            $('#transhipmen_two_amount').val(totalTranshipmentTwo.toFixed(2));
+            $('#transhipment_three_amount').val(totalTranshipmentThree.toFixed(2));
+
             // Calculate Sub Total (without GST, but including other charges)
-            const subTotal = wbc + handling + fuel + pickup + hamali + bilti + companyCharges + miscCharges + freight;
+            const subTotal = totalFov + totalWbc + totalHandling + totalFuel + totalPickup + totalHamali + totalBilti +
+                totalCompanyCharges + totalMiscCharges +
+                totalFreight + totalFov + totalTranshipmentOne + totalTranshipmentTwo + totalTranshipmentThree;
             $('#sub_total').val(subTotal.toFixed(2));
-    
-            // Calculate Grand Total including Freight GST (CGST and SGST, or IGST)
-            const grandTotal = subTotal + freightCgst + freightSgst + freightIgst;
-    
+
+            // **Calculate Grand Total** (including Freight GST)
+            const grandTotal = subTotal + freightCgst + freightSgst + freightIgst; // Add GST values to Grand Total
+
             // Final Amount after applying discount
             const finalAmount = grandTotal - discount;
-    
+
             // Set the Grand Total and Final Amount
             $('#grand_total').val(grandTotal.toFixed(2));
             $('#grand_total_amount').val(finalAmount.toFixed(2));
+
+            // Debug: Log Grand Total
+            console.log("Grand Total:", grandTotal.toFixed(2));
         }
-    
-        // Add event listeners to input fields to recalculate totals when values change
-        const fields = [
-            'distance', 'wbc_charges', 'handling_charges', 'fuel_amount', 'pickup_charges',
-            'hamali_Charges', 'bilti_Charges', 'discount', 'compney_charges', 'misc_charge_amount'
-        ];
-    
-        fields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.addEventListener('input', function() {
-                    const distance = parseFloat($('#distance').val()) || 0;
-                    if (distance > 0) {
-                        calculateInvoice(distance);
-                    }
-                });
-            } else {
-                console.warn(`Element with ID ${fieldId} not found.`);
-            }
-        });
     </script>
+    <script>
+        // Function to calculate Transshipment charges
+        function calculateTransshipment() {
+            var noOfArticles = parseFloat(document.getElementById('no_of_articles').value) ||
+                1; // Default to 1 if invalid or empty
+
+            // Get transhipment select values
+            var transhipmentOne = document.getElementById('transhipmen_one').value;
+            var transhipmentTwo = document.getElementById('transhipmen_two').value;
+            var transhipmentThree = document.getElementById('transhipment_three').value;
+
+            // Initialize transshipment values
+            var transshipmentValueOne = 0;
+            var transshipmentValueTwo = 0;
+            var transshipmentValueThree = 0;
+
+            // If transhipment one is selected, calculate its value
+            if (transhipmentOne !== "") {
+                transshipmentValueOne = noOfArticles * 40; // Example logic, modify as needed
+                document.getElementById('transhipmen_one_amount').value = transshipmentValueOne.toFixed(2);
+            } else {
+                document.getElementById('transhipmen_one_amount').value = '0.00';
+            }
+
+            // If transhipment two is selected, calculate its value
+            if (transhipmentTwo !== "") {
+                transshipmentValueTwo = noOfArticles * 40; // Example logic, modify as needed
+                document.getElementById('transhipmen_two_amount').value = transshipmentValueTwo.toFixed(2);
+            } else {
+                document.getElementById('transhipmen_two_amount').value = '0.00';
+            }
+
+            // If transhipment three is selected, calculate its value
+            if (transhipmentThree !== "") {
+                transshipmentValueThree = noOfArticles * 40; // Example logic, modify as needed
+                document.getElementById('transhipment_three_amount').value = transshipmentValueThree.toFixed(2);
+            } else {
+                document.getElementById('transhipment_three_amount').value = '0.00';
+            }
+
+            // Get other charges (ensure these elements exist in the form)
+            var freight_amount = parseFloat(document.getElementById('freight_amount').value) || 0;
+            var wbc = parseFloat(document.getElementById('wbc_charges').value) || 0;
+            var handling = parseFloat(document.getElementById('handling_charges').value) || 0;
+            var fov_amount = parseFloat(document.getElementById('fov_amount').value) || 0;
+            var fuel = parseFloat(document.getElementById('fuel_amount').value) || 0;
+            var pickup = parseFloat(document.getElementById('pickup_charges').value) || 0;
+            var hamali = parseFloat(document.getElementById('hamali_Charges').value) || 0;
+            var bilti = parseFloat(document.getElementById('bilti_Charges').value) || 0;
+            var discount = parseFloat(document.getElementById('discount').value) || 0;
+
+            // Get company charges
+            var totalCompanyCharges = parseFloat($('#compney_charges').val()) || 0;
+
+            // Calculate Sub Total (without GST, but including other charges)
+            const subTotal = freight_amount + fov_amount + wbc + handling + fuel + pickup + hamali + bilti +
+                totalCompanyCharges +
+                transshipmentValueOne + transshipmentValueTwo + transshipmentValueThree;
+
+            // Set the Sub Total
+            document.getElementById('sub_total').value = subTotal.toFixed(2);
+
+            // Calculate Grand Total (just the sub-total, as no GST is calculated)
+            const grandTotal = subTotal;
+
+            // Final Amount after applying discount
+            const finalAmount = grandTotal - discount;
+
+            // Set the Grand Total and Final Amount
+            document.getElementById('grand_total').value = grandTotal.toFixed(2);
+            document.getElementById('grand_total_amount').value = finalAmount.toFixed(2);
+        }
+    </script>
+
+    <script>
+        // Function to calculate FOV charges
+        function calculateFOV() {
+            // Get the goods value (use jQuery for consistency)
+            var goodsofvalue = parseFloat($('#good_of_value').val()) || 0;
+
+            // FOV calculation (1.5% of goods value)
+            if (goodsofvalue <= 0) {
+                $('#fov_amount').val('0.00'); // Set FOV to 0 if the goods value is 0 or less
+            } else {
+                var fovValue = (goodsofvalue * 1.5) / 100; // FOV is 1.5% of the goods value
+                $('#fov_amount').val(fovValue.toFixed(2)); // Set FOV value with 2 decimals
+            }
+
+            // Recalculate Transshipment and other charges
+            calculateTransshipment(); // This will trigger the recalculation of the sub-total, grand total, etc.
+        }
+    </script>
+
+
+
+
+
+
     <script>
         $(function() {
             //Initialize Select2 Elements
             $('.select2').select2()
         })
-
-        $(document).ready(function() {
-            $(document).on('click', '.dropdown-mobile-code', function(e) {
-                e.preventDefault()
-                const mobileNumberCode = $(this).text();
-                $(this).parent().parent().find('button').text(mobileNumberCode);
-                $(this).parent().parent().find('.mobileNumberCode').val(mobileNumberCode);
-            });
-        });
     </script>
 @endsection
-<script>
-    function calculateTransshipment() {
-        var noOfArticles = parseFloat(document.getElementById('no_of_articles').value) || 0; // Number of Articles
-        var goodsOfValue = parseFloat(document.getElementById('goods_of_value').value) || 0; // Goods of Value
 
-        // Existing fields
-        var distance = parseFloat(document.getElementById('distance').value) || 0;
-     
-        var wbcCharges = parseFloat(document.getElementById('wbc_charges').value) || 0;
-        var handlingCharges = parseFloat(document.getElementById('handling_charges').value) || 0;
-        var fuelAmount = parseFloat(document.getElementById('fuel_amount').value) || 0;
-        var pickupCharges = parseFloat(document.getElementById('pickup_charges').value) || 0;
-        var compneyCharges = parseFloat(document.getElementById('compney_charges').value) || 0;
-        var miscChargeAmount = parseFloat(document.getElementById('misc_charge_amount').value) || 0;
-
-        // Transhipment charges (you can calculate or set a static value as needed)
-        var transhipmenOneAmount = parseFloat(document.getElementById('transhipmen_one_amount').value) || 0;
-        var transhipmenTwoAmount = parseFloat(document.getElementById('transhipmen_two_amount').value) || 0;
-        var transhipmentThreeAmount = parseFloat(document.getElementById('transhipment_three_amount').value) || 0;
-
-        // Example of how to calculate based on number of articles or goods of value
-        var fovAmount = goodsOfValue * 0.01; // 1% of the goods value as FOV (you can change this as needed)
-        var transhipmentOneAmount = noOfArticles * 10; // Example: 10 units per article for Transhipment 1
-
-        // Set FOV and Transhipment 1 amount
-        document.getElementById('fov_amount').value = fovAmount.toFixed(2);
-        document.getElementById('transhipmen_one_amount').value = transhipmentOneAmount.toFixed(2);
-
-        // Calculate Sub Total (sum of all charges)
-        var subTotal = freightAmount + wbcCharges + handlingCharges + fuelAmount + transhipmenOneAmount +
-            transhipmenTwoAmount + transhipmentThreeAmount + pickupCharges + compneyCharges + miscChargeAmount;
-        document.getElementById('sub_total').value = subTotal.toFixed(2);
-
-        // Calculate CGST and SGST (example: 9% each, you can adjust based on your tax logic)
-        var cgst = subTotal * 0.09;
-        var sgst = subTotal * 0.09;
-        var igst = 0; // Assuming no IGST for simplicity
-        document.getElementById('cgst').value = cgst.toFixed(2);
-        document.getElementById('sgst').value = sgst.toFixed(2);
-        document.getElementById('igst').value = igst.toFixed(2);
-
-        // Calculate Grand Total (Sub Total + Taxes)
-        var grandTotal = subTotal + cgst + sgst + igst;
-        document.getElementById('grand_total').value = grandTotal.toFixed(2);
-
-        // Calculate Final Amount (Grand Total - Discount)
-        var discount = parseFloat(document.getElementById('discount').value) || 0;
-        var grandTotalAmount = grandTotal - discount;
-        document.getElementById('grand_total_amount').value = grandTotalAmount.toFixed(2);
-    }
-</script>
 @section('styles')
     @parent
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">

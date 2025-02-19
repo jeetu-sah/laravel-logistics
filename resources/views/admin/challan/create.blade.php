@@ -178,58 +178,54 @@
             new DataTable('#booking-list', {
                 responsive: true,
                 ajax: {
-                    url: "{{ url('admin/bookings/challan-booking-list') }}", // Endpoint to get the booking data
+                    url: "{{ url('admin/bookings/challan-booking-list') }}", 
                     data: function(d) {
-                        // Send additional data with the request
-                        d.bilti_list_type = 'challan'; // Custom parameter for 'challan'
+                       
+                        d.bilti_list_type = 'challan'; 
                         d.custom = $('#selectAll').prop(
-                            'checked'); // Send the state of the "select all" checkbox
+                            'checked'); 
                     },
                     dataSrc: function(json) {
-                        // Optional: Process the response before passing to the DataTable
+                      
                         return json
-                            .data; // Make sure data is correctly formatted as 'data' in the response
+                            .data;
                     }
                 },
                 columns: [{
-                        data: 'sn', // Serial Number or Select Checkbox
-                        orderable: false // Prevent sorting on the checkbox column
+                        data: 'sn', 
+                        orderable: false 
                     },
                     {
-                        data: 'bilti_number' // Bilti Number
+                        data: 'bilti_number'
                     },
                     {
-                        data: 'consignor_name' // Consignee Branch
+                        data: 'consignor_name' 
                     },
-                    // {
-                    //     data: 'consignor_branch_id' // Consignee Name
-                    // },
+                   
 
                     {
-                        data: 'address' // Consignee Address
+                        data: 'address' 
                     },
                     {
-                        data: 'consignee_name' // Consignee Name
+                        data: 'consignee_name' 
                     },
-                    // {
-                    //     data: 'consignee_branch_id' // Consignee Branch
-                    // },
+                   
                     {
-                        data: 'consignee_address' // Consignee Address
+                        data: 'consignee_address' 
                     },
                     {
-                        data: 'booking_type' // Booking Type
+                        data: 'booking_type' 
                     },
                     {
-                        data: 'created_at' // Created At (Date)
+                        data: 'created_at' 
                     }
                 ],
                 columnDefs: [{
                     targets: 0,
-                    orderable: false // Disable sorting for the first column
+                    orderable: false 
                 }],
-                processing: true, // Show processing indicator while data is loading
-                serverSide: true // Enable server-side processing
+                processing: true, 
+                serverSide: true 
             });
         });
     </script>

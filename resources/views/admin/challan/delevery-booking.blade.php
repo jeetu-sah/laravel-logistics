@@ -15,6 +15,7 @@
                             <li class="breadcrumb-item active">Loading Challan List</li>
                         </ol>
                     </div>
+                    <button onclick="window.print()" class="btn btn-primary">Print</button>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -90,7 +91,7 @@
                                                     <th>Consignor Name/Mobile/GST</th>
                                                     <th>Destination</th>
                                                     <th>Consignee Name/Mobile/GST</th>
-                                                    <th>Item Type</th>
+                                                   
                                                     <th>QTY</th>
                                                     <th>Booking Type</th>
                                                     <th>Booked at</th>
@@ -102,8 +103,8 @@
                                                 @endphp
                                                 @foreach ($bookings as $booking)
                                                     <tr>
-                                                        <td>{{ $i++ }}</td>
-                                                        @if (Auth::user()->id == $booking->consignee_branch_id)
+                                                        {{-- <td>{{ $i++ }}</td> --}}
+                                                        {{-- @if (Auth::user()->id == $booking->consignee_branch_id) --}}
                                                             <td>
                                                                 @if ($booking->status != 3)
                                                                     <input type="checkbox" class="form-check-input"
@@ -111,7 +112,7 @@
                                                                         value="{{ $booking->id }}" />
                                                                 @endif
                                                             </td>
-                                                        @endif
+                                                        {{-- @endif --}}
                                                         <td>{{ $booking->bilti_number }}</td>
                                                         <td>{{ $booking->challan_number }}</td>
                                                         <td>{{ $booking->consignorBranchName }}</td>
@@ -126,12 +127,12 @@
                                                             <br>{{ $booking->consignee_gst_number }}
                                                         </td>
     
-                                                        <td>{{ $booking->packing_type }}</td>
+                                                      
                                                         <td>{{ $booking->no_of_artical }}</td>
                                                         <td>
-                                                            @if ($booking->booking_type == 1)
+                                                            @if ($booking->booking_type == 'Paid')
                                                                 Paid
-                                                            @elseif($booking->booking_type == 2)
+                                                            @elseif($booking->booking_type == "Topay")
                                                                 To Pay
                                                             @elseif($booking->booking_type == 3)
                                                                 Client Booking

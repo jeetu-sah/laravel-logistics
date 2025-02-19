@@ -11,9 +11,10 @@ class Client extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     public function consignorBranch()
-    {
-        return $this->belongsTo(Branch::class, 'consignor_branch_id');
-    }
+{
+    return $this->belongsTo(Branch::class, 'consignor_branch_id');
+}
+
 
     public function consigneeBranch()
     {

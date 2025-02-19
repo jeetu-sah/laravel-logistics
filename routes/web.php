@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings', [BookingController::class, 'index']);
         Route::get('/bookings/create', [BookingController::class, 'create']);
         Route::post('/bookings/store', [BookingController::class, 'store']);
+        Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
         
         Route::get('/bookings/list', action: [BookingController::class, 'list']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);

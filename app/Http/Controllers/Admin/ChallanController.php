@@ -152,7 +152,7 @@ class ChallanController extends Controller
             ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
             //->where('bookings.status', 2)
             // ->where('loading_challans.status', 'Accept')
-            ->select('loading_challan_booking.*', 'loading_challans.status as chalanStatus', 'loading_challans.id as chalanId', 'loading_challans.challan_number', 'loading_challans.busNumber', 'loading_challans.driverName', 'loading_challans.driverMobile', 'loading_challans.locknumber', 'loading_challans.created_at','loading_challans.coLoder') // Include the challan_number field
+            ->select('loading_challan_booking.*', 'loading_challans.status as chalanStatus', 'loading_challans.id as chalanId', 'loading_challans.challan_number', 'loading_challans.busNumber', 'loading_challans.driverName', 'loading_challans.driverMobile', 'loading_challans.locknumber', 'loading_challans.created_at', 'loading_challans.coLoder') // Include the challan_number field
             ->get();
         // echo "<pre>";
         // print_r($challanBookings);exit;

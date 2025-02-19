@@ -6,15 +6,15 @@
 
         <div class="card-body">
             <div class="row">
-              
+
                 <div class="col-md-2">
                     <div class="">
                         <label for="date">Paid:</label>
                     </div>
                 </div>
-               
+
                 <div class="col-md-1">
-                    <input type="checkbox"  name="booking" class="form-control" value="Paid" id="paid"
+                    <input type="checkbox" name="booking" class="form-control" value="Paid" id="paid"
                         onclick="uncheckOther(this)" />
 
 
@@ -28,8 +28,8 @@
                 </div>
                 <div class="col-md-1 mb-2">
                     <div class="">
-                        <input type="checkbox"  class="form-control" name="booking" value="Topay" id="to_pay"
-                             onclick="uncheckOther(this)" />
+                        <input type="checkbox" class="form-control" name="booking" value="Topay" id="to_pay"
+                            onclick="uncheckOther(this)" />
 
                     </div>
                 </div>
@@ -40,8 +40,8 @@
                 </div>
                 <div class="col-md-3 mb-2">
                     <div class="">
-                        <input type="text" class="form-control" name="manual_bilty" value="" id="manual_bilty"
-                           />
+                        <input type="text" class="form-control" name="manual_bilty" value=""
+                            id="manual_bilty" />
 
                     </div>
                 </div>
@@ -69,9 +69,6 @@
                 <div class="col-md-3">
                     <input type="date" class="form-control" value="{{ now()->format('Y-m-d') }}" id="booking-time"
                         name="booking_date" />
-
-
-
                 </div>
 
                 <div class="col-md-2">
@@ -85,11 +82,9 @@
                             name="transhipmen_one" id="transhipmen_one">
                             <option value="">Select Branch Name</option>
                             @foreach ($branch as $branchList)
-                                <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                                </option>
+                                <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
                             @endforeach
                         </select>
-
                     </div>
                 </div>
             </div>
@@ -111,27 +106,21 @@
                             </option>
                         @endforeach
                     </select>
-
                 </div>
                 <div class="col-md-2">
-
                     <label for="text">Transhipment 2:</label>
-
                 </div>
                 <div class="col-md-3">
-
                     <select onchange="calculateTransshipment()" class="form-select select2 form-control js-select2"
                         name="transhipmen_two" id="transhipmen_two">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                            </option>
+                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
                         @endforeach
                     </select>
-
-
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
@@ -140,18 +129,14 @@
                 </div>
                 <div class="col-md-3">
                     <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
-                    id="consignee_branch_id">
-                    <option value="">Select Branch Name</option>
-                    @foreach ($branch as $branchList)
-                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                        </option>
-                    @endforeach
-
-                </select>
-
-
-
+                        id="consignee_branch_id">
+                        <option value="">Select Branch Name</option>
+                        @foreach ($branch as $branchList)
+                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                        @endforeach
+                    </select>
                 </div>
+
                 <div class="col-md-2">
                     <div class="">
                         <label for="text">Transhipment 3:</label>
@@ -162,11 +147,9 @@
                         name="transhipment_three" id="transhipment_three">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                            </option>
+                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
                         @endforeach
                     </select>
-
                 </div>
             </div>
 
@@ -178,8 +161,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="text" oninput="calculateTransshipment()" id="no_of_articles"
-                            name="no_of_artical" class="form-control mb-1" />
+                        <input type="text" id="no_of_articles" name="no_of_artical" class="form-control mb-1" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -210,10 +192,9 @@
                 <div class="col-md-2">
                     <div class="">
                         <input type="text" value="" id="good_of_value" name="good_of_value"
-                            oninput="calculatefov()" class="form-control mb-1" />
+                            oninput="calculateFOV()" class="form-control mb-1" />
                     </div>
                 </div>
-
             </div>
 
             <div class="row">
@@ -226,8 +207,7 @@
 
                 </div>
                 <div class="col-md-3">
-                    <input type="text" name="consignor_name" value=""
-                        class="form-control mb-1" />
+                    <input type="text" name="consignor_name" value="" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
@@ -237,8 +217,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_name"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignee_name" class="form-control mb-1" />
 
                 </div>
 
@@ -251,8 +230,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignor_address"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignor_address" class="form-control mb-1" />
 
                 </div>
 
@@ -263,8 +241,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_address"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignee_address" class="form-control mb-1" />
 
                 </div>
 
@@ -277,8 +254,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value=""
-                        name="consignor_phone_number" class="form-control mb-1" />
+                    <input type="text" value="" name="consignor_phone_number" class="form-control mb-1" />
 
                 </div>
 
@@ -289,8 +265,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value=""
-                        name="consignee_phone_number" class="form-control mb-1" />
+                    <input type="text" value="" name="consignee_phone_number" class="form-control mb-1" />
 
                 </div>
 
@@ -303,8 +278,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignor_gst_number"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignor_gst_number" class="form-control mb-1" />
 
                 </div>
 
@@ -315,8 +289,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_gst_number"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignee_gst_number" class="form-control mb-1" />
 
                 </div>
 
@@ -329,8 +302,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignor_email"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignor_email" class="form-control mb-1" />
 
                 </div>
 
@@ -341,8 +313,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_email"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignee_email" class="form-control mb-1" />
 
                 </div>
 
@@ -375,8 +346,7 @@
                 <div class="col-md-4">
 
                     <label for="date">Aadhar card</label>
-                    <input type="text" value="" name="aadhar_card"
-                        class="form-control mb-1 mb-1" />
+                    <input type="text" value="" name="aadhar_card" class="form-control mb-1 mb-1" />
 
 
 
@@ -514,163 +484,9 @@
                         alt="Captured Image" />
                 </div>
 
-
-
-
             </div>
         </div>
 
     </div>
 
 </div>
-<script>
-    window.onload = function() {
-
-        calculateTransshipment();
-        calculatefov();
-        calculategst();
-    };
-    document.getElementById('no_of_articles').addEventListener('input', function() {
-
-        var noOfArticles = parseInt(document.getElementById('no_of_articles').value,
-            10);
-        var freight_amount = parseFloat(document.getElementById('freight_amount')
-            .value);
-        var noOfArticles = document.getElementById('no_of_articles').value;
-        var wbc_charges = document.getElementById('wbc_charges').value;
-        var handling_charges = document.getElementById('handling_charges').value;
-        var fuel_amount = document.getElementById('fuel_amount').value;
-        var freight_amount = document.getElementById('freight_amount').value;
-        var hamali_Charges = document.getElementById('hamali_Charges').value;
-        var compney_charges = document.getElementById('compney_charges').value;
-
-        if (isNaN(noOfArticles) || noOfArticles <= 0) {
-            document.getElementById('result').innerText = "Please enter a valid number of articles.";
-            return;
-        }
-        var subTotals
-        if (!isNaN(freight_amount) && freight_amount !== "") {
-            var freightValue = noOfArticles * freight_amount;
-            document.getElementById('freight_amount').value = freightValue;
-        } else {
-            document.getElementById('freight_amount').value = '';
-        }
-
-        if (handling_charges !== "") {
-            handlingValue = noOfArticles * 30;
-            document.getElementById('handling_charges').value = handlingValue;
-        } else {
-            document.getElementById('handling_charges').value = '';
-        }
-        if (wbc_charges !== "") {
-            wbcValue = noOfArticles * 40;
-            document.getElementById('wbc_charges').value = wbcValue;
-        } else {
-            document.getElementById('wbc_charges').value = '';
-        }
-        if (fuel_amount !== "") {
-            fuelValue = noOfArticles * 150;
-            document.getElementById('fuel_amount').value = fuelValue;
-        } else {
-            document.getElementById('fuel_amount').value = '';
-        }
-
-        if (hamali_Charges !== "") {
-            hamaliValue = noOfArticles * 20;
-            document.getElementById('hamali_Charges').value = hamaliValue;
-        } else {
-            document.getElementById('hamali_Charges').value = '';
-        }
-
-        if (compney_charges !== "") {
-            compney_chargesValue = noOfArticles * 40;
-            document.getElementById('compney_charges').value = compney_chargesValue;
-        } else {
-            document.getElementById('compney_charges').value = '';
-        }
-        calculategst();
-        calculateInvoice();
-    });
-
-
-    function calculateTransshipment() {
-        var noOfArticles = parseInt(document.getElementById('no_of_articles').value,
-            10);
-        var tans_one = document.getElementById('transhipmen_one').value;
-        var tans_two = document.getElementById('transhipmen_two').value;
-        var tans_three = document.getElementById('transhipment_three').value;
-
-        if (isNaN(noOfArticles) || noOfArticles <= 0) {
-            document.getElementById('result').innerText = "Please enter a valid number of articles.";
-            return;
-        }
-        var transshipmentValue;
-        if (tans_one !== "") {
-            transshipmentValue = noOfArticles * 40;
-            document.getElementById('transhipmen_one_amount').value = transshipmentValue;
-        } else {
-            document.getElementById('transhipmen_one_amount').value = '';
-        }
-        if (tans_two !== "") {
-            transshipmentValue = noOfArticles * 40;
-            document.getElementById('transhipmen_two_amount').value = transshipmentValue;
-        } else {
-            document.getElementById('transhipmen_two_amount').value = '';
-        }
-        if (tans_three !== "") {
-            transshipmentValue = noOfArticles * 40;
-            document.getElementById('transhipment_three_amount').value = transshipmentValue;
-        } else {
-            document.getElementById('transhipment_three_amount').value = '';
-        }
-        calculateInvoice();
-    }
-
-
-    function calculatefov() {
-        var goodsofvalue = document.getElementById('good_of_value').value;
-        if (goodsofvalue === "") {
-            document.getElementById('fov_amount').innerText = "Amount: 0 Rupees";
-        } else {
-            var fovValue = goodsofvalue * 1.5 / 100;
-            document.getElementById('fov_amount').value = fovValue;
-        }
-        calculateInvoice();
-    }
-
-    function calculategst() {
-        var freight_amount = document.getElementById('freight_amount').value;
-        var cgst = document.getElementById('cgst').value;
-        var sgst = document.getElementById('sgst').value;
-
-        // Calculate CGST
-        if (freight_amount === "") {
-            document.getElementById('cgst').innerText = "Amount: 0 Rupees";
-        } else {
-            var cgstValue = freight_amount * 2.5 / 100;
-            document.getElementById('cgst').value = cgstValue;
-        }
-
-        // Calculate SGST
-        if (freight_amount === "") {
-            document.getElementById('sgst').innerText = "Amount: 0 Rupees";
-        } else {
-            var sgstValue = freight_amount * 2.5 / 100;
-            document.getElementById('sgst').value = sgstValue;
-        }
-
-        // Calculate IGST if CGST/SGST is not provided
-        if (cgst === "" || sgst === "") {
-            if (freight_amount === "") {
-                document.getElementById('igst').innerText = "Amount: 0 Rupees";
-            } else {
-                var igst = freight_amount * 5 / 100;
-                document.getElementById('igst').value = igst;
-            }
-        }
-    }
-
-    function grandTotal() {
-        // Add logic to calculate the grand total if needed
-    }
-</script>
