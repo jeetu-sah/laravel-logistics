@@ -6,10 +6,6 @@
 </head>
 
 <body>
-
-   
-
-
     <h1>Thank You,<p>Dear {!! $name !!},</p>
     </h1>
     <p>We have received your inquiry. Here are the details:</p>

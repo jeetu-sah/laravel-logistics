@@ -1063,9 +1063,10 @@
 <script>
     $('#states').on('change', function() {
         var stateId = $(this).val();
+        console.log('stateId', stateId)
         if (stateId) {
             $.ajax({
-                url: '{{ url('get-districts-user') }}/' + stateId,
+                url: "{{ url('get-districts-user') }}/" + stateId,
                 type: 'GET',
                 dataType: 'json',
                 headers: {
@@ -1096,7 +1097,7 @@
         var stateId = $(this).val();
         if (stateId) {
             $.ajax({
-                url: '{{ url('get-districts-user') }}/' + stateId,
+                url: "{{ url('get-districts-user') }}/" + stateId,
                 type: 'GET',
                 dataType: 'json',
                 headers: {
