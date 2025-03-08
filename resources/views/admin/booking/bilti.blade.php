@@ -3016,8 +3016,7 @@
                                     Paid
                                 @elseif($booking->booking_type == 'Topay')
                                     To Pay
-                                @elseif($booking->booking_type == 'Toclient')
-                                    To Client
+                               
                                 @else
                                     Unknown
                                 @endif
@@ -3441,7 +3440,7 @@
                         </span>
                         <span class="tm_btn_text">Print</span>
                     </a>
-                    <button id="tm_download_btn" class="tm_invoice_btn tm_color2">
+                    {{-- <button id="tm_download_btn" class="tm_invoice_btn tm_color2">
                         <span class="tm_btn_icon">
                             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                                 <path
@@ -3451,7 +3450,19 @@
                             </svg>
                         </span>
                         <span class="tm_btn_text">Download</span>
+                    </button> --}}
+                    <button id="tm_back_btn" class="tm_invoice_btn tm_color2" onclick="window.history.back();">
+                        <span class="tm_btn_icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                                <path
+                                    d="M144 256l192-192v128h160v128H336v128L144 256z"
+                                    fill="none" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="32" />
+                            </svg>
+                        </span>
+                        <span class="tm_btn_text">Back</span>
                     </button>
+                    
                 </div>
             </div>
         </div>

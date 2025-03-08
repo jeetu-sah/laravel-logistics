@@ -80,52 +80,45 @@
             </div>
         </div>
     </div>
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Change Settings</h3>
-                        </div>
-                        <div class="card-body">
-                        {{--
-                            <form action="{{ route('admin.settings.change') }}" method="post" id="form" enctype="multipart/form-data" class="needs-validation" novalidate>
-                                @csrf
-                                <div class="row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Change Role</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-select select2 form-control" name="role" id="role" required>
-                                            <option selected disabled value="">Select Role</option>
-                                            @foreach($roles as $role)
-                                                <option value="{{ $role->id }}" 
-                                                    {{ ($selectedRole->role_id == $role->id) ? 'selected' : '' }}
-                                                >{{ $role->name }}</option>
-                                            @endforeach()
-                                            <!-- <option value="reviewer">Reviewer</option> -->
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Change Language</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-select select2 form-control" name="user_status" id="user_status" required>
-                                            <option selected disabled value="">Select Language</option>
-                                            <option value="english">English</option>
-                                            <option value="chinese">Chinese</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary mt-3" type="submit">Change</button>
-                            </form>
-                            --}}
-                        </div>
-                        <!-- /.card-body -->
+    <section class="content">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Booking List</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="table-responsive ">
+                        <table class="display" id="booking-list">
+                            <thead>
+                                <tr>
+                                    <th>SN.</th>
+                                    <th>Bilti Number</th>
+                                    <th>Offline Bitli</th>
+                                    <th>Consinger Name</th>
+                                    <th>Consinger Address</th>
+                                    <th>Consinger Branch</th>
+                                    <th>Consignee Name</th>
+                                    <th>Destinaton</th>
+                                    <th>Consignee Address</th>
+
+                                    <th>Payment Mode</th>
+                                    <th>Booking Date</th>
+                                    {{-- <th>Action</th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
             </div>
+            <!-- /.card-body -->
         </div>
-    </div>
+        <!-- /.card -->
+
+    </section>
 
 
 
@@ -139,4 +132,79 @@
 .dashboard-link {
 color: #292828 !important;
 }
+@endsection
+@section('script')
+    @parent
+    <!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+
+    <script>
+        $(document).ready(function(e) {
+            new DataTable('#booking-list', {
+                responsive: true,
+                ajax: {
+                    url: "{{ url('admin/bookings/upcoming-booking') }}",
+                    data: function(d) {
+                        // Custom parameters can be added here if needed
+                        // Example:
+                        // d.filter = $('#filter-input').val();
+                    }
+                },
+                columns: [{
+                        data: 'sn'
+                    },
+                    {
+                        data: 'bilti_number'
+                    },
+                    {
+                        data: 'offline_bilti'
+                    },
+                    {
+                        data: 'consignor_name'
+                    },
+                    {
+                        data: 'address'
+
+                    },
+                    {
+                        data: 'consignor_branch_id'
+
+                    },
+                    {
+                        data: 'consignee_name'
+                    },
+                    {
+                        data: 'consignee_branch_id'
+
+                    },
+                    {
+                        data: 'consignee_address'
+
+                    },
+
+                    {
+                        data: 'booking_type'
+
+                    },
+                    {
+                        data: 'created_at'
+
+                    },
+                    // {
+                    //     data: 'action',
+
+                    //     orderable: false
+                    // }
+                ],
+
+                processing: true,
+                serverSide: true
+            });
+        });
+    </script>
+@endsection
+
+@section('styles')
+    @parent
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
 @endsection

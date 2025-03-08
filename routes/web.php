@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\DeliveryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\Admin\BranchDistace;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +31,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
-
+Route::post('track-shipment', [ShipmentController::class, 'trackShipment']);
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
@@ -78,7 +79,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings/create', [BookingController::class, 'create']);
         Route::post('/bookings/store', [BookingController::class, 'store']);
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
-        
+
+        Route::get('/bookings/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
         Route::get('/bookings/list', action: [BookingController::class, 'list']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
@@ -110,9 +112,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('clients/delete/{id}', [ClientController::class, 'delete']);
         Route::get('get-distance', [ClientController::class, 'getDistance']);
 
-
-
-
         // /Distance
         Route::get('distances', [BranchDistace::class, 'index']);
         Route::get('distances/create', [BranchDistace::class, 'create']);
@@ -131,9 +130,9 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('delivery', [DeliveryController::class, 'index']);
         Route::get('delivery/list', [DeliveryController::class, 'list']);
-        Route::get('delivery/ready-to-deliver/{id}', action: [DeliveryController::class, 'ready_to_deliver']);
-        Route::post('delivery/deliverd', action: [DeliveryController::class, 'store']);
-        Route::get('admin/delivery/delivered/view/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.deliverd.view');
+        Route::get('delivery/create/{id}', [DeliveryController::class, 'create']);
+        Route::post('delivery/store', [DeliveryController::class, 'store']);
+        Route::get('admin/delivery/receipt/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.receipt');
 
 
     });

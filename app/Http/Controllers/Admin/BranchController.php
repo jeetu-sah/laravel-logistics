@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class BranchController extends Controller
 {
@@ -45,7 +46,6 @@ class BranchController extends Controller
             'gst' => 'required|string|max:255',
             'country_name' => 'required|string',
             'state_name' => 'required|integer',
-            'district_name' => 'required|integer',
             'address1' => 'required|string',
             'address2' => 'nullable|string',
             'user_status' => 'required|string',
@@ -69,14 +69,14 @@ class BranchController extends Controller
         ]);
 
         if ($branch) {
-            User::create([
+            User::create(attributes: [
                 'first_name' => $branch->branch_name,
                 'last_name' => $branch->owner_name,
-                'email' => $request->loginId,
+                'email' => $request->loginId, 
                 'email_verified_at' => Carbon::now(),
                 'mobile' => $branch->contact,
                 'mobile_verified_at' => Carbon::now(),
-                'password' => $request->password,
+                'password' => Hash::make($request->password),
                 'user_type' => 'branch-user',
                 'user_status' => 'active',
                 'term_and_condition' => 1,
@@ -151,8 +151,9 @@ class BranchController extends Controller
      */
     public function edit($id)
     {
-        $data['message'] = [];
-        $data['branch'] = Branch::find($id);
+        $data['title'] = 'Edit Branch';
+        $data['branch'] = Branch::with('user')->find($id);
+        
         $data['countries'] = DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
         return view('admin.branch.edit', $data);
     }
@@ -199,6 +200,7 @@ class BranchController extends Controller
         }
 
         if ($branch->save()) {
+           // $user = User::
             return redirect()->back()->with([
                 "alertMessage" => true,
                 "alert" => ['message' => 'Branch updated successfully', 'type' => 'success']

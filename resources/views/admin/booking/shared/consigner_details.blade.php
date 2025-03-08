@@ -78,7 +78,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="">
-                        <select onchange="calculateTransshipment()" class="form-select select2 form-control js-select2"
+                        <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
                             name="transhipmen_one" id="transhipmen_one">
                             <option value="">Select Branch Name</option>
                             @foreach ($branch as $branchList)
@@ -111,7 +111,7 @@
                     <label for="text">Transhipment 2:</label>
                 </div>
                 <div class="col-md-3">
-                    <select onchange="calculateTransshipment()" class="form-select select2 form-control js-select2"
+                    <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
                         name="transhipmen_two" id="transhipmen_two">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
@@ -143,7 +143,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <select onchange="calculateTransshipment()" class="form-select select2 form-control js-select2"
+                    <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
                         name="transhipment_three" id="transhipment_three">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
@@ -161,7 +161,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="text" id="no_of_articles" name="no_of_artical" class="form-control mb-1" />
+                        <input type="number" id="no_of_articles" name="no_of_artical" class="form-control mb-1" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -171,7 +171,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="text" name="actual_weight" value="" class="form-control mb-1" />
+                        <input type="number" name="actual_weight" value="" class="form-control mb-1" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -191,7 +191,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="text" value="" id="good_of_value" name="good_of_value"
+                        <input type="number" value="" id="good_of_value" name="good_of_value"
                             oninput="calculateFOV()" class="form-control mb-1" />
                     </div>
                 </div>
@@ -254,7 +254,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignor_phone_number" class="form-control mb-1" />
+                    <input type="mobile" value="" name="consignor_phone_number" class="form-control mb-1" />
 
                 </div>
 
@@ -265,7 +265,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_phone_number" class="form-control mb-1" />
+                    <input type="mobile" value="" name="consignee_phone_number" class="form-control mb-1" />
 
                 </div>
 
@@ -353,7 +353,7 @@
                 </div>
                 <div class="col-md-4">
 
-                    <label for="date">Mark</label>
+                    <label for="date">Value Declare by Consignee.</label>
                     <input type="text" name="mark" class="form-control mb-1 mb-1" />
 
 

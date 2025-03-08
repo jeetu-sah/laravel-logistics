@@ -97,7 +97,7 @@
                                 <div class="form-group">
                                     <label for="locknumber">Lock Number</label>
                                     <input type="text" placeholder="Lock Number" class="form-control" id="locknumber"
-                                        name="locknumber" required>
+                                        name="locknumber" >
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -132,6 +132,7 @@
                                                 </div>
                                             </th>
                                             <th>Bilti Number</th>
+                                            <th>Offline Bilti </th>
                                             <th>Consignor Name</th>
                                             <th>Consignor Address</th>
                                             <th>Consignee Name</th>
@@ -197,6 +198,9 @@
                     },
                     {
                         data: 'bilti_number'
+                    },
+                    {
+                        data: 'offline_bilti'
                     },
                     {
                         data: 'consignor_name' 

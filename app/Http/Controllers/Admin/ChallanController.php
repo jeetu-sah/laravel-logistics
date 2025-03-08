@@ -49,8 +49,8 @@ class ChallanController extends Controller
                 'busNumber' => $request->busNumber,
                 'driverName' => $request->driverName,
                 'driverMobile' => $request->driverMobile,
-                'locknumber' => $request->locknumber,
-                'coLoder' => $request->coLoder,
+                'locknumber' => $request->locknumber ? : 'NA',
+                'coLoder' => $request->coLoder ? : 'NA',
                 'created_by' => Auth::user()->id
             ]);
 

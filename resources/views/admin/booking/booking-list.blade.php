@@ -45,6 +45,7 @@
                                     <tr>
                                         <th>SN.</th>
                                         <th>Bilti Number</th>
+                                        <th>Offline Bitli</th>
                                         <th>Consinger Name</th>
                                         <th>Consinger Address</th>
                                         <th>Consinger Branch</th>
@@ -95,6 +96,9 @@
                     },
                     {
                         data: 'bilti_number'
+                    },
+                    {
+                        data: 'offline_bilti'
                     },
                     {
                         data: 'consignor_name'

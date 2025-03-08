@@ -76,7 +76,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>S.n</th>
-                                                    @if (Auth::user()->branch_user_id == $bookings[0]->consignee_branch_id)
+                                                    @if (Auth::user()->id == $bookings[0]->consignee_branch_id)
                                                         <th>
                                                             @if ($selectAllButtonDisable->count() > 0)
                                                                 <input type="checkbox" class="form-check-input"
@@ -104,7 +104,7 @@
                                                 @foreach ($bookings as $booking)
                                                     <tr>
                                                         <td>{{ $i++ }}</td>
-                                                        @if (Auth::user()->branch_user_id == $booking->consignee_branch_id)
+                                                        @if (Auth::user()->id == $booking->consignee_branch_id)
                                                             <td>
                                                                 @if ($booking->status != 3)
                                                                     <input type="checkbox" class="form-check-input"
@@ -116,16 +116,13 @@
                                                         <td>{{ $booking->bilti_number }}</td>
                                                         <td>{{ $booking->challan_number }}</td>
                                                         <td>{{ $booking->consignorBranchName }}</td>
-
                                                         <td>{{ $booking->consignor_name }}<br>
-                                                            {{ $booking->consignor_phone_number }}<br>
-                                                            {{ $booking->consignor_gst_number }} </td>
-
-                                                        <td>{{ $booking->consignorBranchName }}<br>
-                                                            {{ $booking->consignee_phone_number }} <br>
-                                                            {{ $booking->consignee_gst_number }}
-                                                        </td>
+                                                            {{ $booking->consignor_phone_number }}<br>{{ $booking->consignor_gst_number }}</td>
                                                         <td>{{ $booking->consigneeBranchName }}</td>
+                                                        <td>{{ $booking->consignorBranchName }}<br>{{ $booking->consignee_phone_number }}
+                                                            <br>{{ $booking->consignee_gst_number }}
+                                                        </td>
+
 
                                                         <td>{{ $booking->no_of_artical }}</td>
                                                         <td>
@@ -133,6 +130,9 @@
                                                                 Paid
                                                             @elseif($booking->booking_type == 'Topay')
                                                                 To Pay
+                                                            
+                                                            @else
+                                                                Unknown
                                                             @endif
                                                         </td>
 
@@ -143,9 +143,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @if (Auth::user()->branch_user_id == $booking->consignee_branch_id)
-                                        <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
-                                    @endif
+                                    <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
                                 </form>
                             </div>
                         </div>

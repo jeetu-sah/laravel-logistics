@@ -12,9 +12,9 @@
                         <label for="date">Paid:</label>
                     </div>
                 </div>
-               
+
                 <div class="col-md-1">
-                    <input type="checkbox"  name="booking" class="form-control" value="Paid" id="paid"
+                    <input type="checkbox" name="booking" class="form-control" value="Paid" id="paid"
                         onclick="uncheckOther(this)" />
 
 
@@ -28,8 +28,8 @@
                 </div>
                 <div class="col-md-1 mb-2">
                     <div class="">
-                        <input type="checkbox"  class="form-control" name="booking" value="Topay" id="to_pay"
-                             onclick="uncheckOther(this)" />
+                        <input type="checkbox" class="form-control" name="booking" value="Topay" id="to_pay"
+                            onclick="uncheckOther(this)" />
 
                     </div>
                 </div>
@@ -40,8 +40,8 @@
                 </div>
                 <div class="col-md-3 mb-2">
                     <div class="">
-                        <input type="text" class="form-control" name="manual_bilty" value="" id="manual_bilty"
-                           />
+                        <input type="text" class="form-control" name="manual_bilty" value=""
+                            id="manual_bilty" />
 
                     </div>
                 </div>
@@ -142,9 +142,9 @@
 
                         <option value="{{ $client->consignee_branch_id }}">{{ $client->consignee_branch_name }}
                         </option>
-                       
-                         
-                        </select>
+
+
+                    </select>
 
 
 
@@ -374,17 +374,10 @@
                     <label for="date">Aadhar card</label>
                     <input type="text" value="{{ $client->aadhar_card }}" name="aadhar_card"
                         class="form-control mb-1 mb-1" />
-
-
-
                 </div>
                 <div class="col-md-4">
-
-                    <label for="date">Mark</label>
+                    <label for="date">Value Declare by Consignee.</label>
                     <input type="text" name="mark" class="form-control mb-1 mb-1" />
-
-
-
                 </div>
                 <div class="col-md-4">
 

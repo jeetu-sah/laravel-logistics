@@ -15,8 +15,7 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form action="{{ url('admin/bookings/store' . ($noBillBookings ? '?no-bill-bookings=true' : '')) }}"
-                    method="POST" enctype="multipart/form-data">
+                <form action="{{ url('admin/bookings/store' . ($noBillBookings ? '?no-bill-bookings=true' : '')) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         @include('admin.booking.shared.consigner_details')
@@ -41,8 +40,8 @@
                                             <label for="freight_amount">Freight:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" readonly value="" name="freight_amount"
-                                                id="freight_amount" class="form-control mb-1" />
+                                            <input type="text" readonly value="" name="freight_amount" id="freight_amount"
+                                                class="form-control mb-1" />
                                         </div>
 
                                         <!-- WBC -->
@@ -113,8 +112,8 @@
                                             <label for="pickup_charges">Pickup Charges:</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" value="" name="pickup_charges" id="pickup_charges"
-                                                class="form-control mb-1" />
+                                            <input type="text"  value="" name="pickup_charges"
+                                                id="pickup_charges" class="form-control mb-1" />
                                         </div>
 
                                         <!-- Hamali Charges -->
@@ -172,30 +171,29 @@
                                         </div>
 
                                         <!-- GST: CGST, SGST, IGST -->
-                                        <div class="col-md-6 cgst">
+                                        <div class="col-md-6">
                                             <label for="cgst">CGST:</label>
                                         </div>
-                                        <div class="col-md-6 cgst">
+                                        <div class="col-md-6">
                                             <input type="text" readonly value="" name="cgst" id="cgst"
                                                 class="form-control mb-1" readonly />
                                         </div>
 
-                                        <div class="col-md-6 sgst">
+                                        <div class="col-md-6">
                                             <label for="sgst">SGST:</label>
                                         </div>
-                                        <div class="col-md-6 sgst">
+                                        <div class="col-md-6">
                                             <input type="text" readonly value="" name="sgst" id="sgst"
                                                 class="form-control mb-1" readonly />
                                         </div>
 
-                                        <div class="col-md-6 igst">
+                                        <div class="col-md-6">
                                             <label for="igst">IGST:</label>
                                         </div>
-                                        <div class="col-md-6 igst">
+                                        <div class="col-md-6">
                                             <input type="text" readonly value="" name="igst" id="igst"
                                                 class="form-control mb-1" readonly />
                                         </div>
-
 
                                         <!-- Grand Total -->
                                         <div class="col-md-6">
@@ -222,7 +220,10 @@
 
                     </div>
 
-
+                    <script>
+                        // Calculate on page load
+                        //window.onload = calculateInvoice;
+                    </script>
                     <div class="row mb-3">
                         <div class="col-12">
                             {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a> --}}
@@ -269,23 +270,7 @@
 
 
         async function calculateGST(totalFreight) {
-            // Check if the URL contains '?no-bill-bookings=true'
-            const urlParams = new URLSearchParams(window.location.search);
-            const noBillBookings = urlParams.get('no-bill-bookings');
-
-            // If 'no-bill-bookings=true', skip GST calculation
-            if (noBillBookings) {
-                // Hide GST fields if necessary (optional if you need to hide them dynamically)
-                $('.cgst').hide();
-                $('.sgst').hide();
-                $('.igst').hide();
-                return {
-                    'cGst': 0,
-                    'sGst': 0
-                }; // Return 0 for GST values when no-bill-bookings is true
-            }
-
-            // If 'no-bill-bookings' is not found, proceed with the calculation
+            // GST rates for Freight
             const cgstRate = 2.5; // CGST rate percentage
             const sgstRate = 2.5; // SGST rate percentage
             const igstRate = 5; // IGST rate percentage (for inter-state)
@@ -293,17 +278,15 @@
             // Calculate GST for Freight
             const freightCgst = (totalFreight * cgstRate) / 100;
             const freightSgst = (totalFreight * sgstRate) / 100;
-
             // Display the calculated GST values
             $('#cgst').val(freightCgst.toFixed(2));
             $('#sgst').val(freightSgst.toFixed(2));
-
+            //$('#igst').val(freightIgst.toFixed(2));
             return {
                 'cGst': freightCgst,
                 'sGst': freightSgst
             };
         }
-
         async function calculateFreight(distance, numberOfParcel = 1) {
             console.log('calculateFreight numberOfParcel', numberOfParcel)
             const freightTotalAmount = (distance * perKmRate) * numberOfParcel;
@@ -390,7 +373,7 @@
 
         function calculateTransshipment() {
             var noOfArticles = parseFloat(document.getElementById('no_of_articles').value) ||
-                1; // Default to 1 if invalid or empty
+            1; // Default to 1 if invalid or empty
             // Get transhipment select values
             var transhipmentOne = document.getElementById('transhipmen_one').value;
             var transhipmentTwo = document.getElementById('transhipmen_two').value;
@@ -427,13 +410,11 @@
             return [transshipmentValueOne, transshipmentValueTwo, transshipmentValueThree]
 
         }
-
         function calculateInvoiceWithArticles(noOfArticles) {
             const distance = parseFloat($('#distance').val()) || 0;
             const freightAmount = parseFloat($('#freight_amount').val()) || 0;
             calculateInvoice(distance, noOfArticles);
         }
-
         function calculateFOV() {
             const numberOfArticle = parseFloat($('#no_of_articles').val()) || 0;
             const distance = parseInt($('#distance').val()) || setDefaultDistance;
@@ -448,7 +429,7 @@
 
                 if (consignor_branch_id && consignee_branch_id) {
                     $.ajax({
-                        url: "{{ url('admin/get-distance') }}",
+                        url: "{{ url('admin/get-distance') }}", 
                         method: 'GET',
                         data: {
                             consignor_branch_id: consignor_branch_id,
@@ -458,10 +439,10 @@
                             if (response.distance) {
                                 $('#distance').val(response.distance);
                                 const numberOfArticle = parseFloat($('#no_of_articles')
-                                    .val()) || 0;
+                                .val()) || 0;
 
                                 calculateInvoice(response.distance,
-                                    numberOfArticle);
+                                numberOfArticle); 
                             } else {
                                 $('#distance').val(0);
                                 alert('Error: ' + (response.error || 'Unknown error'));
@@ -478,7 +459,7 @@
             });
             $(document).on('input', '#no_of_articles', function() {
                 const noOfArticles = parseInt($('#no_of_articles').val()) ||
-                    1; // Default to 1 if empty or invalid
+                1; // Default to 1 if empty or invalid
                 const distance = parseInt($('#distance').val()) || setDefaultDistance;
 
                 calculateInvoice(distance, noOfArticles)
@@ -501,32 +482,12 @@
                 const distance = parseInt($('#distance').val()) || setDefaultDistance;
                 calculateInvoice(distance, noOfArticles)
             });
-
+           
 
             // Event listener for goods value (FOV calculation)
             $('#good_of_value').on('input', function() {
                 calculateFOV(); // Recalculate FOV based on goods value
             });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            // Check if the URL contains '?no-bill-bookings=true'
-            const urlParams = new URLSearchParams(window.location.search);
-            const noBillBookings = urlParams.get('no-bill-bookings');
-
-            // If 'no-bill-bookings' is present, hide the GST fields
-            if (noBillBookings) {
-                // Hide the GST related fields (CGST, SGST, IGST)
-                $('.cgst').hide();
-                $('.sgst').hide();
-                $('.igst').hide();
-            } else {
-                // Otherwise, show the GST fields (if necessary, optional based on the page flow)
-                $('.cgst').show();
-                $('.sgst').show();
-                $('.igst').show();
-            }
         });
     </script>
     <script>

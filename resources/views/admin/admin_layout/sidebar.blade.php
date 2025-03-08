@@ -198,8 +198,8 @@
                 @endrole
                 @role('Branchuser')
                     <li class="nav-item has-treeview">
-                        <a href="{{ url('admin/bookings/noBill') }}"
-                            class="nav-link {{ request()->is('admin/bookings/noBill') ? 'active' : '' }}">
+                        <a href="{{ url('admin/bookings/create?no-bill-bookings=true') }}"
+                            class="nav-link {{ request()->is('admin/bookings/create?no-bill-bookings=true') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-edit"></i>
                             <p>
                                 NB Booking
@@ -280,13 +280,13 @@
                             class="nav-link {{ request()->is('admin/delivery') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-edit"></i>
                             <p>
-                                delivery
+                                Delivery
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item has-treeview {{ request()->is('admin/challans*') ? 'menu-open' : '' }} ">
-                        <a href="{{ url('admin/challans') }}"
-                            class="nav-link {{ request()->is('admin/challans*') ? 'active' : '' }}">
+                    <li class="nav-item has-treeview {{ request()->is('admin/report*') ? 'menu-open' : '' }} ">
+                        <a href="{{ url('admin/report') }}"
+                            class="nav-link {{ request()->is('admin/report*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-edit"></i>
                             <p>
                                 Reports
@@ -295,22 +295,22 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ url('admin/challans/bookings-report') }}"
-                                    class="nav-link {{ request()->is('admin/challans/bookings-report') ? 'active' : '' }}">
+                                <a href="{{ url('admin/report/bookings-report') }}"
+                                    class="nav-link {{ request()->is('admin/report/bookings-report') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Bookings Reports</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/challans/chalan-reports') }}"
-                                    class="nav-link {{ request()->is('admin/challans/chalan-reports') || request()->is('admin/challans') ? 'active' : '' }}">
+                                <a href="{{ url('admin/report/chalan-reports') }}"
+                                    class="nav-link {{ request()->is('admin/report/chalan-reports') || request()->is('admin/report') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Challan Reports</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('admin/challans/delevery-reports') }}"
-                                    class="nav-link {{ request()->is('admin/challans/delevery-reports') || request()->is('admin/challans') ? 'active' : '' }}">
+                                <a href="{{ url('admin/report/delevery-reports') }}"
+                                    class="nav-link {{ request()->is('admin/report/delevery-reports') || request()->is('admin/challans') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Delevery Reports</p>
                                 </a>

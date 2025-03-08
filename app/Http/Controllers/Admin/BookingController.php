@@ -53,10 +53,14 @@ class BookingController extends Controller
                                             <label class="form-check-label" for="exampleCheck1"></label>
                                         </div>';
                 } else {
-                    $row['sn'] = $start + $index + 1; 
+                    $row['sn'] = $start + $index + 1;
                 }
 
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['offline_bilti'] = $booking->manual_bilty_number
+                    ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
+                    : '-';
+
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
@@ -88,28 +92,116 @@ class BookingController extends Controller
         $json_data = [
             "draw" => intval($request->input('draw')),
             "recordsTotal" => $totalRecord,
-            "recordsFiltered" => $totalRecord, 
+            "recordsFiltered" => $totalRecord,
             "data" => $rows,
         ];
 
-        return response()->json($json_data); 
+        return response()->json($json_data);
     }
-    public function create()
+    public function upcomingBookings(Request $request)
     {
+
+        $search = $request->input('search')['value'] ?? null;
+        $limit = $request->input('length', 10);
+        $start = $request->input('start', 0);
+
+
+        $bookingQuery = Booking::query();
+      
+        $bookingQuery->where('consignee_branch_id', Auth::user()->branch_user_id);
+        if ($search) {
+            $bookingQuery->where('bilti_number', 'like', "%$search%")
+                ->orWhere('consignor_name', 'like', "%$search%")
+                ->orWhere('consignee_name', 'like', "%$search%");
+        }
+        $bookingQuery->where('status', 2);
+
+        $totalRecord = $bookingQuery->count();
+
+        $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
+
+        $rows = [];
+        if ($bookings->count() > 0) {
+            foreach ($bookings as $index => $booking) {
+                $row = [];
+                if ($request->bilti_list_type === 'challan') {
+                    $row['sn'] = '<div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
+                                            <label class="form-check-label" for="exampleCheck1"></label>
+                                        </div>';
+                } else {
+                    $row['sn'] = $start + $index + 1;
+                }
+
+                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['offline_bilti'] = $booking->manual_bilty_number
+                    ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
+                    : '-';
+
+
+                $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
+                $row['consignor_name'] = $booking->consignor_name;
+                $row['address'] = $booking->consignor_address;
+                $row['phone_number_1'] = $booking->phone_number_1;
+                $row['gst_number'] = $booking->gst_number;
+                $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
+                $row['consignee_name'] = $booking->consignee_name;
+                $row['consignee_address'] = $booking->consignee_address;
+                $row['consignee_phone_number_1'] = $booking->consignee_phone_number_1;
+                if ($booking->booking_type == 'Paid') {
+                    $row['booking_type'] = 'Paid ';
+                } elseif ($booking->booking_type == 'Topay') {
+                    $row['booking_type'] = 'To Pay ';
+                } elseif ($booking->booking_type == 3) {
+                    $row['booking_type'] = 'Client ';
+                } else {
+                    $row['booking_type'] = 'Unknown';
+                }
+
+                // $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
+
+                $row['created_at'] = date('d-m-Y', strtotime($booking->created_at));
+
+                $rows[] = $row;
+            }
+        }
+
+        $json_data = [
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => $totalRecord,
+            "recordsFiltered" => $totalRecord,
+            "data" => $rows,
+        ];
+
+        return response()->json($json_data);
+    }
+    public function create(Request $request)
+    {
+        // Get the current authenticated user
         $data['user'] = auth()->user();
+
+        // Get all branches
         $data['branch'] = Branch::all();
+
+        // Set the title for the page
         $data['tittle'] = "Create New Booking";
+
+        // Check if the "no-bill-bookings" query parameter is present
+        // It will return the value of the query parameter (or null if it doesn't exist)
+        $data['noBillBookings'] = $request->query('no-bill-bookings'); // true, false or null
+
+        // Return the view with the data
         return view('admin.booking.create', $data);
     }
 
+
     public function store(Request $request)
     {
-
+        $noBillBookings = $request->query('no-bill-bookings');
+       
+        // dd($request->all(), $request->query(), $request->input('no-bill-bookings'));
         try {
-            // Validate the request data
             $request->validate([
-                // Consignor
-
                 'booking_date' => 'required|date',
                 'transhipmen_one' => 'nullable',
                 'consignor_branch_id' => 'required|exists:branches,id',
@@ -174,9 +266,15 @@ class BookingController extends Controller
 
             // Generate bilti_number
             $lastBilti = DB::table('bookings')->latest('id')->value('id');
+            if ($noBillBookings) {
+                // If no-bill-bookings is set, use "NB" format
+                $nextBiltiNumber = $this->noBillgenerateBiltiNumber($lastBilti); // Example: NB00001
+            } else {
+                // If no-bill-bookings is not set, use regular bilti number generation logic
+                $nextBiltiNumber = $this->generateBiltiNumber($lastBilti);  // Your existing bilti generation function
+            }
 
 
-            $nextBiltiNumber = $this->generateBiltiNumber($lastBilti);
 
             // Insert data into the bookings table
             $bookingId = DB::table('bookings')->insertGetId([
@@ -248,11 +346,14 @@ class BookingController extends Controller
 
         } catch (\Exception $e) {
 
+            echo $e->getMessage();
+            exit;
 
             // Redirect back with an error message
             return redirect()->back()->with(['error' => 'An error occurred while processing your request. Please try again later.'])->withInput();
         }
     }
+
     public function challanBookingList(Request $request)
     {
         $limit = $request->input('length', 10);
@@ -283,24 +384,27 @@ class BookingController extends Controller
                 }
 
                 $row['bilti_number'] = '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
+                $row['offline_bilti'] = $booking->manual_bilty_number
+                    ? '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->manual_bilty_number . '</a>'
+                    : '-';
+
+
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
-                $row['address'] = $booking->address;
-                $row['phone_number_1'] = $booking->phone_number_1;
+                $row['address'] = $booking->consignor_address;
+                $row['phone_number_1'] = $booking->consignor_phone_number;
                 $row['gst_number'] = $booking->gst_number;
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
-                $row['consignee_phone_number_1'] = $booking->consignee_phone_number_1;
+                $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
 
                 // Conditional logic for booking_type
-                if ($booking->booking_type == 1) {
+                if ($booking->booking_type == 'Paid') {
                     $row['booking_type'] = 'Paid ';
-                } elseif ($booking->booking_type == 2) {
+                } elseif ($booking->booking_type == 'Topay') {
                     $row['booking_type'] = 'To Pay ';
-                } elseif ($booking->booking_type == 3) {
-                    $row['booking_type'] = 'Client ';
                 } else {
                     $row['booking_type'] = 'Unknown';
                 }
@@ -327,6 +431,21 @@ class BookingController extends Controller
         return view('admin.booking.create-no-bill-booking', $data);
     }
 
+    private function noBillgenerateBiltiNumber($lastBiltiNumber): string
+    {
+        // Check if the last bilti number is provided and valid
+        if (!empty($lastBiltiNumber) && preg_match('/\d+/', $lastBiltiNumber, $matches)) {
+            // Extract the numeric part from the last bilti number
+            $lastNumber = (int) $matches[0];
+            $nextNumber = $lastNumber + 1;
+        } else {
+            // If no last bilti number exists, start from 1
+            $nextNumber = 1;
+        }
+
+        // Return the bilti number in the format of YYMMxxx (e.g., 250131001)
+        return 'NB-' . date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+    }
     private function generateBiltiNumber($lastBiltiNumber): string
     {
         // Check if the last bilti number is provided and valid

@@ -27,8 +27,8 @@ class DeliveryController extends Controller
         $start = $request->input('start', 0);
         $totalRecord = Booking::where('status', 3)->count();
         $bookingQuery = Booking::query();
-        $bookingQuery->where('consignor_branch_id', Auth::user()->id);
-        $bookingQuery->orWhere('consignee_branch_id', Auth::user()->id);
+        $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
+        $bookingQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
@@ -55,27 +55,26 @@ class DeliveryController extends Controller
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
-                $row['address'] = $booking->address;
-                $row['phone_number_1'] = $booking->phone_number_1;
-                $row['gst_number'] = $booking->gst_number;
+                $row['address'] = $booking->consignor_address;
+                $row['phone_number_1'] = $booking->consignor_phone_number;
+                $row['gst_number'] = $booking->consignor_gst_number;
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
-                $row['consignee_phone_number_1'] = $booking->consignee_phone_number_1;
+                $row['consignee_phone_number_1'] = $booking->consignor_gst_number;
+                $row['consignee_gst'] = $booking->consignee_gst_number;
 
                 // Conditional logic for booking_type
-                if ($booking->booking_type == 1) {
+                if ($booking->booking_type == 'Paid') {
                     $row['booking_type'] = 'Paid ';
-                } elseif ($booking->booking_type == 2) {
+                } elseif ($booking->booking_type == 'Topay') {
                     $row['booking_type'] = 'To Pay ';
-                } elseif ($booking->booking_type == 3) {
-                    $row['booking_type'] = 'Client ';
                 } else {
                     $row['booking_type'] = 'Unknown';
                 }
 
                 // Action column
-                $row['action'] = ' <a href="' . url("admin/delivery/ready-to-deliver/{$booking->id}") . '" class="btn btn-success">Ready to Deliver</a>';
+                $row['action'] = ' <a href="' . url("admin/delivery/create/{$booking->id}") . '" class="btn btn-success">Ready to Deliver</a>';
 
 
                 // Format the creation date
@@ -101,10 +100,6 @@ class DeliveryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -112,57 +107,74 @@ class DeliveryController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
-        $request->validate([
-            'freight_charges' => 'required|numeric',
-            'hamali_charges' => 'required|numeric',
-            'demruge_charges' => 'required|numeric',
-            'others_charges' => 'required|numeric',
-            'grand_total' => 'required|numeric',
-        ]);
+        try {
+            // Validate the request data
+            $request->validate([
+                'freight_charges' => 'required|numeric',
+                'hamali_charges' => 'required|numeric',
+                'demruge_charges' => 'required|numeric',
+                'others_charges' => 'required|numeric',
+                'grand_total' => 'required|numeric',
+                'parcel_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Added validation for image
+            ]);
 
-        // Get the last delivery number from the delivery_numbers table
-        $lastDelivery = DB::table('delivery_numbers')->orderBy('id', 'desc')->first();
+            // Handle image upload if present
+            $imagePath = null;
+            if ($request->hasFile('parcel_image')) {
+                // Store the image in the 'public' directory
+                $imagePath = $request->file('parcel_image')->store('parcel_images', 'public');
+            }
 
-        // If no previous delivery exists, start with DEL-001
-        if ($lastDelivery) {
-            // Generate the next serial number by incrementing the last serial number
-            $serialNumber = 'DEL-' . str_pad((intval(substr($lastDelivery->delivery_number, 4)) + 1), 3, '0', STR_PAD_LEFT);
-        } else {
-            // If no deliveries exist, start with DEL-001
-            $serialNumber = 'DEL-001';
+            // Get the last delivery number from the delivery_numbers table
+            $lastDelivery = DB::table('delivery_numbers')->orderBy('id', 'desc')->first();
+
+            // If no previous delivery exists, start with DEL-001
+            if ($lastDelivery) {
+                // Generate the next serial number by incrementing the last serial number
+                $serialNumber = 'DEL-' . str_pad((intval(substr($lastDelivery->delivery_number, 4)) + 1), 3, '0', STR_PAD_LEFT);
+            } else {
+                // If no deliveries exist, start with DEL-001
+                $serialNumber = 'DEL-001';
+            }
+
+            // Insert the data into the delivery_receipts table
+            $deliveryReceiptId = DB::table('delivery_receipts')->insertGetId([
+                'booking_id' => $request->booking_id, // assuming booking_id is passed in the request
+                'freight_charges' => $request->freight_charges,
+                'hamali_charges' => $request->hamali_charges,
+                'demruge_charges' => $request->demruge_charges,
+                'others_charges' => $request->others_charges,
+                'grand_total' => $request->grand_total,
+                'delivery_number' => $serialNumber,
+                'recived_by' => $request->recived_by,
+                'reciver_mobile' => $request->reciver_mobile,
+                'status' => 'Delivered', // or any default value you need
+                'parcel_image' => $imagePath, // Store the image path
+            ]);
+
+            // Insert the serial number and booking_id into the delivery_numbers table
+            DB::table('delivery_numbers')->insert([
+                'delivery_number' => $serialNumber,
+                'booking_id' => $request->booking_id,
+                'status' => 1,  // Assuming 'status' 1 means active
+            ]);
+
+            // Update the booking's status to 4 (Delivered)
+            DB::table('bookings')
+                ->where('id', $request->booking_id) // Update the booking with the given booking_id
+                ->update(['status' => 4]);
+
+            // Redirect or send the ID as a response
+            return redirect()->route('admin.delivery.receipt', ['id' => $deliveryReceiptId]);
+
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            exit;
+
+            // Optionally, redirect back with an error message
+            return redirect()->back()->with('error', 'There was an issue while saving the delivery receipt. Please try again.');
         }
-
-        // Insert the data into the delivery_receipts table
-        $deliveryReceiptId = DB::table('delivery_receipts')->insertGetId([
-            'booking_id' => $request->booking_id, // assuming booking_id is passed in the request
-            'freight_charges' => $request->freight_charges,
-            'hamali_charges' => $request->hamali_charges,
-            'demruge_charges' => $request->demruge_charges,
-            'others_charges' => $request->others_charges,
-            'grand_total' => $request->grand_total,
-            'delivery_number' => $serialNumber,
-            'recived_by' => $request->recived_by,
-            'reciver_mobile' => $request->reciver_mobile,
-            'status' => 'Delivered', // or any default value you need
-        ]);
-
-        // Insert the serial number and booking_id into the delivery_numbers table
-        DB::table('delivery_numbers')->insert([
-            'delivery_number' => $serialNumber,
-            'booking_id' => $request->booking_id,
-            'status' => 1,  // Assuming 'status' 1 means active
-        ]);
-        DB::table('bookings')
-            ->where('id', $request->booking_id) // Update the booking with the given booking_id
-            ->update(['status' => 4]);
-        // Redirect or send the ID as a response
-        return redirect()->route('admin.delivery.deliverd.view', ['id' => $deliveryReceiptId]);
-
     }
-
-
-
 
     /**
      * Display the specified resource.
@@ -178,17 +190,17 @@ class DeliveryController extends Controller
             ->where('delivery_receipts.id', $id)
             ->select(
                 'delivery_receipts.*',
+                'bookings.manual_bilty_number',
                 'bookings.bilti_number',
                 'bookings.consignor_name',
                 'bookings.consignor_branch_id',
-                'bookings.phone_number_1',
+                'bookings.consignor_phone_number',
                 'bookings.consignee_branch_id',
                 'bookings.consignee_name',
-                'bookings.consignee_phone_number_1',
-                'bookings.no_of_pkg',
+                'bookings.consignee_phone_number',
+                'bookings.no_of_artical',
                 'bookings.no_of_artical',
                 'bookings.actual_weight',
-                'bookings.packing_type',
                 'bookings.booking_type',
                 'bookings.created_at as bookingDate',
                 'delivery_numbers.delivery_number',
@@ -233,7 +245,7 @@ class DeliveryController extends Controller
     {
         //
     }
-    public function ready_to_deliver($id)
+    public function create($id)
     {
         $data['booking'] = Booking::join('branches as consignor_branches', 'bookings.consignor_branch_id', '=', 'consignor_branches.id')
             ->join('branches as consignee_branches', 'bookings.consignee_branch_id', '=', 'consignee_branches.id')

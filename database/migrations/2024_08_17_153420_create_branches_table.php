@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::create('branches', callback: function (Blueprint $table) {
             $table->id(); // This creates an auto_increment primary key named 'id'
             $table->string('branch_name');
             $table->string('branch_code');
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('gst');
             $table->unsignedBigInteger('country_name'); // Assuming you want to store a reference ID
             $table->unsignedBigInteger('state_name');   // Assuming you want to store a reference ID
-            $table->unsignedBigInteger('city_name');    // Assuming you want to store a reference ID
+            $table->unsignedBigInteger('city_name')->nullable();    // Assuming you want to store a reference ID
             $table->text('address1');
             $table->text('address2')->nullable();
             $table->enum('user_status', ['active', 'inactive']);
