@@ -27,8 +27,8 @@ class DeliveryController extends Controller
         $start = $request->input('start', 0);
         $totalRecord = Booking::where('status', 3)->count();
         $bookingQuery = Booking::query();
-        $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
-        $bookingQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
+        $bookingQuery->where('consignee_branch_id', Auth::user()->branch_user_id);
+        // $bookingQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
@@ -115,6 +115,8 @@ class DeliveryController extends Controller
                 'demruge_charges' => 'required|numeric',
                 'others_charges' => 'required|numeric',
                 'grand_total' => 'required|numeric',
+                'received_amount' => 'required|numeric',
+                'pending_amount' => 'required|numeric',
                 'parcel_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Added validation for image
             ]);
 
@@ -145,6 +147,8 @@ class DeliveryController extends Controller
                 'demruge_charges' => $request->demruge_charges,
                 'others_charges' => $request->others_charges,
                 'grand_total' => $request->grand_total,
+                'received_amount' => $request->received_amount,
+                'pending_amount' => $request->pending_amount,
                 'delivery_number' => $serialNumber,
                 'recived_by' => $request->recived_by,
                 'reciver_mobile' => $request->reciver_mobile,

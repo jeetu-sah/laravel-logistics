@@ -218,6 +218,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
+                                <a href="{{ url('admin/bookings/incoming-load') }}"
+                                    class="nav-link {{ request()->is('admin/bookings/incoming-load') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Incoming Load</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ url('admin/bookings') }}"
                                     class="nav-link {{ request()->is('admin/bookings') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
@@ -245,7 +252,7 @@
                                     <p> Client Booking </p>
                                 </a>
                             </li>
-                            
+
 
                         </ul>
                     </li>
@@ -295,10 +302,17 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ url('admin/report/bookings-report') }}"
-                                    class="nav-link {{ request()->is('admin/report/bookings-report') ? 'active' : '' }}">
+                                <a href="{{ url('admin/reports/bookings-report') }}"
+                                    class="nav-link {{ request()->is('admin/reports/bookings-report') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Bookings Reports</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('admin/reports/clients') }}"
+                                    class="nav-link {{ request()->is('admin/reports/clients') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Clients Bookings Reports</p>
                                 </a>
                             </li>
                             <li class="nav-item">

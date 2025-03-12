@@ -17,6 +17,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\Admin\BranchDistace;
+use App\Http\Controllers\Report\BookingReportController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -53,6 +54,16 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('admin')->group(function () {
+        // Booking Report
+        Route::get('reports/bookings-report', [BookingReportController::class, 'index']);
+        Route::get('reports/bookings/list', [BookingReportController::class, 'list']);
+        // Client Booking Report
+        Route::get('reports/clients', [BookingReportController::class, 'clientBooking']);
+        Route::get('reports/clients/list', [BookingReportController::class, 'clientList']);
+        Route::get('reports/clients/bookings/list', [BookingReportController::class, 'clientBookingview']);
+        Route::get('reports/clients/bookings/revenue/{id}', [BookingReportController::class, 'clientBookingRevenue']);
+        Route::get('reports/clients/bookings/{id}', [BookingReportController::class, 'clientBookingList']);
+
 
         Route::get('/dashboard', [AdminController::class, 'index']);
         Route::get('/adminlayout', [AdminController::class, 'adminlayout']);
@@ -75,6 +86,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
 
         // paid booking
+        Route::get('/bookings/incoming-load', [BookingController::class, 'incomingLoad']);
         Route::get('/bookings', [BookingController::class, 'index']);
         Route::get('/bookings/create', [BookingController::class, 'create']);
         Route::post('/bookings/store', [BookingController::class, 'store']);
@@ -167,4 +179,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('admin/role-list', [RoleController::class, 'show']);
 
     Route::get('logout', [LogOutController::class, 'index']);
+
+
+
 });

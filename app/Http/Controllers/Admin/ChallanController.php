@@ -49,8 +49,8 @@ class ChallanController extends Controller
                 'busNumber' => $request->busNumber,
                 'driverName' => $request->driverName,
                 'driverMobile' => $request->driverMobile,
-                'locknumber' => $request->locknumber ? : 'NA',
-                'coLoder' => $request->coLoder ? : 'NA',
+                'locknumber' => $request->locknumber ?: 'NA',
+                'coLoder' => $request->coLoder ?: 'NA',
                 'created_by' => Auth::user()->id
             ]);
 
@@ -95,7 +95,7 @@ class ChallanController extends Controller
 
         // Initialize the query
         $loadingChallanQuery = LoadingChallan::query();
-
+        //  $loadingChallanQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
         // If there is a search query, add a where condition
         if ($search) {
             $loadingChallanQuery->where('challan_number', 'like', "%$search%") // Search by challan_number

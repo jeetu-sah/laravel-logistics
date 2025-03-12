@@ -1159,7 +1159,7 @@
     }
 
     .tm_invoice_footer .tm_left_footer {
-        width: 71%;
+        width: 65%;
         padding: 10px 15px;
         -webkit-box-flex: 0;
         -ms-flex: none;
@@ -3021,21 +3021,20 @@
                     <div class="tm_invoice_info tm_mb20">
                         <p class="tm_invoice_seperator tm_primary_color"><b>
                             </b> </p>
-                        <div class="tm_invoice_info_list">
+                        {{-- <div class="tm_invoice_info_list">
                             <b>Booking Type:
                                 @if ($deliveryReceipt->booking_type == 'Paid')
                                     Paid
                                 @elseif ($deliveryReceipt->booking_type == 'Topay')
-                                    Paid
-                                @elseif ($deliveryReceipt->booking_type == 3)
                                     To Pay
+                              
                                 @else
                                     Unknown
                                 @endif
                             </b>
 
 
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="tm_table tm_style1">
@@ -3078,29 +3077,32 @@
                                     <table>
                                         <tbody>
 
-                                            
+
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0"><b>
-                                                    <b>Date Of Booking - {{ \Carbon\Carbon::parse($deliveryReceipt->bookingDate)->format('d-m-Y') }}</b>
+                                                        <b>Date Of Booking -
+                                                            {{ \Carbon\Carbon::parse($deliveryReceipt->bookingDate)->format('d-m-Y') }}</b>
                                                 </td>
 
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
-                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0"><b>Recived By
-                                                    Thank From:</b>
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0"><b>Recived
+                                                        By
+                                                        Thank From:</b>
 
                                                     <b> {{ ucfirst($deliveryReceipt->recived_by) }}</b>
                                                 </td>
 
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
-                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0"><b>Mobile:</b>
+                                                <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">
+                                                    <b>Mobile:</b>
                                                     <b>{{ $deliveryReceipt->reciver_mobile }}</b>
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 
                                             </tr>
-                                           
+
                                         </tbody>
 
                                     </table>
@@ -3149,7 +3151,8 @@
                                     </p>
 
                                     <p style="margin-left: 20px; margin-right: 20px; line-height: 1.6;">
-                                        <img src="{{ asset('site/img/indianQr.jpg') }}" width="150px" height="auto" />
+                                        <img src="{{ asset('site/img/indianQr.jpg') }}" width="150px"
+                                            height="auto" />
                                     </p>
                                 </div>
                                 <Small><b>Note : 1)Material must have been insured by owner in case of total value is
@@ -3234,13 +3237,29 @@
                                             </td>
                                         </tr>
 
-                                        <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color">
+                                        <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right" >
+                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color" style="color:#2527d2">
                                                 Grand
                                                 Total </td>
                                             <td
                                                 class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right">
                                                 {{ $deliveryReceipt->grand_total }}
+                                            </td>
+                                        </tr>
+                                        <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color" style="color:#34c759">
+                                                Recived Amount </td>
+                                            <td
+                                                class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right">
+                                                {{ $deliveryReceipt->received_amount }}
+                                            </td>
+                                        </tr>
+                                        <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color" style="color:#e41912">
+                                                Pending Amount </td>
+                                            <td
+                                                class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right">
+                                                {{ $deliveryReceipt->pending_amount }}
                                             </td>
                                         </tr>
 
@@ -3273,8 +3292,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                                 <path
                                     d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24"
-                                    fill="none" stroke="currentColor" stroke-linejoin="round"
-                                    stroke-width="32" />
+                                    fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
                                 <rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32"
                                     fill="none" stroke="currentColor" stroke-linejoin="round"
                                     stroke-width="32" />
@@ -3300,10 +3318,9 @@
                     <button id="tm_back_btn" class="tm_invoice_btn tm_color2" onclick="window.history.back();">
                         <span class="tm_btn_icon">
                             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                                <path
-                                    d="M144 256l192-192v128h160v128H336v128L144 256z"
-                                    fill="none" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="32" />
+                                <path d="M144 256l192-192v128h160v128H336v128L144 256z" fill="none"
+                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="32" />
                             </svg>
                         </span>
                         <span class="tm_btn_text">Back</span>

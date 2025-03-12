@@ -27,6 +27,8 @@
                 </div>
                 <div class="card-body">
                     <form id="bookingFilterForm">
+                        <input type="hidden" name="client_id" class="form-control" id="client_id"
+                            value="{{ $clientId }}" />
                         <!-- Booking Type Filter -->
                         <div class="form-group d-inline-block mr-3">
                             <label for="booking_type">Booking Type</label>
@@ -125,9 +127,10 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ url('admin/reports/bookings/list') }}",
+                    url: "{{ url('admin/reports/clients/bookings/list') }}",
                     data: function(d) {
                         // Add custom filter data to the DataTable request
+                        d.client_id = $('#client_id').val(); // Get selected booking type
                         d.booking_type = $('#booking_type').val(); // Get selected booking type
                         d.status = $('#status').val(); // Get selected booking type
                         d.from_date = $('#from_date').val(); // Get "From Date"

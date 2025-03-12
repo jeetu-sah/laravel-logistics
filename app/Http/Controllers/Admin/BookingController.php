@@ -15,6 +15,11 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function incomingLoad()
+    {
+        $data['title'] = 'Incoimg Load';
+        return view('admin.booking.incomingLoad', $data);
+    }
     public function index()
     {
         $data['title'] = 'Bookings';
@@ -31,7 +36,7 @@ class BookingController extends Controller
 
         $bookingQuery = Booking::query();
         $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
-        $bookingQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
+        // $bookingQuery->where('consignee_branch_id', Auth::user()->branch_user_id);
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
@@ -107,14 +112,14 @@ class BookingController extends Controller
 
 
         $bookingQuery = Booking::query();
-      
+
         $bookingQuery->where('consignee_branch_id', Auth::user()->branch_user_id);
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
                 ->orWhere('consignee_name', 'like', "%$search%");
         }
-        $bookingQuery->where('status', 2);
+        $bookingQuery->where('status', operator: 1);
 
         $totalRecord = $bookingQuery->count();
 
@@ -198,7 +203,7 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $noBillBookings = $request->query('no-bill-bookings');
-       
+
         // dd($request->all(), $request->query(), $request->input('no-bill-bookings'));
         try {
             $request->validate([
@@ -356,63 +361,78 @@ class BookingController extends Controller
 
     public function challanBookingList(Request $request)
     {
+        // Define limit and start from request input for pagination
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        $totalRecord = Booking::count();
 
-        $bookingQuery = Booking::whereNotExists(function ($query) {
-            $query->select(DB::raw(1))->from('loading_challan_booking')->whereRaw('loading_challan_booking.booking_id = bookings.id');
+        // Query to get all records with specific branch_id
+        $bookingQuery = Booking::where('consignor_branch_id', Auth::user()->branch_user_id);
+
+        // Apply 'whereNotExists' condition to exclude bookings already in 'loading_challan_booking'
+        $bookingQuery->whereNotExists(function ($query) {
+            $query->select(DB::raw('1'))
+                ->from('loading_challan_booking')
+                ->whereRaw('loading_challan_booking.booking_id = bookings.id');
         });
 
+        // Count the filtered records
         $bookingsCount = $bookingQuery->count();
 
-        $bookings = $bookingQuery->get();
-
+        // Get the actual records with pagination
+        $bookings = $bookingQuery->skip($start)->take($limit)->get();
 
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
 
                 $row = [];
+                // Conditional logic for 'bilti_list_type'
                 if ($request->bilti_list_type === 'challan') {
                     $row['sn'] = '<div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
-                                            <label class="form-check-label" for="exampleCheck1"></label>
-                                        </div>';
+                                      <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
+                                      <label class="form-check-label" for="exampleCheck1"></label>
+                                  </div>';
                 } else {
                     $row['sn'] = $start + $index + 1;
                 }
 
+                // Link for 'bilti_number' and 'offline_bilti'
                 $row['bilti_number'] = '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
                 $row['offline_bilti'] = $booking->manual_bilty_number
                     ? '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->manual_bilty_number . '</a>'
                     : '-';
 
-
-
+                // Consignor details
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
                 $row['address'] = $booking->consignor_address;
                 $row['phone_number_1'] = $booking->consignor_phone_number;
                 $row['gst_number'] = $booking->gst_number;
+
+                // Consignee details
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
                 $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
 
-                // Conditional logic for booking_type
-                if ($booking->booking_type == 'Paid') {
-                    $row['booking_type'] = 'Paid ';
-                } elseif ($booking->booking_type == 'Topay') {
-                    $row['booking_type'] = 'To Pay ';
-                } else {
-                    $row['booking_type'] = 'Unknown';
-                }
-                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
-                $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y  h:i:s');
+                // Conditional logic for 'booking_type'
+                $row['booking_type'] = match ($booking->booking_type) {
+                    'Paid' => 'Paid',
+                    'Topay' => 'To Pay',
+                    default => 'Unknown',
+                };
+
+                // Action buttons (Edit and Print)
+                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
+                                  <a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
+
+                // Created timestamp
+                $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y h:i:s');
                 $rows[] = $row;
             }
         }
+
+        // Prepare the response data
         $json_data = [
             "draw" => intval($request->input('draw')),
             "recordsTotal" => $bookingsCount,
@@ -420,8 +440,10 @@ class BookingController extends Controller
             "data" => $rows,
         ];
 
-        return response()->json($json_data); // Return a JSON response
+        // Return the JSON response
+        return response()->json($json_data);
     }
+
 
 
     public function noBill()
@@ -694,8 +716,8 @@ class BookingController extends Controller
         $start = $request->input('start', 0);
         // Start with the query builder
         $clientQuery = Client::query();
-        // $clientQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
-        // $clientQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
+        $clientQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
+        $clientQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
         // For debugging, let's print the query first to see if it's being built properly
         $sql = $clientQuery->toSql(); // Get the raw SQL query
         // Apply search filters if a search term is provided
@@ -714,9 +736,7 @@ class BookingController extends Controller
 
         // Get the paginated results
         $clients = $clientQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
-        echo "<pre>";
-        print_r($clients);
-        exit;
+
         // Prepare data for the response
         $rows = [];
         if ($clients->count() > 0) {
@@ -766,13 +786,15 @@ class BookingController extends Controller
 
     public function clientList(Request $request)
     {
+        // echo Auth::user()->branch_user_id;exit;
         // Get input values from the request
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
         // Start with the query builder
         $clientQuery = Client::query();
-
+        $clientQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
+        // $clientQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
         // For debugging, let's print the query first to see if it's being built properly
         $sql = $clientQuery->toSql(); // Get the raw SQL query
         // Apply search filters if a search term is provided
@@ -782,12 +804,6 @@ class BookingController extends Controller
                     ->orWhere('consignee_name', 'like', "%$search%");
             });
         }
-
-        // Filter active clients (status = 1)
-        $clientQuery->where('status', 1);
-        $clientQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
-        $clientQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
-        // Get the total record count before pagination
         $totalRecord = $clientQuery->count();
 
         // Get the paginated results

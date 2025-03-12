@@ -101,10 +101,9 @@
                     </div>
                 </div>
                 <div class="col-md-3 mb-1">
+
                     <select class="form-select select2 form-control js-select2" name="consignor_branch_id"
                         id="consignor_branch_id">
-
-
                         <option value="{{ $client->consignor_branch_id }}">{{ $client->consignor_branch_name }}
                         </option>
 
@@ -137,16 +136,12 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
-                        id="consignee_branch_id">
 
+                    <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
+                        id="consignor_branch_id">
                         <option value="{{ $client->consignee_branch_id }}">{{ $client->consignee_branch_name }}
                         </option>
-
-
                     </select>
-
-
 
                 </div>
                 <div class="col-md-2">
