@@ -9,15 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('article_types', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // auto-incrementing id column
             $table->string('name', 50);
             $table->string('slug', 50);
             $table->text('description')->nullable();
-            $table->string('status', 20)->default('active')->comment('active, inactive');
-            $table->timestamps();
+            $table->string('status', 20)->comment('active, inactive');
+            $table->timestamps(); // created_at, updated_at
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('article_type');
+        Schema::dropIfExists('article_types');
     }
 };

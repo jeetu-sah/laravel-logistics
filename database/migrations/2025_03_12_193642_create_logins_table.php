@@ -9,10 +9,11 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::table('model_has_roles', function (Blueprint $table) {
-            $table->tinyInteger('login_status')->default(0)->comment('0: logout, 1: login');
+        Schema::create('logins', function (Blueprint $table) {
+            $table->id();  // Auto-incrementing id (bigint unsigned)
+            $table->timestamps();  // Automatically adds created_at and updated_at columns
         });
     }
 
@@ -21,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('model_has_roles', function (Blueprint $table) {
-            $table->dropColumn('login_status');
-        });
+        Schema::dropIfExists('logins');
     }
 };

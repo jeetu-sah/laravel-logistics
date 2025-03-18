@@ -4,25 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBookingsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing ID
-            $table->bigInteger('client_id')->nullable();
+            $table->id(); // auto-incrementing id column
+            $table->string('bilti_number')->nullable();
+            $table->enum('status', ['1', '2', '3', '4'])->default('1');
+            $table->enum('booking_type', ['paid', 'topay'])->default('paid');
             $table->date('booking_date');
-            $table->date('bilti_number');
-            $table->date('manual_bilti_number');
             $table->string('transhipmen_one');
-            $table->foreignId('consignor_branch_id')->constrained('branches'); // Assuming 'branches' table exists
+            $table->unsignedBigInteger('consignor_branch_id');
             $table->string('transhipmen_two');
-            $table->foreignId('consignee_branch_id')->constrained('branches'); // Assuming 'branches' table exists
+            $table->unsignedBigInteger('consignee_branch_id');
             $table->string('transhipment_three');
             $table->integer('no_of_artical');
             $table->decimal('good_of_value', 15, 2);
@@ -63,17 +61,20 @@ class CreateBookingsTable extends Migration
             $table->decimal('grand_total', 15, 2);
             $table->decimal('misc_charge_amount', 10, 2);
             $table->decimal('grand_total_amount', 15, 2);
-            $table->timestamps();
+            $table->timestamps(); // created_at, updated_at
+            $table->decimal('actual_weight', 8, 2)->nullable();
+            $table->string('cantain')->nullable();
+            $table->string('aadhar_card', 20)->nullable();
+            $table->string('manual_bilty_number')->nullable();
+            $table->integer('client_id')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('bookings');
     }
-}
+};

@@ -9,14 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('countries', function (Blueprint $table) {
-            $table->id();
-            $table->char('code', 5);
-            $table->string('name');
-            $table->mediumInteger('phonecode');
-            $table->timestamps();
+            $table->id();  // Auto-incrementing id (bigint unsigned)
+            $table->char('code', 5);  // Char column for country code (length 5)
+            $table->string('name', 255);  // Varchar column for country name (length 255)
+            $table->mediumInteger('phonecode');  // Mediumint column for phone code
+            $table->timestamps();  // Automatically adds created_at and updated_at columns
         });
     }
 

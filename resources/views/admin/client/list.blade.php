@@ -46,9 +46,9 @@
                                         <th>Client Id</th>
                                         <th>Consinger Name</th>
                                         <th>Consinger Address</th>
-                                        <th>Consinger Branch</th>
+
                                         <th>Consignee Name</th>
-                                        <th>Destinaton</th>
+
                                         <th>Consignee Address</th>
 
                                         <th>Creation Date</th>
@@ -103,17 +103,11 @@
                         data: 'consignor_address'
 
                     },
-                    {
-                        data: 'consignor_branch_id'
 
-                    },
                     {
                         data: 'consignee_name'
                     },
-                    {
-                        data: 'consignee_branch_id'
 
-                    },
                     {
                         data: 'consignee_address'
 
