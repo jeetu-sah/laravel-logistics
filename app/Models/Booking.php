@@ -30,55 +30,75 @@ class Booking extends Model
 
     // Allow mass assignment for these fields
     protected $fillable = [
+        'booking_date',
+        'transhipmen_one',
         'consignor_branch_id',
-        'consignor_name',
-        'address',
-        'phone_number_1',
-        'phone_number_2',
-        'email',
-        'gst_number',
-        'pin_code',
+        'transhipmen_two',
         'consignee_branch_id',
-        'consignee_name',
-        'consignee_address',
-        'consignee_phone_number_1',
-        'consignee_phone_number_2',
-        'consignee_email',
-        'consignee_gst_number',
-        'consignee_pin_code',
-        'no_of_pkg',
+        'transhipment_three',
+        'no_of_artical',
         'actual_weight',
-        'packing_type',
+        'cantain',
+        'good_of_value',
+        'consignor_name',
+        'consignee_name',
+        'consignor_address',
+        'consignee_address',
+        'consignor_phone_number',
+        'consignee_phone_number',
+        'consignor_gst_number',
+        'consignee_gst_number',
+        'consignor_email',
+        'consignee_email',
+        'invoice_number',
+        'eway_bill_number',
+        'mark',
+        'remark',
+        'photo_id',
+        'parcel_image',
+        'distance',
         'freight_amount',
-        'os_amount',
+        'wbc_charges',
+        'handling_charges',
         'fov_amount',
-        'transhipment_amount',
-        'handling_charge_amount',
-        'loading_charge_amount',
+        'fuel_amount',
+        'transhipmen_one_amount',
+        'transhipmen_two_amount',
+        'transhipment_three_amount',
+        'pickup_charges',
+        'hamali_Charges',
+        'bilti_Charges',
+        'discount',
+        'compney_charges',
+        'sub_total',
+        'cgst',
+        'sgst',
+        'igst',
+        'grand_total',
         'misc_charge_amount',
-        'other_charge_amount',
         'grand_total_amount',
-        'booking_type',
-        'status'
+        'bilti_number',        // Add this line
+        'status',              // Add this line
+        'booking_type',        // Add this line
     ];
 
     // If you want to hide attributes from arrays
     protected $hidden = [];
 
     // If you want to cast attributes to a different type
-    protected $casts = [
-        'actual_weight' => 'string', // This is needed if actual_weight is a string in the schema
-        'freight_amount' => 'decimal:2',
-        'os_amount' => 'decimal:2',
-        'fov_amount' => 'decimal:2',
-        'transhipment_amount' => 'decimal:2',
-        'handling_charge_amount' => 'decimal:2',
-        'loading_charge_amount' => 'decimal:2',
-        'misc_charge_amount' => 'decimal:2',
-        'other_charge_amount' => 'decimal:2',
-        'grand_total_amount' => 'decimal:2',
-    ];
-   
+    // protected $casts = [
+    //     'actual_weight' => 'string', // This is needed if actual_weight is a string in the schema
+    //     'freight_amount' => 'decimal:2',
+    //     'os_amount' => 'decimal:2',
+    //     'fov_amount' => 'decimal:2',
+    //     'transhipment_amount' => 'decimal:2',
+    //     'handling_charge_amount' => 'decimal:2',
+    //     'loading_charge_amount' => 'decimal:2',
+    //     'misc_charge_amount' => 'decimal:2',
+    //     'other_charge_amount' => 'decimal:2',
+    //     'grand_total_amount' => 'decimal:2',
+    // ];
+
 
 
 
@@ -93,6 +113,6 @@ class Booking extends Model
         return $this->belongsTo(Branch::class, 'consignee_branch_id');
     }
 
-   
+
 
 }

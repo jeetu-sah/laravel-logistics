@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Library\sHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -98,5 +99,10 @@ class User extends Authenticatable
         // $userActiveRole = $this->roles->where('id', $activeRoleId)->first();
         
         // return $userActiveRole->slug;
+    }
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class, 'branch_user_id');
     }
 }

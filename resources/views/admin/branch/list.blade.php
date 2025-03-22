@@ -19,6 +19,17 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 
     <!-- Main content -->
     <section class="content">

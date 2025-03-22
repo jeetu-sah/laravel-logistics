@@ -15,7 +15,8 @@ class DashboardController extends Controller
         $data['title'] = 'Branch | Dashboard';
         $data['roles'] = Auth::user()->roles;
         $data['selectedRole'] = sHelper::activeLoggedInUserRole(Auth::user());
-        $data['totalBooking'] = Booking::count();
+        $data['totalBooking'] = Booking::where('consignee_branch_id', Auth::user()->branch_user_id)->count();
+
         return view('branchuser.dashboard.dashboard')->with($data);
     }
 }

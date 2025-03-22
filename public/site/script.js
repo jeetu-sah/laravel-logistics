@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", stickyNavbar);
 
 
 var currentValue = 0;
-var CounterLimit = 1030;
+var CounterLimit = 10000;
 
 document.addEventListener("DOMContentLoaded", function () {
     var counterElement = document.getElementById("counter");
@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 var currentValue = 0;
-var CounterLimit1 = 1230;
+var CounterLimit1 = 1230000;
 
 document.addEventListener("DOMContentLoaded", function () {
     var counterElement = document.getElementById("counter1");
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 var currentValue = 0;
-var CounterLimit2 = 1230;
+var CounterLimit2 = 122030;
 
 document.addEventListener("DOMContentLoaded", function () {
     var counterElement = document.getElementById("counter2");

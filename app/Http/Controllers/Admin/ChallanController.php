@@ -49,8 +49,8 @@ class ChallanController extends Controller
                 'busNumber' => $request->busNumber,
                 'driverName' => $request->driverName,
                 'driverMobile' => $request->driverMobile,
-                'locknumber' => $request->locknumber,
-                'coLoder' => $request->coLoder,
+                'locknumber' => $request->locknumber ?: 'NA',
+                'coLoder' => $request->coLoder ?: 'NA',
                 'created_by' => Auth::user()->id
             ]);
 
@@ -95,7 +95,7 @@ class ChallanController extends Controller
 
         // Initialize the query
         $loadingChallanQuery = LoadingChallan::query();
-
+        //  $loadingChallanQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
         // If there is a search query, add a where condition
         if ($search) {
             $loadingChallanQuery->where('challan_number', 'like', "%$search%") // Search by challan_number
@@ -152,7 +152,7 @@ class ChallanController extends Controller
             ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
             //->where('bookings.status', 2)
             // ->where('loading_challans.status', 'Accept')
-            ->select('loading_challan_booking.*', 'loading_challans.status as chalanStatus', 'loading_challans.id as chalanId', 'loading_challans.challan_number', 'loading_challans.busNumber', 'loading_challans.driverName', 'loading_challans.driverMobile', 'loading_challans.locknumber', 'loading_challans.created_at','loading_challans.coLoder') // Include the challan_number field
+            ->select('loading_challan_booking.*', 'loading_challans.status as chalanStatus', 'loading_challans.id as chalanId', 'loading_challans.challan_number', 'loading_challans.busNumber', 'loading_challans.driverName', 'loading_challans.driverMobile', 'loading_challans.locknumber', 'loading_challans.created_at', 'loading_challans.coLoder') // Include the challan_number field
             ->get();
         // echo "<pre>";
         // print_r($challanBookings);exit;

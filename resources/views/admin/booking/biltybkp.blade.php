@@ -395,8 +395,7 @@
                                                     <th>Grand Total In words</th>
                                                     <th class="font15">
                                                         <span
-                                                            class="float-right">{{ numberToWords($booking->grand_total_amount) }}
-                                                            Only</span>
+                                                            class="float-right"></span>
                                                     </th>
                                                 </tr>
 

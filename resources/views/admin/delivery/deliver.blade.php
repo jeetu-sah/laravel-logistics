@@ -2,136 +2,321 @@
 @section('main_content')
     <div class="content-wrapper" style="min-height: 1419.51px;">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <a href="{{ url('admin/delivery') }}"
-                            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-                                class=" fa-sm text-white-50"></i> <b>Back</b></a>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active"><b>Delivery Chalan</b></li>
-                        </ol>
-                    </div>
 
-
-                </div>
-            </div>
-            <div class="row mb-2">
-                @include('common.notification')
-            </div>
-        </section>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($error->all() as $errors)
-                        <li>{{ $errors }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         <section class="content">
             <div class="container-fluid">
-                <form action="{{ url('admin/delivery/deliverd') }}" method="POST">
+                <form action="{{ url('admin/delivery/store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" value="{{ $booking->id }}" name="booking_id">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="card card-dark">
+                        {{-- @include('admin.booking.shared.client_booking') --}}
+                        <div class="col-md-6">
+                            <div class="card card-danger">
                                 <div class="card-header">
-                                    <h3 class="card-title">Delivery Receipt</h3>
+                                    <h3 class="card-title">Delivery receipt</h3>
                                 </div>
-
                                 <div class="card-body">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Delivery Station - {{ $booking->consignee_branch_name }}</th>
-                                                <th>Particular</th>
-                                                <th>Rs-/</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Row 1 -->
-                                            <tr>
-                                                <td><label for="delivery_station_1">Booking Station -
-                                                        {{ $booking->consignor_branch_name }}</label></td>
-                                                <td><label for="particular_1">Freight Charges</label></td>
-                                                <td><input type="number" class="form-control" id="rs_amount_1"
-                                                     readonly   value="{{ $booking->freight_amount }}" required name="freight_charges" placeholder="₹.00"
-                                                        oninput="calculateTotal()"></td>
-                                            </tr>
+                                    <div class="row">
+                                        <!-- Distance -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="distance">Delivery Station -:</label>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <p>{{ $booking->consignee_branch_name }}</p>
+                                        </div>
 
-                                            <!-- Row 2 -->
-                                            <tr>
-                                                <td><label for="delivery_station_2">Offline Bilti -
-                                                        {{ $booking->bilti_number }}</label></td>
-                                                <td><label for="particular_2">Hamali Charges</label></td>
-                                                <td><input type="number" class="form-control" id="rs_amount_2"
-                                                        value="" required name="hamali_charges" placeholder="₹.00"
-                                                        oninput="calculateTotal()"></td>
-                                            </tr>
+                                        <!-- Freight -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="freight_amount">Booking Station -:</label>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <p>{{ $booking->consignor_branch_name }}</p>
+                                        </div>
 
-                                            <!-- Row 3 -->
-                                            <tr>
-                                                <td><label for="delivery_station_3">Date Of Booking -
-                                                        {{ $booking->created_at }}</label></td>
-                                                <td><label for="particular_3">Demruge Charges</label></td>
-                                                <td><input type="number" class="form-control" id="rs_amount_3"
-                                                        value="" required name="demruge_charges" placeholder="₹.00"
-                                                        oninput="calculateTotal()"></td>
-                                            </tr>
+                                        <!-- WBC -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="wbc_charges">Offline Bili Number -:</label>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <p>{{ $booking->manual_bilty_number ?: 'NA' }}</p>
+                                        </div>
 
-                                            <!-- Row 4 -->
-                                            <tr>
-                                                <td><label for="delivery_station_4">Number Of Article -
-                                                        {{ $booking->no_of_artical }}</label></td>
-                                                <td><label for="particular_4">Other Charges</label></td>
-                                                <td><input type="number" class="form-control" id="rs_amount_4"
-                                                        value="" required name="others_charges" placeholder="₹.00"
-                                                        oninput="calculateTotal()"></td>
-                                            </tr>
+                                        <!-- Handling Charges -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="handling_charges">Date Of Booking -:</label>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <p>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-m-y') }}</p>
+                                        </div>
 
-                                            <!-- Row 5 (Grand Total) -->
-                                            <tr>
-                                                <td><label for="delivery_station_5">Privet Mark - {{ $booking->privet_mark }}</label></td>
-                                                <td><label for="particular_5">Grand Total</label></td>
-                                                <td><input type="number" class="form-control" id="grand_total"
-                                                        value="" required name="grand_total" placeholder="₹.00"
-                                                        readonly></td>
-                                            </tr>
-                                            <tr>
-                                                <td><label for="delivery_station_5">Recived By<input type="text" class="mt-2 form-control" id=""
-                                                    value="" required name="recived_by" placeholder="Name" maxlength="40"
-                                                    ></label></td>
-                                                <td><label for="">Reciver mobile<input type="tel" class="form-control mt-2" id=""
-                                                    value="" required name="reciver_mobile" placeholder="mobile" maxlength="12"
-                                                    ></label></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                        <!-- FOV -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="fov_amount">Number Of Article -:</label>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <p>{{ $booking->no_of_artical }}</p>
+                                        </div>
 
-                                    <script>
-                                        function calculateTotal() {
-                                            // Get values from each input field
-                                            // var freightCharges = parseFloat(document.getElementById('rs_amount_1').value) || 0;
-                                            var hamaliCharges = parseFloat(document.getElementById('rs_amount_2').value) || 0;
-                                            var demrugeCharges = parseFloat(document.getElementById('rs_amount_3').value) || 0;
-                                            var otherCharges = parseFloat(document.getElementById('rs_amount_4').value) || 0;
+                                        <!-- Fuel Charges -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="fuel_amount">Privet Mark -:</label>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <p>{{ $booking->remark }}</p>
+                                        </div>
 
-                                            // Calculate grand total
-                                            var grandTotal =  hamaliCharges + demrugeCharges + otherCharges;
+                                        <!-- Contain -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="fuel_amount">Contain -:</label>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <p>{{ $booking->cantain }}</p>
+                                        </div>
 
-                                            // Set the calculated grand total in the grand total field
-                                            document.getElementById('grand_total').value = grandTotal.toFixed(2);
-                                        }
-                                    </script>
+                                        <!-- Transhipment 1 -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="transhipmen_one_amount">Recived By:
+                                                <input type="text" class="mt-2 form-control" id=""
+                                                    value="" required name="recived_by" placeholder="Name"
+                                                    maxlength="40" style="font-size: 20px;">
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="transhipmen_one_amount">Reciver mobile:
+                                                <input type="tel" class="form-control mt-2" id=""
+                                                    value="" required name="reciver_mobile" placeholder="mobile"
+                                                    maxlength="12" style="font-size: 20px;">
+                                            </label>
+                                        </div>
+                                    </div>
 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-danger">
+                                <div class="card-header">
+                                    <h3 class="card-title">Invoice</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Booking Type -->
+                                        <div class="col-md-6" style="font-size: 25px;">
+                                            <label for="booking_type">Booking Type -:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p style="font-size: 25px;"><strong>{{ $booking->booking_type }}</strong></p>
+                                        </div>
+
+                                        <!-- Freight Charges -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="freight_charges">Freight Charges:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="number" class="form-control" id="rs_amount_1" readonly
+                                                value="{{ $booking->booking_type == 'Topay' ? $booking->grand_total_amount : 0 }}"
+                                                required name="freight_charges" placeholder="₹.00"
+                                                oninput="calculateTotal()">
+                                        </div>
+
+                                        <!-- Hamali Charges -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="hamali_charges">Hamali Charges:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="number" class="form-control" id="rs_amount_2" value=""
+                                                required name="hamali_charges" placeholder="₹.00"
+                                                oninput="calculateTotal()">
+                                        </div>
+
+                                        <!-- Demurrage Charges -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="demruge_charges">Demurrage Charges:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="number" class="form-control" id="rs_amount_3" value=""
+                                                required name="demruge_charges" placeholder="₹.00"
+                                                oninput="calculateTotal()">
+                                        </div>
+
+                                        <!-- Other Charges -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="others_charges">Other Charges:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="number" class="form-control" id="rs_amount_4" value=""
+                                                required name="others_charges" placeholder="₹.00"
+                                                oninput="calculateTotal()">
+                                        </div>
+
+                                        <!-- Discount -->
+                                        <div class="col-md-6" style="font-size: 20px;">
+                                            <label for="discount">Discount:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="number" class="form-control" id="rs_amount_5" value=""
+                                                required name="discount" placeholder="₹.00" oninput="calculateTotal()">
+                                        </div>
+
+                                        <!-- Grand Total -->
+                                        <div class="col-md-6" style="font-size: 25px; color: blue;">
+                                            <label for="grand_total">Grand Total:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="number" class="form-control" id="grand_total" value=""
+                                                required name="grand_total" placeholder="₹.00" readonly>
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 25px; color: green;">
+                                            <label for="received_amount">Recived Amount:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="number" class="form-control" id="received_amount"
+                                                oninput="calculateTotal()" value="" required name="received_amount"
+                                                placeholder="₹.00">
+                                        </div>
+                                        <div class="col-md-6" style="font-size: 25px; color: red;">
+                                            <label for="pendingAmount">Pending Amount:</label>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="number" class="form-control" id="pendingAmount" value=""
+                                                required name="pending_amount" placeholder="₹.00" readonly>
+                                        </div>
+
+                                        <div class="col-md-6" style="display: none;">
+                                            <label for="parcel_image">Capture Image</label>
+                                            <input type="file" name="parcel_image" id="parcel_image"
+                                                class="form-control mb-1" />
+                                        </div>
+
+                                        <script>
+                                            let stream;
+
+                                            // Function to open the webcam
+                                            function openWebCam() {
+                                                const video = document.getElementById('webcam');
+                                                const captureButton = document.getElementById('captureBtn');
+
+                                                // Check if browser supports getUserMedia
+                                                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                                    navigator.mediaDevices.getUserMedia({
+                                                            video: true
+                                                        })
+                                                        .then(function(userStream) {
+                                                            stream = userStream;
+                                                            // Set the webcam stream to the video element
+                                                            video.srcObject = stream;
+                                                            video.style.display = 'block'; // Show the video element
+                                                            captureButton.style.display = 'inline-block'; // Show the capture button
+                                                        })
+                                                        .catch(function(err) {
+                                                            alert('Error accessing webcam: ' + err);
+                                                        });
+                                                } else {
+                                                    alert('Your browser does not support webcam access.');
+                                                }
+                                            }
+
+                                            // Function to capture the photo after stopping the webcam
+                                            function capturePhoto() {
+                                                const video = document.getElementById('webcam');
+                                                const canvas = document.getElementById('canvas');
+                                                const context = canvas.getContext('2d');
+
+                                                // Set canvas dimensions to match the video
+                                                canvas.width = video.videoWidth;
+                                                canvas.height = video.videoHeight;
+
+                                                // Draw the current video frame on the canvas
+                                                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                                                // Set image type to JPEG (you can change this to 'image/png' for PNG format)
+                                                const imageType = 'image/jpeg'; // Enforcing JPEG format
+                                                const capturedImageData = canvas.toDataURL(imageType);
+
+                                                // Convert base64 to a Blob
+                                                const byteString = atob(capturedImageData.split(',')[1]);
+                                                const mimeString = capturedImageData.split(',')[0].split(':')[1].split(';')[0];
+                                                const ab = new ArrayBuffer(byteString.length);
+                                                const ia = new Uint8Array(ab);
+                                                for (let i = 0; i < byteString.length; i++) {
+                                                    ia[i] = byteString.charCodeAt(i);
+                                                }
+                                                const blob = new Blob([ab], {
+                                                    type: mimeString
+                                                });
+
+                                                // Create a File from the Blob
+                                                const file = new File([blob], 'parcel_image.jpg', {
+                                                    type: mimeString
+                                                });
+
+                                                // Append the file to the form's file input (by setting it to the input field)
+                                                const parcelImageInput = document.getElementById('parcel_image');
+                                                const dataTransfer = new DataTransfer();
+                                                dataTransfer.items.add(file);
+                                                parcelImageInput.files = dataTransfer.files;
+
+                                                // Optionally, display the captured image in an img element
+                                                const image = document.getElementById('capturedImage');
+                                                image.src = capturedImageData;
+                                                image.style.display = 'block';
+
+                                                // Stop the webcam stream (turn off the camera)
+                                                const tracks = stream.getTracks();
+                                                tracks.forEach(track => track.stop()); // Stop all tracks (video/audio)
+                                                video.style.display = 'none'; // Hide the video element
+                                                document.getElementById('captureBtn').style.display = 'none'; // Hide the capture button
+                                            }
+
+                                            function calculateTotal() {
+                                                // Get the booking type
+                                                var bookingType = "{{ $booking->booking_type }}"; // Get booking type dynamically
+
+                                                // Get values from each input field
+                                                var freightCharges = (bookingType === 'Topay') ? parseFloat(document.getElementById('rs_amount_1').value) || 0 :
+                                                    0;
+                                                var hamaliCharges = parseFloat(document.getElementById('rs_amount_2').value) || 0;
+                                                var demrugeCharges = parseFloat(document.getElementById('rs_amount_3').value) || 0;
+                                                var otherCharges = parseFloat(document.getElementById('rs_amount_4').value) || 0;
+                                                var discount = parseFloat(document.getElementById('rs_amount_5').value) || 0;
+                                                var received_amount = parseFloat(document.getElementById('received_amount').value) || 0;
+
+                                                // Calculate grand total
+                                                var grandTotal = (freightCharges + hamaliCharges + demrugeCharges + otherCharges) - discount;
+                                                var pendingAmount = grandTotal - received_amount;
+                                                // Set the calculated grand total in the grand total field
+                                                document.getElementById('grand_total').value = grandTotal.toFixed(2);
+                                                document.getElementById('pendingAmount').value = pendingAmount.toFixed(2);
+                                            }
+                                        </script>
+
+                                        <div class="col-md-6">
+
+                                            <!-- Button to open webcam -->
+                                            <button type="button" class="btn btn-primary mt-4"
+                                                onclick="openWebCam()">Open Webcam</button>
+
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <!-- Video element to display the webcam feed -->
+                                            <video id="webcam" width="225" height="200" style="display: none;"
+                                                autoplay></video>
+
+                                            <!-- Capture button that will appear after webcam is opened -->
+                                            <button id="captureBtn" type="button" class="btn btn-secondary mt-4"
+                                                style="display: none;" onclick="capturePhoto()">Capture Photo</button>
+
+                                            <!-- Canvas element to display the captured photo -->
+                                            <canvas id="canvas" style="display: none;"></canvas>
+
+                                            <!-- Optionally, display the captured photo in an image element -->
+                                            <img id="capturedImage" width="225" height="200" style="display: none;"
+                                                alt="Captured Image" />
+                                        </div>
+
+                                    </div>
 
                                 </div>
                             </div>
@@ -150,169 +335,4 @@
             </div>
         </section>
     </div>
-@endsection
-
-
-@section('script')
-    @parent
-    <script>
-        function calculateTotal() {
-            // Get values from each input field
-            // var freightCharges = parseFloat(document.getElementById('rs_amount_1').value) || 0;
-            var hamaliCharges = parseFloat(document.getElementById('rs_amount_2').value) || 0;
-            var demrugeCharges = parseFloat(document.getElementById('rs_amount_3').value) || 0;
-            var otherCharges = parseFloat(document.getElementById('rs_amount_4').value) || 0;
-
-
-            // Calculate grand total
-            var grandTotal =  hamaliCharges + demrugeCharges + otherCharges;
-
-            // Set the calculated grand total in the grand total field
-            document.getElementById('grand_total').value = grandTotal.toFixed(2);
-        }
-    </script>
-    <script src="{{ asset('admin_webu/plugins/select2/js/select2.full.min.js') }} "></script>
-
-    <script>
-        $(function() {
-            //Initialize Select2 Elements
-            $('.select2').select2()
-        })
-
-        $(document).ready(function() {
-            $(document).on('click', '.dropdown-mobile-code', function(e) {
-                e.preventDefault()
-                const mobileNumberCode = $(this).text();
-                $(this).parent().parent().find('button').text(mobileNumberCode);
-                $(this).parent().parent().find('.mobileNumberCode').val(mobileNumberCode);
-            });
-        });
-    </script>
-@endsection
-
-@section('styles')
-    @parent
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="{{ asset('admin_webu/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin_webu/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-
-    <style>
-        .select2.select2-container {
-            width: 100% !important;
-        }
-
-        .select2.select2-container .select2-selection {
-            border: 1px solid #ccc;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            height: 42px;
-            margin-bottom: 15px;
-            outline: none !important;
-            transition: all .15s ease-in-out;
-        }
-
-        .select2.select2-container .select2-selection .select2-selection__rendered {
-            color: #333;
-            line-height: 32px;
-            padding-right: 33px;
-        }
-
-        .select2.select2-container .select2-selection .select2-selection__arrow {
-            background: #f8f8f8;
-            border-left: 1px solid #ccc;
-            -webkit-border-radius: 0 3px 3px 0;
-            -moz-border-radius: 0 3px 3px 0;
-            border-radius: 0 3px 3px 0;
-            height: 40px;
-            width: 42px;
-        }
-
-        .select2.select2-container.select2-container--open .select2-selection.select2-selection--single {
-            background: #f8f8f8;
-        }
-
-        .select2.select2-container.select2-container--open .select2-selection.select2-selection--single .select2-selection__arrow {
-            -webkit-border-radius: 0 3px 0 0;
-            -moz-border-radius: 0 3px 0 0;
-            border-radius: 0 3px 0 0;
-        }
-
-        .select2.select2-container.select2-container--open .select2-selection.select2-selection--multiple {
-            border: 1px solid #34495e;
-        }
-
-        .select2.select2-container .select2-selection--multiple {
-            height: auto;
-            min-height: 34px;
-        }
-
-        .select2.select2-container .select2-selection--multiple .select2-search--inline .select2-search__field {
-            margin-top: 0;
-            height: 32px;
-        }
-
-        .select2.select2-container .select2-selection--multiple .select2-selection__rendered {
-            display: block;
-            padding: 0 4px;
-            line-height: 29px;
-        }
-
-        .select2.select2-container .select2-selection--multiple .select2-selection__choice {
-            background-color: #f8f8f8;
-            border: 1px solid #ccc;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            margin: 4px 4px 0 0;
-            padding: 0 6px 0 22px;
-            height: 24px;
-            line-height: 24px;
-            font-size: 12px;
-            position: relative;
-        }
-
-        .select2.select2-container .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 22px;
-            width: 22px;
-            margin: 0;
-            text-align: center;
-            color: #e74c3c;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .select2-container .select2-dropdown {
-            background: transparent;
-            border: none;
-            margin-top: -5px;
-        }
-
-        .select2-container .select2-dropdown .select2-search {
-            padding: 0;
-        }
-
-        .select2-container .select2-dropdown .select2-search input {
-            outline: none !important;
-            border: 1px solid #34495e !important;
-            border-bottom: none !important;
-            padding: 4px 6px !important;
-        }
-
-        .select2-container .select2-dropdown .select2-results {
-            padding: 0;
-        }
-
-        .select2-container .select2-dropdown .select2-results ul {
-            background: #fff;
-            border: 1px solid #34495e;
-        }
-
-        .select2-container .select2-dropdown .select2-results ul .select2-results__option--highlighted[aria-selected] {
-            background-color: #3498db;
-        }
-    </style>
 @endsection

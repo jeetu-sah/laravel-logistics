@@ -18,6 +18,17 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
         <!-- Main content -->
         <section class="content">
@@ -34,6 +45,7 @@
                                     <tr>
                                         <th>SN.</th>
                                         <th>Bilti Number</th>
+                                        <th>Offline Bitli</th>
                                         <th>Consinger Name</th>
                                         <th>Consinger Address</th>
                                         <th>Consinger Branch</th>
@@ -84,6 +96,9 @@
                     },
                     {
                         data: 'bilti_number'
+                    },
+                    {
+                        data: 'offline_bilti'
                     },
                     {
                         data: 'consignor_name'

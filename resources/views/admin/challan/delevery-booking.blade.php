@@ -15,12 +15,13 @@
                             <li class="breadcrumb-item active">Loading Challan List</li>
                         </ol>
                     </div>
+                    <button onclick="window.print()" class="btn btn-primary">Print</button>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
 
         <!-- Main content -->
-      
+
         <section class="content">
             <!-- Default box -->
             <div class="card">
@@ -57,7 +58,7 @@
                     </div>
                     <div class="col-sm-1">
                         <strong> Dispatch Date</strong>
-                       
+
                         <h6>{{ strtoupper($bookings[0]->created_at) }}</h6>
                     </div>
                 </div>
@@ -75,7 +76,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>S.n</th>
-                                                    @if (Auth::user()->id == $bookings[0]->consignee_branch_id)
+                                                    @if (Auth::user()->branch_user_id == $bookings[0]->consignee_branch_id)
                                                         <th>
                                                             @if ($selectAllButtonDisable->count() > 0)
                                                                 <input type="checkbox" class="form-check-input"
@@ -90,7 +91,7 @@
                                                     <th>Consignor Name/Mobile/GST</th>
                                                     <th>Destination</th>
                                                     <th>Consignee Name/Mobile/GST</th>
-                                                    <th>Item Type</th>
+
                                                     <th>QTY</th>
                                                     <th>Booking Type</th>
                                                     <th>Booked at</th>
@@ -103,7 +104,7 @@
                                                 @foreach ($bookings as $booking)
                                                     <tr>
                                                         <td>{{ $i++ }}</td>
-                                                        @if (Auth::user()->id == $booking->consignee_branch_id)
+                                                        @if (Auth::user()->branch_user_id == $booking->consignee_branch_id)
                                                             <td>
                                                                 @if ($booking->status != 3)
                                                                     <input type="checkbox" class="form-check-input"
@@ -115,48 +116,45 @@
                                                         <td>{{ $booking->bilti_number }}</td>
                                                         <td>{{ $booking->challan_number }}</td>
                                                         <td>{{ $booking->consignorBranchName }}</td>
+
                                                         <td>{{ $booking->consignor_name }}<br>
-                                                            {{ $booking->phone_number_1 }}
-                                                            {{-- {{ $booking->phone_number_2 }}
-                                            </td> --}}
-    
-                                                        <td>{{ $booking->consigneeBranchName }}</td>
-                                                        <td>{{ $booking->consignorBranchName }}<br>{{ $booking->consignee_phone_number_1 }}
-                                                            {{-- {{ $booking->consignee_phone_number_2 }} --}}
-                                                            <br>{{ $booking->consignee_gst_number }}
+                                                            {{ $booking->consignor_phone_number }}<br>
+                                                            {{ $booking->consignor_gst_number }} </td>
+
+                                                        <td>{{ $booking->consignorBranchName }}<br>
+                                                            {{ $booking->consignee_phone_number }} <br>
+                                                            {{ $booking->consignee_gst_number }}
                                                         </td>
-    
-                                                        <td>{{ $booking->packing_type }}</td>
+                                                        <td>{{ $booking->consigneeBranchName }}</td>
+
                                                         <td>{{ $booking->no_of_artical }}</td>
                                                         <td>
-                                                            @if ($booking->booking_type == 1)
+                                                            @if ($booking->booking_type == 'Paid')
                                                                 Paid
-                                                            @elseif($booking->booking_type == 2)
+                                                            @elseif($booking->booking_type == 'Topay')
                                                                 To Pay
-                                                            @elseif($booking->booking_type == 3)
-                                                                Client Booking
-                                                            @else
-                                                                Unknown
                                                             @endif
                                                         </td>
-    
+
                                                         <td>{{ $booking->created_at }}</td>
-    
+
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
                                     </div>
-                                    <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
+                                    @if (Auth::user()->branch_user_id == $booking->consignee_branch_id)
+                                        <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
+                                    @endif
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <!-- /.card -->
-          
+
         </section>
         <!-- /.content -->
     </div>

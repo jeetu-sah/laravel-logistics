@@ -42,10 +42,10 @@
                 @if(Session::has('msg'))
                 {!! Session::get("msg") !!}
                 @endif
-                <form action="{{ url('login') }}" method="POST">
+                <form action="{{ url('login') }}" method="POST" autocomplete="off">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Email" name="email" value="admin@gmail.com" />
+                        <input type="email" class="form-control" autofocus autocomplete="off" placeholder="Email" name="email" value="" />
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Password" name="password" value="Admin@123#" />
+                        <input type="password" class="form-control" autofocus autocomplete="off" placeholder="Password" name="password" value="" />
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
