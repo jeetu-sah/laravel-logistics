@@ -173,22 +173,14 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="gst" class="form-label">Login Id</label>
-                                    <input class="form-control" value="{{ $branch->email }}" name="loginId" id="loginId" placeholder="Login Id"
-                                        required>
+                                    <input class="form-control" value="{{ $branch->user->email }}" name="loginId"
+                                        id="loginId" placeholder="Login Id" required>
                                     <div class="invalid-feedback">Enter Login id.</div>
                                     @error('loginId')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="gst" class="form-label">Password</label>
-                                    <input class="form-control" name="password" id="password" placeholder="Password"
-                                        value="123456789" required>
-                                    <div class="invalid-feedback">Enter Password</div>
-                                    @error('password')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+
                             </div>
                             <button class="btn btn-primary mt-3" type="submit">Submit</button>
                         </form>
@@ -253,7 +245,7 @@
                             $('#district_name').empty();
                             $('#district_name').append(
                                 '<option selected disabled value="">Select District</option>'
-                                );
+                            );
                             $.each(data, function(key, value) {
                                 $('#district_name').append('<option value="' + value
                                     .id + '">' + value.name + '</option>');
@@ -315,7 +307,7 @@
                             $('#district_name').empty();
                             $('#district_name').append(
                                 '<option selected disabled value="">Select District</option>'
-                                );
+                            );
                             let selectedCity;
                             $.each(data, function(key, value) {
                                 selectedCity = (value.id == selectedCityId) ?

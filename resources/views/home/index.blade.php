@@ -127,62 +127,44 @@
 
     </main>
     <style>
-        .container {
-            margin-top: 50px;
-            margin-bottom: 50px
-        }
+        /* Custom styling for animated progress bar */
 
-        .card {
-            position: relative;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #fff;
-            background-clip: border-box;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 0.10rem
-        }
+
 
         .card-header:first-child {
-            border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0
+            border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0;
         }
 
         .card-header {
             padding: 0.75rem 1.25rem;
             margin-bottom: 0;
             background-color: #fff;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .track {
             position: relative;
             background-color: #ddd;
             height: 7px;
-            display: -webkit-box;
-            display: -ms-flexbox;
             display: flex;
             margin-bottom: 60px;
-            margin-top: 50px
+            margin-top: 50px;
+            transition: all 0.3s ease-in-out;
+            /* smooth transition */
         }
 
         .track .step {
-            -webkit-box-flex: 1;
-            -ms-flex-positive: 1;
             flex-grow: 1;
-            width: 25%;
+            width: 20%;
             margin-top: -18px;
             text-align: center;
-            position: relative
+            position: relative;
+            transition: all 0.3s ease-in-out;
+            /* smooth transition */
         }
 
         .track .step.active:before {
-            background: #FF5722
+            background: #4caf50;
         }
 
         .track .step::before {
@@ -191,12 +173,15 @@
             content: "";
             width: 100%;
             left: 0;
-            top: 18px
+            top: 18px;
+            background: #ddd;
+            transition: background 0.3s ease-in-out;
         }
 
         .track .step.active .icon {
-            background: #ee5435;
-            color: #fff
+            background: #4caf50;
+            color: #fff;
+            transition: all 0.3s ease-in-out;
         }
 
         .track .icon {
@@ -206,117 +191,141 @@
             line-height: 40px;
             position: relative;
             border-radius: 100%;
-            background: #ddd
+            background: #ddd;
+            transition: background 0.3s ease-in-out;
         }
 
         .track .step.active .text {
             font-weight: 400;
-            color: #000
+            color: #000;
         }
 
         .track .text {
             display: block;
-            margin-top: 7px
+            margin-top: 7px;
         }
 
-        .itemside {
-            position: relative;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            width: 100%
-        }
-
-        .itemside .aside {
-            position: relative;
-            -ms-flex-negative: 0;
-            flex-shrink: 0
-        }
-
-        .img-sm {
-            width: 80px;
-            height: 80px;
-            padding: 7px
-        }
-
-        ul.row,
-        ul.row-sm {
-            list-style: none;
-            padding: 0
-        }
-
-        .itemside .info {
-            padding-left: 15px;
-            padding-right: 7px
-        }
-
-        .itemside .title {
-            display: block;
-            margin-bottom: 5px;
-            color: #212529
-        }
-
-        p {
-            margin-top: 0;
-            margin-bottom: 1rem
-        }
-
-        .btn-warning {
-            color: #ffffff;
-            background-color: #ee5435;
-            border-color: #ee5435;
-            border-radius: 1px
-        }
-
-        .btn-warning:hover {
-            color: #ffffff;
-            background-color: #ff2b00;
-            border-color: #ff2b00;
-            border-radius: 1px
+        /* Hover and Active States */
+        .track .step.active .icon {
+            background-color: #4caf50;
+            color: #fff;
         }
     </style>
+
     <div class="container">
-        <div class="row mt-lg-3 margintop" id="shipment-head">
-            <div>
+        <div class="row mt-lg-3" id="shipment">
+            <div class="mt-5 mb-5">
                 <p class="color font30 text-center fw-bold">Track your Shipment</p>
             </div>
         </div>
-        
-        <div class="row margintop" id="shipment">
-            <article class="card">
-                <div class="card-header"> My Orders / Tracking<br> <input type="Search.." class="card-header col-md-2" placeholder=" Shipment Number"> <button class="btn btn-primary">Track</button></div>
-                
-                <div class="card-body">
-                    <h6>Order ID: OD45345345435</h6>
-                    <article class="card">
-                        <div class="card-body row">
-                            <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
-                            <div class="col"> <strong>Shipping BY:</strong> <br> Vikas Logistic, | <i
-                                    class="fa fa-phone"></i>
-                                +91-8840354461 </div>
-                            <div class="col"> <strong>Status:</strong> <br> Picked by the courier </div>
-                            <div class="col"> <strong>Tracking #:</strong> <br> BD045903594059 </div>
-                        </div>
-                    </article>
-                    <div class="track">
-                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span
-                                class="text">Order Booked</span> </div>
-                        <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span
-                                class="text">Dispatch</span> </div>
-                        <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span
-                                class="text"> On the way </span> </div>
-                        <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span
-                                class="text">Ready for delivery</span> </div>
-                        <div class="step"> <span class="icon"> <i class="fa fa-check"></i> </span> <span
-                                class="text"> Delivered</span> </div>
-                    </div>
-                    <hr>
 
+        <div class="row card"
+            style="padding: 5%; background-color: #f5f5f5;; border: 1px solid #4caf50; border-radius: 10%;">
+            <article class="">
+                <div class="">
+                    <form id="trackShipmentForm" action="track-shipment" method="post">
+                        @csrf
+                        <div class="row mb-5">
+                            <div class="col-md-5">
+                                <input type="text" id="shipmentNumber" class="form-control"
+                                    placeholder="Enter Bilti Number" required>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="text-white btn btn-warning">Track</button>
+                            </div>
+                        </div>
+
+                    </form>
+                    <p id="message" style="color: red;"></p>
+                </div>
+
+                <div class="">
+                    <div class="card-body row">
+                        <div class="col">
+                            <strong>Shipping BY:</strong> <br> Vikas Logistic, | <i class="fa fa-phone"></i>
+                            +91-8840354461
+                        </div>
+                    </div>
+                    <div class="track">
+                        <div class="step" id="step1"> <span class="icon"> <i class="fa fa-check"></i>
+                            </span> <span class="text">Order Booked</span> </div>
+                        <div class="step" id="step2"> <span class="icon"> <i class="fa fa-user"></i> </span>
+                            <span class="text">Dispatch</span>
+                        </div>
+                        <div class="step" id="step3"> <span class="icon"> <i class="fa fa-truck"></i>
+                            </span> <span class="text">On the way</span> </div>
+                        <div class="step" id="step4"> <span class="icon"> <i class="fa fa-box"></i> </span>
+                            <span class="text">Ready for delivery</span>
+                        </div>
+                        <div class="step" id="step5"> <span class="icon"> <i class="fa fa-check"></i>
+                            </span> <span class="text">Delivered</span> </div>
+                    </div>
 
                 </div>
             </article>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#trackShipmentForm').submit(function(e) {
+            e.preventDefault();
+
+            var shipmentNumber = $('#shipmentNumber').val();
+
+            $.ajax({
+                url: 'track-shipment',
+                method: 'POST',
+                data: {
+                    shipment_number: shipmentNumber,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        var status = response.status;
+                        var message = response.message;
+                        $('#shipment-status').html('<strong>Status:</strong> <br>' + status);
+
+                        // Reset all steps
+                        $('.track .step').removeClass('active');
+
+                        // Activate steps based on the shipment status
+                        switch (status) {
+                            case '1': // Booked
+                                $('#step1').addClass('active');
+                                break;
+                            case '2': // Dispatch
+                                $('#step1').addClass('active');
+                                $('#step2').addClass('active');
+                                break;
+                            case '3': // Ready for delivery
+                                $('#step1').addClass('active');
+                                $('#step2').addClass('active');
+                                $('#step3').addClass('active');
+                                break;
+                            case '4': // Delivered
+                                $('#step1').addClass('active');
+                                $('#step2').addClass('active');
+                                $('#step3').addClass('active');
+                                $('#step4').addClass('active');
+                                $('#step5').addClass('active');
+                                break;
+                            default:
+                                $('#shipment-status').html(
+                                    '<strong>Status:</strong> <br> Unknown status');
+                        }
+                    } else {
+                        $('#message').html('Message: <br>' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#shipment-status').html(
+                        '<strong>Status:</strong> <br> Unable to fetch status, please try again.');
+                }
+            });
+        });
+    </script>
+
     <div class="row margintop" id="about">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
             <div class="left-about padding10">
@@ -1060,6 +1069,57 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 <script src="{{ asset('site/script.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- Include jQuery (if not already included) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Handle form submission using AJAX
+        $('#trackShipmentForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent form submission (page reload)
+
+            var shipmentNumber = $('#shipmentNumber').val(); // Get the value of shipment number
+
+            if (shipmentNumber) {
+                // Send AJAX request to fetch the shipment status
+                $.ajax({
+                    url: 'track-shipment', // URL for the route that will handle the tracking
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}', // CSRF token for security (required in Laravel)
+                        shipment_number: shipmentNumber // Pass the shipment number to the backend
+                    },
+                    success: function(response) {
+                        // Assuming the server returns a JSON object with the status
+                        if (response.success) {
+                            // Display the tracking information
+                            $('#shipmentStatus').html(`
+                            <h3>Status of Shipment #${shipmentNumber}</h3>
+                            <p>Status: ${response.status}</p>
+                            <p>Location: ${response.location}</p>
+                            <p>Estimated Delivery: ${response.estimated_delivery}</p>
+                        `);
+                        } else {
+                            // Handle if shipment number is not found
+                            $('#shipmentStatus').html(
+                                '<p>Shipment not found. Please check the number and try again.</p>'
+                            );
+                        }
+                    },
+                    error: function() {
+                        // Handle AJAX error
+                        $('#shipmentStatus').html(
+                            '<p>Error occurred while tracking the shipment. Please try again later.</p>'
+                        );
+                    }
+                });
+            } else {
+                $('#shipmentStatus').html('<p>Please enter a shipment number.</p>');
+            }
+        });
+    });
+</script>
+
 <script>
     $('#states').on('change', function() {
         var stateId = $(this).val();

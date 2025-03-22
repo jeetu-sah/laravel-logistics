@@ -38,6 +38,57 @@ class ClientController extends Controller
             // Validate the request data
             $validatedData = $request->validate([
                 // Consignor
+                'aadhar_card' => 'nullable', // Optional
+
+                // Consignee
+                'consignor_name' => 'nullable|string', // Required
+                'consignee_name' => 'nullable|string', // Required
+                'consignor_address' => 'nullable|string', // Optional
+                'consignee_address' => 'nullable|string', // Optional
+                'consignor_phone_number' => 'nullable|string', // Optional
+                'consignee_phone_number' => 'nullable|string', // Optional
+                'consignor_gst_number' => 'nullable|string', // Optional
+                'consignee_gst_number' => 'nullable|string', // Optional
+                'consignor_email' => 'nullable|email', // Optional
+                'consignee_email' => 'nullable|email', // Optional
+
+            ]);
+
+
+            $bookingId = DB::table('clients')->insertGetId([
+                // Consignor
+
+                'consignor_name' => $validatedData['consignor_name'],
+                'consignor_address' => $validatedData['consignor_address'] ?? null,
+                'consignor_phone_number' => $validatedData['consignor_phone_number'] ?? null,
+                'consignor_email' => $validatedData['consignor_email'] ?? null,
+                'consignor_gst_number' => $validatedData['consignor_gst_number'] ?? null,
+                // Consignee
+
+                'consignee_name' => $validatedData['consignee_name'],
+                'consignee_address' => $validatedData['consignee_address'] ?? null,
+                'consignee_phone_number' => $validatedData['consignee_phone_number'] ?? null,
+                'consignee_email' => $validatedData['consignee_email'] ?? null,
+                'consignee_gst_number' => $validatedData['consignee_gst_number'] ?? null,
+                // Other Details
+
+                'status' => '1',
+
+            ]);
+
+            // Redirect to the booking bilti page
+            return redirect('admin/clients')->with('success', 'Client Created Successfully');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+    public function ClintstoreBkp(Request $request)
+    {
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                // Consignor
                 'consignor_branch_id' => 'required|exists:branches,id',
                 'consignee_branch_id' => 'required|exists:branches,id',
                 'aadhar_card' => 'nullable', // Optional
@@ -142,13 +193,11 @@ class ClientController extends Controller
 
     public function list(Request $request)
     {
-        // Get input values from the request
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        // Start with the query builder
         $clientQuery = Client::query();
-       
+
         // For debugging, let's print the query first to see if it's being built properly
         $sql = $clientQuery->toSql(); // Get the raw SQL query
         // Apply search filters if a search term is provided
@@ -159,35 +208,30 @@ class ClientController extends Controller
             });
         }
 
-        // Filter active clients (status = 1)
-        $clientQuery->where('status', 1);
+        // Eager load the consignorBranch relationship
+        $clients = $clientQuery->with('consignorBranch') // Eager load
+            ->skip($start)
+            ->take($limit)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        // Get the total record count before pagination
         $totalRecord = $clientQuery->count();
-
-        // Get the paginated results
-        $clients = $clientQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
-       
-        // Prepare data for the response
         $rows = [];
+
         if ($clients->count() > 0) {
             foreach ($clients as $index => $client) {
                 $row = [];
                 $row['sn'] = $start + $index + 1;
-                $row['client_id'] = '<a href="' . url('admin/bookings/to-client-booking', ['id' => $client->id]) . '">' . $client->id . '</a>';
-
-
-                $row['consignor_branch_id'] = $client->consignorBranch?->branch_name ?? 'N/A';
+                $row['client_id'] = '<a href="' . url('admin/clients/client-details', ['id' => $client->id]) . '">' . $client->id . '</a>';
                 $row['consignor_name'] = $client->consignor_name;
                 $row['consignor_address'] = $client->consignor_address;
                 $row['phone_number_1'] = $client->consignor_phone_number;
                 $row['gst_number'] = $client->gst_number;
-                $row['consignee_branch_id'] = $client->consigneeBranch?->branch_name ?? 'N/A';
                 $row['consignee_name'] = $client->consignee_name;
                 $row['consignee_address'] = $client->consignee_address;
                 $row['consignee_phone_number_1'] = $client->consignee_phone_number;
                 $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-                              <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
+                                  <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
 
                 // Format the creation date
                 $row['created_at'] = date('d-m-Y', strtotime($client->created_at));
@@ -208,6 +252,7 @@ class ClientController extends Controller
         // Return the JSON response
         return response()->json($json_data);
     }
+
 
 
 
@@ -356,22 +401,22 @@ class ClientController extends Controller
 
 
     public function getDistance(Request $request)
-{
-    $consignorBranchId = $request->input('consignor_branch_id');
-    
-    $consigneeBranchId = $request->input('consignee_branch_id');
+    {
+        $consignorBranchId = $request->input('consignor_branch_id');
 
-    // Assuming you have a Distance table with columns for 'consignor_branch_id', 'consignee_branch_id', and 'distance'
-    $distance = DB::table('distances')
-        ->where('from_branch_id', $consignorBranchId)
-        ->where('to_branch_id', $consigneeBranchId)
-        ->first();
- 
-    if ($distance) {
-        return response()->json(['distance' => $distance->distance]);
-    } else {
-        return response()->json(['error' => 'Distance not found']);
+        $consigneeBranchId = $request->input('consignee_branch_id');
+
+        // Assuming you have a Distance table with columns for 'consignor_branch_id', 'consignee_branch_id', and 'distance'
+        $distance = DB::table('distances')
+            ->where('from_branch_id', $consignorBranchId)
+            ->where('to_branch_id', $consigneeBranchId)
+            ->first();
+
+        if ($distance) {
+            return response()->json(['distance' => $distance->distance]);
+        } else {
+            return response()->json(['error' => 'Distance not found']);
+        }
     }
-}
 
 }
