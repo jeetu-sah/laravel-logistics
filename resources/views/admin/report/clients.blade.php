@@ -45,11 +45,10 @@
                                         <th>SN.</th>
                                         <th>Client Id</th>
                                         <th>Consinger Name</th>
-                                        <th>Consinger Address</th>
-                                        <th>Consinger Branch</th>
                                         <th>Consignee Name</th>
-                                        <th>Destinaton</th>
-                                        <th>Consignee Address</th>
+                                        <th>Consignee number</th>
+                                       
+                                        <th>Consignee Branch</th>
 
                                         <th>Creation Date</th>
                                         {{-- <th>Action</th> --}}
@@ -93,32 +92,25 @@
                     },
 
                     {
-                        data: 'client_id'
+                        data: 'client_ids'
                     },
 
                     {
-                        data: 'consignor_name'
+                        data: 'from_client_name'
                     },
                     {
-                        data: 'consignor_address'
+                        data: 'to_client_name'
 
                     },
                     {
-                        data: 'consignor_branch_id'
+                        data: 'to_client_phone_number'
 
                     },
                     {
-                        data: 'consignee_name'
+                        data: 'to_branch_name'
                     },
-                    {
-                        data: 'consignee_branch_id'
-
-                    },
-                    {
-                        data: 'consignee_address'
-
-                    },
-
+                    
+                    
 
                     {
                         data: 'created_at'

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\ChallanController;
 use App\Http\Controllers\Admin\DeliveryController;
+use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\InquiryController;
@@ -19,6 +20,8 @@ use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\Admin\BranchDistace;
 use App\Http\Controllers\Report\BookingReportController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\MapClientController;
+use App\Http\Controllers\ApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +33,9 @@ use Illuminate\Support\Facades\Auth;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+Route::post('apply', [ApplicationController::class, 'store'])->name('applications.store');
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::post('track-shipment', [ShipmentController::class, 'trackShipment']);
@@ -54,6 +60,18 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('admin')->group(function () {
+        // Jobs
+        Route::get('careers', [CareerController::class, 'index']);
+        Route::get('careers/list', [CareerController::class, 'list']);
+        Route::get('careers/create', [CareerController::class, 'create']);
+        Route::post('careers/store', [CareerController::class, 'store']);
+        Route::get('careers/applications', [CareerController::class, 'applications']);
+        Route::get('careers/applications/list', [CareerController::class, 'applicationList']);
+        Route::get('careers/edit/{id}', [CareerController::class, 'edit'])->name('careers.edit');
+        Route::put('careers/update/{id}', [CareerController::class, 'update'])->name('careers.update');
+        Route::delete('careers/delete/{id}', [CareerController::class, 'destroy'])->name('careers.delete');
+
+        // Client Booking Report
         // Booking Report
         Route::get('reports/bookings-report', [BookingReportController::class, 'index']);
         Route::get('reports/bookings/list', [BookingReportController::class, 'list']);
@@ -61,7 +79,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('reports/clients', [BookingReportController::class, 'clientBooking']);
         Route::get('reports/clients/list', [BookingReportController::class, 'clientList']);
         Route::get('reports/clients/bookings/list', [BookingReportController::class, 'clientBookingview']);
-        Route::get('reports/clients/bookings/revenue/{id}', [BookingReportController::class, 'clientBookingRevenue']);
+        Route::get('reports/clients/bookings/revenue/{fromId}/{toId}', [BookingReportController::class, 'clientBookingRevenue']);
         Route::get('reports/clients/bookings/{id}', [BookingReportController::class, 'clientBookingList']);
 
 
@@ -93,7 +111,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
 
         Route::get('/bookings/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
-        Route::get('/bookings/list', action: [BookingController::class, 'list']);
+        Route::get('/bookings/list', [BookingController::class, 'list']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
         Route::get('/bookings/noBill', [BookingController::class, 'noBill']);
@@ -105,8 +123,11 @@ Route::group(['middleware' => ['auth']], function () {
         // // to client booking
         Route::get('/bookings/clients', [BookingController::class, 'Clientshow']);
         Route::get('/bookings/clientsList', [BookingController::class, 'clientList']);
-        Route::get('/bookings/to-client-booking/{id}', [BookingController::class, 'to_client_booking']);
+        // Route::get('/bookings/clients/bookings/{id}', [BookingController::class, 'to_client_booking']);
+        Route::get('/bookings/clients/bookings', [BookingController::class, 'to_client_booking']);
         Route::post('/bookings/to-client-booking', [BookingController::class, 'to_client_booking_save']);
+
+        Route::get('/get-client-details/{id}', [ClientController::class, 'getClientDetails']);
 
         Route::get('/challans', [ChallanController::class, 'index']);
         Route::get('/challans/list', [ChallanController::class, 'list']);
@@ -115,13 +136,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('challans/{id}', [ChallanController::class, 'show']);
         //Client routes
 
-        Route::get('/clients', [ClientController::class, 'show']);
-        Route::get('/clients/create', [ClientController::class, 'index']);
-        Route::post('/clients/store', [ClientController::class, 'store']);
-        Route::get('/clients/list', [ClientController::class, 'list']);
-        Route::get('clients/edit/{id}', [ClientController::class, 'edit']);
-        Route::post('clients/update', [ClientController::class, 'update']);
-        Route::get('clients/delete/{id}', [ClientController::class, 'delete']);
+
+
+
+        Route::get('/clients/map', [MapClientController::class, 'index']);
+        Route::get('/clients/clientMap', [MapClientController::class, 'clientMap']);
+        Route::post('clients/maps', [MapClientController::class, 'mapBranches']);
+        Route::post('/clients/mapClient', [MapClientController::class, 'storeClientMapping']);
+
+
         Route::get('get-distance', [ClientController::class, 'getDistance']);
 
         // /Distance
@@ -150,7 +173,13 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('branch-user/')->group(function () {
-
+        Route::get('/clients', [ClientController::class, 'show']);
+        Route::get('/clients/list', [ClientController::class, 'list']);
+        Route::get('/clients/create', [ClientController::class, 'index']);
+        Route::post('/clients/store', [ClientController::class, 'store']);
+        Route::get('clients/edit/{id}', [ClientController::class, 'edit']);
+        Route::post('clients/update', [ClientController::class, 'update']);
+        Route::get('clients/delete/{id}', [ClientController::class, 'delete']);
         Route::get('dashboard', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
 
         Route::get('employees', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);

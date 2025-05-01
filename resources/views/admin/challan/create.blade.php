@@ -134,9 +134,9 @@
                                             <th>Bilti Number</th>
                                             <th>Offline Bilti </th>
                                             <th>Consignor Name</th>
-                                            <th>Consignor Address</th>
+                                           
                                             <th>Consignee Name</th>
-                                            <th>Consignee Address</th>
+                                            <th>Destination</th>
                                             <th>Payment Mode</th>
                                             <th>Creation Date</th>
                                         </tr>
@@ -208,14 +208,11 @@
                    
 
                     {
-                        data: 'address' 
-                    },
-                    {
                         data: 'consignee_name' 
                     },
                    
                     {
-                        data: 'consignee_address' 
+                        data: 'consignee_branch_id' 
                     },
                     {
                         data: 'booking_type' 

@@ -6,7 +6,24 @@
 
         <div class="card-body">
             <div class="row">
-                <input type="hidden" name="client_id" value="{{ $client->id }}">
+
+                <div class="col-md-7 mb-1">
+                    <label for="date">Select Client:</label>
+                    <select required class="form-select select2 form-control js-select2" name="client_id" id="client_id">
+                        <option value="">Select Client</option>
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->client_name }}</option>
+                        @endforeach
+                    </select>
+
+                    <div id="client_details"></div>
+
+
+                </div>
+
+            </div>
+            <div class="row">
+
                 <div class="col-md-2">
                     <div class="">
                         <label for="date">Paid:</label>
@@ -16,8 +33,6 @@
                 <div class="col-md-1">
                     <input type="checkbox" name="booking" class="form-control" value="Paid" id="paid"
                         onclick="uncheckOther(this)" />
-
-
 
                 </div>
 
@@ -94,6 +109,7 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
@@ -104,8 +120,12 @@
 
                     <select class="form-select select2 form-control js-select2" name="consignor_branch_id"
                         id="consignor_branch_id">
-                        <option value="{{ $client->consignor_branch_id }}">{{ $client->consignor_branch_name }}
-                        </option>
+                        @foreach ($branch as $branchs)
+                            <option value="{{ $branchs->id }}"
+                                {{ Auth::user()->branch_user_id == $branchs->id ? 'selected' : 'disabled' }}>
+                                {{ $branchs->branch_name }}
+                            </option>
+                        @endforeach
 
                     </select>
 
@@ -138,9 +158,12 @@
                 <div class="col-md-3">
 
                     <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
-                        id="consignor_branch_id">
-                        <option value="{{ $client->consignee_branch_id }}">{{ $client->consignee_branch_name }}
-                        </option>
+                        id="consignee_branch_id">
+                        <option value="">Select Brnach</option>
+                        @foreach ($branch as $branchList)
+                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
+                            </option>
+                        @endforeach
                     </select>
 
                 </div>
@@ -170,7 +193,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="text" oninput="calculateTransshipment()" id="no_of_articles"
+                        <input type="number" oninput="calculateTransshipment()" id="no_of_articles"
                             name="no_of_artical" class="form-control mb-1" />
                     </div>
                 </div>
@@ -181,7 +204,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="text" name="actual_weight" value="" class="form-control mb-1" />
+                        <input type="number" name="actual_weight" value="" class="form-control mb-1" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -201,7 +224,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="text" value="" id="good_of_value" name="good_of_value"
+                        <input type="number" value="" id="good_of_value" name="good_of_value"
                             oninput="calculatefov()" class="form-control mb-1" />
                     </div>
                 </div>
@@ -218,8 +241,7 @@
 
                 </div>
                 <div class="col-md-3">
-                    <input type="text" name="consignor_name" value="{{ $client->consignor_name }}"
-                        class="form-control mb-1" />
+                    <input type="text" name="consignor_name" value="" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
@@ -229,8 +251,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignee_name }}" name="consignee_name"
-                        class="form-control mb-1" />
+                    <input type="text" id="consignee_name" value="" name="consignee_name" class="form-control mb-1" />
 
                 </div>
 
@@ -243,8 +264,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignor_address }}" name="consignor_address"
-                        class="form-control mb-1" />
+                    <input type="text" value="" id="client_address" name="consignor_address" class="form-control mb-1" />
 
                 </div>
 
@@ -255,8 +275,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignee_address }}" name="consignee_address"
-                        class="form-control mb-1" />
+                    <input type="text" value="" id="consignee_address" name="consignee_address" class="form-control mb-1" />
 
                 </div>
 
@@ -269,8 +288,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignor_phone_number }}"
-                        name="consignor_phone_number" class="form-control mb-1" />
+                    <input type="text" value="" name="consignor_phone_number" class="form-control mb-1" />
 
                 </div>
 
@@ -281,8 +299,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignee_phone_number }}"
-                        name="consignee_phone_number" class="form-control mb-1" />
+                    <input type="text" id="consignee_phone" value="" name="consignee_phone_number" class="form-control mb-1" />
 
                 </div>
 
@@ -295,8 +312,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignor_gst_number }}" name="consignor_gst_number"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignor_gst_number" class="form-control mb-1" />
 
                 </div>
 
@@ -307,8 +323,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignee_address }}" name="consignee_gst_number"
-                        class="form-control mb-1" />
+                    <input type="text" value="" id="consignee_gst_number" name="consignee_gst_number" class="form-control mb-1" />
 
                 </div>
 
@@ -321,8 +336,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignor_email }}" name="consignor_email"
-                        class="form-control mb-1" />
+                    <input type="text" value="" name="consignor_email" class="form-control mb-1" />
 
                 </div>
 
@@ -333,8 +347,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ $client->consignee_email }}" name="consignee_email"
-                        class="form-control mb-1" />
+                    <input type="text" value="" id="consignee_email" name="consignee_email" class="form-control mb-1" />
 
                 </div>
 
@@ -347,7 +360,8 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" name="invoice_number" class="form-control mb-1" />
+                    <input type="text" placeholder="Invoice Number" name="invoice_number"
+                        class="form-control mb-1" />
 
                 </div>
 
@@ -358,7 +372,8 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="eway_bill_number" class="form-control mb-1" />
+                    <input type="text" placeholder="" value="" name="eway_bill_number"
+                        class="form-control mb-1" />
 
                 </div>
 
@@ -367,17 +382,17 @@
                 <div class="col-md-4">
 
                     <label for="date">Aadhar card</label>
-                    <input type="text" value="{{ $client->aadhar_card }}" name="aadhar_card"
-                        class="form-control mb-1 mb-1" />
+                    <input type="text" value="" name="aadhar_card" class="form-control mb-1 mb-1" />
                 </div>
                 <div class="col-md-4">
                     <label for="date">Value Declare by Consignee.</label>
-                    <input type="text" name="mark" class="form-control mb-1 mb-1" />
+                    <input type="number" name="mark" placeholder="Value Declare by Consignee."
+                        class="form-control mb-1 mb-1" />
                 </div>
                 <div class="col-md-4">
 
                     <label for="date">Remark</label>
-                    <input type="text" name="remark" class="form-control mb-1 mb-1" />
+                    <textarea type="text" name="remark" class="form-control mb-1 mb-1">Remark</textarea>
 
 
                 </div>
@@ -508,154 +523,60 @@
     </div>
 
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script>
-    window.onload = function() {
+    $(document).ready(function() {
 
-        calculateTransshipment();
-        calculatefov();
-        calculategst();
-    };
-    document.getElementById('no_of_articles').addEventListener('input', function() {
+        function fetchDistance() {
+            var consignor_branch_id = $('#consignor_branch_id').val();
+            var consignee_branch_id = $('#consignee_branch_id').val();
 
-        var noOfArticles = parseInt(document.getElementById('no_of_articles').value,
-            10);
-        var freight_amount = parseFloat(document.getElementById('freight_amount')
-            .value);
-        var noOfArticles = document.getElementById('no_of_articles').value;
-        var wbc_charges = document.getElementById('wbc_charges').value;
-        var handling_charges = document.getElementById('handling_charges').value;
-        var fuel_amount = document.getElementById('fuel_amount').value;
-        var freight_amount = document.getElementById('freight_amount').value;
-        var hamali_Charges = document.getElementById('hamali_Charges').value;
-        var compney_charges = document.getElementById('compney_charges').value;
-
-        if (isNaN(noOfArticles) || noOfArticles <= 0) {
-            document.getElementById('result').innerText = "Please enter a valid number of articles.";
-            return;
-        }
-        var subTotals
-        if (!isNaN(freight_amount) && freight_amount !== "") {
-            var freightValue = noOfArticles * freight_amount;
-            document.getElementById('freight_amount').value = freightValue;
-        } else {
-            document.getElementById('freight_amount').value = '';
-        }
-
-        if (handling_charges !== "") {
-            handlingValue = noOfArticles * 30;
-            document.getElementById('handling_charges').value = handlingValue;
-        } else {
-            document.getElementById('handling_charges').value = '';
-        }
-        if (wbc_charges !== "") {
-            wbcValue = noOfArticles * 40;
-            document.getElementById('wbc_charges').value = wbcValue;
-        } else {
-            document.getElementById('wbc_charges').value = '';
-        }
-        if (fuel_amount !== "") {
-            fuelValue = noOfArticles * 150;
-            document.getElementById('fuel_amount').value = fuelValue;
-        } else {
-            document.getElementById('fuel_amount').value = '';
-        }
-
-        if (hamali_Charges !== "") {
-            hamaliValue = noOfArticles * 20;
-            document.getElementById('hamali_Charges').value = hamaliValue;
-        } else {
-            document.getElementById('hamali_Charges').value = '';
-        }
-
-        if (compney_charges !== "") {
-            compney_chargesValue = noOfArticles * 40;
-            document.getElementById('compney_charges').value = compney_chargesValue;
-        } else {
-            document.getElementById('compney_charges').value = '';
-        }
-        calculategst();
-        calculateInvoice();
-    });
-
-
-    function calculateTransshipment() {
-        var noOfArticles = parseInt(document.getElementById('no_of_articles').value,
-            10);
-        var tans_one = document.getElementById('transhipmen_one').value;
-        var tans_two = document.getElementById('transhipmen_two').value;
-        var tans_three = document.getElementById('transhipment_three').value;
-
-        if (isNaN(noOfArticles) || noOfArticles <= 0) {
-            document.getElementById('result').innerText = "Please enter a valid number of articles.";
-            return;
-        }
-        var transshipmentValue;
-        if (tans_one !== "") {
-            transshipmentValue = noOfArticles * 40;
-            document.getElementById('transhipmen_one_amount').value = transshipmentValue;
-        } else {
-            document.getElementById('transhipmen_one_amount').value = '';
-        }
-        if (tans_two !== "") {
-            transshipmentValue = noOfArticles * 40;
-            document.getElementById('transhipmen_two_amount').value = transshipmentValue;
-        } else {
-            document.getElementById('transhipmen_two_amount').value = '';
-        }
-        if (tans_three !== "") {
-            transshipmentValue = noOfArticles * 40;
-            document.getElementById('transhipment_three_amount').value = transshipmentValue;
-        } else {
-            document.getElementById('transhipment_three_amount').value = '';
-        }
-        calculateInvoice();
-    }
-
-
-    function calculatefov() {
-        var goodsofvalue = document.getElementById('good_of_value').value;
-        if (goodsofvalue === "") {
-            document.getElementById('fov_amount').innerText = "Amount: 0 Rupees";
-        } else {
-            var fovValue = goodsofvalue * 1.5 / 100;
-            document.getElementById('fov_amount').value = fovValue;
-        }
-        calculateInvoice();
-    }
-
-    function calculategst() {
-        var freight_amount = document.getElementById('freight_amount').value;
-        var cgst = document.getElementById('cgst').value;
-        var sgst = document.getElementById('sgst').value;
-
-        // Calculate CGST
-        if (freight_amount === "") {
-            document.getElementById('cgst').innerText = "Amount: 0 Rupees";
-        } else {
-            var cgstValue = freight_amount * 2.5 / 100;
-            document.getElementById('cgst').value = cgstValue;
-        }
-
-        // Calculate SGST
-        if (freight_amount === "") {
-            document.getElementById('sgst').innerText = "Amount: 0 Rupees";
-        } else {
-            var sgstValue = freight_amount * 2.5 / 100;
-            document.getElementById('sgst').value = sgstValue;
-        }
-
-        // Calculate IGST if CGST/SGST is not provided
-        if (cgst === "" || sgst === "") {
-            if (freight_amount === "") {
-                document.getElementById('igst').innerText = "Amount: 0 Rupees";
+            if (consignor_branch_id && consignee_branch_id) {
+                $.ajax({
+                    url: '{{ url('admin/get-distance') }}',
+                    method: 'GET',
+                    data: {
+                        consignor_branch_id: consignor_branch_id,
+                        consignee_branch_id: consignee_branch_id
+                    },
+                    success: function(response) {
+                        if (response.distance) {
+                            var distance = parseFloat(response.distance);
+                            $('#distance').val(distance);
+                            calculateInvoice(distance); // distance milte hi freight calculate
+                        } else {
+                            $('#distance').val('');
+                            $('#freight_amount').val('');
+                            alert('Error: ' + (response.error || 'Unknown error'));
+                        }
+                    },
+                    error: function() {
+                        $('#distance').val('');
+                        $('#freight_amount').val('');
+                        alert('Failed to fetch distance. Please try again.');
+                    }
+                });
             } else {
-                var igst = freight_amount * 5 / 100;
-                document.getElementById('igst').value = igst;
+                $('#distance').val('');
+                $('#freight_amount').val('');
             }
         }
-    }
 
-    function grandTotal() {
-        // Add logic to calculate the grand total if needed
+        $('#consignor_branch_id, #consignee_branch_id').on('change', fetchDistance);
+
+        // Initial call agar dono pre-selected hain
+        fetchDistance();
+    });
+
+    function calculateInvoice(distance) {
+        var ratePerKm = 0.20;
+
+        if (!isNaN(distance) && distance > 0) {
+            var freight = distance * ratePerKm;
+            $('#freight_amount').val(freight.toFixed(2));
+        } else {
+            $('#freight_amount').val('');
+        }
     }
 </script>

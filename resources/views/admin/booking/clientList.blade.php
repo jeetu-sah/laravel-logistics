@@ -40,13 +40,12 @@
                     <div class="row">
                         <div class="table-responsive ">
                             <table class="display" id="booking-list">
+
                                 <thead>
                                     <tr>
                                         <th>SN.</th>
                                         <th>Client Id</th>
                                         <th>Consinger Name</th>
-                                        <th>Consinger Address</th>
-                                        <th>Consinger Branch</th>
                                         <th>Consignee Name</th>
                                         <th>Destinaton</th>
                                         <th>Consignee Address</th>
@@ -75,7 +74,7 @@
     @parent
     <!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
-
+   
     <script>
         $(document).ready(function(e) {
             new DataTable('#booking-list', {
@@ -93,29 +92,23 @@
                     },
 
                     {
-                        data: 'client_id'
+                        data: 'from_client_id'
                     },
 
                     {
-                        data: 'consignor_name'
+                        data: 'from_client_name'
+                    },
+
+
+                    {
+                        data: 'to_client_name'
                     },
                     {
-                        data: 'consignor_address'
+                        data: 'to_client_phone_number'
 
                     },
                     {
-                        data: 'consignor_branch_id'
-
-                    },
-                    {
-                        data: 'consignee_name'
-                    },
-                    {
-                        data: 'consignee_branch_id'
-
-                    },
-                    {
-                        data: 'consignee_address'
+                        data: 'to_branch_name'
 
                     },
 

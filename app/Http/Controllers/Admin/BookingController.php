@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Client;
+use App\Models\ClientMap;
 use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -105,21 +106,19 @@ class BookingController extends Controller
     }
     public function upcomingBookings(Request $request)
     {
-
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
 
-
         $bookingQuery = Booking::query();
 
-        $bookingQuery->where('consignee_branch_id', Auth::user()->branch_user_id);
+        $bookingQuery->where('consignee_branch_id', Auth::user()->branch_user_id)->orWhere('transhipmen_one', Auth::user()->branch_user_id)->orWhere('transhipmen_two', Auth::user()->branch_user_id)->orWhere('transhipment_three', Auth::user()->branch_user_id);
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
                 ->orWhere('consignee_name', 'like', "%$search%");
         }
-        $bookingQuery->where('status', operator: 1);
+        $bookingQuery->where('status', 1);  // Only Pending bookings
 
         $totalRecord = $bookingQuery->count();
 
@@ -131,9 +130,9 @@ class BookingController extends Controller
                 $row = [];
                 if ($request->bilti_list_type === 'challan') {
                     $row['sn'] = '<div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
-                                            <label class="form-check-label" for="exampleCheck1"></label>
-                                        </div>';
+                                        <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
+                                        <label class="form-check-label" for="exampleCheck1"></label>
+                                    </div>';
                 } else {
                     $row['sn'] = $start + $index + 1;
                 }
@@ -143,27 +142,34 @@ class BookingController extends Controller
                     ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
                     : '-';
 
-
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
                 $row['address'] = $booking->consignor_address;
-                $row['phone_number_1'] = $booking->phone_number_1;
-                $row['gst_number'] = $booking->gst_number;
+                $row['phone_number_1'] = $booking->consignor_phone_number;
+                $row['gst_number'] = $booking->consignor_gst_number;
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
-                $row['consignee_phone_number_1'] = $booking->consignee_phone_number_1;
+                $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
+
+                // Booking Type
                 if ($booking->booking_type == 'Paid') {
-                    $row['booking_type'] = 'Paid ';
+                    $row['booking_type'] = 'Paid';
                 } elseif ($booking->booking_type == 'Topay') {
-                    $row['booking_type'] = 'To Pay ';
-                } elseif ($booking->booking_type == 3) {
-                    $row['booking_type'] = 'Client ';
+                    $row['booking_type'] = 'To Pay';
+                } elseif ($booking->booking_type == 'Toclient') {
+                    $row['booking_type'] = 'Client';
                 } else {
                     $row['booking_type'] = 'Unknown';
                 }
 
-                // $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
+                // Adding Transhipment Amounts (showing each transhipment charge)
+                $row['transhipment_one_amount'] = $booking->transhipmen_one_amount;
+                $row['transhipment_two_amount'] = $booking->transhipmen_two_amount;
+                $row['transhipment_three_amount'] = $booking->transhipment_three_amount;
+
+                // Action for updating status
+                $row['action'] = '<button class="btn btn-success" onclick="updateBookingStatus(' . $booking->id . ')">Receive Maal</button>';
 
                 $row['created_at'] = date('d-m-Y', strtotime($booking->created_at));
 
@@ -180,6 +186,7 @@ class BookingController extends Controller
 
         return response()->json($json_data);
     }
+
     public function create(Request $request)
     {
         // Get the current authenticated user
@@ -405,14 +412,15 @@ class BookingController extends Controller
                 // Consignor details
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
-                $row['address'] = $booking->consignor_address;
+
                 $row['phone_number_1'] = $booking->consignor_phone_number;
                 $row['gst_number'] = $booking->gst_number;
 
                 // Consignee details
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignee_name'] = $booking->consignee_name;
-                $row['consignee_address'] = $booking->consignee_address;
+
+                $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
 
                 // Conditional logic for 'booking_type'
@@ -661,6 +669,7 @@ class BookingController extends Controller
                 'status' => '1',
                 'booking_type' => $request->booking,
                 'manual_bilty_number' => $request->manual_bilty,
+
                 'client_id' => $request->client_id,
                 'created_at' => now(),
             ]);
@@ -680,25 +689,51 @@ class BookingController extends Controller
 
     public function to_client_booking(Request $request)
     {
-        $clientId = $request->id;  // Get the client ID from the URL parameters
-        $data['client'] = DB::table('clients')
-            ->join('branches as consignor_branch', 'clients.consignor_branch_id', '=', 'consignor_branch.id')
-            ->join('branches as consignee_branch', 'clients.consignee_branch_id', '=', 'consignee_branch.id')
-            ->where('clients.id', $clientId)
+
+
+        $loggedInBranchId = Auth::user()->branch_user_id;
+
+        $loggedInBranch = Branch::find($loggedInBranchId);
+        $data['loggedInBranch'] = $loggedInBranch;
+
+
+
+        $branchIds = DB::table('client_branch_map')
+            ->where('client_id', $loggedInBranchId)
+            ->where('status', 'ACTIVE')
+            ->whereNull('deleted_at')
+            ->pluck('branch_id');
+
+        $data['clients'] = DB::table('client_branch_map')
+            ->join('clients', 'clients.id', '=', 'client_branch_map.client_id')
+            ->whereIn('client_branch_map.branch_id', $branchIds)
+            ->where('client_branch_map.status', 'ACTIVE')
+            ->whereNull('client_branch_map.deleted_at')
             ->select(
-                'clients.*',  // Select all columns from clients table
-                'consignor_branch.id as consignor_branch_id',
-                'consignor_branch.branch_name as consignor_branch_name',
-                'consignee_branch.id as consignee_branch_id',
-                'consignee_branch.branch_name as consignee_branch_name'
+                'clients.id',
+                DB::raw('MIN(clients.client_name) as client_name'),
+                DB::raw('MIN(client_branch_map.branch_id) as branch_id')
             )
-            ->first();
+            ->groupBy('clients.id')
+            ->get();
+
+        // echo "<pre>";
+        // print_r($data['clients']);
+        // exit;
+
+
+
+
+
+
         $data['branch'] = Branch::all();
         $data['tittle'] = "To Client Booking";
         $data['heading'] = 'Add New Booking';
         $data['listUrl'] = 'admin/booking/booking-list';
+
         return view('admin.booking.create-to-client-booking', $data);
     }
+
 
 
     public function show()
@@ -716,21 +751,27 @@ class BookingController extends Controller
         $start = $request->input('start', 0);
         // Start with the query builder
         $clientQuery = Client::query();
-        $clientQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
-        $clientQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
+
+        $clientQuery->where('client_branch_id', Auth::user()->branch_user_id);
         // For debugging, let's print the query first to see if it's being built properly
         $sql = $clientQuery->toSql(); // Get the raw SQL query
         // Apply search filters if a search term is provided
         if ($search) {
             $clientQuery->where(function ($query) use ($search) {
-                $query->where('consignor_name', 'like', "%$search%")
-                    ->orWhere('consignee_name', 'like', "%$search%");
+                $query->where('client_name', 'like', "%$search%");
+
             });
         }
 
         // Filter active clients (status = 1)
         $clientQuery->where('status', 1);
 
+        // Get the paginated results with branch details
+        $clients = $clientQuery->with('branch') // Eager load branch
+            ->skip($start)
+            ->take($limit)
+            ->orderBy('created_at', 'desc')
+            ->get();
         // Get the total record count before pagination
         $totalRecord = $clientQuery->count();
 
@@ -780,73 +821,99 @@ class BookingController extends Controller
 
     public function Clientshow()
     {
+
         $data['tittle'] = "Client List";
         return view('admin.booking.clientList', $data);
     }
 
     public function clientList(Request $request)
     {
-        // echo Auth::user()->branch_user_id;exit;
-        // Get input values from the request
+
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        // Start with the query builder
-        $clientQuery = Client::query();
-        $clientQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
-        // $clientQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
-        // For debugging, let's print the query first to see if it's being built properly
-        $sql = $clientQuery->toSql(); // Get the raw SQL query
-        // Apply search filters if a search term is provided
-        if ($search) {
-            $clientQuery->where(function ($query) use ($search) {
-                $query->where('consignor_name', 'like', "%$search%")
-                    ->orWhere('consignee_name', 'like', "%$search%");
+
+        $branchId = Auth::user()->branch_user_id;
+
+        $query = DB::table('client_to_client_map')
+            ->join('clients as from_clients', 'from_clients.id', '=', 'client_to_client_map.from_client_id')
+            ->join('clients as to_clients', 'to_clients.id', '=', 'client_to_client_map.to_client_id')
+
+            // Join for from_client's branch
+            ->join('client_branch_map as from_cbm', 'from_cbm.client_id', '=', 'from_clients.id')
+            ->join('branches as from_branches', 'from_branches.id', '=', 'from_cbm.branch_id')
+
+            // Join for to_client's branch
+            ->join('client_branch_map as to_cbm', 'to_cbm.client_id', '=', 'to_clients.id')
+            ->join('branches as to_branches', 'to_branches.id', '=', 'to_cbm.branch_id')
+
+            ->where('from_cbm.branch_id', $branchId)
+
+            ->select(
+                'client_to_client_map.*',
+                'from_clients.client_name as from_client_name',
+                'from_clients.client_phone_number as from_client_phone_number',
+
+                'to_clients.client_name as to_client_name',
+                'to_clients.client_phone_number as to_client_phone_number',
+
+                'from_branches.branch_name as from_branch_name',
+                'from_branches.id as from_branch_id',
+
+                'to_branches.branch_name as to_branch_name',
+                'to_branches.id as to_branch_id'
+            );
+
+
+
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('from_clients.client_name', 'like', "%$search%")
+                    ->orWhere('to_clients.client_name', 'like', "%$search%");
             });
         }
-        $totalRecord = $clientQuery->count();
 
-        // Get the paginated results
-        $clients = $clientQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
+        $total = $query->count();
 
-        // Prepare data for the response
+        $clients = $query
+            ->orderBy('client_to_client_map.created_at', 'desc')
+            ->skip($start)
+            ->take($limit)
+            ->get();
+
+        // Prepare data
         $rows = [];
-        if ($clients->count() > 0) {
-            foreach ($clients as $index => $client) {
-                $row = [];
-                $row['sn'] = $start + $index + 1;
-                $row['client_id'] = '<a href="' . url('admin/bookings/to-client-booking', ['id' => $client->id]) . '">' . $client->id . '</a>';
+        $data = [];
 
+        foreach ($clients as $index => $client) {
+            $row = [];
+            $row['sn'] = $start + $index + 1;
 
-                $row['consignor_branch_id'] = $client->consignorBranch?->branch_name ?? 'N/A';
-                $row['consignor_name'] = $client->consignor_name;
-                $row['consignor_address'] = $client->consignor_address;
-                $row['phone_number_1'] = $client->consignor_phone_number;
-                $row['gst_number'] = $client->gst_number;
-                $row['consignee_branch_id'] = $client->consigneeBranch?->branch_name ?? 'N/A';
-                $row['consignee_name'] = $client->consignee_name;
-                $row['consignee_address'] = $client->consignee_address;
-                $row['consignee_phone_number_1'] = $client->consignee_phone_number;
-                $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-                              <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
+            // Link to booking with from_client_id
+            $row['from_client_id'] = '<a href="' . url('admin/bookings/clients/bookings', ['id' => $client->id]) . '">' . $client->id . '</a>';
 
-                // Format the creation date
-                $row['created_at'] = date('d-m-Y', strtotime($client->created_at));
+            $row['from_client_name'] = $client->from_client_name;
 
-                // Append the row to the rows array
-                $rows[] = $row;
-            }
+            $row['to_client_name'] = $client->to_client_name;
+            $row['to_client_phone_number'] = $client->to_client_phone_number ?? '-';
+            $row['to_branch_name'] = $client->to_branch_name ?? '-';
+
+            $row['created_at'] = $client->created_at;
+            $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
+            <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
+            $data[] = $row;
         }
 
-        // Prepare the JSON response with correct record counts
-        $json_data = [
-            "draw" => intval($request->input('draw')),
-            "recordsTotal" => $totalRecord,
-            "recordsFiltered" => $totalRecord,
-            "data" => $rows,
-        ];
-
-        // Return the JSON response
-        return response()->json($json_data);
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $total,
+            'data' => $data,
+        ]);
     }
+
+
+
+
 }

@@ -43,15 +43,18 @@
                                 <thead>
                                     <tr>
                                         <th>SN.</th>
-                                        <th>Client Id</th>
-                                        <th>Consinger Name</th>
-                                        <th>Consinger Address</th>
+                                        <th>Client Name</th>
 
-                                        <th>Consignee Name</th>
+                                        <th>Address</th>
 
-                                        <th>Consignee Address</th>
+                                        <th> Mobile</th>
 
-                                        <th>Creation Date</th>
+                                        <th>GST</th>
+
+                                        <th>Branch</th>
+                                        <th>Email</th>
+                                        <th>Adhar Card</th>
+                                        <th>Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -81,7 +84,7 @@
             new DataTable('#booking-list', {
                 responsive: true,
                 ajax: {
-                    url: "{{ url('admin/clients/list') }}",
+                    url: "{{ url('branch-user/clients/list') }}",
                     data: function(d) {
                         // Custom parameters can be added here if needed
                         // Example:
@@ -93,27 +96,35 @@
                     },
 
                     {
-                        data: 'client_id'
+                        data: 'client_name'
                     },
 
                     {
-                        data: 'consignor_name'
+                        data: 'client_address'
                     },
                     {
-                        data: 'consignor_address'
+                        data: 'client_phone_number'
 
-                    },
-
-                    {
-                        data: 'consignee_name'
                     },
 
                     {
-                        data: 'consignee_address'
-
+                        data: 'client_gst_number'
                     },
 
 
+                    {
+                        data: 'client_branch_id'
+
+                    },
+                    {
+                        data: 'client_email'
+
+                    },
+
+                    {
+                        data: 'client_aadhar_card'
+
+                    },
                     {
                         data: 'created_at'
 

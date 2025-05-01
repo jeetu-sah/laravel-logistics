@@ -60,6 +60,9 @@
                     <li class="nav-item">
                         <a class="nav-link font20 bottom-border" aria-current="page" href="#shipment">Track Shipment</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link font20 bottom-border" aria-current="page" href="#career">Career</a>
+                    </li>
                 </ul>
                 <div class="me-4">
                     <i class="fa-solid fa-headphones primarycolor font20"></i>
@@ -74,6 +77,16 @@
     </nav>
     <!-- Navbar End -->
     <main id="main">
+        <div class="container-fluid">
+           
+                <div class="row">
+                    <video src="{{ asset('assets/videos/vikaslogisticsfinal.mp4') }}" width="100%" height="10%" autoplay loop muted
+                        ></video>
+                </div>
+
+          
+
+        </div>
         <section id="main-carousel">
             <div class="container-fluid">
                 <div class="row">
@@ -428,7 +441,7 @@
     <div class="container">
         <div class="row mt-lg-3 margintop" id="service">
             <div>
-                <h6 class="mt-3 fw-bold primarycolor text-center">Our Services</h6>
+
                 <p class="blackcolor font30 text-center fw-bold">Explore Our Services</p>
             </div>
         </div>
@@ -927,6 +940,299 @@
             </div>
         </div> --}}
     </div>
+    <div class="container" id="career">
+
+
+        <style>
+            .card-title,
+            .job-status {
+                display: inline-block;
+                margin-right: 10px;
+                /* optional spacing */
+            }
+
+            .job-card {
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .job-card:hover {
+                transform: translateY(-10px);
+            }
+
+            .apply-btn {
+                background-color: #007bff;
+                color: white;
+                border-radius: 5px;
+                padding: 10px 20px;
+                text-decoration: none;
+                font-size: 1rem;
+                display: inline-block;
+            }
+
+            .apply-btn:hover {
+                background-color: #0056b3;
+                text-decoration: none;
+            }
+
+            .job-status {
+                font-weight: bold;
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+
+            .open-status {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .closed-status {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .disabled-btn {
+                background-color: #d6d6d6;
+                cursor: not-allowed;
+            }
+        </style>
+        <div class="container mt-5">
+            <header class="text-center mb-5">
+                <h1>Join Our Team Now</h1>
+            </header>
+
+            <div class="row">
+                <!-- Job Card 1 -->
+                @foreach ($careers as $career)
+                    <div class="col-md-12 mb-4">
+                        <div class="card job-card">
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <p style="color: #fd8f2a; font-size: 22px;" class="card-title">
+                                            {{ $career->name }}</p>
+
+                                        <span class="job-status open-status"
+                                            style="margin-left:1000px;">{{ $career->status }}</span>
+                                    </div>
+
+                                </div>
+
+                                <p class=" mt-2">
+                                    Required Candidate - @if ($career->staff_type == 'both')
+                                        Male / Female
+                                    @elseif ($career->staff_type == 'male')
+                                        Male
+                                    @elseif ($career->staff_type == 'female')
+                                        Female
+                                    @else
+                                        {{ $career->staff_type }}
+                                    @endif
+                                    <br>Openings: {{ $career->post }}
+                                    <br> <br>
+                                    <i class="fas fa-map-marker-alt"></i> {{ $career->location }}<br>
+                                    ₹ {{ $career->salary }}
+                                </p>
+                                <p class="">
+                                    {{ $career->description }}
+                                </p>
+                                <!-- Button to trigger the modal -->
+                                <a href="#" class="apply-btn" data-bs-toggle="modal"
+                                    data-bs-target="#applyModal" data-job-id="{{ $career->id }}"
+                                    data-job-name="{{ $career->name }}">Apply Now</a>
+
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Modal Structure -->
+            <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="applyModalLabel">Apply for Job</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Dynamic content for Job Name or ID -->
+                            <p id="modal-job-info"></p>
+                            <form action="{{ route('applications.store') }}" method="post"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" id="job-id" name="job_id" value="" />
+
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="name"
+                                        placeholder="Full Name" name="full_name" required>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="tel" class="form-label">Mobile</label>
+                                            <input type="tel" class="form-control" placeholder="Mobile"
+                                                id="tel" name="mobile" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" placeholder="Email"
+                                                id="email" name="email" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Address</label>
+                                            <input type="text" class="form-control" placeholder="Address"
+                                                id="address" name="address" required>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="gender" class="form-label">Gender</label>
+                                            <select class="form-control" name="gender" id="gender">
+                                                <option value="">Select Gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="why_hire" class="form-label">Why should we hire you?</label>
+                                    <textarea id="why_hire" name="why_hire" placeholder="Describe in 100 characters" class="form-control" required></textarea>
+                                    <small id="charCount" class="form-text text-muted">Character Count: 0/100</small>
+                                </div>
+
+                                <script>
+                                    const textarea = document.getElementById('why_hire');
+                                    const charCountDisplay = document.getElementById('charCount');
+
+                                    textarea.addEventListener('input', function() {
+                                        let charCount = textarea.value.length;
+                                        charCountDisplay.textContent = `Character Count: ${charCount}/100`;
+
+                                        // Prevent exceeding 100 characters
+                                        if (charCount > 100) {
+                                            textarea.value = textarea.value.substring(0, 100); // Trim to 100 characters
+                                            charCountDisplay.textContent = `Character Count: 100/100`;
+                                            charCountDisplay.style.color = 'red';
+                                        } else {
+                                            charCountDisplay.style.color = 'green';
+                                        }
+                                    });
+                                </script>
+
+
+                                <div class="mb-3">
+                                    <label for="file" class="form-label">Resume</label>
+                                    <input type="file" class="form-control" id="file" name="resume"
+                                        required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row   margintop">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div>
+                    <h6 class="mt-3 fw-bold primarycolor">Our Features</h6>
+                    <p class="blackcolor font30  fw-bold">At Vikas Logistics, we offer a range of features designed to
+                        streamline your shipping experience:</p>
+                    <div>
+                        <div class="our-features mt-5">
+                            <div>
+                                <p style="font-size:30px;"> 📍</p>
+                            </div>
+                            <div>
+                                <h6>End-to-End Tracking</h6>
+                                <p class="lightblack">Stay updated with real-time tracking of your shipments, ensuring
+                                    complete transparency and control. </p>
+                            </div>
+
+
+                        </div>
+                        <div class="our-features mt-5">
+                            <div>
+                                <p style="font-size:30px;">⏰</p>
+                            </div>
+                            <div>
+                                <h6>Timely Deliveries: </h6>
+                                <p class="lightblack">We prioritize punctuality, ensuring your goods reach their
+                                    destination on time, every time. </p>
+                            </div>
+
+
+                        </div>
+                        <div class="our-features mt-5">
+                            <div>
+                                <p style="font-size:30px;">🇮🇳</p>
+                            </div>
+                            <div>
+                                <h6>Nationwide Coverage:</h6>
+                                <p class="lightblack">From north to south, east to west, we offer logistics solutions
+                                    across India, making your business operations smoother.</p>
+                            </div>
+
+
+                        </div>
+
+                        <div class="our-features mt-5">
+                            <div>
+                                <p style="font-size:30px;">🏢</p>
+                            </div>
+                            <div>
+                                <h6>Warehousing Solutions:</h6>
+                                <p class="lightblack">Secure and efficient storage solutions, with proper inventory
+                                    management and easy access to goods. </p>
+                            </div>
+
+
+                        </div>
+                        <div class="our-features mt-5">
+                            <div>
+                                <p style="font-size:30px;">🚛</p>
+                            </div>
+                            <div>
+                                <h6>Flexible Transport Options: </h6>
+                                <p class="lightblack">Air, sea, road, or rail—choose the mode of transport that suits
+                                    your needs and budget. </p>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 dnone">
+                <div class="mt-4">
+                    <img src="{{ asset('site/img/image2.jpg') }}" alt="" class="img-fluid">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
     <div class="footercolor">
         <div class="container">
             <footer class="py-5">
@@ -1024,19 +1330,7 @@
 
                         </ul>
                     </div>
-                    {{-- 
-                    <div class="col-lg-3 mt-5  mt-lg-0">
-                        <form>
-                            <h5 class="textcenter">Newsletter</h5>
-                            <p class="textcenter">Dolor amet sit justo amet elitr clita ipsum elitr est. </p>
-                            <div class="w-100 gap-2">
-                                <input id="newsletter1" type="text" class="form-control"
-                                    placeholder="Email address" required><br>
-                                <button class="btn bgprimarycolor w-100 btnsubscribe"
-                                    type="button">Subscribe</button>
-                            </div>
-                        </form>
-                    </div> --}}
+
                     <div class="col-lg-7 mt-5 mt-lg-0">
                         <div>
                             <iframe
@@ -1071,6 +1365,33 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Include jQuery (if not already included) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Attach an event listener to all the "Apply Now" buttons
+    document.querySelectorAll('.apply-btn').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent the default action of the link
+
+            // Get job ID and job name from the clicked button's data attributes
+            var jobId = this.getAttribute('data-job-id');
+            var jobName = this.getAttribute('data-job-name');
+
+            // Update the modal content dynamically
+            var modalInfo = document.getElementById('modal-job-info');
+            modalInfo.innerHTML = 'You are applying for: ' + jobName + '';
+            document.getElementById('job-id').value = jobId;
+        });
+    });
+</script>
+<script>
+    document.querySelectorAll('.apply-btn').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            var jobId = this.getAttribute('data-job-id');
+            document.getElementById('job-id').value = jobId;
+        });
+    });
+</script>
+
 
 <script>
     $(document).ready(function() {
