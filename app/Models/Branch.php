@@ -44,6 +44,12 @@ class Branch extends Model
     {
         return $this->hasOne(User::class, 'branch_user_id');
     }
+   
+    public function clients()
+    {
+        return $this->belongsToMany(Client::class, 'client_branch', 'branch_user_id', 'client_id');
+    }
+    // Branch.php (Model)
 
 
 }

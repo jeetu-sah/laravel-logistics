@@ -262,7 +262,8 @@ class DeliveryController extends Controller
 
             )
             ->first();
-
+            // echo "<pre>";
+            // print_r($data['booking']);exit;
         return view('admin.delivery.deliver', $data);
     }
 

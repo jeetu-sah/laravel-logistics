@@ -27,14 +27,18 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">{{ $title }} </h3> &nbsp;<b style="font-size: 20px;"> ( {{ ucfirst($ClientDetails[0]->consignee_name) }} )</b>
+                    <h3 class="card-title">{{ $title }} </h3> &nbsp;<b style="font-size: 20px;"> (
+                        {{ Auth::user()->branch_user_id == $ClientDetails[0]->consignor_branch_id
+                            ? ucfirst($ClientDetails[0]->consignor_name)
+                            : ucfirst($ClientDetails[0]->consignee_name) }}
+                        )
+                    </b>
                 </div>
                 <div class="content-header">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12 col-sm-6 col-md-3">
-                                <a href="{{ url('admin/reports/clients/bookings', ['id' => $clientId]) }}"
-                                    class="dashboard-link" style="color:black;">
+                                <a href="" class="dashboard-link" style="color:black;">
                                     <div class="info-box">
                                         <span class="info-box-icon bg-info elevation-1"><i class="fas fa-list"></i></span>
                                         <div class="info-box-content">
@@ -103,8 +107,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="col-12 col-sm-6 col-md-6">
-                                    <a href="{{ url('admin/reports/clients/bookings', ['id' => $clientId]) }}"
-                                        class="dashboard-link" style="color:black;">
+                                    <a href="" class="dashboard-link" style="color:black;">
                                         <div class="info-box">
                                             <span class="info-box-icon bg-info elevation-1"><i
                                                     class="fas fa-list"></i></span>
@@ -121,8 +124,7 @@
                                     </a>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-6">
-                                    <a href="{{ url('admin/reports/clients/bookings', ['id' => $clientId]) }}"
-                                        class="dashboard-link" style="color:black;">
+                                    <a href="" class="dashboard-link" style="color:black;">
                                         <div class="info-box">
                                             <span class="info-box-icon bg-success elevation-1"> ₹
                                             </span>
@@ -138,8 +140,7 @@
                                     </a>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-6">
-                                    <a href="{{ url('admin/reports/clients/bookings', ['id' => $clientId]) }}"
-                                        class="dashboard-link" style="color:black;">
+                                    <a href="" class="dashboard-link" style="color:black;">
                                         <div class="info-box">
                                             <span class="info-box-icon bg-warning elevation-1"><i
                                                     class="fas fa-credit-card"></i></span>
@@ -156,62 +157,37 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="col-12 col-sm-6 col-md-6">
-                                    <a href="{{ url('admin/reports/clients/bookings', ['id' => $clientId]) }}"
-                                        class="dashboard-link" style="color:black;">
-                                        <div class="">
-                                            <div class="info-box-content" style="font-size: 20px;">
-                                                <style>
-                                                    .info-box-text{
-                                                        font-weight: 600
-                                                    }
-                                                </style>
-                                                <!-- First Column -->
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <span class="info-box-text" style="color:blue">Total Booking Amount =
-                                                        </span>
-                                                    </div><br><br>
-                                                    <div class="col-md-4">
-                                                        {{ number_format($totalRevenue, 2) ?? 0 }} ₹
-                                                    </div>
-
-                                                    <div class="col-md-8">
-                                                        <span class="info-box-text" style="color:rgb(166, 136, 47)">Total Delevery Amount =
-                                                        </span>
-                                                    </div><br><br>
-                                                    <div class="col-md-4">
-                                                        {{ number_format($totalRevenue, 2) ?? 0 }} ₹
-                                                    </div>
-
-                                                    <div class="col-md-8">
-                                                        <span class="info-box-text" style="color:green">Total Recived Amount =
-                                                        </span>
-                                                    </div><br><br>
-                                                    <div class="col-md-4">
-                                                        {{ number_format($totalRevenue, 2) ?? 0 }} ₹
-                                                    </div>
-
-                                                    <div class="col-md-8">
-                                                        <span class="info-box-text" style="color:red">Total Pending Amount =
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        {{ number_format($totalRevenue, 2) ?? 0 }} ₹
-                                                    </div>
-
-
-
-
-                                                </div>
-
-
-                                            </div>
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </a>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">Revenue Summary</h5>
+                                        <table class="table table-bordered table-striped">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="color:blue;">Total Booking Amount</th>
+                                                    <td>{{ number_format($totalRevenue, 2) ?? 0 }} ₹</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="color:blue;">Delivery Charge</th>
+                                                    <td>{{ number_format($totalAmount - $totalRevenue, 2) ?? 0 }} ₹</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="color:rgb(166, 136, 47);">Booking + Delivery</th>
+                                                    <td>{{ number_format($totalAmount, 2) ?? 0 }} ₹</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="color:green;">Received Amount</th>
+                                                    <td>{{ number_format($totalreceived_amount, 2) ?? 0 }} ₹</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="color:red;">Pending Amount</th>
+                                                    <td>{{ number_format($totalAmount - $totalreceived_amount, 2) }} ₹</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+
 
                         </div>
                     </div>

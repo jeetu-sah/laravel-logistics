@@ -17,79 +17,71 @@
                                     <h3 class="card-title">Delivery receipt</h3>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row">
-                                        <!-- Distance -->
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="distance">Delivery Station -:</label>
-                                        </div>
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <p>{{ $booking->consignee_branch_name }}</p>
-                                        </div>
+                                    <div class="container my-4">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped align-middle"
+                                                style="font-size: 18px;">
+                                                <thead class="table-dark text-center">
+                                                    <tr>
+                                                        <th>Field</th>
+                                                        <th>Details</th>
+                                                        <th>Field</th>
+                                                        <th>Details</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><strong>Consignor Name</strong></td>
+                                                        <td>{{ $booking->consignor_name }}</td>
+                                                        <td><strong>Consignee Name</strong></td>
+                                                        <td>{{ $booking->consignee_name }}</td>
+                                                    </tr>
+                                                    <tr>
 
-                                        <!-- Freight -->
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="freight_amount">Booking Station -:</label>
-                                        </div>
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <p>{{ $booking->consignor_branch_name }}</p>
-                                        </div>
+                                                        <td><strong>Booking Station</strong></td>
+                                                        <td>{{ $booking->consignor_branch_name }}</td>
+                                                        <td><strong>Delivery Station</strong></td>
+                                                        <td>{{ $booking->consignee_branch_name }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Offline Bili Number</strong></td>
+                                                        <td>{{ $booking->manual_bilty_number ?: 'NA' }}</td>
+                                                        <td><strong>Date Of Booking</strong></td>
+                                                        <td>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-m-y') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Number Of Article</strong></td>
+                                                        <td>{{ $booking->no_of_artical }}</td>
+                                                        <td><strong>Privet Mark</strong></td>
+                                                        <td>{{ $booking->remark }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Contain</strong></td>
+                                                        <td colspan="3">{{ $booking->cantain }}</td>
 
-                                        <!-- WBC -->
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="wbc_charges">Offline Bili Number -:</label>
-                                        </div>
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <p>{{ $booking->manual_bilty_number ?: 'NA' }}</p>
-                                        </div>
-
-                                        <!-- Handling Charges -->
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="handling_charges">Date Of Booking -:</label>
-                                        </div>
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <p>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-m-y') }}</p>
-                                        </div>
-
-                                        <!-- FOV -->
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="fov_amount">Number Of Article -:</label>
-                                        </div>
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <p>{{ $booking->no_of_artical }}</p>
-                                        </div>
-
-                                        <!-- Fuel Charges -->
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="fuel_amount">Privet Mark -:</label>
-                                        </div>
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <p>{{ $booking->remark }}</p>
-                                        </div>
-
-                                        <!-- Contain -->
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="fuel_amount">Contain -:</label>
-                                        </div>
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <p>{{ $booking->cantain }}</p>
-                                        </div>
-
-                                        <!-- Transhipment 1 -->
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="transhipmen_one_amount">Recived By:
-                                                <input type="text" class="mt-2 form-control" id=""
-                                                    value="" required name="recived_by" placeholder="Name"
-                                                    maxlength="40" style="font-size: 20px;">
-                                            </label>
-                                        </div>
-                                        <div class="col-md-6" style="font-size: 20px;">
-                                            <label for="transhipmen_one_amount">Reciver mobile:
-                                                <input type="tel" class="form-control mt-2" id=""
-                                                    value="" required name="reciver_mobile" placeholder="mobile"
-                                                    maxlength="12" style="font-size: 20px;">
-                                            </label>
+                                                    </tr>
+                                                    <tr>
+                                                       
+                                                        <td><strong>Receiver Mobile</strong></td>
+                                                        <td colspan="3">
+                                                            <input type="tel" class="form-control" name="reciver_mobile"
+                                                                placeholder="Mobile" maxlength="12" required>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                       
+                                                        <td><strong>Received By</strong></td>
+                                                        <td colspan="3">
+                                                            <input type="text" class="form-control" name="recived_by"
+                                                                placeholder="Name" maxlength="40" required>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
+
 
                                 </div>
                             </div>

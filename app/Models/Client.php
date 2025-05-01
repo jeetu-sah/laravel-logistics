@@ -9,19 +9,35 @@ class Client extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $fillable = [
+        'client_name',
+        'client_address',
+        'client_phone_number',
+        'client_gst_number',
+        'client_email',
+        'client_aadhar_card',
+        'status'
+    ];
     protected $dates = ['deleted_at'];
-    public function consignorBranch()
-{
-    return $this->belongsTo(Branch::class, 'consignor_branch_id');
-}
-
-
-    public function consigneeBranch()
-    {
-        return $this->belongsTo(Branch::class, 'consignee_branch_id');
-    }
     public function branch()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsTo(Branch::class, 'id');
     }
+
+    public function branches()
+    {
+        return $this->belongsToMany(Branch::class, 'client_branch', 'client_id', 'branch_user_id');
+    }
+
+    // public function branch()
+    // {
+    //     return $this->belongsTo(Branch::class);
+    // }
+
+    public function mappedClients()
+{
+    return $this->belongsToMany(Client::class, 'client_to_client_map', 'from_client_id', 'to_client_id');
+}
+
 }

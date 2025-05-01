@@ -188,7 +188,8 @@ class ReviewerController extends Controller
                 // 	  </a>';
                 //}
                 $row = [];
-                $row['sn'] = '<a href="' . url("branch-user/employees/edit/$user->id") . '">' . $user->userId . '</a>';;
+                $row['sn'] = '<a href="' . url("branch-user/employees/edit/$user->id") . '">' . $user->userId . '</a>';
+                ;
 
                 $row['name'] = $user->first_name;
                 $row['email'] = $user->email;
@@ -203,10 +204,10 @@ class ReviewerController extends Controller
         }
 
         $json_data = array(
-            "draw"            => intval(request()->input('draw')),
-            "recordsTotal"    => intval($totalRecord),
+            "draw" => intval(request()->input('draw')),
+            "recordsTotal" => intval($totalRecord),
             "recordsFiltered" => intval($totalRecord),
-            "data"            => $rows
+            "data" => $rows
         );
         // echo "<pre>";
         // print_r($json_data);exit;

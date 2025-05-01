@@ -17,7 +17,7 @@ class ClientController extends Controller
     {
         $data['branch'] = Branch::all();
 
-        $data['tittle'] = 'New Client';
+        $data['tittle'] = 'Client Details';
         return view('admin.client.create', $data);
     }
 
@@ -38,40 +38,24 @@ class ClientController extends Controller
             // Validate the request data
             $validatedData = $request->validate([
                 // Consignor
-                'aadhar_card' => 'nullable', // Optional
-
-                // Consignee
-                'consignor_name' => 'nullable|string', // Required
-                'consignee_name' => 'nullable|string', // Required
-                'consignor_address' => 'nullable|string', // Optional
-                'consignee_address' => 'nullable|string', // Optional
-                'consignor_phone_number' => 'nullable|string', // Optional
-                'consignee_phone_number' => 'nullable|string', // Optional
-                'consignor_gst_number' => 'nullable|string', // Optional
-                'consignee_gst_number' => 'nullable|string', // Optional
-                'consignor_email' => 'nullable|email', // Optional
-                'consignee_email' => 'nullable|email', // Optional
-
+                'client_name' => 'required|string', // Required
+                'client_address' => 'required|string', // Optional
+                'client_phone_number' => 'required|string', // Optional
+                'client_gst_number' => 'nullable|string', // Optional
+                'client_email' => 'nullable|email', // Optional
+                'client_aadhar_card' => 'nullable', // Optional
             ]);
 
 
             $bookingId = DB::table('clients')->insertGetId([
                 // Consignor
 
-                'consignor_name' => $validatedData['consignor_name'],
-                'consignor_address' => $validatedData['consignor_address'] ?? null,
-                'consignor_phone_number' => $validatedData['consignor_phone_number'] ?? null,
-                'consignor_email' => $validatedData['consignor_email'] ?? null,
-                'consignor_gst_number' => $validatedData['consignor_gst_number'] ?? null,
-                // Consignee
-
-                'consignee_name' => $validatedData['consignee_name'],
-                'consignee_address' => $validatedData['consignee_address'] ?? null,
-                'consignee_phone_number' => $validatedData['consignee_phone_number'] ?? null,
-                'consignee_email' => $validatedData['consignee_email'] ?? null,
-                'consignee_gst_number' => $validatedData['consignee_gst_number'] ?? null,
-                // Other Details
-
+                'client_name' => $validatedData['client_name'],
+                'client_address' => $validatedData['client_address'] ?? null,
+                'client_phone_number' => $validatedData['client_phone_number'] ?? null,
+                'client_gst_number' => $validatedData['client_gst_number'] ?? null,
+                'client_email' => $validatedData['client_email'] ?? null,
+                'client_aadhar_card' => $validatedData['client_aadhar_card'] ?? null,
                 'status' => '1',
 
             ]);
@@ -202,14 +186,14 @@ class ClientController extends Controller
         $sql = $clientQuery->toSql(); // Get the raw SQL query
         // Apply search filters if a search term is provided
         if ($search) {
-            $clientQuery->where(function ($query) use ($search) {
-                $query->where('consignor_name', 'like', "%$search%")
-                    ->orWhere('consignee_name', 'like', "%$search%");
+            $clientQuery->where(column: function ($query) use ($search) {
+                $query->where('client_name', 'like', "%$search%")
+                    ->orWhere('client_branch_id', 'like', "%$search%");
             });
         }
 
         // Eager load the consignorBranch relationship
-        $clients = $clientQuery->with('consignorBranch') // Eager load
+        $clients = $clientQuery->with('branch') // Eager loading branch data
             ->skip($start)
             ->take($limit)
             ->orderBy('created_at', 'desc')
@@ -222,14 +206,15 @@ class ClientController extends Controller
             foreach ($clients as $index => $client) {
                 $row = [];
                 $row['sn'] = $start + $index + 1;
-                $row['client_id'] = '<a href="' . url('admin/clients/client-details', ['id' => $client->id]) . '">' . $client->id . '</a>';
-                $row['consignor_name'] = $client->consignor_name;
-                $row['consignor_address'] = $client->consignor_address;
-                $row['phone_number_1'] = $client->consignor_phone_number;
-                $row['gst_number'] = $client->gst_number;
-                $row['consignee_name'] = $client->consignee_name;
-                $row['consignee_address'] = $client->consignee_address;
-                $row['consignee_phone_number_1'] = $client->consignee_phone_number;
+                // $row['client_id'] = '<a href="' . url('admin/clients/client-details', ['id' => $client->id]) . '">' . $client->id . '</a>';
+                $row['client_name'] = $client->client_name;
+                $row['client_address'] = $client->client_address;
+                $row['client_phone_number'] = $client->client_phone_number;
+                $row['client_gst_number'] = $client->client_gst_number;
+                $row['client_branch_id'] = $client->branch->branch_name ?? 'N/A';
+
+                $row['client_email'] = $client->client_email;
+                $row['client_aadhar_card'] = $client->client_aadhar_card;
                 $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
                                   <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
 
@@ -416,6 +401,31 @@ class ClientController extends Controller
             return response()->json(['distance' => $distance->distance]);
         } else {
             return response()->json(['error' => 'Distance not found']);
+        }
+    }
+
+    // public function map()
+    // {
+    //     $data['client'] = Client::all();
+    //     $data['branch'] = Branch::all();
+    //     $data['tittle'] = 'Map Client';
+    //     return view('admin.client.map', $data);
+    // }
+
+    public function getClientDetails($id)
+    {
+        $client = Client::find($id);
+
+        if ($client) {
+            return response()->json([
+                'status' => 'success',
+                'data' => $client
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Client not found'
+            ]);
         }
     }
 
