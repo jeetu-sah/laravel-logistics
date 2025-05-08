@@ -39,7 +39,7 @@ class ChallanController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+    //    dd($request->all());
         if (!empty($request->bookingId)) {
             $bookings = $request->bookingId;
             $challanNumber = sHelper::fetchChallanNumber();
@@ -150,30 +150,36 @@ class ChallanController extends Controller
         $challanBookings = LoadingChallanBooking::where('loading_challans_id', $id)
             ->join('loading_challans', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
             ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
-            //->where('bookings.status', 2)
-            // ->where('loading_challans.status', 'Accept')
-            ->select('loading_challan_booking.*', 'loading_challans.status as chalanStatus', 'loading_challans.id as chalanId', 'loading_challans.challan_number', 'loading_challans.busNumber', 'loading_challans.driverName', 'loading_challans.driverMobile', 'loading_challans.locknumber', 'loading_challans.created_at', 'loading_challans.coLoder') // Include the challan_number field
+            ->join('clients', 'clients.id', '=', 'bookings.client_id')
+
+            ->select(
+                'loading_challan_booking.*',
+                'loading_challans.status as chalanStatus',
+                'loading_challans.id as chalanId',
+                'loading_challans.challan_number',
+                'loading_challans.busNumber',
+                'loading_challans.driverName',
+                'loading_challans.driverMobile',
+                'loading_challans.locknumber',
+                'loading_challans.created_at',
+                'loading_challans.coLoder',
+                'clients.client_name as client_name',
+                'clients.client_phone_number as client_mobile',
+                'clients.client_address as client_address',
+                'clients.client_gst_number as client_gst_number',
+            ) // Include the challan_number field
             ->get();
         // echo "<pre>";
         // print_r($challanBookings);exit;
-        // Initialize an array to store booking details
         $bookingDetails = [];
-
         foreach ($challanBookings as $challanBooking) {
-            // Fetch booking details using the booking ID and eager load related branch data
             $bookingInfo = Booking::with(['consignorBranch', 'consigneeBranch'])
                 ->find($challanBooking->booking_id);
-
-            // Access the branch names and set default value if they don't exist
             $consignorBranchName = $bookingInfo->consignorBranch->branch_name ?? 'N/A';
             $consigneeBranchName = $bookingInfo->consigneeBranch->branch_name ?? 'N/A';
-
             if ($bookingInfo) {
-                // Add the branch names to the booking info
                 $bookingInfo->consignorBranchName = $consignorBranchName;
                 $bookingInfo->consigneeBranchName = $consigneeBranchName;
-
-                // Add the challan number to the booking info
                 $bookingInfo->challan_number = $challanBooking->challan_number;
                 $bookingInfo->busNumber = $challanBooking->busNumber;
                 $bookingInfo->driverName = $challanBooking->driverName;
@@ -183,17 +189,16 @@ class ChallanController extends Controller
                 $bookingInfo->created_at = $challanBooking->created_at;
                 $bookingInfo->chalanStatus = $challanBooking->chalanStatus;
                 $bookingInfo->coLoder = $challanBooking->coLoder;
-                // Add the booking info with branch names and challan number to the array
+                $bookingInfo->client_name = $challanBooking->client_name;
+                $bookingInfo->client_mobile = $challanBooking->client_mobile;
+                $bookingInfo->client_address = $challanBooking->client_address;
+                $bookingInfo->client_gst_number = $challanBooking->client_gst_number;
                 $bookingDetails[] = $bookingInfo;
             }
         }
-        // echo "<pre>";
-        // print_r($bookingDetails);exit;
-
         $data['bookings'] = $bookingDetails;
-        $data['selectAllButtonDisable'] = collect($bookingDetails)->where('status', '!=', Booking::ACCEPT);
 
-        //$data['allSelectDisabled'] = $bookingDetails->where()
+        $data['selectAllButtonDisable'] = collect($bookingDetails)->where('status', '!=', Booking::ACCEPT);
         return view('admin.challan.delevery-booking', $data);
     }
 

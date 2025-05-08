@@ -121,17 +121,13 @@
                                                         <td>{{ $i++ }}</td>
                                                         @if (
                                                             // Agar transhipment se match ho, to consignee wale ko hide karo
-                                                            Auth::user()->branch_user_id == $booking->transhipmen_one ||
-                                                                Auth::user()->branch_user_id == $booking->transhipmen_two ||
-                                                                Auth::user()->branch_user_id == $booking->transhipmen_three ||
+                                                            
                                                                 Auth::user()->branch_user_id == $booking->consignee_branch_id)
                                                             <td>
                                                                 @if ($booking->status != 3)
                                                                     {{-- Agar transhipment se match ho aur consignee ka check disable karna ho --}}
                                                                     @if (Auth::user()->branch_user_id != $booking->consignee_branch_id ||
-                                                                            (Auth::user()->branch_user_id == $booking->transhipmen_one ||
-                                                                                Auth::user()->branch_user_id == $booking->transhipmen_two ||
-                                                                                Auth::user()->branch_user_id == $booking->transhipmen_three))
+                                                                           )
                                                                         <input type="checkbox" class="form-check-input"
                                                                             name="selectedBookings[]"
                                                                             value="{{ $booking->id }}" />
@@ -151,9 +147,9 @@
                                                             {{ $booking->consignor_phone_number }}<br>
                                                             {{ $booking->consignor_gst_number }} </td>
 
-                                                        <td>{{ $booking->consignee_name }}<br>
-                                                            {{ $booking->consignee_phone_number }} <br>
-                                                            {{ $booking->consignee_gst_number }}
+                                                        <td>{{ $booking->client_name }}<br>
+                                                            {{ $booking->client_mobile }} <br>
+                                                            {{ $booking->client_gst_number }}
                                                         </td>
                                                         <td>{{ $booking->consigneeBranchName }}</td>
 
@@ -173,7 +169,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @if (Auth::user()->branch_user_id == $booking->consignee_branch_id)
+                                    @if (Auth::user()->branch_user_id == $booking->consignee_branch_id || $booking->consignee_branch_id)
                                         <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
                                     @endif
                                 </form>
