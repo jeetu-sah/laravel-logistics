@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Branch;
+use App\Models\Transhipment;
 
 
 class Booking extends Model
@@ -31,25 +32,25 @@ class Booking extends Model
     // Allow mass assignment for these fields
     protected $fillable = [
         'booking_date',
-        'transhipmen_one',
+
         'consignor_branch_id',
-        'transhipmen_two',
+
         'consignee_branch_id',
-        'transhipment_three',
+
         'no_of_artical',
         'actual_weight',
         'cantain',
         'good_of_value',
         'consignor_name',
-        'consignee_name',
+
         'consignor_address',
-        'consignee_address',
+
         'consignor_phone_number',
-        'consignee_phone_number',
+
         'consignor_gst_number',
-        'consignee_gst_number',
+
         'consignor_email',
-        'consignee_email',
+
         'invoice_number',
         'eway_bill_number',
         'mark',
@@ -62,9 +63,7 @@ class Booking extends Model
         'handling_charges',
         'fov_amount',
         'fuel_amount',
-        'transhipmen_one_amount',
-        'transhipmen_two_amount',
-        'transhipment_three_amount',
+
         'pickup_charges',
         'hamali_Charges',
         'bilti_Charges',
@@ -102,10 +101,24 @@ class Booking extends Model
 
 
 
+
     // Define the relationships if there are any
+    public function transhipments()
+    {
+        return $this->hasMany(Transhipment::class, 'booking_id');
+    }
+    public function transhipment()
+    {
+        return $this->hasOne(Transhipment::class, 'booking_id', 'id');
+    }
+
     public function consignorBranch()
     {
         return $this->belongsTo(Branch::class, 'consignor_branch_id');
+    }
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     public function consigneeBranch()

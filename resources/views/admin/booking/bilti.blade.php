@@ -3052,7 +3052,7 @@
                                             <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">KM :
                                                 {{ $booking->distance }}
                                             </th>
-                                            <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">
+                                            {{-- <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">
                                                 Transhipment 1: {{ $transhipment1 }}
                                                 |
 
@@ -3063,8 +3063,26 @@
 
 
 
+                                            </th> --}}
+                                            <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">
+                                                @foreach($booking->transhipments as $transhipment)
+                                                    @if($loop->first)
+                                                        Transhipment 1:  {{ $transhipment->to_transhipment_name }} |
+                                                    @elseif($loop->index == 1)
+                                                        Transhipment 2:  {{ $transhipment->to_transhipment_name }} |
+                                                    @elseif($loop->index == 2)
+                                                        Transhipment 3:  {{ $transhipment->to_transhipment_name }} |
+                                                    @endif
+                                                @endforeach
+                                                
+                                                @if($booking->transhipments->count() == 0)
+                                                    Transhipment 1: NA | Transhipment 2: NA | Transhipment 3: NA |
+                                                @endif
+                                            
+                                                Offline Bilti: {{ $booking->manual_bilty_number }}
                                             </th>
-
+                                            
+                                            
                                         </tr>
                                         <tr>
                                             <th class="tm_width_3 tm_semi_bold tm_primary_color tm_gray_bg">
@@ -3142,13 +3160,13 @@
                                             <tr style="text-align:center; border: 1px solid #111;"
                                                 class="tm_gray_bg tm_border_top tm_border_left tm_border_right">
                                                 <td class="tm_primary_color tm_border_none tm_bold">
-                                                    C O N S I G N O R
+                                                    C O N S I G N E E
                                                 </td>
 
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Name:
-                                                    {{ $booking->consignee_name }}
+                                                    {{ $client->client_name }}
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 
@@ -3156,21 +3174,21 @@
 
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Address:
-                                                    {{ $booking->consignee_address }}
+                                                    {{ $client->client_address }}
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Mobile:
-                                                    {{ $booking->consignee_phone_number }}
+                                                    {{ $client->client_phone_number }}
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">GST:
-                                                    {{ $booking->consignor_gst_number }}
+                                                    {{ $client->client_gst_number }}
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 
