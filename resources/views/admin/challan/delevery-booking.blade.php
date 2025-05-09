@@ -71,34 +71,24 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" value="{{ $bookings[0]->chalanId }}" name="chalan_id">
-                                    <div class="table-responsive" style="width:100%">
-                                        <table id="example" class="display nowrap" style="width:100%">
+                                    <div class="table-responsive" >
+                                        <table id="example" class="display">
                                             <thead>
                                                 <tr>
                                                     <th>S.n</th>
                                                     @if (
-                                                        // Agar transhipment se match ho, to consignee wale ko hide karo
-                                                        Auth::user()->branch_user_id == $bookings[0]->transhipmen_one ||
-                                                            Auth::user()->branch_user_id == $bookings[0]->transhipmen_two ||
-                                                            Auth::user()->branch_user_id == $bookings[0]->transhipmen_three ||
-                                                            Auth::user()->branch_user_id == $bookings[0]->consignee_branch_id)
-                                                        <th>
-                                                            @if ($selectAllButtonDisable->count() > 0)
-                                                                {{-- Agar transhipment se match ho aur consignee ka check disable karna ho --}}
-                                                                @if (Auth::user()->branch_user_id != $bookings[0]->consignee_branch_id ||
-                                                                        (Auth::user()->branch_user_id == $bookings[0]->transhipmen_one ||
-                                                                            Auth::user()->branch_user_id == $bookings[0]->transhipmen_two ||
-                                                                            Auth::user()->branch_user_id == $bookings[0]->transhipmen_three))
-                                                                    <input type="checkbox" class="form-check-input"
-                                                                        id="selectAll">
-                                                                    Select All
-                                                                @else
-                                                                    {{-- Agar consignee hai aur transhipment se match nahi ho raha --}}
-                                                                    <span></span>
-                                                                @endif
-                                                            @endif
+                                                        // Pehle transhipment check
+                                                        (isset($bookings[0]->to_transhipment) &&
+                                                            Auth::user()->branch_user_id == $bookings[0]->to_transhipment &&
+                                                            $bookings[0]->transhipment_status == 'pending') ||
+                                                            // Agar transhipment nahi hai to consignee check
+                                                            (!isset($bookings[0]->to_transhipment) &&
+                                                                Auth::user()->branch_user_id == $bookings[0]->consignee_branch_id &&
+                                                                $bookings[0]->booking_status == 'pending'))
+                                                        <th> <input type="checkbox" class="form-check-input" id="selectAll">
                                                         </th>
                                                     @endif
+
 
                                                     <th>Bilti Number</th>
                                                     <th>Chalan Number</th>
@@ -120,24 +110,20 @@
                                                     <tr>
                                                         <td>{{ $i++ }}</td>
                                                         @if (
-                                                            // Agar transhipment se match ho, to consignee wale ko hide karo
-                                                            
-                                                                Auth::user()->branch_user_id == $booking->consignee_branch_id)
+                                                            (isset($booking->to_transhipment) &&
+                                                                Auth::user()->branch_user_id == $booking->to_transhipment &&
+                                                                $booking->transhipment_status == 'pending') ||
+                                                                (!isset($booking->to_transhipment) &&
+                                                                    Auth::user()->branch_user_id == $booking->consignee_branch_id &&
+                                                                    $booking->bookingStatus == 2))
                                                             <td>
-                                                                @if ($booking->status != 3)
-                                                                    {{-- Agar transhipment se match ho aur consignee ka check disable karna ho --}}
-                                                                    @if (Auth::user()->branch_user_id != $booking->consignee_branch_id ||
-                                                                           )
-                                                                        <input type="checkbox" class="form-check-input"
-                                                                            name="selectedBookings[]"
-                                                                            value="{{ $booking->id }}" />
-                                                                    @else
-                                                                        {{-- Agar consignee hai aur transhipment se match nahi ho raha --}}
-                                                                        <span></span>
-                                                                    @endif
-                                                                @endif
+                                                                <input type="checkbox" name="selectedBookings[]"
+                                                                    value="{{ $booking->bookingId }}">
                                                             </td>
                                                         @endif
+
+
+
 
                                                         <td>{{ $booking->bilti_number }}</td>
                                                         <td>{{ $booking->challan_number }}</td>
@@ -169,9 +155,16 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @if (Auth::user()->branch_user_id == $booking->consignee_branch_id || $booking->consignee_branch_id)
+                                    @if (
+                                        (isset($booking->to_transhipment) &&
+                                            Auth::user()->branch_user_id == $booking->to_transhipment &&
+                                            $booking->transhipment_status == 'pending') ||
+                                            (!isset($booking->to_transhipment) &&
+                                                Auth::user()->branch_user_id == $booking->consignee_branch_id &&
+                                                $booking->booking_status == 'pending'))
                                         <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
                                     @endif
+
                                 </form>
                             </div>
                         </div>

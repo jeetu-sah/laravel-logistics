@@ -42,7 +42,17 @@ class BookingController extends Controller
 
         // Filter by branch
         $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
-
+        $bookingQuery->select(
+            'bookings.id as booking_id',
+            'bookings.bilti_number',
+            'bookings.consignor_name',
+            'bookings.manual_bilty_number',
+            'bookings.booking_type',
+            'clients.client_name as client_name',
+            'clients.client_address as client_address',
+            'bookings.consignor_branch_id',
+            // add any other required columns here
+        );
         // Search functionality
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
@@ -67,7 +77,7 @@ class BookingController extends Controller
                 $row = [];
                 if ($request->bilti_list_type === 'challan') {
                     $row['sn'] = '<div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
+                                        <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->booking_id . '">
                                         <label class="form-check-label" for="exampleCheck1"></label>
                                     </div>';
                 } else {
@@ -75,9 +85,9 @@ class BookingController extends Controller
                 }
 
                 // Bilti and offline bilti links
-                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->booking_id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
                 $row['offline_bilti'] = $booking->manual_bilty_number
-                    ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
+                    ? '<a href="' . route('bookings.bilti', ['id' => $booking->booking_id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
                     : '-';
 
                 // Consignor and consignee information
@@ -389,24 +399,39 @@ class BookingController extends Controller
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
+        $userBranchId = Auth::user()->branch_user_id;
+
         $bookingQuery = Booking::query();
-        $bookingQuery->join('clients', 'clients.id', '=', 'bookings.client_id');
-        $bookingQuery->select(
-            'bookings.id as booking_id',
-            'bookings.bilti_number',
-            'bookings.consignor_name',
-            'bookings.manual_bilty_number',
-            'bookings.booking_type',
-            'clients.client_name as client_name',
-            'clients.client_address as client_address',
-            'bookings.consignor_branch_id',
-            // add any other required columns here
-        );
-        $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
+        $bookingQuery->join('clients', 'clients.id', '=', 'bookings.client_id')
+            ->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
+            ->select(
+                'bookings.id as booking_id',
+                'bookings.bilti_number',
+                'bookings.consignor_name',
+                'bookings.manual_bilty_number',
+                'bookings.booking_type',
+                'clients.client_name as client_name',
+                'clients.client_address as client_address',
+                'bookings.consignor_branch_id',
+                'transhipments.status as transhipment_status',
+                'transhipments.to_transhipment'
+            );
+
+        // Add the filtering conditions
+        $bookingQuery->where(function ($q) {
+            $q->where('transhipments.status', 'received')
+                ->orWhere('bookings.status', '!=', 2); // Ensures booking is not in status 2
+        });
+
+        // Filter by branch, checking both consignor branch and transhipment to branch
+        $bookingQuery->where(function ($query) use ($userBranchId) {
+            $query->where('bookings.consignor_branch_id', $userBranchId)
+                ->orWhere('transhipments.to_transhipment', $userBranchId);
+        });
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
-                ->orWhere('consignee_name', 'like', "%$search%")
+                ->orWhere('consignee_name', 'like', value: "%$search%")
                 ->orWhere('clients.client_name', 'like', "%$search%"); // Added client name search
         }
         $totalRecord = $bookingQuery->count();

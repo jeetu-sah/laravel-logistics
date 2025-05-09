@@ -99,7 +99,7 @@ class Booking extends Model
     // ];
 
 
-    
+
 
 
     // Define the relationships if there are any
@@ -107,6 +107,11 @@ class Booking extends Model
     {
         return $this->hasMany(Transhipment::class, 'booking_id');
     }
+    public function transhipment()
+    {
+        return $this->hasOne(Transhipment::class, 'booking_id', 'id');
+    }
+
     public function consignorBranch()
     {
         return $this->belongsTo(Branch::class, 'consignor_branch_id');
