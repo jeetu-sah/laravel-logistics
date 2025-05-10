@@ -24,6 +24,7 @@ class BookingReportController extends Controller
 
     public function list(Request $request)
     {
+       
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
@@ -41,7 +42,6 @@ class BookingReportController extends Controller
         if (Auth::user()->is_admin) {
             // If admin, show all bookings
         } else {
-
             // If branch user, show only records for their branch
             $bookingQuery->where('consignee_branch_id', operator: Auth::user()->branch_user_id)
                 ->orWhere('consignor_branch_id', Auth::user()->branch_user_id);
@@ -93,7 +93,7 @@ class BookingReportController extends Controller
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
                 $row['offline_bilti'] = $booking->manual_bilty_number
                     ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
-                    : '-';
+                    : 'N/A';
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;

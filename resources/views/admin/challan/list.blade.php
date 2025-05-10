@@ -35,6 +35,7 @@
                                         <th>SN.</th>
                                         <th>Challan Number</th>
                                         <th>Vehicle Number</th>
+                                        <th>Type</th>
                                         <th>Created date</th>
                                         <th>Action</th>
                                     </tr>
@@ -78,6 +79,9 @@
                     },
                     {
                         data: 'busNumber'
+                    },
+                    {
+                        data: 'type'
                     },
                     {
                         data: 'created_at'

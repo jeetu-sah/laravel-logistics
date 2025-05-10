@@ -9,6 +9,10 @@ class Transhipment extends Model
 {
     use HasFactory;
 
+    const PENDING = 'pending';
+    const RECEIVED = 'received';
+
+
     protected $fillable = [
         'booking_id',
         'from_transhipment',
@@ -22,6 +26,4 @@ class Transhipment extends Model
     {
         return $this->belongsTo(Booking::class);
     }
-   
-
 }
