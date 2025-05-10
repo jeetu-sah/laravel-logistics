@@ -88,15 +88,15 @@ class BookingController extends Controller
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->booking_id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
                 $row['offline_bilti'] = $booking->manual_bilty_number
                     ? '<a href="' . route('bookings.bilti', ['id' => $booking->booking_id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
-                    : '-';
+                    : 'N/A';
 
                 // Consignor and consignee information
-                $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
-                $row['consignor_name'] = $booking->consignor_name;
-                $row['address'] = $booking->consignor_address;
-                $row['phone_number_1'] = $booking->phone_number_1;
-                $row['gst_number'] = $booking->gst_number;
-                $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
+                $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name ?? 'N/A';
+                $row['consignor_name'] = $booking->consignor_name ?? 'N/A';
+                $row['address'] = $booking->consignor_address ?? 'N/A';
+                $row['phone_number_1'] = $booking->phone_number_1 ?? 'N/A';
+                $row['gst_number'] = $booking->gst_number ?? 'N/A';
+                $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name ?? 'N/A';
                 $row['consignee_name'] = $booking->client_name;
                 $row['consignee_address'] = $booking->client_address;
                 $row['consignee_phone_number_1'] = $booking->client_phone_number;
@@ -400,10 +400,10 @@ class BookingController extends Controller
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
         $userBranchId = Auth::user()->branch_user_id;
-
+       
         $bookingQuery = Booking::query();
         $bookingQuery->join('clients', 'clients.id', '=', 'bookings.client_id')
-            ->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
+            //->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
             ->select(
                 'bookings.id as booking_id',
                 'bookings.bilti_number',
@@ -413,20 +413,20 @@ class BookingController extends Controller
                 'clients.client_name as client_name',
                 'clients.client_address as client_address',
                 'bookings.consignor_branch_id',
-                'transhipments.status as transhipment_status',
-                'transhipments.to_transhipment'
+                //'transhipments.status as transhipment_status',
+                //'transhipments.to_transhipment'
             );
 
         // Add the filtering conditions
-        $bookingQuery->where(function ($q) {
-            $q->where('transhipments.status', 'received')
-                ->orWhere('bookings.status', '!=', 2); // Ensures booking is not in status 2
-        });
+        // $bookingQuery->where(function ($q) {
+        //     $q->where('transhipments.status', 'received')
+        //         ->orWhere('bookings.status', '!=', 2); // Ensures booking is not in status 2
+        // });
 
         // Filter by branch, checking both consignor branch and transhipment to branch
         $bookingQuery->where(function ($query) use ($userBranchId) {
-            $query->where('bookings.consignor_branch_id', $userBranchId)
-                ->orWhere('transhipments.to_transhipment', $userBranchId);
+            $query->where('bookings.consignor_branch_id', $userBranchId);
+               // ->orWhere('transhipments.to_transhipment', $userBranchId);
         });
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
@@ -447,7 +447,7 @@ class BookingController extends Controller
 
         // Get the actual records with pagination
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('bookings.created_at', 'desc')->get();
-
+       
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {

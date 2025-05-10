@@ -96,16 +96,20 @@ class ChallanController extends Controller
 
         $branchId = Auth::user()->branch_user_id;
 
+
+        //self challan show, created by self
         $loadingChallanQuery = LoadingChallan::query()
             ->join('loading_challan_booking', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
             ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
-            ->leftJoin('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
+            ->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
+            // ->leftJoin('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
             ->select(
                 'loading_challans.*',
-                'bookings.id',
-                'transhipments.status as transhipment_status'
+                'bookings.id'
             )
-            ->where('bookings.consignor_branch_id', $branchId)->orWhere('bookings.consignee_branch_id', $branchId)->orWhere('transhipments.to_transhipment', $branchId);
+            ->where('transhipments.from_transhipment', $branchId);
+
+        // ->orWhere('transhipments.to_transhipment', $branchId);
 
 
         if ($search) {
@@ -116,10 +120,12 @@ class ChallanController extends Controller
         // Get the filtered records based on search and pagination
         $loadingChallans = $loadingChallanQuery->skip($start)->take($limit)->get();
 
+
         $rows = [];
         if ($loadingChallans->count() > 0) {
             $i = 1;
             foreach ($loadingChallans as $loadingChallan) {
+
                 $change_credential = NULL;
                 $edit_btn = '<a href="' . url("admin/reviewers/edit/" . $loadingChallan->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-primary" style="margin-right: 5px;">
                               <i class="fas fa-edit"></i> 
@@ -134,6 +140,7 @@ class ChallanController extends Controller
                 $row['sn'] = '<a href="' . url("admin/roles/user_permission/$loadingChallan->id?page=roles") . '">' . $loadingChallan->id . '</a>';
                 $row['challan_number'] = '<a href="' . url('admin/challans', ['id' => $loadingChallan->id]) . '">' . $loadingChallan->challan_number . '</a>';
                 $row['busNumber'] = strtoupper($loadingChallan->busNumber);
+                $row['type'] = ($loadingChallan->user->branch_user_id == $branchId) ? 'Self Created' : 'Created By ' . $loadingChallan?->user?->branch?->branch_name;
                 $row['created_at'] = Carbon::parse($loadingChallan->created_at)->format('d/m/Y  h:i:s');
                 $row['action'] = $edit_btn . " " . $change_credential;
 
@@ -180,7 +187,6 @@ class ChallanController extends Controller
                 'clients.client_address as client_address',
                 'clients.client_gst_number as client_gst_number',
                 'transhipments.id as transhipments_id',
-                'transhipments.to_transhipment',
                 'transhipments.sequence_no',
                 'transhipments.status as transhipment_status', // Add the transhipment status
                 'bookings.consignee_branch_id',
@@ -234,8 +240,7 @@ class ChallanController extends Controller
         }
 
         $data['bookings'] = $bookingDetails;
-        // echo "<pre>";
-        // print_r($data['bookings']);exit;
+        
         $data['selectAllButtonDisable'] = collect($bookingDetails)->where('status', '!=', Booking::ACCEPT);
 
         return view('admin.challan.delevery-booking', $data);
@@ -297,9 +302,4 @@ class ChallanController extends Controller
 
         return redirect()->back()->with('success', 'Selected bookings received successfully.');
     }
-
-
-
-
-
 }
