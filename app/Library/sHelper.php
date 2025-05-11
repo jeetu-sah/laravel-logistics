@@ -2,6 +2,7 @@
 
 namespace App\Library;
 
+use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -199,7 +200,7 @@ class sHelper
 
 	public static function activeLoggedInUserRole(User $user)
 	{
-		
+
 		return DB::table('model_has_roles')
 			->where([
 				['model_type', '=', 'App\Models\User'],
@@ -211,11 +212,10 @@ class sHelper
 	public static function fetchEmployeeNewUserId()
 	{
 		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
-		
+
 		$userMaxID =  User::max('userId');
 		if ($userMaxID == NULL) {
 			return (1000 + 1);
-			
 		}
 		return $userMaxID + 1;
 	}
@@ -223,15 +223,29 @@ class sHelper
 	public static function fetchChallanNumber()
 	{
 		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
-		
+
 		$challanMaxID =  LoadingChallan::max('challan_number');
 		if ($challanMaxID == NULL) {
 			return (1000 + 1);
-			
 		}
 		return $challanMaxID + 1;
 	}
 
+	public static function generateNextBiltiNumber()
+	{
+		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
+		$latestBuiltyId = Booking::latest('id')->first()?->id;
 
-
+		// Check if the last bilti number is provided and valid
+		if (!empty($latestBuiltyId) && preg_match('/\d+/', $latestBuiltyId, $matches)) {
+			// Extract the numeric part from the last bilti number
+			$nextNumber = (int) $matches[0] + 1;
+		} else {
+			// If no last bilti number exists, start from 1
+			$nextNumber = 1;
+		}
+		
+		// Return the bilti number in the format of YYMMxxx (e.g., 250131001)
+		return date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+	}
 }

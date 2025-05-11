@@ -15,116 +15,112 @@
                         <li class="breadcrumb-item active">Loading Challan List</li>
                     </ol>
                 </div>
-                <button onclick="window.print()" class="btn btn-primary">Print</button>
+
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
+        <div class="row mb-2">
+            @include('common.notification')
+        </div>
     </section>
 
     <!-- Main content -->
 
     <section class="content">
-        <!-- Default box -->
-        <div class="card">
-            <div class="card-header row">
-                <div class="col-sm-2">
-                    <h3 class="card-title"><strong>Loading Challan List</strong></h3>
-                </div>
-                <div class="col-sm-2">
-                    <strong> Vehicle Number</strong>
-                    <hr>
-                    <h4>{{ strtoupper($bookings[0]?->busNumber) }}</h4>
-                </div>
-                <div class="col-sm-2">
-                    <strong>Driver Name</strong>
-                    <hr>
-                    <h4>{{ strtoupper($bookings[0]?->driverName) }}</h4>
-                </div>
-                <div class="col-sm-2">
-                    <strong>Driver Mobile</strong>
-                    <hr>
-                    <h4>{{ strtoupper($bookings[0]?->driverMobile) }}</h4>
-                </div>
-                <div class="col-sm-2">
-                    <strong> Lock Number</strong>
-                    <hr>
-
-                    <h4>{{ (strtoupper($bookings[0]?->locknumber) ?? 'N/A') }}</h4>
-                </div>
-                <div class="col-sm-1">
-                    <strong> Co Loder</strong>
-                    <hr>
-
-                    <h4>{{ strtoupper($bookings[0]?->coLoder) }}</h4>
-                </div>
-                <div class="col-sm-1">
-                    <strong> Dispatch Date</strong>
-
-                    <h6>{{ strtoupper($bookings[0]?->created_at) }}</h6>
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <button onclick="window.print()" class="btn btn-primary mr-1"><i class="fas fa-print"></i>&nbsp;Print</button>
+                    <a href="{{ url('admin/challans') }}" class="btn btn-warning"><i class="fas fa-angle-double-left"></i>&nbsp;Back</a>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card-body">
-                        <div class="row">
-                            <form id="bookingForm" action="{{ url('admin/booking/recived') }}" method="post"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" value="{{ $bookings[0]->chalanId }}" name="chalan_id">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><strong>Loading Challan Detail</strong></h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Created By</th>
+                                            <th>Vehicle Number</th>
+                                            <th>Driver Name</th>
+                                            <th>Driver Mobile</th>
+                                            <th>Lock Number</th>
+                                            <th>Co-Loder</th>
+                                            <th>Dispatch Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td> <span class="badge badge-danger">{{ ($challanDetail->user->branch_user_id === $branchId) ? ' Self' :  (strtoupper($challanDetail->user->branch->branch_name) ?? 'N/A') }}</td>
+                                            <td><a href="pages/examples/invoice.html">{{ strtoupper($challanDetail->busNumber ?? 'N/A') }}</a></td>
+                                            <td>{{ strtoupper($challanDetail->driverName ?? 'N/A') }}</td>
+                                            <td><span class="badge badge-success">{{ strtoupper($challanDetail->driverMobile ?? 'N/A') }}</span></td>
+                                            <td>
+                                                <span class="badge badge-info">{{ (strtoupper($challanDetail->locknumber) ?? 'N/A') }}
+                                            </td>
+                                            <td> {{ strtoupper($challanDetail->coLoder ?? 'N/A') }}</td>
+                                            <td> {{ strtoupper($challanDetail->created_at ?? 'N/A') }}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <form id="bookingForm" action="{{ url('admin/booking/recived') }}" method="post">
+                            @csrf
+                            <input type="hidden" value="{{ $challanDetail->id }}" name="chalan_id">
+                            <div class="card-header">
+                                <h3 class="card-title"><strong>Loading Challan booking List</strong></h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="example" class="display">
                                         <thead>
                                             <tr>
                                                 <th>S.n</th>
-                                                @if (
-                                                // Pehle transhipment check
-                                                (isset($bookings[0]->to_transhipment) &&
-                                                Auth::user()->branch_user_id == $bookings[0]->to_transhipment &&
-                                                $bookings[0]->transhipment_status == 'pending') ||
-                                                // Agar transhipment nahi hai to consignee check
-                                                (!isset($bookings[0]->to_transhipment) &&
-                                                Auth::user()->branch_user_id == $bookings[0]->consignee_branch_id &&
-                                                $bookings[0]->booking_status == 'pending'))
-                                                <th> <input type="checkbox" class="form-check-input" id="selectAll">
-                                                </th>
-                                                @endif
-
-
+                                                <th><!-- <input type="checkbox" class="form-check-input" id="selectAll"> --></th>
                                                 <th>Bilti Number</th>
                                                 <th>Chalan Number</th>
                                                 <th>Origin</th>
                                                 <th>Consignor Name/Mobile/GST</th>
                                                 <th>Consignee Name/Mobile/GST</th>
                                                 <th>Destination</th>
-
                                                 <th>QTY</th>
                                                 <th>Booking Type</th>
                                                 <th>Booked at</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                            $i = 1; // Initialize $i outside of the loop
-                                            @endphp
+                                            @php $i = 1; @endphp
                                             @foreach ($bookings as $booking)
                                             <tr>
                                                 <td>{{ $i++ }}</td>
-                                                @if (
-                                                (isset($booking->to_transhipment) &&
-                                                Auth::user()->branch_user_id == $booking->to_transhipment &&
-                                                $booking->transhipment_status == 'pending') ||
-                                                (!isset($booking->to_transhipment) &&
-                                                Auth::user()->branch_user_id == $booking->consignee_branch_id &&
-                                                $booking->bookingStatus == 2))
                                                 <td>
+                                                    @if($booking->visible_for === auth()->user()->branch_user_id)
                                                     <input type="checkbox" name="selectedBookings[]"
-                                                        value="{{ $booking->bookingId }}">
+                                                        value="{{ $booking->id }}">
+                                                    @endif
                                                 </td>
-                                                @endif
-
-
-
-
                                                 <td>{{ $booking->bilti_number }}</td>
                                                 <td>{{ $booking->challan_number }}</td>
                                                 <td>{{ $booking->consignorBranchName }}</td>
@@ -156,18 +152,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                @if (
-                                (isset($booking->to_transhipment) &&
-                                Auth::user()->branch_user_id == $booking->to_transhipment &&
-                                $booking->transhipment_status == 'pending') ||
-                                (!isset($booking->to_transhipment) &&
-                                Auth::user()->branch_user_id == $booking->consignee_branch_id &&
-                                $booking->booking_status == 'pending'))
+                            </div>
+                            <div class="card-footer clearfix">
                                 <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
-                                @endif
-
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
