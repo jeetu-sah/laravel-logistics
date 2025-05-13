@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\User;
-
-
+use Illuminate\Support\Facades\Auth;
 
 class LoadingChallan extends Model
 {
@@ -47,6 +46,19 @@ class LoadingChallan extends Model
      */
     public function bookings(): BelongsToMany
     {
-        return $this->belongsToMany(Booking::class , 'loading_challan_booking', 'loading_challans_id', 'booking_id');
+        return $this->belongsToMany(Booking::class, 'loading_challan_booking', 'loading_challans_id', 'booking_id');
+    }
+
+
+
+    /*is_received_button_visible
+        get for which branch should be display the received button */
+    protected function getIsReceivedButtonVisibleAttribute()
+    {
+        $flag = false;
+        if ($this->created_by != Auth::id()) {
+            $flag = true;
+        }
+        return $flag;
     }
 }

@@ -42,7 +42,6 @@ class ChallanController extends Controller
      */
     public function store(Request $request)
     {
-
         if (!empty($request->bookingId)) {
             $bookings = Booking::whereIn('id', $request->bookingId)->get();
 
@@ -170,6 +169,10 @@ class ChallanController extends Controller
 
         //fetch all challan detail.
         $data['challanDetail'] = LoadingChallan::find($id);
+
+        // echo "<pre>";
+        // print_r($data['challanDetail']->is_received_button_visible);
+        // exit;
         if ($data['challanDetail'] == NULL) {
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }

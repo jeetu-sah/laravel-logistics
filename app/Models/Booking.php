@@ -99,6 +99,12 @@ class Booking extends Model
         return $bookingVisibleForBranch?->from_transhipment;
     }
 
+    //booking_created_by
+    protected function getBookingCreatedByAttribute(): string
+    {
+        return ($this->consignor_branch_id == auth()->user()->branch->id) ? 'Self' : $this->consignorBranch->branch_name;
+    }
+
     /*branch's (transhipment) booking. branch_specific_transhipment
         get transhipments for the active branch
         getBranchSpecificBookingsAttribute

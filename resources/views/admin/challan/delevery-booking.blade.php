@@ -99,6 +99,7 @@
                                             <tr>
                                                 <th>S.n</th>
                                                 <th><!-- <input type="checkbox" class="form-check-input" id="selectAll"> --></th>
+                                                <th>Created By</th>
                                                 <th>Bilti Number</th>
                                                 <th>Chalan Number</th>
                                                 <th>Origin</th>
@@ -121,6 +122,7 @@
                                                         value="{{ $booking->id }}">
                                                     @endif
                                                 </td>
+                                                <th><span class="badge badge-danger"> {{ $booking->booking_created_by }}</span></th>
                                                 <td>{{ $booking->bilti_number }}</td>
                                                 <td>{{ $booking->challan_number }}</td>
                                                 <td>{{ $booking->consignorBranchName }}</td>
@@ -154,7 +156,9 @@
                                 </div>
                             </div>
                             <div class="card-footer clearfix">
+                                @if($challanDetail->is_received_button_visible)
                                 <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
+                                @endif
                             </div>
                         </form>
                     </div>
