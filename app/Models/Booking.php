@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Branch;
 use App\Models\Transhipment;
-
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Auth;
 
 class Booking extends Model
 {
@@ -32,25 +34,17 @@ class Booking extends Model
     // Allow mass assignment for these fields
     protected $fillable = [
         'booking_date',
-
         'consignor_branch_id',
-
         'consignee_branch_id',
-
         'no_of_artical',
         'actual_weight',
         'cantain',
         'good_of_value',
         'consignor_name',
-
         'consignor_address',
-
         'consignor_phone_number',
-
         'consignor_gst_number',
-
         'consignor_email',
-
         'invoice_number',
         'eway_bill_number',
         'mark',
@@ -63,7 +57,6 @@ class Booking extends Model
         'handling_charges',
         'fov_amount',
         'fuel_amount',
-
         'pickup_charges',
         'hamali_Charges',
         'bilti_Charges',
@@ -99,13 +92,57 @@ class Booking extends Model
     // ];
 
 
+    //visible_for
+    protected function getVisibleForAttribute(): Int | null
+    {
+        $bookingVisibleForBranch = $this->transhipments->where('status', Transhipment::PENDING)->first();
+        return $bookingVisibleForBranch?->from_transhipment;
+    }
+
+    //booking_created_by
+    protected function getBookingCreatedByAttribute(): string
+    {
+        return ($this->consignor_branch_id == auth()->user()->branch->id) ? 'Self' : $this->consignorBranch->branch_name;
+    }
+
+    /*branch's (transhipment) booking. branch_specific_transhipment
+        get transhipments for the active branch
+        getBranchSpecificBookingsAttribute
+    */
+    protected function getBranchSpecificTranshipmentAttribute()
+    {
+        return $this->transhipments->where('from_transhipment', Auth::user()->branch_user_id)
+            ->where('booking_id', $this->id)->first();
+    }
+
+
+    /*branch's (transhipment) booking. next_booking_transhipment
+        get next transhipments for the loggedin branch
+    */
+    protected function getNextBookingTranshipmentAttribute()
+    {
+        $nextSequence = $this->branch_specific_transhipment->sequence_no + 1;
+
+        return $this->transhipments->where('sequence_no', $nextSequence)
+            ->where('booking_id', $this->id)->first();
+    }
+
+    /*branch's (transhipment) booking. prev_booking_transhipment
+        get previous transhipments for the loggedin branch
+    */
+    protected function getPrevBookingTranshipmentAttribute()
+    {
+        $prevSequence = $this->branch_specific_transhipment->sequence_no - 1;
+        return $this->transhipments->where('sequence_no', $prevSequence)
+            ->where('booking_id', $this->id)->first();
+    }
 
 
 
     // Define the relationships if there are any
     public function transhipments()
     {
-        return $this->hasMany(Transhipment::class, 'booking_id');
+        return $this->hasMany(Transhipment::class, 'booking_id')->orderBy('sequence_no');
     }
     public function transhipment()
     {
@@ -126,6 +163,8 @@ class Booking extends Model
         return $this->belongsTo(Branch::class, 'consignee_branch_id');
     }
 
-
-
+    public function acceptedTranshipments(): BelongsToMany
+    {
+        return $this->belongsToMany(Branch::class, 'transhipments', 'booking_id', 'from_transhipment');
+    }
 }

@@ -4,7 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class LoadingChallan extends Model
 {
@@ -28,4 +31,34 @@ class LoadingChallan extends Model
     ];
 
 
+
+    /**
+     * Get the user that owns the phone.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function bookings(): BelongsToMany
+    {
+        return $this->belongsToMany(Booking::class, 'loading_challan_booking', 'loading_challans_id', 'booking_id');
+    }
+
+
+
+    /*is_received_button_visible
+        get for which branch should be display the received button */
+    protected function getIsReceivedButtonVisibleAttribute()
+    {
+        $flag = false;
+        if ($this->created_by != Auth::id()) {
+            $flag = true;
+        }
+        return $flag;
+    }
 }

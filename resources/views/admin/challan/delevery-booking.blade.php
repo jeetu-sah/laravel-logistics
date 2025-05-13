@@ -1,252 +1,243 @@
 @extends('admin.admin_layout.master')
 @section('main_content')
-    <div class="content-wrapper" style="min-height: 1419.51px;">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
-                            <i class=" fa-sm text-white-50"></i> </a>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Loading Challan List</li>
-                        </ol>
-                    </div>
-                    <button onclick="window.print()" class="btn btn-primary">Print</button>
+<div class="content-wrapper" style="min-height: 1419.51px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
+                        <i class=" fa-sm text-white-50"></i> </a>
                 </div>
-            </div><!-- /.container-fluid -->
-        </section>
-
-        <!-- Main content -->
-
-        <section class="content">
-            <!-- Default box -->
-            <div class="card">
-                <div class="card-header row">
-                    <div class="col-sm-2">
-                        <h3 class="card-title"><strong>Loading Challan List</strong></h3>
-                    </div>
-                    <div class="col-sm-2">
-                        <strong> Vehicle Number</strong>
-                        <hr>
-                        <h4>{{ strtoupper($bookings[0]->busNumber) }}</h4>
-                    </div>
-                    <div class="col-sm-2">
-                        <strong>Driver Name</strong>
-                        <hr>
-                        <h4>{{ strtoupper($bookings[0]->driverName) }}</h4>
-                    </div>
-                    <div class="col-sm-2">
-                        <strong>Driver Mobile</strong>
-                        <hr>
-                        <h4>{{ strtoupper($bookings[0]->driverMobile) }}</h4>
-                    </div>
-                    <div class="col-sm-2">
-                        <strong> Lock Number</strong>
-                        <hr>
-
-                        <h4>{{ strtoupper($bookings[0]->locknumber) }}</h4>
-                    </div>
-                    <div class="col-sm-1">
-                        <strong> Co Loder</strong>
-                        <hr>
-
-                        <h4>{{ strtoupper($bookings[0]->coLoder) }}</h4>
-                    </div>
-                    <div class="col-sm-1">
-                        <strong> Dispatch Date</strong>
-
-                        <h6>{{ strtoupper($bookings[0]->created_at) }}</h6>
-                    </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Loading Challan List</li>
+                    </ol>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-12">
+            </div>
+        </div>
+        <div class="row mb-2">
+            @include('common.notification')
+        </div>
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <button onclick="window.print()" class="btn btn-primary mr-1"><i class="fas fa-print"></i>&nbsp;Print</button>
+                    <a href="{{ url('admin/challans') }}" class="btn btn-warning"><i class="fas fa-angle-double-left"></i>&nbsp;Back</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><strong>Loading Challan Detail</strong></h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <div class="row">
-                                <form id="bookingForm" action="{{ url('admin/booking/recived') }}" method="post"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" value="{{ $bookings[0]->chalanId }}" name="chalan_id">
-                                    <div class="table-responsive" >
-                                        <table id="example" class="display">
-                                            <thead>
-                                                <tr>
-                                                    <th>S.n</th>
-                                                    @if (
-                                                        // Pehle transhipment check
-                                                        (isset($bookings[0]->to_transhipment) &&
-                                                            Auth::user()->branch_user_id == $bookings[0]->to_transhipment &&
-                                                            $bookings[0]->transhipment_status == 'pending') ||
-                                                            // Agar transhipment nahi hai to consignee check
-                                                            (!isset($bookings[0]->to_transhipment) &&
-                                                                Auth::user()->branch_user_id == $bookings[0]->consignee_branch_id &&
-                                                                $bookings[0]->booking_status == 'pending'))
-                                                        <th> <input type="checkbox" class="form-check-input" id="selectAll">
-                                                        </th>
-                                                    @endif
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Created By</th>
+                                            <th>Vehicle Number</th>
+                                            <th>Driver Name</th>
+                                            <th>Driver Mobile</th>
+                                            <th>Lock Number</th>
+                                            <th>Co-Loder</th>
+                                            <th>Dispatch Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td> <span class="badge badge-danger">{{ ($challanDetail->user->branch_user_id === $branchId) ? ' Self' :  (strtoupper($challanDetail->user->branch->branch_name) ?? 'N/A') }}</td>
+                                            <td><a href="pages/examples/invoice.html">{{ strtoupper($challanDetail->busNumber ?? 'N/A') }}</a></td>
+                                            <td>{{ strtoupper($challanDetail->driverName ?? 'N/A') }}</td>
+                                            <td><span class="badge badge-success">{{ strtoupper($challanDetail->driverMobile ?? 'N/A') }}</span></td>
+                                            <td>
+                                                <span class="badge badge-info">{{ (strtoupper($challanDetail->locknumber) ?? 'N/A') }}
+                                            </td>
+                                            <td> {{ strtoupper($challanDetail->coLoder ?? 'N/A') }}</td>
+                                            <td> {{ strtoupper($challanDetail->created_at ?? 'N/A') }}</td>
+                                        </tr>
 
-
-                                                    <th>Bilti Number</th>
-                                                    <th>Chalan Number</th>
-                                                    <th>Origin</th>
-                                                    <th>Consignor Name/Mobile/GST</th>
-                                                    <th>Consignee Name/Mobile/GST</th>
-                                                    <th>Destination</th>
-
-                                                    <th>QTY</th>
-                                                    <th>Booking Type</th>
-                                                    <th>Booked at</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @php
-                                                    $i = 1; // Initialize $i outside of the loop
-                                                @endphp
-                                                @foreach ($bookings as $booking)
-                                                    <tr>
-                                                        <td>{{ $i++ }}</td>
-                                                        @if (
-                                                            (isset($booking->to_transhipment) &&
-                                                                Auth::user()->branch_user_id == $booking->to_transhipment &&
-                                                                $booking->transhipment_status == 'pending') ||
-                                                                (!isset($booking->to_transhipment) &&
-                                                                    Auth::user()->branch_user_id == $booking->consignee_branch_id &&
-                                                                    $booking->bookingStatus == 2))
-                                                            <td>
-                                                                <input type="checkbox" name="selectedBookings[]"
-                                                                    value="{{ $booking->bookingId }}">
-                                                            </td>
-                                                        @endif
-
-
-
-
-                                                        <td>{{ $booking->bilti_number }}</td>
-                                                        <td>{{ $booking->challan_number }}</td>
-                                                        <td>{{ $booking->consignorBranchName }}</td>
-
-                                                        <td>{{ $booking->consignor_name }}<br>
-                                                            {{ $booking->consignor_phone_number }}<br>
-                                                            {{ $booking->consignor_gst_number }} </td>
-
-                                                        <td>{{ $booking->client_name }}<br>
-                                                            {{ $booking->client_mobile }} <br>
-                                                            {{ $booking->client_gst_number }}
-                                                        </td>
-                                                        <td>{{ $booking->consigneeBranchName }}</td>
-
-                                                        <td>{{ $booking->no_of_artical }}</td>
-                                                        <td>
-                                                            @if ($booking->booking_type == 'Paid')
-                                                                Paid
-                                                            @elseif($booking->booking_type == 'Topay')
-                                                                To Pay
-                                                            @endif
-                                                        </td>
-
-                                                        <td>{{ $booking->created_at }}</td>
-
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    @if (
-                                        (isset($booking->to_transhipment) &&
-                                            Auth::user()->branch_user_id == $booking->to_transhipment &&
-                                            $booking->transhipment_status == 'pending') ||
-                                            (!isset($booking->to_transhipment) &&
-                                                Auth::user()->branch_user_id == $booking->consignee_branch_id &&
-                                                $booking->booking_status == 'pending'))
-                                        <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
-                                    @endif
-
-                                </form>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <!-- /.card -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <form id="bookingForm" action="{{ url('admin/booking/recived') }}" method="post">
+                            @csrf
+                            <input type="hidden" value="{{ $challanDetail->id }}" name="chalan_id">
+                            <div class="card-header">
+                                <h3 class="card-title"><strong>Loading Challan booking List</strong></h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example" class="display">
+                                        <thead>
+                                            <tr>
+                                                <th>S.n</th>
+                                                <th><!-- <input type="checkbox" class="form-check-input" id="selectAll"> --></th>
+                                                <th>Created By</th>
+                                                <th>Bilti Number</th>
+                                                <th>Chalan Number</th>
+                                                <th>Origin</th>
+                                                <th>Consignor Name/Mobile/GST</th>
+                                                <th>Consignee Name/Mobile/GST</th>
+                                                <th>Destination</th>
+                                                <th>QTY</th>
+                                                <th>Booking Type</th>
+                                                <th>Booked at</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php $i = 1; @endphp
+                                            @foreach ($bookings as $booking)
+                                            <tr>
+                                                <td>{{ $i++ }}</td>
+                                                <td>
+                                                    @if($booking->visible_for === auth()->user()->branch_user_id)
+                                                    <input type="checkbox" name="selectedBookings[]"
+                                                        value="{{ $booking->id }}">
+                                                    @endif
+                                                </td>
+                                                <th><span class="badge badge-danger"> {{ $booking->booking_created_by }}</span></th>
+                                                <td>{{ $booking->bilti_number }}</td>
+                                                <td>{{ $booking->challan_number }}</td>
+                                                <td>{{ $booking->consignorBranchName }}</td>
 
-        </section>
-        <!-- /.content -->
-    </div>
+                                                <td>{{ $booking->consignor_name }}<br>
+                                                    {{ $booking->consignor_phone_number }}<br>
+                                                    {{ $booking->consignor_gst_number }}
+                                                </td>
+
+                                                <td>{{ $booking->client_name }}<br>
+                                                    {{ $booking->client_mobile }} <br>
+                                                    {{ $booking->client_gst_number }}
+                                                </td>
+                                                <td>{{ $booking->consigneeBranchName }}</td>
+
+                                                <td>{{ $booking->no_of_artical }}</td>
+                                                <td>
+                                                    @if ($booking->booking_type == 'Paid')
+                                                    Paid
+                                                    @elseif($booking->booking_type == 'Topay')
+                                                    To Pay
+                                                    @endif
+                                                </td>
+
+                                                <td>{{ $booking->created_at }}</td>
+
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer clearfix">
+                                @if($challanDetail->is_received_button_visible)
+                                <button type="button" class="btn btn-primary" id="receivedButton">Received</button>
+                                @endif
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
 @endsection
 
 @section('script')
-    @parent
-    <script>
-        document.getElementById('receivedButton').addEventListener('click', function() {
-            const checkboxes = document.querySelectorAll('input[name="selectedBookings[]"]:checked');
-            if (checkboxes.length === 0) {
-                alert('Please select at least one booking.');
+@parent
+<script>
+    document.getElementById('receivedButton').addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('input[name="selectedBookings[]"]:checked');
+        if (checkboxes.length === 0) {
+            alert('Please select at least one booking.');
+        } else {
+            document.getElementById('bookingForm').submit();
+        }
+    });
+
+    // Select All functionality
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('input[name="selectedBookings[]"]');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+<script>
+    $(document).ready(function(e) {
+        // Handle select all checkbox
+        $(document).on('click', '#selectAll', function(e) {
+            if ($(this).prop('checked') == true) {
+                // Select all checkboxes
+                $('.form-check-input').prop('checked', true);
             } else {
-                document.getElementById('bookingForm').submit();
+                // Deselect all checkboxes
+                $('.form-check-input').prop('checked', false);
             }
         });
 
-        // Select All functionality
-        document.getElementById('selectAll').addEventListener('change', function() {
-            const checkboxes = document.querySelectorAll('input[name="selectedBookings[]"]');
-            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+        // new DataTable('#challan-booking-list', {
+        //     responsive: true,
+        //     processing: true,
+        //     scrollX: true
+
+        // });
+
+        new DataTable('#example', {
+            scrollX: true
         });
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
-    <script>
-        $(document).ready(function(e) {
-            // Handle select all checkbox
-            $(document).on('click', '#selectAll', function(e) {
-                if ($(this).prop('checked') == true) {
-                    // Select all checkboxes
-                    $('.form-check-input').prop('checked', true);
-                } else {
-                    // Deselect all checkboxes
-                    $('.form-check-input').prop('checked', false);
-                }
-            });
-
-            // new DataTable('#challan-booking-list', {
-            //     responsive: true,
-            //     processing: true,
-            //     scrollX: true
-
-            // });
-
-            new DataTable('#example', {
-                scrollX: true
-            });
-        });
-    </script>
+    });
+</script>
 @endsection
 
 @section('styles')
-    @parent
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
-    <style>
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-            width: 100%;
-            border: 1px solid #ddd;
-        }
+@parent
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
 
-        th,
-        td {
-            text-align: left;
-            padding: 8px;
-        }
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+    }
 
-        div.dt-container {
-            width: 1237px;
-            margin: 0 auto;
-        }
-    </style>
+    div.dt-container {
+        width: 1237px;
+        margin: 0 auto;
+    }
+</style>
 @endsection
