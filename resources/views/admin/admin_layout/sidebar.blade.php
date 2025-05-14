@@ -15,7 +15,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="{{ url('/dashboard') }}" class="d-block">Logistics</a>
+                <a href="{{ url('/dashboard') }}" class="d-block">{{ auth()->user()->branch->branch_name  ?? '' }}</a>
             </div>
         </div>
 
@@ -118,9 +118,6 @@
                     </ul>
                 </li>
                 @endrole
-
-
-
 
                 <!-- <li class="nav-item has-treeview">
                     <a href="{{ url('admin/article') }}"
@@ -244,11 +241,12 @@
                     </ul>
                 </li>
                 @endrole
+
                 @role('Branchuser')
 
                 <li class="nav-item has-treeview">
                     <a href="{{ url('admin/bookings/create?no-bill-bookings=true') }}"
-                        class="nav-link {{ request()->is('admin/bookings/create?no-bill-bookings=true') ? 'active' : '' }}">
+                        class="nav-link {{ request()->query('no-bill-bookings') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             NB Booking
@@ -256,9 +254,9 @@
                     </a>
                 </li>
 
-                <li class="nav-item has-treeview {{ request()->is('admin/bookings*') ? 'menu-open' : '' }} ">
+                <li class="nav-item has-treeview {{ request()->query('no-bill-bookings') ? '' : (request()->is('admin/bookings*') ? 'menu-open' : '') }} ">
                     <a href="{{ url('admin/admin/role-list') }}"
-                        class="nav-link {{ request()->is('admin/bookings*') ? 'active' : '' }}">
+                        class="nav-link {{ request()->query('no-bill-bookings') ? '' : (request()->is('admin/bookings*') ? 'active' : '') }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Booking
@@ -274,8 +272,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/bookings/create ') }}"
-                                class="nav-link {{ request()->is('admin/bookings/create ') ? 'active' : '' }}">
+                            <a href="{{ url('admin/bookings/create') }}"
+                                class="nav-link {{ request()->is('admin/bookings/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Booking </p>
                             </a>

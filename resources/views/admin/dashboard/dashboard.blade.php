@@ -22,6 +22,7 @@
                     @if(Session::has('msg'))
                     {!! Session::get("msg") !!}
                     @endif
+                    
                 </div>
             </div>
         </div>
