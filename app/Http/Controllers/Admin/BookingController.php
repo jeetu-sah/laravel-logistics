@@ -27,6 +27,7 @@ class BookingController extends Controller
     public function index()
     {
         $data['title'] = 'Bookings';
+
         return view('admin.booking.booking-list', $data);
     }
 
@@ -37,24 +38,9 @@ class BookingController extends Controller
         $start = $request->input('start', 0);
 
         // Start of query
-        $bookingQuery = Booking::query();
-
-        // Joining the clients table
-        $bookingQuery->join('clients', 'clients.id', '=', 'bookings.client_id');
-
+        $bookingQuery = Booking::with(['client']);
         // Filter by branch
         $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
-        $bookingQuery->select(
-            'bookings.id as booking_id',
-            'bookings.bilti_number',
-            'bookings.consignor_name',
-            'bookings.manual_bilty_number',
-            'bookings.booking_type',
-            'clients.client_name as client_name',
-            'clients.client_address as client_address',
-            'bookings.consignor_branch_id',
-            // add any other required columns here
-        );
         // Search functionality
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
@@ -71,15 +57,14 @@ class BookingController extends Controller
 
         // Apply pagination and order
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('bookings.created_at', 'desc')->get();
-        // echo "<pre>";
-        // print_r($bookings);exit;
+
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
                 $row = [];
                 if ($request->bilti_list_type === 'challan') {
                     $row['sn'] = '<div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->booking_id . '">
+                                        <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
                                         <label class="form-check-label" for="exampleCheck1"></label>
                                     </div>';
                 } else {
@@ -87,9 +72,9 @@ class BookingController extends Controller
                 }
 
                 // Bilti and offline bilti links
-                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->booking_id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
                 $row['offline_bilti'] = $booking->manual_bilty_number
-                    ? '<a href="' . route('bookings.bilti', ['id' => $booking->booking_id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
+                    ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
                     : 'N/A';
 
                 // Consignor and consignee information
@@ -103,22 +88,12 @@ class BookingController extends Controller
                 $row['consignee_address'] = $booking->client_address;
                 $row['consignee_phone_number_1'] = $booking->client_phone_number;
 
-                // Booking type
-                if ($booking->booking_type == 'Paid') {
-                    $row['booking_type'] = 'Paid ';
-                } elseif ($booking->booking_type == 'Topay') {
-                    $row['booking_type'] = 'To Pay ';
-                } elseif ($booking->booking_type == 3) {
-                    $row['booking_type'] = 'Client ';
-                } else {
-                    $row['booking_type'] = 'Unknown';
-                }
-
+                $row['booking_type'] = $booking->booking_type_name;
                 // Actions (Edit and Print)
                 $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
 
                 // Date formatting
-                $row['created_at'] = date('d-m-Y', strtotime($booking->created_at));
+                $row['created_at'] = formatDate($booking->created_at);
 
                 // Add the row to the rows array
                 $rows[] = $row;
@@ -401,56 +376,23 @@ class BookingController extends Controller
         $start = $request->input('start', 0);
         $userBranchId = Auth::user()->branch_user_id;
 
-        $bookingQuery = Booking::with(['client']);
-        // $bookingQuery->join('clients', 'clients.id', '=', 'bookings.client_id');
-        //->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
-        // ->select(
-        //     'bookings.id as booking_id',
-        //     'bookings.bilti_number',
-        //     'bookings.consignor_name',
-        //     'bookings.manual_bilty_number',
-        //     'bookings.booking_type',
-        //     'clients.client_name as client_name',
-        //     'clients.client_address as client_address',
-        //     'bookings.consignor_branch_id',
-        // );
-
-        // Add the filtering conditions
-        // $bookingQuery->where(function ($q) {
-        //     $q->where('transhipments.status', 'received')
-        //         ->orWhere('bookings.status', '!=', 2); // Ensures booking is not in status 2
-        // });
-
-        // Filter by branch, checking both consignor branch and transhipment to branch
-        // $bookingQuery->where(function ($query) use ($userBranchId) {
-        //     $query->where('bookings.consignor_branch_id', $userBranchId);
-        //        // ->orWhere('transhipments.to_transhipment', $userBranchId);
-        // });
-        if ($search) {
-            $bookingQuery->where('bilti_number', 'like', "%$search%")
-                ->orWhere('consignor_name', 'like', "%$search%")
-                ->orWhere('consignee_name', 'like', value: "%$search%")
-                ->orWhere('clients.client_name', 'like', "%$search%"); // Added client name search
-        }
-        $totalRecord = $bookingQuery->count();
-        // Apply 'whereNotExists' condition to exclude bookings already in 'loading_challan_booking'
-        $bookingQuery->whereExists(function ($query) use ($userBranchId) {
-            $query->select(DB::raw('1'))
-                ->from('transhipments')
-                ->whereRaw("transhipments.from_transhipment = $userBranchId AND received_at IS NOT NULL AND dispatched_at IS NULL");
+        $bookingQuery = Booking::with(['client', 'transhipments' => function ($query) use ($userBranchId) {
+            $query->where('from_transhipment', $userBranchId);
+        }])->whereHas('transhipments', function ($query) use ($userBranchId) {
+            $query->where('from_transhipment', $userBranchId)
+                ->where('dispatched_at', NULL)
+                ->where('received_at','!=', NULL);
         });
-        // $bookingQuery->whereNotExists(function ($query) {
-        //     $query->select(DB::raw('1'))
-        //         ->from('loading_challan_booking')
-        //         ->whereRaw('loading_challan_booking.booking_id = bookings.id');
-        // });
-
+        
         // Count the filtered records
         $bookingsCount = $bookingQuery->count();
 
+
         // Get the actual records with pagination
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('bookings.created_at', 'desc')->get();
-
+        // echo "<pre>";
+        // print_r($bookings);
+        //exit;
 
         $rows = [];
         if ($bookings->count() > 0) {
@@ -488,18 +430,14 @@ class BookingController extends Controller
                 $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
 
                 // Conditional logic for 'booking_type'
-                $row['booking_type'] = match ($booking->booking_type) {
-                    'Paid' => 'Paid',
-                    'Topay' => 'To Pay',
-                    default => 'Unknown',
-                };
+                $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type_name . '</span>';
 
                 // Action buttons (Edit and Print)
                 $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
                                   <a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
 
                 // Created timestamp
-                $row['created_at'] = Carbon::parse($booking->created_at)->format('d/m/Y h:i:s');
+                $row['created_at'] = formatDate($booking->created_at);
                 $rows[] = $row;
             }
         }

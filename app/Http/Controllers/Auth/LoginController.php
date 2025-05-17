@@ -52,8 +52,7 @@ class LoginController extends BaseController
          if ($user != NULL) {
             if($user->user_status == 'active'){
 				if(Hash::check($request->password, $user->password)){
-                    
-					$remember = $request->remeber_me;
+                    $remember = $request->remeber_me;
                     // $role = $user->user_type;
                     
                     // sHelper::activateLoggedInUserRole($user, $role);

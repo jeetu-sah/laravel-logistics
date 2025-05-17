@@ -106,21 +106,29 @@ class ChallanController extends Controller
         $search = $request->input('search')['value']; // Get the search query
         $branchId = Auth::user()->branch_user_id;
 
-        //self challan show, created by self
-        $loadingChallanQuery = LoadingChallan::query()
-            ->join('loading_challan_booking', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
-            ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
-            ->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
-            ->select('loading_challans.*')
-            ->where('transhipments.from_transhipment', $branchId);
-        if ($search) {
-            $loadingChallanQuery->where('challan_number', 'like', "%$search%") // Search by challan_number
-                ->orWhere('busNumber', 'like', "%$search%"); // You can add other columns to search as well
-        }
 
-        $totalRecord = $loadingChallanQuery->count(); // Total record count
+        $loadingChallanQuery = LoadingChallan::with([
+            'bookings.transhipments' => function ($query) use ($branchId) {
+                $query->where('from_transhipment', $branchId);
+            }
+        ])
+            ->whereHas('bookings.transhipments', function ($query) use ($branchId) {
+                $query->where('from_transhipment', $branchId);
+            });
 
-        // Get the filtered records based on search and pagination
+        // echo "<pre>";
+        // print_r($loadingChallans);
+        // exit;
+        //    $loadingChallanQuery = LoadingChallan::query()
+        //         ->join('loading_challan_booking', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
+        //         ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
+        //         ->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
+        //         ->select('loading_challans.*')
+        //         ->where('transhipments.from_transhipment', $branchId);
+
+        $totalRecord = $loadingChallanQuery->count();
+
+        //     // Get the filtered records based on search and pagination
         $loadingChallans = $loadingChallanQuery->skip($start)->take($limit)->get();
 
         $rows = [];
@@ -143,7 +151,7 @@ class ChallanController extends Controller
                 $row['challan_number'] = '<a href="' . url('admin/challans', ['id' => $loadingChallan->id]) . '">' . $loadingChallan->challan_number . '</a>';
                 $row['busNumber'] = strtoupper($loadingChallan->busNumber);
                 $row['type'] = ($loadingChallan->user->branch_user_id == $branchId) ? '<span class="badge badge-danger">Self Created</span>' : '<span class="badge badge-danger">Created By ' . $loadingChallan?->user?->branch?->branch_name . '</span>';
-                $row['created_at'] = Carbon::parse($loadingChallan->created_at)->format('d/m/Y  h:i:s');
+                $row['created_at'] = formatDate($loadingChallan->created_at);
                 $row['action'] = $edit_btn . " " . $change_credential;
 
                 $rows[] = $row;
@@ -170,15 +178,12 @@ class ChallanController extends Controller
         //fetch all challan detail.
         $data['challanDetail'] = LoadingChallan::find($id);
 
-        // echo "<pre>";
-        // print_r($data['challanDetail']->is_received_button_visible);
-        // exit;
         if ($data['challanDetail'] == NULL) {
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }
         $bookings = $data['challanDetail']->bookings;
-
-
+        // echo "<pre>";
+        // print_r($bookings);exit;
 
         //enable checkbox for transhipment
         // Fetch the challan bookings based on the challan ID and join transhipments
@@ -298,6 +303,38 @@ class ChallanController extends Controller
             return redirect()->back()->with([
                 "alertMessage" => true,
                 "alert" => ['message' => 'Please select the bookings, which you want to received', 'type' => 'danger']
+            ]);
+        }
+    }
+
+
+    public function revertChallanbooking($challanId, $bookingId)
+    {
+        $challan = LoadingChallan::find($challanId);
+        if ($challan) {
+            $result = DB::transaction(function () use ($challan, $bookingId) {
+
+                $challan->bookings()->detach($bookingId);
+                //update the status of booking and transhipment. 
+                $booking = Booking::find($bookingId);
+                if ($booking) {
+                    $booking->branch_specific_transhipment->dispatched_at = NULL;
+                    $booking->branch_specific_transhipment->status = Transhipment::RECEIVED;
+                    $booking->branch_specific_transhipment->update();
+
+                    $booking->status = Booking::BOOKED;
+                    $booking->save();
+                }
+            });
+
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Booking has been revert !!!', 'type' => 'success']
+            ]);
+        } else {
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
             ]);
         }
     }

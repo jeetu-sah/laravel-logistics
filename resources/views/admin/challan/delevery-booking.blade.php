@@ -29,7 +29,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <button onclick="window.print()" class="btn btn-primary mr-1"><i class="fas fa-print"></i>&nbsp;Print</button>
+                    <button onclick="window.print()" class="btn btn-success mr-1"><i class="fas fa-print"></i>&nbsp;Print</button>
+                    @if($challanDetail->user->branch_user_id === $branchId)
+                    <a href="{{ url('admin/challans') }}" class="btn btn-primary"><i class="fas fa-edit"></i>&nbsp;Edit</a>
+                    @endif
+
                     <a href="{{ url('admin/challans') }}" class="btn btn-warning"><i class="fas fa-angle-double-left"></i>&nbsp;Back</a>
                 </div>
             </div>
@@ -68,7 +72,7 @@
                                                 <span class="badge badge-info">{{ (strtoupper($challanDetail->locknumber) ?? 'N/A') }}
                                             </td>
                                             <td> {{ strtoupper($challanDetail->coLoder ?? 'N/A') }}</td>
-                                            <td> {{ strtoupper($challanDetail->created_at ?? 'N/A') }}</td>
+                                            <td> {{ formatDate($challanDetail->created_at) }}</td>
                                         </tr>
 
                                     </tbody>
@@ -109,6 +113,7 @@
                                                 <th>QTY</th>
                                                 <th>Booking Type</th>
                                                 <th>Booked at</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -139,15 +144,17 @@
                                                 <td>{{ $booking->consigneeBranchName }}</td>
 
                                                 <td>{{ $booking->no_of_artical }}</td>
+                                                <td><span class="badge badge-danger">{{$booking->booking_type_name ?? '--'}}</span></td>
+
+                                                <td>{{ formatDate($booking->created_at) }}</td>
                                                 <td>
-                                                    @if ($booking->booking_type == 'Paid')
-                                                    Paid
-                                                    @elseif($booking->booking_type == 'Topay')
-                                                    To Pay
+                                                    @if($challanDetail->user->branch_user_id === $branchId)
+                                                    <a class="btn btn-danger revertbooking" href="#" data-reverturl='{{ url("admin/challans/$challanDetail->id/revert-booking/$booking->id") }}'>Revert Booking</a>
+                                                    @else
+                                                    {{'--'}}
+
                                                     @endif
                                                 </td>
-
-                                                <td>{{ $booking->created_at }}</td>
 
                                             </tr>
                                             @endforeach
@@ -167,6 +174,47 @@
         </div>
     </section>
     <!-- /.content -->
+
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Default Modal</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 @endsection
 
@@ -204,16 +252,15 @@
             }
         });
 
-        // new DataTable('#challan-booking-list', {
-        //     responsive: true,
-        //     processing: true,
-        //     scrollX: true
-
-        // });
-
-        new DataTable('#example', {
-            scrollX: true
+        //revert the booking.
+        $(document).on('click', '.revertbooking', function(e) {
+            e.preventDefault();
+            const url = $(this).data('reverturl');
+            if (confirm('Are you sure want to revert this booking?')) {
+                window.location.href = url;
+            }
         });
+
     });
 </script>
 @endsection

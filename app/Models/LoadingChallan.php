@@ -49,6 +49,10 @@ class LoadingChallan extends Model
         return $this->belongsToMany(Booking::class, 'loading_challan_booking', 'loading_challans_id', 'booking_id');
     }
 
+    // public function bookings()
+    // {
+    //     return $this->hasManyThrough(Booking::class, LoadingChallanBooking::class, 'loading_challans_id', 'id', 'id', 'booking_id');
+    // }
 
 
     /*is_received_button_visible
