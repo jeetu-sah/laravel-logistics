@@ -13,6 +13,7 @@ use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use PhpParser\Node\Expr\Print_;
 
 class BookingController extends Controller
 {
@@ -114,9 +115,9 @@ class BookingController extends Controller
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-
+        
         $bookingQuery = Booking::with(['consigneeBranch']);
-        $bookingQuery->where([['consignee_branch_id', '=', Auth::user()->branch_user_id], ['status', '=', Booking::BOOKED]]);
+        $bookingQuery->where([['consignor_branch_id', '=', Auth::user()->branch_user_id], ['status', '=', Booking::BOOKED]]);
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
@@ -125,7 +126,7 @@ class BookingController extends Controller
         $totalRecord = $bookingQuery->count();
 
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
-
+       
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
@@ -153,18 +154,8 @@ class BookingController extends Controller
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
                 $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
-
-                // Booking Type
-                if ($booking->booking_type == 'Paid') {
-                    $row['booking_type'] = 'Paid';
-                } elseif ($booking->booking_type == 'Topay') {
-                    $row['booking_type'] = 'To Pay';
-                } elseif ($booking->booking_type == 'Toclient') {
-                    $row['booking_type'] = 'Client';
-                } else {
-                    $row['booking_type'] = 'Unknown';
-                }
-
+                $row['booking_type'] = '<span class="badge badge-danger">'.$booking->booking_type_name.'</span>' ?? '--';
+             
                 // Adding Transhipment Amounts (showing each transhipment charge)
                 $row['transhipment_one_amount'] = $booking->transhipmen_one_amount;
                 $row['transhipment_two_amount'] = $booking->transhipmen_two_amount;
@@ -173,7 +164,7 @@ class BookingController extends Controller
                 // Action for updating status
                 $row['action'] = '<button class="btn btn-success" onclick="updateBookingStatus(' . $booking->id . ')">Receive Maal</button>';
 
-                $row['created_at'] = date('d-m-Y', strtotime($booking->created_at));
+                $row['created_at'] = formatDate($booking->created_at);
 
                 $rows[] = $row;
             }
