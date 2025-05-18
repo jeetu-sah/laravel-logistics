@@ -213,8 +213,6 @@
                 {
                     data: 'consignor_name'
                 },
-
-
                 {
                     data: 'consignee_name'
                 },

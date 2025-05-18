@@ -311,26 +311,46 @@ class ChallanController extends Controller
     public function revertChallanbooking($challanId, $bookingId)
     {
         $challan = LoadingChallan::find($challanId);
+
         if ($challan) {
             $result = DB::transaction(function () use ($challan, $bookingId) {
+                $challanBooking =  $challan->bookings()->where('booking_id', $bookingId)->first();
+                if ($challanBooking) {
+                    if ($challanBooking->next_booking_transhipment?->received_at == NULL) {
 
-                $challan->bookings()->detach($bookingId);
-                //update the status of booking and transhipment. 
-                $booking = Booking::find($bookingId);
-                if ($booking) {
-                    $booking->branch_specific_transhipment->dispatched_at = NULL;
-                    $booking->branch_specific_transhipment->status = Transhipment::RECEIVED;
-                    $booking->branch_specific_transhipment->update();
+                        $challanBooking->pivot->update(['deleted_at' => now()]);
 
-                    $booking->status = Booking::BOOKED;
-                    $booking->save();
+                        // $challan->bookings()->detach($bookingId);
+                        //update the status of booking and transhipment. 
+                        $booking = Booking::find($bookingId);
+                        if ($booking) {
+                            $booking->branch_specific_transhipment->dispatched_at = NULL;
+                            $booking->branch_specific_transhipment->status = Transhipment::RECEIVED;
+                            $booking->branch_specific_transhipment->update();
+
+                            $booking->status = Booking::BOOKED;
+                            $booking->save();
+
+                            return [
+                                "alertMessage" => true,
+                                "alert" => ['message' => 'Booking has been revert !!!', 'type' => 'success']
+                            ];
+                        }
+                    } else {
+                        return [
+                            "alertMessage" => true,
+                            "alert" => ['message' => 'you can`t revert this record, because, next transhipment received this booking', 'type' => 'danger']
+                        ];
+                    }
+                } else {
+                    return [
+                        "alertMessage" => true,
+                        "alert" => ['message' => 'Something went wrong, please try again !!!', 'type' => 'danger']
+                    ];
                 }
             });
 
-            return redirect()->back()->with([
-                "alertMessage" => true,
-                "alert" => ['message' => 'Booking has been revert !!!', 'type' => 'success']
-            ]);
+            return redirect()->back()->with($result);
         } else {
             return redirect()->back()->with([
                 "alertMessage" => true,

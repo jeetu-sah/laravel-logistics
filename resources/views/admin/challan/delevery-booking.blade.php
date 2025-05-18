@@ -129,27 +129,27 @@
                                                 </td>
                                                 <th><span class="badge badge-danger"> {{ $booking->booking_created_by }}</span></th>
                                                 <td>{{ $booking->bilti_number }}</td>
-                                                <td>{{ $booking->challan_number }}</td>
-                                                <td>{{ $booking->consignorBranchName }}</td>
+                                                <td>{{ $challanDetail->challan_number ?? '--' }}</td>
+                                                <td>{{ $booking->consignorBranch->branch_name ?? '--' }}</td>
 
                                                 <td>{{ $booking->consignor_name }}<br>
                                                     {{ $booking->consignor_phone_number }}<br>
                                                     {{ $booking->consignor_gst_number }}
                                                 </td>
 
-                                                <td>{{ $booking->client_name }}<br>
-                                                    {{ $booking->client_mobile }} <br>
-                                                    {{ $booking->client_gst_number }}
+                                                <td>{{ $booking->client->client_name ?? '--' }}<br>
+                                                    {{ $booking->client->client_mobile ?? '--' }} <br>
+                                                    {{ $booking->client->client_gst_number ?? '--' }}
                                                 </td>
-                                                <td>{{ $booking->consigneeBranchName }}</td>
+                                                <td>{{ $booking->consigneeBranch->branch_name ?? '--' }}</td>
 
                                                 <td>{{ $booking->no_of_artical }}</td>
                                                 <td><span class="badge badge-danger">{{$booking->booking_type_name ?? '--'}}</span></td>
 
                                                 <td>{{ formatDate($booking->created_at) }}</td>
                                                 <td>
-                                                    @if($challanDetail->user->branch_user_id === $branchId)
-                                                    <a class="btn btn-danger revertbooking" href="#" data-reverturl='{{ url("admin/challans/$challanDetail->id/revert-booking/$booking->id") }}'>Revert Booking</a>
+                                                    @if(($challanDetail->user->branch_user_id === $branchId) && ($booking->is_revert_button_visible))
+                                                     <a class="btn btn-danger revertbooking" href="#" data-reverturl='{{ url("admin/challans/$challanDetail->id/revert-booking/$booking->id") }}'>Revert Booking</a>
                                                     @else
                                                     {{'--'}}
 

@@ -115,16 +115,13 @@ class BookingController extends Controller
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
 
-        $bookingQuery = Booking::query();
-
-        $bookingQuery->where('consignee_branch_id', Auth::user()->branch_user_id)->orWhere('transhipmen_one', Auth::user()->branch_user_id)->orWhere('transhipmen_two', Auth::user()->branch_user_id)->orWhere('transhipment_three', Auth::user()->branch_user_id);
+        $bookingQuery = Booking::with(['consigneeBranch']);
+        $bookingQuery->where([['consignee_branch_id', '=', Auth::user()->branch_user_id], ['status', '=', Booking::BOOKED]]);
         if ($search) {
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
                 ->orWhere('consignee_name', 'like', "%$search%");
         }
-        $bookingQuery->where('status', 1);  // Only Pending bookings
-
         $totalRecord = $bookingQuery->count();
 
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
@@ -381,18 +378,14 @@ class BookingController extends Controller
         }])->whereHas('transhipments', function ($query) use ($userBranchId) {
             $query->where('from_transhipment', $userBranchId)
                 ->where('dispatched_at', NULL)
-                ->where('received_at','!=', NULL);
+                ->where('received_at', '!=', NULL);
         });
-        
+
         // Count the filtered records
         $bookingsCount = $bookingQuery->count();
-
-
         // Get the actual records with pagination
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('bookings.created_at', 'desc')->get();
-        // echo "<pre>";
-        // print_r($bookings);
-        //exit;
+
 
         $rows = [];
         if ($bookings->count() > 0) {
@@ -417,16 +410,16 @@ class BookingController extends Controller
 
                 // Consignor details
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
-                $row['consignor_name'] = $booking->consignor_name;
+                $row['consignor_name'] = $booking->consignor_name ?? '--';
 
-                $row['phone_number_1'] = $booking->consignor_phone_number;
+                $row['phone_number_1'] = $booking->consignor_phone_number ?? '--';
                 $row['gst_number'] = $booking->gst_number;
 
                 // Consignee details
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
-                $row['consignee_name'] = $booking->client_name;
+                $row['consignee_name'] = $booking->client->client_name ?? '--';
 
-                $row['consignee_branch_id'] = $booking->client_address;
+                $row['consignee_branch_id'] = $booking->client->client_address ?? '--';
                 $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
 
                 // Conditional logic for 'booking_type'

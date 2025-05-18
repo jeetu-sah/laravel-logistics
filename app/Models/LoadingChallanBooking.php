@@ -4,14 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class LoadingChallanBooking extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     // Specify the table name
     protected $table = 'loading_challan_booking';
+
 
     protected $fillable = [
         'id',
@@ -19,7 +22,6 @@ class LoadingChallanBooking extends Model
         'booking_id',
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
-
-
 }
