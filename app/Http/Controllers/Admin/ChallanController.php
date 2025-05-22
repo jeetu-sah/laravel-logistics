@@ -166,100 +166,13 @@ class ChallanController extends Controller
         $data['title'] = 'Challan List';
         $data['challan_id'] = $id;
         $data['branchId'] = Auth::user()->branch_user_id;
-
-        //fetch all challan detail.
         $data['challanDetail'] = LoadingChallan::find($id);
-
-        // echo "<pre>";
-        // print_r($data['challanDetail']->is_received_button_visible);
-        // exit;
         if ($data['challanDetail'] == NULL) {
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }
         $bookings = $data['challanDetail']->bookings;
 
-
-
-        //enable checkbox for transhipment
-        // Fetch the challan bookings based on the challan ID and join transhipments
-        // $challanBookings = LoadingChallanBooking::where('loading_challans_id', $id)
-        //     ->join('loading_challans', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
-        //     ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
-        //     ->leftJoin('transhipments', 'transhipments.booking_id', '=', 'bookings.id') // Left join for transhipments
-        //     ->join('clients', 'clients.id', '=', 'bookings.client_id')
-        //     ->select(
-        //         'loading_challan_booking.*',
-        //         'loading_challans.status as chalanStatus',
-        //         'loading_challans.id as chalanId',
-        //         'loading_challans.challan_number',
-        //         'loading_challans.busNumber',
-        //         'loading_challans.driverName',
-        //         'loading_challans.driverMobile',
-        //         'loading_challans.locknumber',
-        //         'loading_challans.created_at',
-        //         'loading_challans.coLoder',
-        //         'clients.client_name as client_name',
-        //         'clients.client_phone_number as client_mobile',
-        //         'clients.client_address as client_address',
-        //         'clients.client_gst_number as client_gst_number',
-        //         'transhipments.id as transhipments_id',
-        //         'transhipments.sequence_no',
-        //         'transhipments.status as transhipment_status', // Add the transhipment status
-        //         'bookings.consignee_branch_id',
-        //         'bookings.status as bookingStatus',
-        //         'bookings.id as bookingId',
-        //     ) // Include the challan_number field
-        //     ->get();
-
-        // Process the fetched data
-        // $bookingDetails = [];
-        // foreach ($challanBookings as $challanBooking) {
-        //     $bookingInfo = Booking::with(['consignorBranch', 'consigneeBranch'])
-        //         ->find($challanBooking->booking_id);
-        //     $consignorBranchName = $bookingInfo->consignorBranch->branch_name ?? 'N/A';
-        //     $consigneeBranchName = $bookingInfo->consigneeBranch->branch_name ?? 'N/A';
-
-        //     if ($bookingInfo) {
-        //         $bookingInfo->consignorBranchName = $consignorBranchName;
-        //         $bookingInfo->consigneeBranchName = $consigneeBranchName;
-        //         $bookingInfo->challan_number = $challanBooking->challan_number;
-        //         $bookingInfo->busNumber = $challanBooking->busNumber;
-        //         $bookingInfo->driverName = $challanBooking->driverName;
-        //         $bookingInfo->driverMobile = $challanBooking->driverMobile;
-        //         $bookingInfo->locknumber = $challanBooking->locknumber;
-        //         $bookingInfo->chalanId = $challanBooking->chalanId;
-        //         $bookingInfo->created_at = $challanBooking->created_at;
-        //         $bookingInfo->chalanStatus = $challanBooking->chalanStatus;
-        //         $bookingInfo->coLoder = $challanBooking->coLoder;
-        //         $bookingInfo->client_name = $challanBooking->client_name;
-        //         $bookingInfo->client_mobile = $challanBooking->client_mobile;
-        //         $bookingInfo->client_address = $challanBooking->client_address;
-        //         $bookingInfo->client_gst_number = $challanBooking->client_gst_number;
-
-        //         // Include transhipment data (whether it's the user's branch or a transhipment-related booking)
-        //         $bookingInfo->transhipments_id = $challanBooking->transhipments_id;
-        //         $bookingInfo->transhipment_status = $challanBooking->transhipment_status;
-        //         $bookingInfo->to_transhipment = $challanBooking->to_transhipment;
-
-        //         $bookingInfo->consignee_branch_id = $challanBooking->consignee_branch_id;
-        //         $bookingInfo->bookingStatus = $challanBooking->bookingStatus;
-        //         $bookingInfo->bookingId = $challanBooking->bookingId;
-
-        //         // Check the transhipment status and determine if the checkbox should be shown
-        //         $bookingInfo->show_checkbox = false;
-        //         if ($challanBooking->transhipment_status == 'received' || $branchId == $challanBooking->from_transhipment) {
-        //             $bookingInfo->show_checkbox = true; // Show checkbox if the transhipment has been received or it's the user's branch
-        //         }
-
-        //         $bookingDetails[] = $bookingInfo;
-        //     }
-        // }
-
-
         $data['bookings'] = $bookings;
-
-        //$data['selectAllButtonDisable'] = collect($bookingDetails)->where('status', '!=', Booking::ACCEPT);
-
         return view('admin.challan.delevery-booking', $data);
     }
 

@@ -84,7 +84,7 @@
             new DataTable('#booking-list', {
                 responsive: true,
                 ajax: {
-                    url: "{{ url('branch-user/clients/list') }}",
+                    url: "{{ url('admin/clients/list') }}",
                     data: function(d) {
                         // Custom parameters can be added here if needed
                         // Example:

@@ -27,25 +27,26 @@
         </div>
 
         @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
 
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
-                @if(Session::has('msg'))
-                {!! Session::get("msg") !!}
+                @if (Session::has('msg'))
+                    {!! Session::get('msg') !!}
                 @endif
                 <form action="{{ url('login') }}" method="POST" autocomplete="off">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" autofocus autocomplete="off" placeholder="Email" name="email" value="" />
+                        <input type="email" class="form-control" autofocus autocomplete="off" placeholder="Email"
+                            name="email" value="" />
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -53,7 +54,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" autofocus autocomplete="off" placeholder="Password" name="password" value="" />
+                        <input type="password" class="form-control" autofocus autocomplete="off" placeholder="Password"
+                            name="password" value="" />
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>

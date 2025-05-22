@@ -103,6 +103,7 @@ Route::group(['middleware' => ['auth']], function () {
         // Define the route for the bilti view
         Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
 
+
         // paid booking
         Route::get('/bookings/incoming-load', [BookingController::class, 'incomingLoad']);
         Route::get('/bookings', [BookingController::class, 'index']);
@@ -112,6 +113,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/bookings/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
         Route::get('/bookings/list', [BookingController::class, 'list']);
+        Route::get('/clients/bookings/edit/{id}', [BookingController::class, 'edit']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
         Route::get('/bookings/noBill', [BookingController::class, 'noBill']);
@@ -136,7 +138,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('challans/{id}', [ChallanController::class, 'show']);
         //Client routes
 
-
+        Route::get('/clients', [ClientController::class, 'show']);
+        Route::get('/clients/list', [ClientController::class, 'list']);
+        Route::get('/clients/create', [ClientController::class, 'index']);
+        Route::post('/clients/store', [ClientController::class, 'store']);
+        Route::get('clients/edit/{id}', [ClientController::class, 'edit']);
+        Route::post('clients/update', [ClientController::class, 'update']);
+        Route::get('clients/delete/{id}', [ClientController::class, 'delete']);
 
 
         Route::get('/clients/map', [MapClientController::class, 'index']);
@@ -173,13 +181,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('branch-user/')->group(function () {
-        Route::get('/clients', [ClientController::class, 'show']);
-        Route::get('/clients/list', [ClientController::class, 'list']);
-        Route::get('/clients/create', [ClientController::class, 'index']);
-        Route::post('/clients/store', [ClientController::class, 'store']);
-        Route::get('clients/edit/{id}', [ClientController::class, 'edit']);
-        Route::post('clients/update', [ClientController::class, 'update']);
-        Route::get('clients/delete/{id}', [ClientController::class, 'delete']);
+
         Route::get('dashboard', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
 
         Route::get('employees', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
