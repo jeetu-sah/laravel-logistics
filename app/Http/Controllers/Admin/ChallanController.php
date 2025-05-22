@@ -106,21 +106,29 @@ class ChallanController extends Controller
         $search = $request->input('search')['value']; // Get the search query
         $branchId = Auth::user()->branch_user_id;
 
-        //self challan show, created by self
-        $loadingChallanQuery = LoadingChallan::query()
-            ->join('loading_challan_booking', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
-            ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
-            ->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
-            ->select('loading_challans.*')
-            ->where('transhipments.from_transhipment', $branchId);
-        if ($search) {
-            $loadingChallanQuery->where('challan_number', 'like', "%$search%") // Search by challan_number
-                ->orWhere('busNumber', 'like', "%$search%"); // You can add other columns to search as well
-        }
 
-        $totalRecord = $loadingChallanQuery->count(); // Total record count
+        $loadingChallanQuery = LoadingChallan::with([
+            'bookings.transhipments' => function ($query) use ($branchId) {
+                $query->where('from_transhipment', $branchId);
+            }
+        ])
+            ->whereHas('bookings.transhipments', function ($query) use ($branchId) {
+                $query->where('from_transhipment', $branchId);
+            });
 
-        // Get the filtered records based on search and pagination
+        // echo "<pre>";
+        // print_r($loadingChallans);
+        // exit;
+        //    $loadingChallanQuery = LoadingChallan::query()
+        //         ->join('loading_challan_booking', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
+        //         ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
+        //         ->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
+        //         ->select('loading_challans.*')
+        //         ->where('transhipments.from_transhipment', $branchId);
+
+        $totalRecord = $loadingChallanQuery->count();
+
+        //     // Get the filtered records based on search and pagination
         $loadingChallans = $loadingChallanQuery->skip($start)->take($limit)->get();
 
         $rows = [];
@@ -143,7 +151,7 @@ class ChallanController extends Controller
                 $row['challan_number'] = '<a href="' . url('admin/challans', ['id' => $loadingChallan->id]) . '">' . $loadingChallan->challan_number . '</a>';
                 $row['busNumber'] = strtoupper($loadingChallan->busNumber);
                 $row['type'] = ($loadingChallan->user->branch_user_id == $branchId) ? '<span class="badge badge-danger">Self Created</span>' : '<span class="badge badge-danger">Created By ' . $loadingChallan?->user?->branch?->branch_name . '</span>';
-                $row['created_at'] = Carbon::parse($loadingChallan->created_at)->format('d/m/Y  h:i:s');
+                $row['created_at'] = formatDate($loadingChallan->created_at);
                 $row['action'] = $edit_btn . " " . $change_credential;
 
                 $rows[] = $row;
@@ -167,10 +175,89 @@ class ChallanController extends Controller
         $data['challan_id'] = $id;
         $data['branchId'] = Auth::user()->branch_user_id;
         $data['challanDetail'] = LoadingChallan::find($id);
+
         if ($data['challanDetail'] == NULL) {
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }
         $bookings = $data['challanDetail']->bookings;
+
+        // echo "<pre>";
+        // print_r($bookings);exit;
+
+        //enable checkbox for transhipment
+        // Fetch the challan bookings based on the challan ID and join transhipments
+        // $challanBookings = LoadingChallanBooking::where('loading_challans_id', $id)
+        //     ->join('loading_challans', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
+        //     ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
+        //     ->leftJoin('transhipments', 'transhipments.booking_id', '=', 'bookings.id') // Left join for transhipments
+        //     ->join('clients', 'clients.id', '=', 'bookings.client_id')
+        //     ->select(
+        //         'loading_challan_booking.*',
+        //         'loading_challans.status as chalanStatus',
+        //         'loading_challans.id as chalanId',
+        //         'loading_challans.challan_number',
+        //         'loading_challans.busNumber',
+        //         'loading_challans.driverName',
+        //         'loading_challans.driverMobile',
+        //         'loading_challans.locknumber',
+        //         'loading_challans.created_at',
+        //         'loading_challans.coLoder',
+        //         'clients.client_name as client_name',
+        //         'clients.client_phone_number as client_mobile',
+        //         'clients.client_address as client_address',
+        //         'clients.client_gst_number as client_gst_number',
+        //         'transhipments.id as transhipments_id',
+        //         'transhipments.sequence_no',
+        //         'transhipments.status as transhipment_status', // Add the transhipment status
+        //         'bookings.consignee_branch_id',
+        //         'bookings.status as bookingStatus',
+        //         'bookings.id as bookingId',
+        //     ) // Include the challan_number field
+        //     ->get();
+
+        // Process the fetched data
+        // $bookingDetails = [];
+        // foreach ($challanBookings as $challanBooking) {
+        //     $bookingInfo = Booking::with(['consignorBranch', 'consigneeBranch'])
+        //         ->find($challanBooking->booking_id);
+        //     $consignorBranchName = $bookingInfo->consignorBranch->branch_name ?? 'N/A';
+        //     $consigneeBranchName = $bookingInfo->consigneeBranch->branch_name ?? 'N/A';
+
+        //     if ($bookingInfo) {
+        //         $bookingInfo->consignorBranchName = $consignorBranchName;
+        //         $bookingInfo->consigneeBranchName = $consigneeBranchName;
+        //         $bookingInfo->challan_number = $challanBooking->challan_number;
+        //         $bookingInfo->busNumber = $challanBooking->busNumber;
+        //         $bookingInfo->driverName = $challanBooking->driverName;
+        //         $bookingInfo->driverMobile = $challanBooking->driverMobile;
+        //         $bookingInfo->locknumber = $challanBooking->locknumber;
+        //         $bookingInfo->chalanId = $challanBooking->chalanId;
+        //         $bookingInfo->created_at = $challanBooking->created_at;
+        //         $bookingInfo->chalanStatus = $challanBooking->chalanStatus;
+        //         $bookingInfo->coLoder = $challanBooking->coLoder;
+        //         $bookingInfo->client_name = $challanBooking->client_name;
+        //         $bookingInfo->client_mobile = $challanBooking->client_mobile;
+        //         $bookingInfo->client_address = $challanBooking->client_address;
+        //         $bookingInfo->client_gst_number = $challanBooking->client_gst_number;
+
+        //         // Include transhipment data (whether it's the user's branch or a transhipment-related booking)
+        //         $bookingInfo->transhipments_id = $challanBooking->transhipments_id;
+        //         $bookingInfo->transhipment_status = $challanBooking->transhipment_status;
+        //         $bookingInfo->to_transhipment = $challanBooking->to_transhipment;
+
+        //         $bookingInfo->consignee_branch_id = $challanBooking->consignee_branch_id;
+        //         $bookingInfo->bookingStatus = $challanBooking->bookingStatus;
+        //         $bookingInfo->bookingId = $challanBooking->bookingId;
+
+        //         // Check the transhipment status and determine if the checkbox should be shown
+        //         $bookingInfo->show_checkbox = false;
+        //         if ($challanBooking->transhipment_status == 'received' || $branchId == $challanBooking->from_transhipment) {
+        //             $bookingInfo->show_checkbox = true; // Show checkbox if the transhipment has been received or it's the user's branch
+        //         }
+
+        //         $bookingDetails[] = $bookingInfo;
+        //     }
+        // }
 
         $data['bookings'] = $bookings;
         return view('admin.challan.delevery-booking', $data);
@@ -211,6 +298,58 @@ class ChallanController extends Controller
             return redirect()->back()->with([
                 "alertMessage" => true,
                 "alert" => ['message' => 'Please select the bookings, which you want to received', 'type' => 'danger']
+            ]);
+        }
+    }
+
+
+    public function revertChallanbooking($challanId, $bookingId)
+    {
+        $challan = LoadingChallan::find($challanId);
+
+        if ($challan) {
+            $result = DB::transaction(function () use ($challan, $bookingId) {
+                $challanBooking =  $challan->bookings()->where('booking_id', $bookingId)->first();
+                if ($challanBooking) {
+                    if ($challanBooking->next_booking_transhipment?->received_at == NULL) {
+
+                        $challanBooking->pivot->update(['deleted_at' => now()]);
+
+                        // $challan->bookings()->detach($bookingId);
+                        //update the status of booking and transhipment. 
+                        $booking = Booking::find($bookingId);
+                        if ($booking) {
+                            $booking->branch_specific_transhipment->dispatched_at = NULL;
+                            $booking->branch_specific_transhipment->status = Transhipment::RECEIVED;
+                            $booking->branch_specific_transhipment->update();
+
+                            $booking->status = Booking::BOOKED;
+                            $booking->save();
+
+                            return [
+                                "alertMessage" => true,
+                                "alert" => ['message' => 'Booking has been revert !!!', 'type' => 'success']
+                            ];
+                        }
+                    } else {
+                        return [
+                            "alertMessage" => true,
+                            "alert" => ['message' => 'you can`t revert this record, because, next transhipment received this booking', 'type' => 'danger']
+                        ];
+                    }
+                } else {
+                    return [
+                        "alertMessage" => true,
+                        "alert" => ['message' => 'Something went wrong, please try again !!!', 'type' => 'danger']
+                    ];
+                }
+            });
+
+            return redirect()->back()->with($result);
+        } else {
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
             ]);
         }
     }

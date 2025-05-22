@@ -177,12 +177,13 @@
                 </li> --}}
             </ul>
         </nav>
-
+        
         <!-- /.navbar -->
         @include('admin.admin_layout.sidebar')
         <!-- Main Sidebar Container -->
 
         <!-- Content Wrapper. Contains page content -->
+        
         @yield('main_content')
         <!-- Content Wrapper. Contains page content -->
 
@@ -193,6 +194,7 @@
             <div class="float-right d-none d-sm-inline-block">
                 <b>Version</b> 3.0.5
             </div>
+
         </footer>
     </div>
     <!-- ./wrapper -->

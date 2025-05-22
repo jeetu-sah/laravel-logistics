@@ -77,19 +77,7 @@ class Booking extends Model
     // If you want to hide attributes from arrays
     protected $hidden = [];
 
-    // If you want to cast attributes to a different type
-    // protected $casts = [
-    //     'actual_weight' => 'string', // This is needed if actual_weight is a string in the schema
-    //     'freight_amount' => 'decimal:2',
-    //     'os_amount' => 'decimal:2',
-    //     'fov_amount' => 'decimal:2',
-    //     'transhipment_amount' => 'decimal:2',
-    //     'handling_charge_amount' => 'decimal:2',
-    //     'loading_charge_amount' => 'decimal:2',
-    //     'misc_charge_amount' => 'decimal:2',
-    //     'other_charge_amount' => 'decimal:2',
-    //     'grand_total_amount' => 'decimal:2',
-    // ];
+    public $bookingType = ['Topay' => 'To Pay', 'To Client', 'Paid' => 'Paid'];
 
 
     //visible_for
@@ -99,11 +87,18 @@ class Booking extends Model
         return $bookingVisibleForBranch?->from_transhipment;
     }
 
+    //booking_type_name
+    protected function getBookingtypeNameAttribute(): string | null
+    {
+        return $this->bookingType[$this->booking_type];
+    }
+
     //booking_created_by
     protected function getBookingCreatedByAttribute(): string
     {
         return ($this->consignor_branch_id == auth()->user()->branch->id) ? 'Self' : $this->consignorBranch->branch_name;
     }
+
 
     /*branch's (transhipment) booking. branch_specific_transhipment
         get transhipments for the active branch
@@ -137,6 +132,17 @@ class Booking extends Model
             ->where('booking_id', $this->id)->first();
     }
 
+    
+    /*is_revert_button_visible
+        get for which branch should be display the received button */
+    protected function getIsRevertButtonVisibleAttribute()
+    {
+        if($this->next_booking_transhipment->received_at != NULL) {
+            return false;
+        }
+        return true;
+    }
+
 
 
     // Define the relationships if there are any
@@ -153,6 +159,7 @@ class Booking extends Model
     {
         return $this->belongsTo(Branch::class, 'consignor_branch_id');
     }
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');

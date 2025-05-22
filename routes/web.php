@@ -53,7 +53,6 @@ Route::group(['middleware' => ['auth']], function () {
         $user = Auth::user();
         if ($user->user_type == 'admin') {
             return redirect('/admin/dashboard');
-
         } else if ($user->user_type == 'branch-user') {
             return redirect('/branch-user/dashboard');
         }
@@ -131,11 +130,13 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/get-client-details/{id}', [ClientController::class, 'getClientDetails']);
 
+        Route::get('challans/{challanId}/revert-booking/{bookingId}', [ChallanController::class, 'revertChallanbooking']);
         Route::get('/challans', [ChallanController::class, 'index']);
         Route::get('/challans/list', [ChallanController::class, 'list']);
         Route::get('/challans/create', [ChallanController::class, 'create']);
         Route::post('/challans/create', [ChallanController::class, 'store']);
         Route::get('challans/{id}', [ChallanController::class, 'show']);
+
         //Client routes
 
         Route::get('/clients', [ClientController::class, 'show']);
@@ -176,8 +177,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('delivery/create/{id}', [DeliveryController::class, 'create']);
         Route::post('delivery/store', [DeliveryController::class, 'store']);
         Route::get('admin/delivery/receipt/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.receipt');
-
-
     });
 
     Route::prefix('branch-user/')->group(function () {
@@ -210,7 +209,4 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('admin/role-list', [RoleController::class, 'show']);
 
     Route::get('logout', [LogOutController::class, 'index']);
-
-
-
 });
