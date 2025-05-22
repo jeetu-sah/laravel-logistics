@@ -174,14 +174,13 @@ class ChallanController extends Controller
         $data['title'] = 'Challan List';
         $data['challan_id'] = $id;
         $data['branchId'] = Auth::user()->branch_user_id;
-
-        //fetch all challan detail.
         $data['challanDetail'] = LoadingChallan::find($id);
 
         if ($data['challanDetail'] == NULL) {
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }
         $bookings = $data['challanDetail']->bookings;
+
         // echo "<pre>";
         // print_r($bookings);exit;
 
@@ -260,11 +259,7 @@ class ChallanController extends Controller
         //     }
         // }
 
-
         $data['bookings'] = $bookings;
-
-        //$data['selectAllButtonDisable'] = collect($bookingDetails)->where('status', '!=', Booking::ACCEPT);
-
         return view('admin.challan.delevery-booking', $data);
     }
 

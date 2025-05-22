@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -3016,7 +3013,6 @@
                                     Paid
                                 @elseif($booking->booking_type == 'Topay')
                                     To Pay
-                               
                                 @else
                                     Unknown
                                 @endif
@@ -3065,24 +3061,21 @@
 
                                             </th> --}}
                                             <th class="tm_width_1 tm_semi_bold tm_primary_color tm_gray_bg">
-                                                @foreach($booking->transhipments as $transhipment)
-                                                    @if($loop->first)
-                                                        Transhipment 1:  {{ $transhipment->to_transhipment_name }} |
-                                                    @elseif($loop->index == 1)
-                                                        Transhipment 2:  {{ $transhipment->to_transhipment_name }} |
-                                                    @elseif($loop->index == 2)
-                                                        Transhipment 3:  {{ $transhipment->to_transhipment_name }} |
+                                                @foreach ($booking->transhipments as $index => $transhipment)
+                                                    @if ($index != 0 && $index != count($booking->transhipments) - 1)
+                                                        Transhipment {{ $index }} :
+                                                        {{ $transhipment->from_transhipment_name }} |
                                                     @endif
                                                 @endforeach
-                                                
-                                                @if($booking->transhipments->count() == 0)
+
+                                                @if ($booking->transhipments->count() == 0)
                                                     Transhipment 1: NA | Transhipment 2: NA | Transhipment 3: NA |
                                                 @endif
-                                            
+
                                                 Offline Bilti: {{ $booking->manual_bilty_number }}
                                             </th>
-                                            
-                                            
+
+
                                         </tr>
                                         <tr>
                                             <th class="tm_width_3 tm_semi_bold tm_primary_color tm_gray_bg">
@@ -3221,7 +3214,8 @@
 
 
                                         <tr>
-                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">Actual Goods value declared by consignor</th>
+                                            <th class="tm_width_1 tm_primary_color tm_gray_bg">Actual Goods value
+                                                declared by consignor</th>
 
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">{{ $booking->mark }}
 
@@ -3253,14 +3247,17 @@
                                             height="auto" />
                                     </p>
                                 </div>
-                                <Small><b>Note : 1)Material must have been insured by owner in case of total value is more than
-                                    Rs.2000. (2)Party shall have to
-                                    collect the goods within three days, there after company shall not be responsible and have
-                                    to pay demurrage. (3)In
-                                    case of loss or damage, we are liable for only risk cover value for transit which declared by
-                                   consignor at the time of booking.
-                                    (4) *Terms & Conditions Apply. (5) All Dispute at Kanpur jurisdiction only.</b>
-                            </Small>
+                                <Small><b>Note : 1)Material must have been insured by owner in case of total value is
+                                        more than
+                                        Rs.2000. (2)Party shall have to
+                                        collect the goods within three days, there after company shall not be
+                                        responsible and have
+                                        to pay demurrage. (3)In
+                                        case of loss or damage, we are liable for only risk cover value for transit
+                                        which declared by
+                                        consignor at the time of booking.
+                                        (4) *Terms & Conditions Apply. (5) All Dispute at Kanpur jurisdiction only.</b>
+                                </Small>
                                 {{-- <div style="display: flex; align-items: center;">
                                     <p style="margin-left: 10px; border-right: 1px solid; padding-right: 20px;">
                                         <b>Head Office:<br>
@@ -3389,7 +3386,7 @@
                                                 {{ $booking->misc_charge_amount }}</td>
                                         </tr>
 
-                                        
+
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
                                             <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">CGST
                                                 <span class="tm_ternary_color"></span>
@@ -3431,7 +3428,7 @@
 
                         </div>
                     </div>
-                   
+
                     <hr class="tm_mb20">
                     <div style="display: flex; justify-content: space-between; padding: 10px;">
                         <p><b>Clerk signature</b></p>
@@ -3472,15 +3469,14 @@
                     <button id="tm_back_btn" class="tm_invoice_btn tm_color2" onclick="window.history.back();">
                         <span class="tm_btn_icon">
                             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                                <path
-                                    d="M144 256l192-192v128h160v128H336v128L144 256z"
-                                    fill="none" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="32" />
+                                <path d="M144 256l192-192v128h160v128H336v128L144 256z" fill="none"
+                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="32" />
                             </svg>
                         </span>
                         <span class="tm_btn_text">Back</span>
                     </button>
-                    
+
                 </div>
             </div>
         </div>
