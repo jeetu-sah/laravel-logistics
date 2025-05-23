@@ -246,7 +246,7 @@
         const transhipMentChargesPerparcel = 40; // for single parcel
         const hamaliChargesPerparcel = 20; // for single parcel
         const biltiChargesPerparcel = 10; // for single parcel
-        const companyPerParcelCharges = 40; //  for single parcel
+        const companyPerParcelCharges = 40; //for single parcel
         const perKmRate = 0.20; // Freight rate per kilometer in rupees
         const defaultTotalNumberOfparcel = 0; // Freight rate per kilometer in rupees
         const defaultFovPercentage = 1.5; // defaultFovPercentage

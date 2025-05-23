@@ -161,15 +161,17 @@ class ReviewerController extends Controller
 
     public function list(Request $request)
     {
+     
         $limit = request()->input('length');
         $start = request()->input('start');
-        $totalRecord = User::count();
-
+      
         $usersQuery = User::query();
         $usersQuery = $usersQuery->where([
             ['user_type', '=', User::EMPLOYEE],
-            ['branch_user_id', '=', Auth::user()->id]
+            ['branch_user_id', '=', Auth::user()->branch_user_id]
         ]);
+        $totalRecord = $usersQuery->count();
+        
         $users = $usersQuery->skip($start)->take($limit)->get();
 
         $rows = [];
@@ -180,13 +182,8 @@ class ReviewerController extends Controller
                 $edit_btn = '<a href="' . url("branch-user/employees/edit/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-primary" style="margin-right: 5px;">
 						<i class="fas fa-edit"></i> 
 					  </a>';
-
-                //if(Auth::user()->isAbleTo('change-user-credential')){
                 $change_credential = '';
-                // $change_credential = '<a href="' . url("admin/edit_credential/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-success" style="margin-right: 5px;">
-                // 		<i class="fas fa-key"></i> 
-                // 	  </a>';
-                //}
+             
                 $row = [];
                 $row['sn'] = '<a href="' . url("branch-user/employees/edit/$user->id") . '">' . $user->userId . '</a>';
                 ;
@@ -209,9 +206,6 @@ class ReviewerController extends Controller
             "recordsFiltered" => intval($totalRecord),
             "data" => $rows
         );
-        // echo "<pre>";
-        // print_r($json_data);exit;
         return json_encode($json_data);
-        exit;
     }
 }

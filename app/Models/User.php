@@ -105,4 +105,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Branch::class, 'branch_user_id');
     }
+
+    
 }

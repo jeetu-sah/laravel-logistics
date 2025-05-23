@@ -15,11 +15,11 @@ class UserObserver
     public function created(User $user): void
     {
         $employeeIDPrefix = 'EMP';
-        $settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
+        $settings = BranchSetting::where([['user_id', '=', Auth::id()]])->first();
         if ($settings != NULL) {
             $employeeIDPrefix = $settings?->prefix_employee_id;
         }
-        $userId = $employeeIDPrefix . '' . $user->id;
+        $userId = $employeeIDPrefix . '-' . $user->id;
 
 
         if ($user->user_type == 'admin') {

@@ -128,7 +128,7 @@ class ChallanController extends Controller
 
         $totalRecord = $loadingChallanQuery->count();
 
-        //     // Get the filtered records based on search and pagination
+   
         $loadingChallans = $loadingChallanQuery->skip($start)->take($limit)->get();
 
         $rows = [];

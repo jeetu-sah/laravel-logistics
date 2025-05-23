@@ -25,7 +25,7 @@
     <section class="content">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Settings</h3>
+                <h3 class="card-title">Branch Settings</h3>
             </div>
             <div class="card-body">
                 <form action="{{ route('branch-user.settings') }}" method="post" id="form" enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -43,30 +43,48 @@
 
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="price_for_single_parcel" class="form-label">Price For Single Parcel</label>
+                                <input type="text"
+                                    name="price_for_single_parcel"
+                                    class="form-control"
+                                    id="price_for_single_parcel"
+                                    value="{{ $settings?->price_for_single_parcel }}"
+                                    placeholder="Price For Single Parcel" required />
+
+                            </div>
+                        </div>
 
                     </div>
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="mobile" class="form-label">Mobile</label>
-                                <input type="tel" class="form-control" name="mobile" id="mobile" placeholder="Mobile" value="{{ old('mobile') }}" onkeypress="return /^\d*$/.test(this.value+event.key)" maxlength="10" required>
-                                @error('mobile')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <div class="invalid-feedback">Enter Mobile</div>
+                                <label for="prefix_employee_id" class="form-label">Prefix Employee Id</label>
+                                <input type="text"
+                                    name="prefix_employee_id"
+                                    class="form-control"
+                                    id="prefix_employee_id"
+                                    value="{{ $settings?->prefix_employee_id }}"
+                                    placeholder="Prefix Employee Id" required />
+
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}" placeholder="Email" required>
-                                @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <div class="invalid-feedback">Enter Email</div>
+                                <label for="price_for_single_parcel" class="form-label">Price For Single Parcel</label>
+                                <input type="text"
+                                    name="price_for_single_parcel"
+                                    class="form-control"
+                                    id="price_for_single_parcel"
+                                    value="{{ $settings?->price_for_single_parcel }}"
+                                    placeholder="Price For Single Parcel" required />
+
                             </div>
                         </div>
-                    </div> -->
+
+                    </div>
+                  
                     <button class="btn btn-primary mt-3" type="submit">Submit</button>
                 </form>
             </div>

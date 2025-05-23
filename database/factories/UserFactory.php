@@ -2,43 +2,50 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Branch;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
+    protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'first_name' => $this->faker->firstName,
+            'last_name'  => $this->faker->lastName,
+            'mobile'     => $this->faker->numerify('98########'),
+            'email'      => $this->faker->unique()->safeEmail,
+            'degree'     => $this->faker->randomElement(['B.Sc', 'M.Sc', 'PhD']),
+            'institution' => $this->faker->company,
+            'position'   => $this->faker->jobTitle,
+            'department' => $this->faker->word,
+            'reason'     => $this->faker->sentence,
+            'user_type'  => User::EMPLOYEE,
+            'password'   => Hash::make('password'), // or bcrypt('password')
+            'user_status' => $this->faker->randomElement(['active', 'inactive']),
+            'term_and_condition' => true,
+            'is_signed' => $this->faker->boolean,
+            'userId'    => null, // can be assigned explicitly in test or seeder
+            'branch_user_id' => Branch::factory()
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
+
+    public function employee(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'user_type' => User::EMPLOYEE,
+        ]);
+    }
+
+    public function branchUser(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'user_type' => User::BRANCH_USER,
         ]);
     }
 }

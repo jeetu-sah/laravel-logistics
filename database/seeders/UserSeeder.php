@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Branch;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -48,7 +49,17 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            $user = User::updateOrCreate(['email' => $user['email']], $user);   
+            $user = User::updateOrCreate(['email' => $user['email']], $user);
         }
+
+
+        //create branch
+        Branch::factory()->count(20)->create();
+
+        //create dummy users
+        User::factory()->count(20)->employee()
+            ->create([
+                'branch_user_id' => \App\Models\Branch::factory()->create()->id,
+            ]);
     }
 }
