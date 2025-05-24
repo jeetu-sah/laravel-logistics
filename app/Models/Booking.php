@@ -22,6 +22,12 @@ class Booking extends Model
     const ACCEPT = 3;
     const DELIVERED_TO_CLIENT = 4;
 
+    const NORMAL_BOOKING = 'normal-booking';
+    const CLIENT_BOOKING = 'client-booking';
+
+
+
+
     // Specify the primary key (if it's not 'id')
     protected $primaryKey = 'id';
 

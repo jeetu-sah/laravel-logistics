@@ -15,10 +15,7 @@
                             <option value="{{ $client->id }}">{{ $client->client_name }}</option>
                         @endforeach
                     </select>
-
                     <div id="client_details"></div>
-
-
                 </div>
 
             </div>

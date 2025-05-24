@@ -13,7 +13,8 @@ use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use PhpParser\Node\Expr\Print_;
+use Illuminate\Support\Facades\Validator;
+
 
 class BookingController extends Controller
 {
@@ -25,10 +26,10 @@ class BookingController extends Controller
         $data['title'] = 'Incoimg Load';
         return view('admin.booking.incomingLoad', $data);
     }
+
     public function index()
     {
         $data['title'] = 'Bookings';
-
         return view('admin.booking.booking-list', $data);
     }
 
@@ -110,96 +111,22 @@ class BookingController extends Controller
         ]);
     }
 
-    public function upcomingBookings(Request $request)
-    {
-        $search = $request->input('search')['value'] ?? null;
-        $limit = $request->input('length', 10);
-        $start = $request->input('start', 0);
 
-        
-        $bookingQuery = Booking::with(['consigneeBranch']);
-        $bookingQuery->where([['consignor_branch_id', '=', Auth::user()->branch_user_id], ['status', '=', Booking::BOOKED]]);
-        if ($search) {
-            $bookingQuery->where('bilti_number', 'like', "%$search%")
-                ->orWhere('consignor_name', 'like', "%$search%")
-                ->orWhere('consignee_name', 'like', "%$search%")
-                ->orWhere('clients.client_name', 'like', "%$search%"); // Added client name search
-        }
-        $bookingQuery->where('bookings.status', Booking::BOOKED);
-
-        $totalRecord = $bookingQuery->count();
-
-        $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
-
-        $rows = [];
-        if ($bookings->count() > 0) {
-            foreach ($bookings as $index => $booking) {
-                $row = [];
-                if ($request->bilti_list_type === 'challan') {
-                    $row['sn'] = '<div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->booking_id . '">
-                                        <label class="form-check-label" for="exampleCheck1"></label>
-                                    </div>';
-                } else {
-                    $row['sn'] = $start + $index + 1;
-                }
-
-                // Bilti and offline bilti links
-                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->booking_id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
-                $row['offline_bilti'] = $booking->manual_bilty_number
-                    ? '<a href="' . route('bookings.bilti', ['id' => $booking->booking_id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
-                    : 'N/A';
-
-
-                $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
-                $row['consignor_name'] = $booking->consignor_name;
-                $row['address'] = $booking->consignor_address;
-                $row['phone_number_1'] = $booking->consignor_phone_number;
-                $row['gst_number'] = $booking->consignor_gst_number;
-                $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
-                $row['consignee_name'] = $booking->consignee_name;
-                $row['consignee_address'] = $booking->consignee_address;
-                $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
-                $row['booking_type'] = '<span class="badge badge-danger">'.$booking->booking_type_name.'</span>' ?? '--';
-             
-                // Adding Transhipment Amounts (showing each transhipment charge)
-                $row['transhipment_one_amount'] = $booking->transhipmen_one_amount;
-                $row['transhipment_two_amount'] = $booking->transhipmen_two_amount;
-                $row['transhipment_three_amount'] = $booking->transhipment_three_amount;
-
-                // Action for updating status
-                $row['action'] = '<button class="btn btn-success" onclick="updateBookingStatus(' . $booking->id . ')">Receive Maal</button>';
-
-                $row['created_at'] = formatDate($booking->created_at);
-                // Add the row to the rows array
-                $rows[] = $row;
-            }
-        }
-
-        // Return the response with the rows and total record count
-        return response()->json([
-            'draw' => $request->input('draw'),
-            'recordsTotal' => $totalRecord,
-            'recordsFiltered' => $totalRecord,
-            'data' => $rows,
-        ]);
-    }
 
     public function create(Request $request)
     {
-        // Get the current authenticated user
-        $data['user'] = auth()->user();
-
-        // Get all branches
-        $data['branch'] = Branch::all();
-
-        // Set the title for the page
         $data['tittle'] = "Create New Booking";
-
-        // Check if the "no-bill-bookings" query parameter is present
-        // It will return the value of the query parameter (or null if it doesn't exist)
+        $data['user'] = auth()->user();
+        $data['branch'] = Branch::all();
         $data['noBillBookings'] = $request->query('no-bill-bookings'); // true, false or null
+        $data['bookingType'] = $request->query('booking');
+        $data['currentBranch']  = Branch::currentbranch();
 
+        $data['clients']  = $data['currentBranch']->clients;
+
+        // $data['clients'] = 
+        // echo "<pre>";
+        // print_r($data['clients']);exit;
         // Return the view with the data
         return view('admin.booking.create', $data);
     }
@@ -345,12 +272,11 @@ class BookingController extends Controller
         }
         $data['client'] = $data['booking']->client;
         $data['transhipments'] = $transhipments;
-       
+
         foreach ($data['transhipments'] as $transhipment) {
             $transhipment->from_transhipment_name = Branch::find($transhipment->from_transhipment)->branch_name ?? 'NA';
-
         }
-        
+
         // Return the view with data
         return view('admin.booking.bilti', $data);
     }
@@ -502,37 +428,38 @@ class BookingController extends Controller
         }
     }
 
-    public function to_client_booking(Request $request)
-    {
-        $loggedInBranchId = Auth::user()->branch_user_id;
-        $loggedInBranch = Branch::find($loggedInBranchId);
-        $data['loggedInBranch'] = $loggedInBranch;
-        $branchIds = DB::table('client_branch_map')
-            ->where('client_id', $loggedInBranchId)
-            ->where('status', 'ACTIVE')
-            ->whereNull('deleted_at')
-            ->pluck('branch_id');
+    // public function clientBooking(Request $request)
+    // {
+    //     $loggedInBranchId = Auth::user()->branch_user_id;
+    //     $loggedInBranch = Branch::find($loggedInBranchId);
+    //     $data['loggedInBranch'] = $loggedInBranch;
+    //     $branchIds = DB::table('client_branch_map')
+    //         ->where('client_id', $loggedInBranchId)
+    //         ->where('status', 'ACTIVE')
+    //         ->whereNull('deleted_at')
+    //         ->pluck('branch_id');
 
-        $data['clients'] = DB::table('client_branch_map')
-            ->join('clients', 'clients.id', '=', 'client_branch_map.client_id')
-            ->whereIn('client_branch_map.branch_id', $branchIds)
-            ->where('client_branch_map.status', 'ACTIVE')
-            ->whereNull('client_branch_map.deleted_at')
-            ->select(
-                'clients.id',
-                DB::raw('MIN(clients.client_name) as client_name'),
-                DB::raw('MIN(client_branch_map.branch_id) as branch_id')
-            )
-            ->groupBy('clients.id')
-            ->get();
+    //     $data['clients'] = DB::table('client_branch_map')
+    //         ->join('clients', 'clients.id', '=', 'client_branch_map.client_id')
+    //         ->whereIn('client_branch_map.branch_id', $branchIds)
+    //         ->where('client_branch_map.status', 'ACTIVE')
+    //         ->whereNull('client_branch_map.deleted_at')
+    //         ->select(
+    //             'clients.id',
+    //             DB::raw('MIN(clients.client_name) as client_name'),
+    //             DB::raw('MIN(client_branch_map.branch_id) as branch_id')
+    //         )
+    //         ->groupBy('clients.id')
+    //         ->get();
 
-        $data['branch'] = Branch::all();
-        $data['tittle'] = "To Client Booking";
-        $data['heading'] = 'Add New Booking';
-        $data['listUrl'] = 'admin/booking/booking-list';
+    //     $data['branch'] = Branch::all();
 
-        return view('admin.booking.create-to-client-booking', $data);
-    }
+    //     $data['tittle'] = "To Client Booking";
+    //     $data['heading'] = 'Add New Booking';
+    //     $data['listUrl'] = 'admin/booking/booking-list';
+
+    //     return view('admin.booking.create-to-client-booking', $data);
+    // }
     public function show()
     {
         $data['tittle'] = "Client List";
@@ -749,10 +676,74 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        $noBillBookings = $request->query('no-bill-bookings');
-        if ($request->consignor_branch_id == $request->consignee_branch_id) {
-            return redirect()->back()->withInput()->with(['error' => 'Consignor and consignee branches must be different.'])->withInput();
+        $validator = Validator::make($request->all(), [
+            'booking_date' => 'required|date',
+            'transhipmen_one' => 'nullable',
+            'consignor_branch_id' => 'required|exists:branches,id',
+            'transhipmen_two' => 'nullable',
+            'consignee_branch_id' => 'required|exists:branches,id',
+            'transhipment_three' => 'nullable',
+            'actual_weight' => 'required',
+            'cantain' => 'required',
+            'aadhar_card' => 'nullable',
+            'no_of_artical' => 'required|integer',
+            'good_of_value' => 'required|numeric',
+            'consignor_name' => 'required|string',
+            'consignee_name' => 'required|string',
+            'consignor_address' => 'required|string',
+            'consignee_address' => 'required|string',
+            'consignor_phone_number' => 'nullable|string',
+            'consignee_phone_number' => 'required|string',
+            'consignor_gst_number' => 'nullable|string',
+            'consignee_gst_number' => 'nullable|string',
+            'consignor_email' => 'nullable|email',
+            'consignee_email' => 'nullable|email',
+            'invoice_number' => 'nullable|string',
+            'eway_bill_number' => 'nullable|string',
+            'mark' => 'nullable|string',
+            'remark' => 'nullable',
+            'photo_id' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+            'parcel_image' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+            'distance' => 'nullable|numeric',
+            'freight_amount' => 'nullable|numeric',
+            'wbc_charges' => 'nullable|numeric',
+            'handling_charges' => 'nullable|numeric',
+            'fov_amount' => 'nullable|numeric',
+            'fuel_amount' => 'nullable|numeric',
+            'transhipmen_one_amount' => 'nullable',
+            'transhipmen_two_amount' => 'nullable',
+            'transhipment_three_amount' => 'nullable',
+            'pickup_charges' => 'nullable|numeric',
+            'hamali_Charges' => 'nullable|numeric',
+            'bilti_Charges' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
+            'compney_charges' => 'nullable|numeric',
+            'sub_total' => 'nullable|numeric',
+            'cgst' => 'nullable|numeric',
+            'sgst' => 'nullable|numeric',
+            'igst' => 'nullable|numeric',
+            'grand_total' => 'nullable|numeric',
+            'misc_charge_amount' => 'nullable|numeric',
+            'grand_total_amount' => 'required|numeric',
+            'manual_bilty' => 'nullable',
+        ]);
+
+        $validator->after(function ($validator) use ($request) {
+            if ($request->consignor_branch_id == $request->consignee_branch_id) {
+                $validator->errors()->add('consignor_branch_id', 'Consignor and consignee branches must be different.');
+            }
+        });
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
+
+
+        $noBillBookings = $request->query('no-bill-bookings');
+
+
         $lastBilti = DB::table('bookings')->latest('id')->value('id');
         if ($noBillBookings) {
             // If no-bill-bookings is set, use "NB" format
@@ -841,11 +832,20 @@ class BookingController extends Controller
                 return [$bookingId];
             });
             [$bookingId] = $result;
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
+            ]);
             // Redirect to the booking bilti page
-            return redirect()->route('bookings.bilti', ['id' => $bookingId]);
+            // return redirect()->route('bookings.bilti', ['id' => $bookingId]);
         } catch (\Exception $e) {
-            return redirect()->back()->with(['error' => 'An error occurred while processing your request. Please try again later.'])->withInput();
+            return redirect()->back()
+                ->withInput()
+                ->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
+                ]);
+            // return redirect()->back()->with(['error' => 'An error occurred while processing your request. Please try again later.']);
         }
-
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Client extends Model
 {
     use HasFactory;
@@ -20,6 +21,7 @@ class Client extends Model
         'status'
     ];
     protected $dates = ['deleted_at'];
+
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'id');
@@ -30,14 +32,9 @@ class Client extends Model
         return $this->belongsToMany(Branch::class, 'client_branch', 'client_id', 'branch_user_id');
     }
 
-    // public function branch()
-    // {
-    //     return $this->belongsTo(Branch::class);
-    // }
 
     public function mappedClients()
-{
-    return $this->belongsToMany(Client::class, 'client_to_client_map', 'from_client_id', 'to_client_id');
-}
-
+    {
+        return $this->belongsToMany(Client::class, 'client_to_client_map', 'from_client_id', 'to_client_id');
+    }
 }

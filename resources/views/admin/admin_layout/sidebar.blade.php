@@ -272,15 +272,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/bookings/create') }}"
-                                class="nav-link {{ request()->is('admin/bookings/create') ? 'active' : '' }}">
+                            <a href="{{ url('admin/bookings/create?booking=normal-booking') }}"
+                                class="nav-link {{ request()->is('admin/bookings/create') && request('booking') == 'normal-booking' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Booking </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/bookings/clients/bookings') }}"
-                                class="nav-link {{ request()->is('admin/bookings/clients/bookings') ? 'active' : '' }}">
+                            <a href="{{ url('admin/bookings/create?booking=client-booking') }}"
+                                class="nav-link {{ request()->is('admin/bookings/create') && request('booking') == 'client-booking' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p> Client Booking </p>
                             </a>

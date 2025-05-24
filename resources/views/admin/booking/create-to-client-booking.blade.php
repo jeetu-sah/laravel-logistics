@@ -2,7 +2,6 @@
 @section('main_content')
     <div class="content-wrapper" style="min-height: 1419.51px;">
         <!-- Content Header (Page header) -->
-
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -31,7 +30,7 @@
                                             <label for="distance">Distance (KM):</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" readonly value="" name="distance" id="distance"
+                                            <input type="text" readonly value="{{ old('distance') }}" name="distance" id="distance"
                                                 class="form-control mb-1" oninput="calculateInvoice()" />
                                         </div>
 

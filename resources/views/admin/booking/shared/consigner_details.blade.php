@@ -3,22 +3,30 @@
         <div class="card-header">
             <h3 class="card-title">{{ $tittle }}</h3>
         </div>
-
         <div class="card-body">
+            @if($bookingType === \App\Models\Booking::CLIENT_BOOKING)
             <div class="row">
-
+                <div class="col-md-7 mb-1">
+                    <label for="date">Select Client:</label>
+                    <select required class="form-select select2 form-control js-select2" name="client_id" id="client_id">
+                        <option value="">Select Client</option>
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->client_name }}</option>
+                        @endforeach
+                    </select>
+                    <div id="client_details"></div>
+                </div>
+            </div>
+            @endif
+            <div class="row">
                 <div class="col-md-2">
                     <div class="">
                         <label for="date">Paid:</label>
                     </div>
                 </div>
-
                 <div class="col-md-1">
                     <input type="checkbox" name="booking" class="form-control" value="Paid" id="paid"
                         onclick="uncheckOther(this)" />
-
-
-
                 </div>
 
                 <div class="col-md-1 mb-2">
@@ -30,7 +38,6 @@
                     <div class="">
                         <input type="checkbox" class="form-control" name="booking" value="Topay" id="to_pay"
                             onclick="uncheckOther(this)" />
-
                     </div>
                 </div>
                 <div class="col-md-2 mb-2">
@@ -40,9 +47,7 @@
                 </div>
                 <div class="col-md-3 mb-2">
                     <div class="">
-                        <input type="text" class="form-control" name="manual_bilty" value=""
-                            id="manual_bilty" />
-
+                        <input type="text" class="form-control" name="manual_bilty" value="{{ old('manual_bilty') }}" id="manual_bilty" />
                     </div>
                 </div>
                 <script>
@@ -82,7 +87,7 @@
                             name="transhipmen_one" id="transhipmen_one">
                             <option value="">Select Branch Name</option>
                             @foreach ($branch as $branchList)
-                                <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -100,10 +105,10 @@
                         id="consignor_branch_id">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}" @if ($branchList->id != $user->branch_user_id) disabled @endif
-                                @if ($branchList->id == $user->branch_user_id) selected @endif>
-                                {{ $branchList->branch_name }}
-                            </option>
+                        <option value="{{ $branchList->id }}" @if ($branchList->id != $user->branch_user_id) disabled @endif
+                            @if ($branchList->id == $user->branch_user_id) selected @endif>
+                            {{ $branchList->branch_name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -115,7 +120,7 @@
                         name="transhipmen_two" id="transhipmen_two">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -132,7 +137,7 @@
                         id="consignee_branch_id">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -147,7 +152,7 @@
                         name="transhipment_three" id="transhipment_three">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -161,7 +166,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" id="no_of_articles" name="no_of_artical" class="form-control mb-1" />
+                        <input type="number" id="no_of_articles" name="no_of_artical" class="form-control mb-1" value="{{ old('no_of_artical') }}" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -171,7 +176,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" name="actual_weight" value="" class="form-control mb-1" />
+                        <input type="number" name="actual_weight" value="" class="form-control mb-1" value="{{ old('actual_weight') }}" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -181,7 +186,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="text" value="" name="cantain" class="form-control mb-1" />
+                        <input type="text" name="cantain" value="{{ old('cantain') }}" class="form-control mb-1" />
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -191,7 +196,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="number" value="" id="good_of_value" name="good_of_value"
+                        <input type="number" value="{{ old('good_of_value') }}" id="good_of_value" name="good_of_value"
                             oninput="calculateFOV()" class="form-control mb-1" />
                     </div>
                 </div>
@@ -204,44 +209,33 @@
             <div class="row">
                 <div class="col-md-3">
                     <label for="date">Name:</label>
-
                 </div>
                 <div class="col-md-3">
-                    <input type="text" name="consignor_name" value="" class="form-control mb-1" />
+                    <input type="text" name="consignor_name" value="{{ old('consignor_name') }}" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
-
                     <label for="date">Name:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" name="consignee_name" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_name') }}" name="consignee_name" class="form-control mb-1" />
 
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-md-3">
-
                     <label for="date">Address:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" name="consignor_address" class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('consignor_address') }}" name="consignor_address" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
-
                     <label for="date">Address:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" name="consignee_address" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_address') }}" name="consignee_address" class="form-control mb-1" />
 
                 </div>
 
@@ -253,57 +247,36 @@
 
                 </div>
                 <div class="col-md-3">
-
-                    <input type="mobile" value="" name="consignor_phone_number" class="form-control mb-1" />
-
+                    <input type="mobile" value="{{ old('consignor_phone_number') }}" name="consignor_phone_number" class="form-control mb-1" />
                 </div>
-
                 <div class="col-md-3">
-
                     <label for="date">mobile:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="mobile" value="" name="consignee_phone_number" class="form-control mb-1" />
-
+                    <input type="mobile" value="{{ old('consignee_phone_number') }}" name="consignee_phone_number" class="form-control mb-1" />
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-md-3">
-
                     <label for="date">GST:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" name="consignor_gst_number" class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('consignor_gst_number') }}" name="consignor_gst_number" class="form-control mb-1" />
                 </div>
-
                 <div class="col-md-3">
-
                     <label for="date">GST:</label>
-
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_gst_number" class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('consignee_gst_number') }}" name="consignee_gst_number" class="form-control mb-1" />
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-md-3">
-
-                    <label for="date">Email:</label>
-
+                    <label for="date">Email:</label>=
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" name="consignor_email" class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('consignor_email') }}" name="consignor_email" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
@@ -313,7 +286,7 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" name="consignee_email" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_email') }}" name="consignee_email" class="form-control mb-1" />
 
                 </div>
 
@@ -325,64 +298,38 @@
 
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" name="invoice_number" class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('invoice_number') }}" name="invoice_number" class="form-control mb-1" />
                 </div>
-
                 <div class="col-md-3">
-
                     <label for="date">Eway Bill Number:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" name="eway_bill_number" class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('eway_bill_number') }}" value="" name="eway_bill_number" class="form-control mb-1" />
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-md-4">
-
                     <label for="date">Aadhar card</label>
-                    <input type="text" value="" name="aadhar_card" class="form-control mb-1 mb-1" />
-
-
-
+                    <input type="text" value="{{ old('aadhar_card') }}" name="aadhar_card" class="form-control mb-1 mb-1" />
                 </div>
                 <div class="col-md-4">
-
                     <label for="date">Value Declare by Consignee.</label>
-                    <input type="text" name="mark" class="form-control mb-1 mb-1" />
-
-
-
+                    <input type="text" value="{{ old('mark') }}" name="mark" class="form-control mb-1 mb-1" />
                 </div>
                 <div class="col-md-4">
-
                     <label for="date">Remark</label>
-                    <input type="text" name="remark" class="form-control mb-1 mb-1" />
-
-
+                    <input type="text" value="{{ old('remark') }}" name="remark" class="form-control mb-1 mb-1" />
                 </div>
-
-
-
-
             </div>
             <div class="row">
                 <div class="col-md-6">
-
                     <label for="date">Upload Photo ID Image:</label>
                     <input type="file" class="form-control mb-1 mb-1" name="photo_id" />
-
                 </div>
                 <div class="col-md-3">
                     <label for="parcel_image">Capture Image</label>
                     <input type="file" name="parcel_image" id="parcel_image" class="form-control mb-1" />
                 </div>
-
                 <script>
                     let stream;
 

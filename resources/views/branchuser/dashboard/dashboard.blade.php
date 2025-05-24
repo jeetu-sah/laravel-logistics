@@ -98,13 +98,9 @@
                                     <th>Consinger Name</th>
                                     <th>Consinger Address</th>
                                     <th>Consinger Branch</th>
-                                    <th>Consignee Name</th>
                                     <th>Destinaton</th>
-                                    <th>Consignee Address</th>
-
                                     <th>Payment Mode</th>
                                     <th>Booking Date</th>
-                                    {{-- <th>Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,82 +125,74 @@
 
 @section('styles')
 @parent
-.dashboard-link {
-color: #292828 !important;
-}
+<style>
+    .dashboard-link {
+        color: #292828 !important;
+    }
+</style>
 @endsection
 @section('script')
-    @parent
-    <!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
-    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+@parent
+<!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
+<script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
 
-    <script>
-        $(document).ready(function(e) {
-            new DataTable('#booking-list', {
-                responsive: true,
-                ajax: {
-                    url: "{{ url('admin/bookings/upcoming-booking') }}",
-                    data: function(d) {
-                        // Custom parameters can be added here if needed
-                        // Example:
-                        // d.filter = $('#filter-input').val();
-                    }
+<script>
+    $(document).ready(function(e) {
+        new DataTable('#booking-list', {
+            responsive: true,
+            ajax: {
+                url: "{{ url('branch-user/dashboard/bookings/upcoming-booking') }}",
+                data: function(d) {
+                    // Custom parameters can be added here if needed
+                    // Example:
+                    // d.filter = $('#filter-input').val();
+                }
+            },
+            columns: [{
+                    data: 'sn'
                 },
-                columns: [{
-                        data: 'sn'
-                    },
-                    {
-                        data: 'bilti_number'
-                    },
-                    {
-                        data: 'offline_bilti'
-                    },
-                    {
-                        data: 'consignor_name'
-                    },
-                    {
-                        data: 'address'
+                {
+                    data: 'bilti_number'
+                },
+                {
+                    data: 'offline_bilti'
+                },
+                {
+                    data: 'consignor_name'
+                },
+                {
+                    data: 'address'
 
-                    },
-                    {
-                        data: 'consignor_branch_id'
+                },
+                {
+                    data: 'consignor_branch_id'
+                },
+                {
+                    data: 'consignee_branch_id'
+                },
+                {
+                    data: 'booking_type'
 
-                    },
-                    {
-                        data: 'consignee_name'
-                    },
-                    {
-                        data: 'consignee_branch_id'
+                },
+                {
+                    data: 'created_at'
 
-                    },
-                    {
-                        data: 'consignee_address'
+                },
+                // {
+                //     data: 'action',
 
-                    },
+                //     orderable: false
+                // }
+            ],
 
-                    {
-                        data: 'booking_type'
-
-                    },
-                    {
-                        data: 'created_at'
-
-                    },
-                    // {
-                    //     data: 'action',
-
-                    //     orderable: false
-                    // }
-                ],
-
-                processing: true,
-                serverSide: true
-            });
+            processing: true,
+            serverSide: true
         });
-    </script>
+    });
+</script>
 @endsection
 
 @section('styles')
-    @parent
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+@parent
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
 @endsection

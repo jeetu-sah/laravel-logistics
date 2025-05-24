@@ -100,17 +100,21 @@ Route::group(['middleware' => ['auth']], function () {
 
 
         // Define the route for the bilti view
+        Route::prefix('bookings')->group(function () {
+             Route::get('/create', [BookingController::class, 'create']);
+             Route::post('/store', [BookingController::class, 'store']);
+               Route::get('/client', [BookingController::class, 'clientBooking']);
+        });
         Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
-
-
         // paid booking
+
         Route::get('/bookings/incoming-load', [BookingController::class, 'incomingLoad']);
         Route::get('/bookings', [BookingController::class, 'index']);
-        Route::get('/bookings/create', [BookingController::class, 'create']);
-        Route::post('/bookings/store', [BookingController::class, 'store']);
+       
+        
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
 
-        Route::get('/bookings/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
+        //Route::get('/bookings/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
         Route::get('/bookings/list', [BookingController::class, 'list']);
         Route::get('/clients/bookings/edit/{id}', [BookingController::class, 'edit']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
@@ -125,7 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings/clients', [BookingController::class, 'Clientshow']);
         Route::get('/bookings/clientsList', [BookingController::class, 'clientList']);
         // Route::get('/bookings/clients/bookings/{id}', [BookingController::class, 'to_client_booking']);
-        Route::get('/bookings/clients/bookings', [BookingController::class, 'to_client_booking']);
+      
         Route::post('/bookings/to-client-booking', [BookingController::class, 'to_client_booking_save']);
 
         Route::get('/get-client-details/{id}', [ClientController::class, 'getClientDetails']);
@@ -181,7 +185,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('branch-user/')->group(function () {
 
-        Route::get('dashboard', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
+        Route::prefix('dashboard/')->group(function () {
+            Route::get('/', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
+            Route::get('/bookings/upcoming-booking', [\App\Http\Controllers\BranchUser\DashboardController::class, 'upcomingBookings']);
+        });
 
         Route::get('employees', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
         Route::get('employees/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);

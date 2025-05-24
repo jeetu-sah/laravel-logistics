@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Booking;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Branch extends Model
 {
-    use HasFactory; use SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'branch_name',
@@ -44,12 +46,14 @@ class Branch extends Model
     {
         return $this->hasOne(User::class, 'branch_user_id');
     }
-   
+
     public function clients()
     {
-        return $this->belongsToMany(Client::class, 'client_branch', 'branch_user_id', 'client_id');
+        return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id');
     }
-    // Branch.php (Model)
 
-
+    public static function currentbranch()
+    {
+        return self::where('id', Auth::user()->branch_user_id)->first();
+    }
 }
