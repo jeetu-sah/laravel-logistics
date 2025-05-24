@@ -159,19 +159,33 @@ class ReviewerController extends Controller
         }
     }
 
+    public function updateStatus(Request $request)
+    {
+        $user = User::find($request->id);
+        if ($user) {
+            $user->user_status = $request->status;
+            $user->save();
+
+            return response()->json(['message' => 'User status updated to ' . ucfirst($request->status)]);
+        } else {
+            return response()->json(['message' => 'User not found!'], 404);
+        }
+    }
+
+
     public function list(Request $request)
     {
-     
+
         $limit = request()->input('length');
         $start = request()->input('start');
-      
+
         $usersQuery = User::query();
         $usersQuery = $usersQuery->where([
             ['user_type', '=', User::EMPLOYEE],
             ['branch_user_id', '=', Auth::user()->branch_user_id]
         ]);
         $totalRecord = $usersQuery->count();
-        
+
         $users = $usersQuery->skip($start)->take($limit)->get();
 
         $rows = [];
@@ -179,15 +193,17 @@ class ReviewerController extends Controller
             $i = 1;
             foreach ($users as $user) {
                 $change_credential = NULL;
+
                 $edit_btn = '<a href="' . url("branch-user/employees/edit/" . $user->id) . '" data-toggle="tooltip" title="Edit Record" class="btn btn-primary" style="margin-right: 5px;">
 						<i class="fas fa-edit"></i> 
 					  </a>';
                 $change_credential = '';
-             
+
                 $row = [];
+
                 $row['sn'] = '<a href="' . url("branch-user/employees/edit/$user->id") . '">' . $user->userId . '</a>';
                 ;
-
+                $row['id'] = $user->id;
                 $row['name'] = $user->first_name;
                 $row['email'] = $user->email;
                 $row['mobile'] = $user->mobile;
