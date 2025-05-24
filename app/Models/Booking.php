@@ -77,9 +77,10 @@ class Booking extends Model
         'grand_total',
         'misc_charge_amount',
         'grand_total_amount',
-        'bilti_number',        // Add this line
-        'status',              // Add this line
-        'booking_type',        // Add this line
+        'bilti_number',
+        'status',
+        'booking_type',
+        'booking_status'
     ];
 
     // If you want to hide attributes from arrays
@@ -140,12 +141,12 @@ class Booking extends Model
             ->where('booking_id', $this->id)->first();
     }
 
-    
+
     /*is_revert_button_visible
         get for which branch should be display the received button */
     protected function getIsRevertButtonVisibleAttribute()
     {
-        if($this->next_booking_transhipment->received_at != NULL) {
+        if ($this->next_booking_transhipment->received_at != NULL) {
             return false;
         }
         return true;

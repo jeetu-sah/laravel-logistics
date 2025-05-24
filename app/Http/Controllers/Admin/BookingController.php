@@ -725,7 +725,7 @@ class BookingController extends Controller
             'grand_total' => 'nullable|numeric',
             'misc_charge_amount' => 'nullable|numeric',
             'grand_total_amount' => 'required|numeric',
-            'manual_bilty' => 'nullable',
+            'booking_status' => 'required',
         ]);
 
         $validator->after(function ($validator) use ($request) {
@@ -770,13 +770,13 @@ class BookingController extends Controller
                     'consignor_branch_id' => $request->consignor_branch_id,
                     'consignor_name' => $request->consignor_name,
                     'consignor_address' => $request->consignor_address,
-                    'consignor_phone_number' => $request->consignor_phone_number ?: "NA",
-                    'consignor_email' => $request->consignor_email ?: "NA",
-                    'consignor_gst_number' => $request->consignor_gst_number ?: "NA",
-                    'invoice_number' => $request->invoice_number ?: "NA",
-                    'eway_bill_number' => $request->eway_bill_number ?: "NA",
-                    'mark' => $request->mark ?: "NA",
-                    'remark' => $request->remark ?: "NA",
+                    'consignor_phone_number' => $request->consignor_phone_number ?? '',
+                    'consignor_email' => $request->consignor_email ?? '',
+                    'consignor_gst_number' => $request->consignor_gst_number ?? '',
+                    'invoice_number' => $request->invoice_number ?? '',
+                    'eway_bill_number' => $request->eway_bill_number ?? '',
+                    'mark' => $request->mark ?? '',
+                    'remark' => $request->remark ?? '',
                     'photo_id' => $request->hasFile('photo_id') ? $request->file('photo_id')->store('photos', 'public') : 'NA',
                     'parcel_image' => $request->hasFile('parcel_image') ? $request->file('parcel_image')->store('parcels', 'public') : 'NA',
                     // Consignee
@@ -814,11 +814,12 @@ class BookingController extends Controller
                     'grand_total' => $request->grand_total ?: "0.00",
                     'misc_charge_amount' => $request->misc_charge_amount ?: "0.00",
                     'grand_total_amount' => $request->grand_total_amount,
-                    'status' => '1',
+                    'status' => Booking::BOOKED,
                     'booking_type' => $request->booking,
                     'manual_bilty_number' => $request->manual_bilty,
                     'client_id' => $request->client_id ?? null,
                     'created_at' => now(),
+                    'booking_status' => $request->booking_status
                 ]);
 
                 $sequence = 1;
