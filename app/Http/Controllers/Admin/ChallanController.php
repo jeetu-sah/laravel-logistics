@@ -150,6 +150,7 @@ class ChallanController extends Controller
                 $row['sn'] = '<a href="' . url("admin/roles/user_permission/$loadingChallan->id?page=roles") . '">' . $loadingChallan->id . '</a>';
                 $row['challan_number'] = '<a href="' . url('admin/challans', ['id' => $loadingChallan->id]) . '">' . $loadingChallan->challan_number . '</a>';
                 $row['busNumber'] = strtoupper($loadingChallan->busNumber);
+                $row['driverName'] = strtoupper($loadingChallan->driverName);
                 $row['type'] = ($loadingChallan->user->branch_user_id == $branchId) ? '<span class="badge badge-danger">Self Created</span>' : '<span class="badge badge-danger">Created By ' . $loadingChallan?->user?->branch?->branch_name . '</span>';
                 $row['created_at'] = formatDate($loadingChallan->created_at);
                 $row['action'] = $edit_btn . " " . $change_credential;

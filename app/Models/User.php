@@ -26,7 +26,11 @@ class User extends Authenticatable
     const ADMIN = 'admin';
     const BRANCH_USER = 'branch-user';
     const EMPLOYEE = 'employee';
-    
+
+    const ACTIVE = 'active';
+    const INACTIVE = 'inactive';
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -72,15 +76,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    
 
 
-     /**
+
+    /**
      * Get the user's full_name.
      */
-    protected function  getfullNameAttribute ()
+    protected function  getfullNameAttribute()
     {
-       return $this->first_name. " ". $this->last_name;
+        return $this->first_name . " " . $this->last_name;
     }
 
 
@@ -97,7 +101,7 @@ class User extends Authenticatable
         // $activeRole = sHelper::activeLoggedInUserRole(Auth::user());
         // $activeRoleId = $activeRole->role_id;
         // $userActiveRole = $this->roles->where('id', $activeRoleId)->first();
-        
+
         // return $userActiveRole->slug;
     }
 
@@ -105,6 +109,4 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Branch::class, 'branch_user_id');
     }
-
-    
 }

@@ -14,7 +14,7 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $employeeIDPrefix = 'EMP';
+        $employeeIDPrefix = 'EMP-';
         $settings = BranchSetting::where([['user_id', '=', Auth::id()]])->first();
         if ($settings != NULL) {
             $employeeIDPrefix = $settings?->prefix_employee_id;

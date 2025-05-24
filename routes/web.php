@@ -109,8 +109,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/client-detail/{id}', [ClientController::class, 'getClientDetail']);
             Route::get('/incoming-load', [BookingController::class, 'incomingLoad']);
             Route::get('/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
+            Route::get('/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
         });
-        Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
         // paid booking
 
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
@@ -131,11 +131,14 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::post('/bookings/to-client-booking', [BookingController::class, 'to_client_booking_save']);
         Route::get('challans/{challanId}/revert-booking/{bookingId}', [ChallanController::class, 'revertChallanbooking']);
-        Route::get('/challans', [ChallanController::class, 'index']);
-        Route::get('/challans/list', [ChallanController::class, 'list']);
-        Route::get('/challans/create', [ChallanController::class, 'create']);
-        Route::post('/challans/create', [ChallanController::class, 'store']);
-        Route::get('challans/{id}', [ChallanController::class, 'show']);
+
+        Route::prefix('challans')->group(function () {
+            Route::get('/', [ChallanController::class, 'index']);
+            Route::get('/list', [ChallanController::class, 'list']);
+            Route::get('/create', [ChallanController::class, 'create']);
+            Route::post('/create', [ChallanController::class, 'store']);
+            Route::get('/{id}', [ChallanController::class, 'show']);
+        });
 
         //Client routes
 
@@ -186,16 +189,20 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/bookings/upcoming-booking', [\App\Http\Controllers\BranchUser\DashboardController::class, 'upcomingBookings']);
         });
 
-        Route::get('employees', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
-        Route::get('employees/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);
-        Route::post('employees/update-status', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'updateStatus']);
-        Route::get('employees/create', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'index']);
-        Route::get('employees/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
-        Route::post('employees/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
-        Route::post('employees/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
+        Route::prefix('employees')->group(function () {
+            Route::get('/', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
+            Route::get('/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);
+            Route::post('/update-status', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'updateStatus']);
+            Route::get('/create', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'index']);
+            Route::get('/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
+            Route::post('/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
+            Route::post('/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
+        });
 
-        Route::get('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
-        Route::post('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
+        Route::prefix('settings')->group(function () {
+            Route::get('/', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
+            Route::post('/', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
+        });
     });
 
     //Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);

@@ -83,7 +83,7 @@ class BookingController extends Controller
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name ?? 'N/A';
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
-                $row['booking_type'] = $booking->booking_type_name;
+                $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type . '</span>';
                 $row['action'] = '<a href="' . url("admin/clients/bookings/edit/{$booking->booking_id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->booking_id}") . '" class="btn btn-warning">Print</a>';
                 $row['created_at'] = formatDate($booking->created_at);
                 $rows[] = $row;
@@ -176,7 +176,7 @@ class BookingController extends Controller
                 $row['consignee_name'] = $booking->client->client_name ?? '--';
 
                 $row['consignee_branch_id'] = $booking->client->client_address ?? '--';
-                $row['consignee_phone_number_1'] = $booking->consignee_phone_number;
+                $row['consignee_phone_number_1'] = $booking->consignee_phone_number ?? '';
 
                 // Conditional logic for 'booking_type'
                 $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type_name . '</span>';
@@ -241,7 +241,6 @@ class BookingController extends Controller
                 ]
             ]);
         }
-        $data['client'] = $data['booking']->client;
         $data['transhipments'] = $transhipments;
 
         foreach ($data['transhipments'] as $transhipment) {
