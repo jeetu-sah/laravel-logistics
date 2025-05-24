@@ -218,42 +218,38 @@
                     <label for="date">Name:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" value="{{ old('consignee_name') }}" name="consignee_name" class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('consignee_name') }}" id="consignee_name" name="consignee_name" class="form-control mb-1" />
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-md-3">
                     <label for="date">Address:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" value="{{ old('consignor_address') }}" name="consignor_address" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignor_address') }}" name="consignor_address" id="consignor_address" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
                     <label for="date">Address:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" value="{{ old('consignee_address') }}" name="consignee_address" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_address') }}" name="consignee_address" id="consignee_address" class="form-control mb-1" />
 
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-md-3">
-
                     <label for="date">mobile:</label>
-
                 </div>
                 <div class="col-md-3">
-                    <input type="mobile" value="{{ old('consignor_phone_number') }}" name="consignor_phone_number" class="form-control mb-1" />
+                    <input type="mobile" value="{{ old('consignor_phone_number') }}" name="consignor_phone_number" id="consignor_phone_number" class="form-control mb-1" />
                 </div>
                 <div class="col-md-3">
                     <label for="date">mobile:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="mobile" value="{{ old('consignee_phone_number') }}" name="consignee_phone_number" class="form-control mb-1" />
+                    <input type="mobile" value="{{ old('consignee_phone_number') }}" name="consignee_phone_number" id="consignee_phone_number" class="form-control mb-1" />
                 </div>
             </div>
             <div class="row">
@@ -261,14 +257,14 @@
                     <label for="date">GST:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" value="{{ old('consignor_gst_number') }}" name="consignor_gst_number" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignor_gst_number') }}" name="consignor_gst_number" id="consignor_gst_number" class="form-control mb-1" />
                 </div>
                 <div class="col-md-3">
                     <label for="date">GST:</label>
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ old('consignee_gst_number') }}" name="consignee_gst_number" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_gst_number') }}" name="consignee_gst_number" id="consignee_gst_number" class="form-control mb-1" />
                 </div>
             </div>
             <div class="row">
@@ -276,17 +272,14 @@
                     <label for="date">Email:</label>=
                 </div>
                 <div class="col-md-3">
-                    <input type="text" value="{{ old('consignor_email') }}" name="consignor_email" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignor_email') }}" name="consignor_email" id="consignor_email" class="form-control mb-1" />
                 </div>
-
                 <div class="col-md-3">
-
                     <label for="date">Email:</label>
-
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ old('consignee_email') }}" name="consignee_email" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_email') }}" id="consignee_email"  name="consignee_email" class="form-control mb-1" />
 
                 </div>
 
@@ -298,7 +291,7 @@
 
                 </div>
                 <div class="col-md-3">
-                    <input type="text" value="{{ old('invoice_number') }}" name="invoice_number" class="form-control mb-1" />
+                    <input type="text" value="{{ old('invoice_number') }}" name="invoice_number" id="invoice_number" class="form-control mb-1" />
                 </div>
                 <div class="col-md-3">
                     <label for="date">Eway Bill Number:</label>

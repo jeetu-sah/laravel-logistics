@@ -101,17 +101,19 @@ Route::group(['middleware' => ['auth']], function () {
 
         // Define the route for the bilti view
         Route::prefix('bookings')->group(function () {
-             Route::get('/create', [BookingController::class, 'create']);
-             Route::post('/store', [BookingController::class, 'store']);
-               Route::get('/client', [BookingController::class, 'clientBooking']);
+            Route::get('/create', [BookingController::class, 'create']);
+            Route::post('/store', [BookingController::class, 'store']);
+
+            // Route::get('/client', [BookingController::class, 'clientBooking']);
+            Route::get('/client-detail/{id}', [ClientController::class, 'getClientDetail']);
         });
         Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
         // paid booking
 
         Route::get('/bookings/incoming-load', [BookingController::class, 'incomingLoad']);
         Route::get('/bookings', [BookingController::class, 'index']);
-       
-        
+
+
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
 
         //Route::get('/bookings/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
@@ -129,11 +131,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings/clients', [BookingController::class, 'Clientshow']);
         Route::get('/bookings/clientsList', [BookingController::class, 'clientList']);
         // Route::get('/bookings/clients/bookings/{id}', [BookingController::class, 'to_client_booking']);
-      
+
         Route::post('/bookings/to-client-booking', [BookingController::class, 'to_client_booking_save']);
-
-        Route::get('/get-client-details/{id}', [ClientController::class, 'getClientDetails']);
-
         Route::get('challans/{challanId}/revert-booking/{bookingId}', [ChallanController::class, 'revertChallanbooking']);
         Route::get('/challans', [ChallanController::class, 'index']);
         Route::get('/challans/list', [ChallanController::class, 'list']);

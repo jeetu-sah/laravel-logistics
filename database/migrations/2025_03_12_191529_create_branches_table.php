@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('address2')->nullable();
             $table->enum('user_status', ['active', 'inactive']);
             $table->timestamp('deleted_at')->nullable();
-            $table->timestamps(); // created_at, updated_at
+            $table->timestamps();
         });
     }
 

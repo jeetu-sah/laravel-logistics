@@ -53,7 +53,7 @@
                                         <label for="distance">Distance (KM):</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" name="distance" id="distance"
+                                        <input type="text" value="{{ old('distance') }}" name="distance" id="distance"
                                             class="form-control mb-1" />
                                     </div>
 
@@ -62,8 +62,8 @@
                                         <label for="freight_amount">Freight:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly value="" name="freight_amount"
-                                            id="freight_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('freight_amount') }}" name="freight_amount"
+                                            id="freight_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- WBC -->
@@ -71,8 +71,8 @@
                                         <label for="wbc_charges">WBC:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="wbc_charges" id="wbc_charges"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('wbc_charges') }}"   name="wbc_charges" id="wbc_charges"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Handling Charges -->
@@ -80,8 +80,8 @@
                                         <label for="handling_charges">Handling Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="handling_charges" id="handling_charges"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('handling_charges') }}" name="handling_charges" id="handling_charges"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- FOV -->
@@ -89,8 +89,8 @@
                                         <label for="fov_amount">FOV:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" readonly name="fov_amount" id="fov_amount"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('fov_amount') }}"  name="fov_amount" id="fov_amount"
+                                            class="form-control mb-1"  readonly />
                                     </div>
 
                                     <!-- Fuel Charges -->
@@ -98,8 +98,8 @@
                                         <label for="fuel_amount">Fuel Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly value="" name="fuel_amount"
-                                            id="fuel_amount" class="form-control mb-1" />
+                                        <input type="text"  value="{{ old('fuel_amount') }}" name="fuel_amount"
+                                            id="fuel_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Transhipment 1 -->
@@ -107,8 +107,8 @@
                                         <label for="transhipmen_one_amount">Transhipment 1:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" readonly name="transhipmen_one_amount"
-                                            id="transhipmen_one_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('transhipmen_one_amount') }}"  name="transhipmen_one_amount"
+                                            id="transhipmen_one_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Transhipment 2 -->
@@ -116,8 +116,8 @@
                                         <label for="transhipmen_two_amount">Transhipment 2:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" readonly name="transhipmen_two_amount"
-                                            id="transhipmen_two_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('transhipmen_two_amount') }}"  name="transhipmen_two_amount"
+                                            id="transhipmen_two_amount" class="form-control mb-1"  readonly />
                                     </div>
 
                                     <!-- Transhipment 3 -->
@@ -125,8 +125,8 @@
                                         <label for="transhipment_three_amount">Transhipment 3:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" readonly name="transhipment_three_amount"
-                                            id="transhipment_three_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('transhipment_three_amount') }}"  name="transhipment_three_amount"
+                                            id="transhipment_three_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Pickup Charges -->
@@ -134,7 +134,7 @@
                                         <label for="pickup_charges">Pickup Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" name="pickup_charges" id="pickup_charges"
+                                        <input type="text" value="{{ old('pickup_charges') }}" name="pickup_charges" id="pickup_charges"
                                             class="form-control mb-1" />
                                     </div>
 
@@ -143,8 +143,8 @@
                                         <label for="hamali_Charges">Hamali Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="hamali_Charges" id="hamali_Charges"
-                                            class="form-control mb-1" />
+                                        <input type="text"  value="{{ old('hamali_Charges') }}" name="hamali_Charges" id="hamali_Charges"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Bilti Charges -->
@@ -152,8 +152,8 @@
                                         <label for="bilti_Charges">Bilti Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="bilti_Charges" id="bilti_Charges"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('bilti_Charges') }}"   name="bilti_Charges" id="bilti_Charges"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Discount -->
@@ -161,17 +161,14 @@
                                         <label for="discount">Discount:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" name="discount" id="discount"
-                                            class="form-control mb-1" />
+                                        <input type="text" name="discount" id="discount" class="form-control mb-1" value="{{ old('discount') }}" />
                                     </div>
-
                                     <!-- Company Charges -->
                                     <div class="col-md-6">
                                         <label for="compney_charges">Company Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly value="" name="compney_charges"
-                                            id="compney_charges" class="form-control mb-1" />
+                                        <input type="text"  value="{{ old('compney_charges') }}" name="compney_charges" id="compney_charges" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Misc Charges -->
@@ -179,8 +176,7 @@
                                         <label for="misc_charge_amount">Misc. Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" name="misc_charge_amount"
-                                            id="misc_charge_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('misc_charge_amount') }}" name="misc_charge_amount" id="misc_charge_amount" class="form-control mb-1" />
                                     </div>
 
                                     <!-- Sub Total -->
@@ -188,7 +184,7 @@
                                         <label for="sub_total">Sub Total:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" name="sub_total" id="sub_total"
+                                        <input type="text" value="{{ old('sub_total') }}" name="sub_total" id="sub_total"
                                             class="form-control mb-1" readonly />
                                     </div>
 
@@ -197,24 +193,21 @@
                                         <label for="cgst">CGST:</label>
                                     </div>
                                     <div class="col-md-6 cgst">
-                                        <input type="text" readonly value="" name="cgst" id="cgst"
-                                            class="form-control mb-1" readonly />
+                                        <input type="text" value="{{ old('cgst') }}" name="cgst" id="cgst" class="form-control mb-1" readonly />
                                     </div>
 
                                     <div class="col-md-6 sgst">
                                         <label for="sgst">SGST:</label>
                                     </div>
                                     <div class="col-md-6 sgst">
-                                        <input type="text" readonly value="" name="sgst" id="sgst"
-                                            class="form-control mb-1" readonly />
+                                        <input type="text" value="{{ old('sgst') }}"  name="sgst" id="sgst" class="form-control mb-1" readonly />
                                     </div>
 
                                     <div class="col-md-6 igst">
                                         <label for="igst">IGST:</label>
                                     </div>
                                     <div class="col-md-6 igst">
-                                        <input type="text" readonly value="" name="igst" id="igst"
-                                            class="form-control mb-1" readonly />
+                                        <input type="text" value="{{ old('igst') }}" name="igst" id="igst"  class="form-control mb-1" readonly />
                                     </div>
 
 
@@ -223,8 +216,7 @@
                                         <label for="grand_total">Grand Total:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly value="" name="grand_total"
-                                            id="grand_total" class="form-control mb-1" readonly />
+                                        <input type="text" value="{{ old('grand_total') }}" name="grand_total" id="grand_total" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Final Amount -->
@@ -232,18 +224,14 @@
                                         <label for="grand_total_amount">Final Amount:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="grand_total_amount"
-                                            id="grand_total_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('grand_total_amount') }}" name="grand_total_amount"
+                                            id="grand_total_amount" class="form-control mb-1" readonly />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
                 <div class="row mb-3">
                     <div class="col-12">
                         {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a> --}}
@@ -367,7 +355,7 @@
 
 
     async function calculateInvoice(defaultDistance = 0, numberOfParcel = 0) {
-        console.log('calculateInvoice calculateInvoice', defaultDistance)
+
         // Get all input values
         const distance = defaultDistance || 0;
         const noOfArticles = parseInt(document.getElementById('no_of_articles').value) || 1;
@@ -461,7 +449,6 @@
         calculateInvoice(distance, numberOfArticle)
     }
 
-
     $(document).ready(function() {
         $('#consignor_branch_id, #consignee_branch_id').on('change', function() {
             var consignor_branch_id = $('#consignor_branch_id').val();
@@ -528,6 +515,30 @@
         $('#good_of_value').on('input', function() {
             calculateFOV(); // Recalculate FOV based on goods value
         });
+    });
+    $(document).on('change', '#client_id', function() {
+        var clientId = $(this).val();
+        $('#consignee_name, #consignee_phone_number, #consignee_address, #consignee_gst_number, #consignee_email').val('');
+
+        if (clientId) {
+            $.ajax({
+                url: '{{ url("admin/bookings/client-detail") }}/' + clientId,
+                type: 'GET',
+                success: function(response) {
+                    if (response.status == 'success') {
+                        console.log('test', response.data)
+                        $('#consignee_name').val(response.data.client_name);
+                        $('#consignee_phone_number').val(response.data.client_phone_number);
+                        $('#consignee_address').val(response.data.client_address);
+                        $('#consignee_gst_number').val(response.data.client_gst_number);
+                        $('#consignee_email').val(response.data.client_email);
+                    }
+                },
+                error: function() {
+                    alert('Failed to fetch client details.');
+                }
+            });
+        }
     });
 </script>
 <script>

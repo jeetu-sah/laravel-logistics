@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Branch;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Booking;
@@ -8,6 +9,7 @@ use App\Models\Client;
 use App\Models\Distances;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class ClientController extends Controller
 {
     /**
@@ -62,11 +64,11 @@ class ClientController extends Controller
 
             // Redirect to the booking bilti page
             return redirect('admin/clients')->with('success', 'Client Created Successfully');
-
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
+
     public function ClintstoreBkp(Request $request)
     {
         try {
@@ -157,7 +159,6 @@ class ClientController extends Controller
 
             // Redirect to the booking bilti page
             return redirect('admin/clients')->with('success', 'Client Created Successfully');
-
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -365,7 +366,6 @@ class ClientController extends Controller
             } else {
                 return redirect()->back()->withErrors(['error' => 'Client not found.']);
             }
-
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
@@ -381,7 +381,6 @@ class ClientController extends Controller
         $client = Client::find($id);
         $client->delete();
         return redirect('admin/clients')->with('success', 'Record deleted successfully');
-
     }
 
 
@@ -412,10 +411,9 @@ class ClientController extends Controller
     //     return view('admin.client.map', $data);
     // }
 
-    public function getClientDetails($id)
+    public function getClientDetail($id)
     {
         $client = Client::find($id);
-
         if ($client) {
             return response()->json([
                 'status' => 'success',
@@ -428,5 +426,4 @@ class ClientController extends Controller
             ]);
         }
     }
-
 }

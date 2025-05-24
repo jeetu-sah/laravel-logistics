@@ -781,6 +781,11 @@ class BookingController extends Controller
                     'parcel_image' => $request->hasFile('parcel_image') ? $request->file('parcel_image')->store('parcels', 'public') : 'NA',
                     // Consignee
                     'consignee_branch_id' => $request->consignee_branch_id,
+                    'consignee_name' => $request->consignee_name,
+                    'consignee_address' => $request->consignee_address,
+                    'consignee_phone_number' => $request->consignee_phone_number,
+                    'consignee_gst_number' => $request->consignee_gst_number,
+                    'consignee_email' => $request->consignee_email,
 
                     // Other Details
                     'no_of_artical' => $request->no_of_artical,
@@ -812,7 +817,7 @@ class BookingController extends Controller
                     'status' => '1',
                     'booking_type' => $request->booking,
                     'manual_bilty_number' => $request->manual_bilty,
-                    'client_id' => $request->client_id,
+                    'client_id' => $request->client_id ?? null,
                     'created_at' => now(),
                 ]);
 
@@ -836,8 +841,6 @@ class BookingController extends Controller
                 "alertMessage" => true,
                 "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
             ]);
-            // Redirect to the booking bilti page
-            // return redirect()->route('bookings.bilti', ['id' => $bookingId]);
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
@@ -845,7 +848,6 @@ class BookingController extends Controller
                     "alertMessage" => true,
                     "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
                 ]);
-            // return redirect()->back()->with(['error' => 'An error occurred while processing your request. Please try again later.']);
         }
     }
 }
