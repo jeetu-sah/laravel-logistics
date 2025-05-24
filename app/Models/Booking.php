@@ -14,7 +14,6 @@ class Booking extends Model
 {
     use HasFactory;
 
-    // Specify the table name
     protected $table = 'bookings';
 
     const BOOKED = 1;
@@ -24,8 +23,7 @@ class Booking extends Model
 
     const NORMAL_BOOKING = 'normal-booking';
     const CLIENT_BOOKING = 'client-booking';
-
-
+    const NO_BOOKING = 'no-booking';
 
 
     // Specify the primary key (if it's not 'id')
@@ -37,7 +35,6 @@ class Booking extends Model
     // Set the data type of the primary key
     protected $keyType = 'int';
 
-    // Allow mass assignment for these fields
     protected $fillable = [
         'booking_date',
         'consignor_branch_id',
@@ -51,6 +48,11 @@ class Booking extends Model
         'consignor_phone_number',
         'consignor_gst_number',
         'consignor_email',
+        'consignee_name',
+        'consignee_address',
+        'consignee_phone_number',
+        'consignee_gst_number',
+        'consignee_email',
         'invoice_number',
         'eway_bill_number',
         'mark',

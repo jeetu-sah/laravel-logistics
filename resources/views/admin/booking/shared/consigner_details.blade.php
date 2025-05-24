@@ -293,12 +293,14 @@
                 <div class="col-md-3">
                     <input type="text" value="{{ old('invoice_number') }}" name="invoice_number" id="invoice_number" class="form-control mb-1" />
                 </div>
+                 @if($bookingType === \App\Models\Booking::NO_BOOKING)
                 <div class="col-md-3">
                     <label for="date">Eway Bill Number:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" value="{{ old('eway_bill_number') }}" value="" name="eway_bill_number" class="form-control mb-1" />
+                    <input type="text" value="{{ old('eway_bill_number') }}" name="eway_bill_number" class="form-control mb-1" />
                 </div>
+                @endif
             </div>
             <div class="row">
                 <div class="col-md-4">

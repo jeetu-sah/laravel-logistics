@@ -221,8 +221,8 @@
 
                 @role('Branchuser')
                 <li class="nav-item has-treeview">
-                    <a href="{{ url('admin/bookings/create?no-bill-bookings=true') }}"
-                        class="nav-link {{ request()->query('no-bill-bookings') ? 'active' : '' }}">
+                    <a href="{{ url('admin/bookings/create?booking=no-booking') }}"
+                        class="nav-link {{ request()->is('admin/bookings/create') && request('booking') == 'no-booking' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-book"></i>
                         <p>
                             NB Booking
@@ -231,9 +231,9 @@
                 </li>
 
                 <li
-                    class="nav-item has-treeview {{ request()->query('no-bill-bookings') ? '' : (request()->is('admin/bookings*') ? 'menu-open' : '') }} ">
+                    class="nav-item has-treeview {{ request()->query('no-bill-bookings') ? '' : ( (request()->is('admin/bookings*') && request('booking') != 'no-booking') ? 'menu-open' : '') }} ">
                     <a href="{{ url('admin/admin/role-list') }}"
-                        class="nav-link {{ request()->query('no-bill-bookings') ? '' : (request()->is('admin/bookings*') ? 'active' : '') }}">
+                        class="nav-link {{ request()->query('no-bill-bookings') ? '' : ( (request()->is('admin/bookings*') && request('booking') != 'no-booking') ? 'active' : '') }}">
                         <i class="nav-icon fas fa-book"></i>
                         <p>
                             Booking

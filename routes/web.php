@@ -106,17 +106,13 @@ Route::group(['middleware' => ['auth']], function () {
 
             // Route::get('/client', [BookingController::class, 'clientBooking']);
             Route::get('/client-detail/{id}', [ClientController::class, 'getClientDetail']);
+            Route::get('/incoming-load', [BookingController::class, 'incomingLoad']);
+            Route::get('/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
         });
         Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
         // paid booking
-
-        Route::get('/bookings/incoming-load', [BookingController::class, 'incomingLoad']);
         Route::get('/bookings', [BookingController::class, 'index']);
-
-
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
-
-        //Route::get('/bookings/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
         Route::get('/bookings/list', [BookingController::class, 'list']);
         Route::get('/clients/bookings/edit/{id}', [BookingController::class, 'edit']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
