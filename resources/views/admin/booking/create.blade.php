@@ -40,7 +40,7 @@
                 method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <input type="text" value="{{ $bookingType }}" name="booking_status" id="booking_status" class="form-control mb-1" readonly />
+                    <input type="hidden" value="{{ $bookingType }}" name="booking_status" id="booking_status" class="form-control mb-1" readonly />
                     @include('admin.booking.shared.consigner_details')
                     <div class="col-md-3">
                         <div class="card card-danger">

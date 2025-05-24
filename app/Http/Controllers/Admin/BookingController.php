@@ -40,7 +40,7 @@ class BookingController extends Controller
         $start = $request->input('start', 0);
 
         // Start of query
-        $bookingQuery = Booking::with(['client']);
+        $bookingQuery = Booking::with(['client', 'consigneeBranch', 'consigneeBranch']);
         // Filter by branch
         $bookingQuery->where('consignor_branch_id', Auth::user()->branch_user_id);
         // Search functionality
@@ -50,16 +50,12 @@ class BookingController extends Controller
                 ->orWhere('consignee_name', 'like', "%$search%")
                 ->orWhere('clients.client_name', 'like', "%$search%"); // Added client name search
         }
-
-        // Status filter
-        // $bookingQuery->where('bookings.status', Booking::BOOKED);
-
         // Count the total records
         $totalRecord = $bookingQuery->count();
 
         // Apply pagination and order
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('bookings.created_at', 'desc')->get();
-
+     
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
@@ -78,26 +74,18 @@ class BookingController extends Controller
                 $row['offline_bilti'] = $booking->manual_bilty_number
                     ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
                     : 'N/A';
-
+               
                 // Consignor and consignee information
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name ?? 'N/A';
                 $row['consignor_name'] = $booking->consignor_name ?? 'N/A';
                 $row['address'] = $booking->consignor_address ?? 'N/A';
-                $row['phone_number_1'] = $booking->phone_number_1 ?? 'N/A';
                 $row['gst_number'] = $booking->gst_number ?? 'N/A';
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name ?? 'N/A';
-                $row['consignee_name'] = $booking->client_name;
-                $row['consignee_address'] = $booking->client_address;
-                $row['consignee_phone_number_1'] = $booking->client_phone_number;
-
+                $row['consignee_name'] = $booking->consignee_name;
+                $row['consignee_address'] = $booking->consignee_address;
                 $row['booking_type'] = $booking->booking_type_name;
-                // Actions (Edit and Print)
                 $row['action'] = '<a href="' . url("admin/clients/bookings/edit/{$booking->booking_id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->booking_id}") . '" class="btn btn-warning">Print</a>';
-
-                // Date formatting
                 $row['created_at'] = formatDate($booking->created_at);
-
-                // Add the row to the rows array
                 $rows[] = $row;
             }
         }
@@ -223,23 +211,6 @@ class BookingController extends Controller
         $data['tittle'] = "No Bill";
         return view('admin.booking.create-no-bill-booking', $data);
     }
-
-    private function noBillgenerateBiltiNumber($lastBiltiNumber): string
-    {
-        // Check if the last bilti number is provided and valid
-        if (!empty($lastBiltiNumber) && preg_match('/\d+/', $lastBiltiNumber, $matches)) {
-            // Extract the numeric part from the last bilti number
-            $lastNumber = (int) $matches[0];
-            $nextNumber = $lastNumber + 1;
-        } else {
-            // If no last bilti number exists, start from 1
-            $nextNumber = 1;
-        }
-
-        // Return the bilti number in the format of YYMMxxx (e.g., 250131001)
-        return 'NB-' . date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-    }
-
 
     public function bilti($id)
     {
@@ -692,8 +663,8 @@ class BookingController extends Controller
             'consignee_name' => 'required|string',
             'consignor_address' => 'required|string',
             'consignee_address' => 'required|string',
-            'consignor_phone_number' => 'nullable|string',
-            'consignee_phone_number' => 'required|string',
+            'consignor_phone_number' => 'nullable|numeric',
+            'consignee_phone_number' => 'required|numeric',
             'consignor_gst_number' => 'nullable|string',
             'consignee_gst_number' => 'nullable|string',
             'consignor_email' => 'nullable|email',
@@ -740,18 +711,8 @@ class BookingController extends Controller
                 ->withInput();
         }
 
+        $nextBiltiNumber = sHelper::generateNextBiltiNumber($request->booking_status);
 
-        $noBillBookings = $request->query('no-bill-bookings');
-
-
-        $lastBilti = DB::table('bookings')->latest('id')->value('id');
-        if ($noBillBookings) {
-            // If no-bill-bookings is set, use "NB" format
-            $nextBiltiNumber = $this->noBillgenerateBiltiNumber($lastBilti); // Example: NB00001
-        } else {
-            // If no-bill-bookings is not set, use regular bilti number generation logic
-            $nextBiltiNumber = sHelper::generateNextBiltiNumber();  // Your existing bilti generation function
-        }
         $onlyTranshipment = [
             'consignor_branch_id' => $request->consignor_branch_id,
             'transhipmen_one' => $request->transhipmen_one,
@@ -788,31 +749,31 @@ class BookingController extends Controller
                     'consignee_email' => $request->consignee_email,
 
                     // Other Details
-                    'no_of_artical' => $request->no_of_artical,
-                    'good_of_value' => $request->good_of_value,
-                    'cantain' => $request->cantain ?: "0.00",
-                    'actual_weight' => $request->actual_weight ?: "0.00",
-                    'aadhar_card' => $request->aadhar_card ?: "0.00",
-                    'distance' => $request->distance ?: "0.00",
-                    'freight_amount' => $request->freight_amount ?: "0.00",
-                    'wbc_charges' => $request->wbc_charges ?: "0.00",
-                    'handling_charges' => $request->handling_charges ?: "0.00",
-                    'fov_amount' => $request->fov_amount ?: "0.00",
-                    'fuel_amount' => $request->fuel_amount ?: "0.00",
-                    'transhipmen_one_amount' => $request->transhipmen_one_amount ?: "0.00",
-                    'transhipmen_two_amount' => $request->transhipmen_two_amount ?: "0.00",
-                    'transhipment_three_amount' => $request->transhipment_three_amount ?: "0.00",
-                    'pickup_charges' => $request->pickup_charges ?: "0.00",
-                    'hamali_Charges' => $request->hamali_Charges ?: "0.00",
-                    'bilti_Charges' => $request->bilti_Charges ?: "0.00",
-                    'discount' => $request->discount ?: "0.00",
-                    'compney_charges' => $request->compney_charges ?: "0.00",
-                    'sub_total' => $request->sub_total ?: "0.00",
-                    'cgst' => $request->cgst ?: "0.00",
-                    'sgst' => $request->sgst ?: "0.00",
-                    'igst' => $request->igst ?: "0.00",
-                    'grand_total' => $request->grand_total ?: "0.00",
-                    'misc_charge_amount' => $request->misc_charge_amount ?: "0.00",
+                    'no_of_artical' => $request->no_of_artical ?? 0,
+                    'good_of_value' => $request->good_of_value ?? 0,
+                    'cantain' => $request->cantain ?? 0,
+                    'actual_weight' => $request->actual_weight ?? 0,
+                    'aadhar_card' => $request->aadhar_card ?? 0,
+                    'distance' => $request->distance ?? 0,
+                    'freight_amount' => $request->freight_amount ?? 0,
+                    'wbc_charges' => $request->wbc_charges ?? 0,
+                    'handling_charges' => $request->handling_charges ?? 0,
+                    'fov_amount' => $request->fov_amount ?? 0,
+                    'fuel_amount' => $request->fuel_amount ?? 0,
+                    'transhipmen_one_amount' => $request->transhipmen_one_amount ?? 0,
+                    'transhipmen_two_amount' => $request->transhipmen_two_amount ?? 0,
+                    'transhipment_three_amount' => $request->transhipment_three_amount ?? 0,
+                    'pickup_charges' => $request->pickup_charges ?? 0,
+                    'hamali_Charges' => $request->hamali_Charges ?? "0.00",
+                    'bilti_Charges' => $request->bilti_Charges ?? "0.00",
+                    'discount' => $request->discount ?? "0.00",
+                    'compney_charges' => $request->compney_charges ?? 0,
+                    'sub_total' => $request->sub_total ?? 0,
+                    'cgst' => $request->cgst ?? 0.00,
+                    'sgst' => $request->sgst ?? 0.00,
+                    'igst' => $request->igst ?? 0.00,
+                    'grand_total' => $request->grand_total ?: 0,
+                    'misc_charge_amount' => $request->misc_charge_amount ?? 0,
                     'grand_total_amount' => $request->grand_total_amount,
                     'status' => Booking::BOOKED,
                     'booking_type' => $request->booking,

@@ -86,8 +86,8 @@
                         <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
                             name="transhipmen_one" id="transhipmen_one">
                             <option value="">Select Branch Name</option>
-                            @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                            @foreach ($branch as $transshipmentBranch)
+                            <option value="{{ $transshipmentBranch->id }}" {{ old('transhipmen_one') == $transshipmentBranch->id ? 'selected' : '' }}>{{ $transshipmentBranch->branch_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -119,8 +119,8 @@
                     <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
                         name="transhipmen_two" id="transhipmen_two">
                         <option value="">Select Branch Name</option>
-                        @foreach ($branch as $branchList)
-                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                        @foreach ($branch as $transshipmentTwoBranch)
+                        <option value="{{ $transshipmentTwoBranch->id }}" {{ old('transhipmen_two') == $transshipmentTwoBranch->id ? 'selected' : '' }}>{{ $transshipmentTwoBranch->branch_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -136,8 +136,8 @@
                     <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
                         id="consignee_branch_id">
                         <option value="">Select Branch Name</option>
-                        @foreach ($branch as $branchList)
-                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                        @foreach ($branch as $transshipmentToBranch)
+                        <option value="{{ $transshipmentToBranch->id }}" {{ old('consignee_branch_id') == $transshipmentToBranch->id ? 'selected' : '' }}>{{ $transshipmentToBranch->branch_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -151,8 +151,8 @@
                     <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
                         name="transhipment_three" id="transhipment_three">
                         <option value="">Select Branch Name</option>
-                        @foreach ($branch as $branchList)
-                        <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}</option>
+                        @foreach ($branch as $transshipmentThirdBranch)
+                        <option value="{{ $transshipmentThirdBranch->id }}" {{ old('transhipment_three') == $transshipmentThirdBranch->id ? 'selected' : '' }}>{{ $transshipmentThirdBranch->branch_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" name="actual_weight" value="" class="form-control mb-1" value="{{ old('actual_weight') }}" />
+                        <input type="number" name="actual_weight" class="form-control mb-1" value="{{ old('actual_weight') }}" />
                     </div>
                 </div>
                 <div class="col-md-1">

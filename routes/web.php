@@ -101,9 +101,10 @@ Route::group(['middleware' => ['auth']], function () {
 
         // Define the route for the bilti view
         Route::prefix('bookings')->group(function () {
+            Route::get('/', [BookingController::class, 'index']);
+            Route::get('/list', [BookingController::class, 'list']);
             Route::get('/create', [BookingController::class, 'create']);
             Route::post('/store', [BookingController::class, 'store']);
-
             // Route::get('/client', [BookingController::class, 'clientBooking']);
             Route::get('/client-detail/{id}', [ClientController::class, 'getClientDetail']);
             Route::get('/incoming-load', [BookingController::class, 'incomingLoad']);
@@ -111,9 +112,9 @@ Route::group(['middleware' => ['auth']], function () {
         });
         Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
         // paid booking
-        Route::get('/bookings', [BookingController::class, 'index']);
+
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
-        Route::get('/bookings/list', [BookingController::class, 'list']);
+
         Route::get('/clients/bookings/edit/{id}', [BookingController::class, 'edit']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
