@@ -192,6 +192,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('employees', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
         Route::get('employees/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);
+        Route::post('employees/update-status', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'updateStatus']);
         Route::get('employees/create', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'index']);
         Route::get('employees/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
         Route::post('employees/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);

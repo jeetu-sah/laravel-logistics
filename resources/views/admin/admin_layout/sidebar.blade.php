@@ -15,7 +15,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="{{ url('/dashboard') }}" class="d-block">{{ auth()->user()->branch->branch_name  ?? '' }}</a>
+                <a href="{{ url('/dashboard') }}" class="d-block">{{ auth()->user()->branch->branch_name ?? '' }}</a>
             </div>
         </div>
 
@@ -94,7 +94,7 @@
                 <li class="nav-item has-treeview {{ request()->is('branch-user/employees*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('branch-user/employees') }}"
                         class="nav-link {{ request()->is('branch-user/employees*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-edit"></i>
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
                             Manage Employees
                             <i class="fas fa-angle-left right"></i>
@@ -119,30 +119,7 @@
                 </li>
                 @endrole
 
-                <!-- <li class="nav-item has-treeview">
-                    <a href="{{ url('admin/article') }}"
-                        class="nav-link {{ request()->is('admin/article*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-edit"></i>
-                        <p>
-                            Manage Manuscript
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ url('admin/article/create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create Article</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/reviewers/create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p> Article List </p>
-                            </a>
-                        </li>
-                    </ul>
-                </li> -->
+
                 @role('Admin')
                 <li class="nav-item has-treeview {{ request()->is('admin/distances*') ? 'menu-open' : '' }}">
                     <a href="{{ url('admin/distances') }}"
@@ -243,21 +220,21 @@
                 @endrole
 
                 @role('Branchuser')
-
                 <li class="nav-item has-treeview">
                     <a href="{{ url('admin/bookings/create?no-bill-bookings=true') }}"
                         class="nav-link {{ request()->query('no-bill-bookings') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-edit"></i>
+                        <i class="nav-icon fas fa-book"></i>
                         <p>
                             NB Booking
                         </p>
                     </a>
                 </li>
 
-                <li class="nav-item has-treeview {{ request()->query('no-bill-bookings') ? '' : (request()->is('admin/bookings*') ? 'menu-open' : '') }} ">
+                <li
+                    class="nav-item has-treeview {{ request()->query('no-bill-bookings') ? '' : (request()->is('admin/bookings*') ? 'menu-open' : '') }} ">
                     <a href="{{ url('admin/admin/role-list') }}"
                         class="nav-link {{ request()->query('no-bill-bookings') ? '' : (request()->is('admin/bookings*') ? 'active' : '') }}">
-                        <i class="nav-icon fas fa-edit"></i>
+                        <i class="nav-icon fas fa-book"></i>
                         <p>
                             Booking
                             <i class="fas fa-angle-left right"></i>
@@ -275,7 +252,7 @@
                             <a href="{{ url('admin/bookings/create?booking=normal-booking') }}"
                                 class="nav-link {{ request()->is('admin/bookings/create') && request('booking') == 'normal-booking' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Create Booking </p>
+                                <p>Normal Create Booking </p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -310,7 +287,7 @@
             <li class="nav-item has-treeview {{ request()->is('admin/challans*') ? 'menu-open' : '' }} ">
                 <a href="{{ url('admin/challans') }}"
                     class="nav-link {{ request()->is(patterns: 'admin/challans*') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-edit"></i>
+                    <i class="nav-icon fas fa-receipt"></i>
                     <p>
                         Manifest
                         <i class="fas fa-angle-left right"></i>
@@ -336,7 +313,7 @@
             <li class="nav-item has-treeview">
                 <a href="{{ url('admin/delivery') }}"
                     class="nav-link {{ request()->is('admin/delivery') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-edit"></i>
+                    <i class="nav-icon fas fa-shipping-fast"></i>
                     <p>
                         Delivery
                     </p>
@@ -345,7 +322,7 @@
             <li class="nav-item has-treeview {{ request()->is('admin/report*') ? 'menu-open' : '' }} ">
                 <a href="{{ url('admin/report') }}"
                     class="nav-link {{ request()->is('admin/report*') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-edit"></i>
+                    <i class="nav-icon fas fa-file"></i>
                     <p>
                         Reports
                         <i class="fas fa-angle-left right"></i>

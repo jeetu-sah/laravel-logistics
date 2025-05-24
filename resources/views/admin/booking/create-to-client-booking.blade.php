@@ -281,37 +281,7 @@
 @section('script')
     @parent
     <script src="{{ asset('admin_webu/plugins/select2/js/select2.full.min.js') }} "></script>
-    <script>
-        $(document).ready(function() {
-            $('#client_id').change(function() {
-                var clientId = $(this).val();
-
-                if (clientId) {
-                    $.ajax({
-                        url: '{{ url('admin/get-client-details') }}/' + clientId,
-                        type: 'GET',
-                        success: function(response) {
-                            if (response.status == 'success') {
-                                // Fill input fields
-                                $('#consignee_name').val(response.data.client_name);
-                                $('#consignee_phone').val(response.data.client_phone_number);
-                                $('#consignee_address').val(response.data.client_address);
-                                $('#consignee_gst_number').val(response.data.client_gst_number);
-                                $('#consignee_email').val(response.data.client_email);
-                            } else {
-                                alert(response.message);
-                            }
-                        },
-                        error: function() {
-                            alert('Failed to fetch client details.');
-                        }
-                    });
-                }
-            });
-
-        })
-    </script>
-    <script>
+      <script>
         const wbcPerparcelChargesperParcel = 40; // for single parcel
         const handlingChargesPerparcel = 30; // for single parcel
         const fuelChargesPerparcel = 150; // for single parcel

@@ -55,9 +55,10 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
+                            class="fas fa-bars"></i></a>
                 </li>
-            </ul> 
+            </ul>
             <!-- SEARCH FORM -->
             {{-- <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
@@ -71,6 +72,7 @@
             </form> --}}
 
             <!-- Right navbar links -->
+           
             <ul class="navbar-nav ml-auto">
                 <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown">
@@ -102,7 +104,8 @@
                                 <span>Role</span>
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
-                                        <span class="float-right">{{ ucfirst(auth::user()->active_role) ?? '--'}}</span>
+                                        <span
+                                            class="float-right">{{ ucfirst(auth::user()->active_role) ?? '--' }}</span>
                                     </h3>
                                 </div>
 
@@ -142,7 +145,8 @@
                         <div class="dropdown-divider"></div>
 
                         <div class="dropdown-divider"></div>
-                        <a href="{{ url('admin') }}" class="dropdown-item dropdown-footer text-primary">Update My Information</a>
+                        <a href="{{ url('admin') }}" class="dropdown-item dropdown-footer text-primary">Update My
+                            Information</a>
                     </div>
                 </li>
                 <!-- Notifications Dropdown Menu -->
@@ -177,13 +181,13 @@
                 </li> --}}
             </ul>
         </nav>
-        
+
         <!-- /.navbar -->
         @include('admin.admin_layout.sidebar')
         <!-- Main Sidebar Container -->
 
         <!-- Content Wrapper. Contains page content -->
-        
+
         @yield('main_content')
         <!-- Content Wrapper. Contains page content -->
 
