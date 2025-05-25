@@ -42,6 +42,8 @@ Route::post('track-shipment', [ShipmentController::class, 'trackShipment']);
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
+    Route::post('reset-password', [LoginController::class, 'resetPassword']);
+    Route::match(['get', 'post'], 'forget-password', [LoginController::class, 'forgetPassword']);
 });
 Route::get('/get-districts-user/{stateId}', [HomeController::class, 'getDistricts']);
 Route::post('/inquiry', [InquiryController::class, 'store']);
@@ -203,6 +205,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('settings')->group(function () {
             Route::get('/', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
             Route::post('/', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
+            Route::match(['get', 'post'], '/change-password', [\App\Http\Controllers\BranchUser\SettingController::class, 'changePassword']);
         });
     });
 

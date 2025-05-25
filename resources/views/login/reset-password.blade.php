@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>VikasLogistics | Log in</title>
-    <!-- Tell the browser to be responsive to screen width -->
+    <title>VikasLogistics | Reset Password</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('admin_webu/plugins/fontawesome-free/css/all.min.css') }}" />
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -17,12 +16,12 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/login') }}"><b>Logistics </b></a>
+            <a href="{{ url('/login') }}"><b>Logistics</b> Reset Password</a>
         </div>
 
         @if ($errors->any())
         <div class="alert alert-danger">
-            <ul>
+            <ul class="mb-0">
                 @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
                 @endforeach
@@ -30,26 +29,24 @@
         </div>
         @endif
 
+        @if (Session::has('status'))
+        <div class="alert alert-success">
+            {{ Session::get('status') }}
+        </div>
+        @endif
+
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
-                @if (Session::has('msg'))
-                {!! Session::get('msg') !!}
-                @endif
-                <form action="{{ url('login') }}" method="POST" autocomplete="off">
+                <p class="login-box-msg">Enter your new password below.</p>
+
+                <form action="{{ url('/reset-password') }}" method="POST" autocomplete="off">
                     @csrf
+
+                    <input type="" name="token" value="{{ $token }}">
+                    <input type="" name="email" value="{{ $email }}">
+
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" autofocus autocomplete="off" placeholder="Email"
-                            name="email" value="" />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" autofocus autocomplete="off" placeholder="Password"
-                            name="password" value="" />
+                        <input type="text" name="password" class="form-control" placeholder="New password" value="{{ old('password') }}" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -57,13 +54,24 @@
                         </div>
                     </div>
 
-                    <div class="social-auth-links text-center mb-3">
-                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    <div class="input-group mb-3">
+                        <input type="text" name="password_confirmation" class="form-control" placeholder="Confirm password" value="{{ old('password_confirmation') }}" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
+                        </div>
                     </div>
                 </form>
 
-                <p class="mb-1">
-                    <a href="{{ url('forget-password') }}">I forgot my password</a>
+                <p class="mt-3 mb-0 text-center">
+                    <a href="{{ url('/login') }}">Back to Login</a>
                 </p>
             </div>
         </div>
@@ -72,7 +80,6 @@
     <script src="{{ asset('admin_webu/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('admin_webu/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin_webu/dist/js/adminlte.min.js') }}"></script>
-
 </body>
 
 </html>

@@ -3,9 +3,7 @@
 <div class="container">
     <!-- Outer Row -->
     <div class="row justify-content-center">
-
         <div class="col-xl-10 col-lg-12 col-md-9">
-
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
@@ -39,8 +37,7 @@
                                                 class="custom-control-input"
                                                 value="1"
                                                 id="customCheck">
-                                            <label class="custom-control-label" for="customCheck">Remember
-                                                Me</label>
+                                            <label class="custom-control-label" for="customCheck">Remember Me</label>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-user btn-block">

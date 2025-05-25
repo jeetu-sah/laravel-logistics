@@ -359,15 +359,34 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item has-treeview">
+            <li class="nav-item has-treeview {{ request()->is('branch-user/settings*') ? 'menu-open' : '' }} ">
                 <a href="{{ url('branch-user/settings') }}"
-                    class="nav-link {{ request()->is('branch-user/settings') ? 'active' : '' }}">
+                    class="nav-link {{ request()->is('branch-user/settings*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-cog"></i>
                     <p>
-                        Settings
+                        Manage Settings
+                        <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ url('branch-user/settings') }}"
+                            class="nav-link {{ request()->is('branch-user/settings') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Setting</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('branch-user/settings/change-password') }}"
+                            class="nav-link {{ request()->is('branch-user/settings/change-password') ? 'active' : '' }}">
+                            <i class="far fas fa-key nav-icon"></i>
+
+                            <p>Change Password</p>
+                        </a>
+                    </li>
+                </ul>
             </li>
+
             @endrole
             </ul>
         </nav>
