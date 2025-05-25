@@ -187,6 +187,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('dashboard/')->group(function () {
             Route::get('/', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
             Route::get('/bookings/upcoming-booking', [\App\Http\Controllers\BranchUser\DashboardController::class, 'upcomingBookings']);
+            Route::get('/reports', [\App\Http\Controllers\BranchUser\DashboardController::class, 'reports']);
         });
 
         Route::prefix('employees')->group(function () {

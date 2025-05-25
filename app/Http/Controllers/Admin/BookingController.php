@@ -719,7 +719,7 @@ class BookingController extends Controller
             'consignee_branch_id' => $request->consignee_branch_id
         ];
 
-        //try {
+        try {
             $result = DB::transaction(function () use ($onlyTranshipment, $request, $nextBiltiNumber) {
                 // Insert data into the bookings table
                 $bookingId = DB::table('bookings')->insertGetId([
@@ -801,14 +801,14 @@ class BookingController extends Controller
                 "alertMessage" => true,
                 "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
             ]);
-        // } catch (\Exception $e) {
-        //     return redirect()->back()
-        //         ->withInput()
-        //         ->with([
-        //             "alertMessage" => true,
-        //             "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
-        //         ]);
-        // }
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
+                ]);
+        }
     }
 
 

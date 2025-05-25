@@ -16,10 +16,29 @@ class DashboardController extends Controller
         $data['roles'] = Auth::user()->roles;
         $data['selectedRole'] = sHelper::activeLoggedInUserRole(Auth::user());
         $data['totalBooking'] = Booking::where('consignee_branch_id', Auth::user()->branch_user_id)->count();
-
         return view('branchuser.dashboard.dashboard')->with($data);
     }
 
+
+    public function reports(Request $request)
+    {
+        // echo "<pre>";
+        // print_r($request->all());exit;.
+
+        // $bookings = Booking::where('consignor_branch_id', Auth::user()->branch_user_id)->get();
+        $bookingCounts = Booking::selectRaw('booking_status, COUNT(*) as count')
+            ->where('consignor_branch_id', Auth::user()->branch_user_id)
+            ->groupBy('booking_status')
+            ->pluck('count', 'booking_status')->toArray();
+
+        $numberOfbookingReports = [$bookingCounts['no-booking'] ?? 0, $bookingCounts['normal-booking'] ?? 0, $bookingCounts['client-booking'] ?? 0];
+
+
+        return response()->json([
+            'success' => true,
+            'data' => ['numberOfbookingReports' => $numberOfbookingReports]
+        ]);
+    }
 
     public function upcomingBookings(Request $request)
     {
