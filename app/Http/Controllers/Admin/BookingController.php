@@ -252,151 +252,150 @@ class BookingController extends Controller
     }
 
 
-    public function to_client_booking_save(Request $request)
-    {
-        // Validate the request data
-        // $request->validate([
-        //     // Consignor
-        //     'booking_date' => 'required|date',
-        //     'consignor_branch_id' => 'required|exists:branches,id',
-        //     'consignee_branch_id' => 'required|exists:branches,id',
-        //     'actual_weight' => 'required',
-        //     'cantain' => 'required',
-        //     'aadhar_card' => 'nullable',
-        //     'no_of_artical' => 'required|integer',
-        //     'good_of_value' => 'required|numeric',
+    // public function to_client_booking_save(Request $request)
+    // {
+    //     // Validate the request data
+    //     // $request->validate([
+    //     //     // Consignor
+    //     //     'booking_date' => 'required|date',
+    //     //     'consignor_branch_id' => 'required|exists:branches,id',
+    //     //     'consignee_branch_id' => 'required|exists:branches,id',
+    //     //     'actual_weight' => 'required',
+    //     //     'cantain' => 'required',
+    //     //     'aadhar_card' => 'nullable',
+    //     //     'no_of_artical' => 'required|integer',
+    //     //     'good_of_value' => 'required|numeric',
 
-        //     // Other Details
-        //     'invoice_number' => 'nullable|string',
-        //     'eway_bill_number' => 'nullable|string',
-        //     'mark' => 'nullable|string',
-        //     'remark' => 'nullable',
-        //     'photo_id' => 'nullable|file|mimes:jpg,jpeg,png,pdf', // Add validation as needed
-        //     'parcel_image' => 'nullable|file|mimes:jpg,jpeg,png,pdf', // Add validation as needed
+    //     //     // Other Details
+    //     //     'invoice_number' => 'nullable|string',
+    //     //     'eway_bill_number' => 'nullable|string',
+    //     //     'mark' => 'nullable|string',
+    //     //     'remark' => 'nullable',
+    //     //     'photo_id' => 'nullable|file|mimes:jpg,jpeg,png,pdf', // Add validation as needed
+    //     //     'parcel_image' => 'nullable|file|mimes:jpg,jpeg,png,pdf', // Add validation as needed
 
-        //     // Invoice details
-        //     'distance' => 'nullable|numeric',
-        //     'freight_amount' => 'nullable|numeric',
-        //     'wbc_charges' => 'nullable|numeric',
-        //     'handling_charges' => 'nullable|numeric',
-        //     'fov_amount' => 'nullable|numeric',
-        //     'fuel_amount' => 'nullable|numeric',
-        //     'transhipmen_one_amount' => 'nullable',
-        //     'transhipmen_two_amount' => 'nullable',
-        //     'transhipment_three_amount' => 'nullable',
-        //     'pickup_charges' => 'nullable|numeric',
-        //     'hamali_Charges' => 'nullable|numeric',
-        //     'bilti_Charges' => 'nullable|numeric',
-        //     'discount' => 'nullable|numeric',
-        //     'compney_charges' => 'nullable|numeric',
-        //     'sub_total' => 'nullable|numeric',
-        //     'cgst' => 'nullable|numeric',
-        //     'sgst' => 'nullable|numeric',
-        //     'igst' => 'nullable|numeric',
-        //     'grand_total' => 'nullable|numeric',
-        //     'misc_charge_amount' => 'nullable|numeric',
-        //     'grand_total_amount' => 'required|numeric',
-        //     'booking' => 'required',
-        //     'manual_bilty' => 'nullable',
-        //     'client_id' => 'nullable',
-        // ]);
+    //     //     // Invoice details
+    //     //     'distance' => 'nullable|numeric',
+    //     //     'freight_amount' => 'nullable|numeric',
+    //     //     'wbc_charges' => 'nullable|numeric',
+    //     //     'handling_charges' => 'nullable|numeric',
+    //     //     'fov_amount' => 'nullable|numeric',
+    //     //     'fuel_amount' => 'nullable|numeric',
+    //     //     'transhipmen_one_amount' => 'nullable',
+    //     //     'transhipmen_two_amount' => 'nullable',
+    //     //     'transhipment_three_amount' => 'nullable',
+    //     //     'pickup_charges' => 'nullable|numeric',
+    //     //     'hamali_Charges' => 'nullable|numeric',
+    //     //     'bilti_Charges' => 'nullable|numeric',
+    //     //     'discount' => 'nullable|numeric',
+    //     //     'compney_charges' => 'nullable|numeric',
+    //     //     'sub_total' => 'nullable|numeric',
+    //     //     'cgst' => 'nullable|numeric',
+    //     //     'sgst' => 'nullable|numeric',
+    //     //     'igst' => 'nullable|numeric',
+    //     //     'grand_total' => 'nullable|numeric',
+    //     //     'misc_charge_amount' => 'nullable|numeric',
+    //     //     'grand_total_amount' => 'required|numeric',
+    //     //     'booking' => 'required',
+    //     //     'manual_bilty' => 'nullable',
+    //     //     'client_id' => 'nullable',
+    //     // ]);
 
-        // Check for matching consignor and consignee branch IDs
-        if ($request->consignor_branch_id == $request->consignee_branch_id) {
-            return redirect()->back()->withInput()->with(['error' => 'Consignor and consignee branches must be different.'])->withInput();
-        }
-        $nextBiltiNumber = sHelper::generateNextBiltiNumber();
-        $onlyTranshipment = [
-            'consignor_branch_id' => $request->consignor_branch_id,
-            'transhipmen_one' => $request->transhipmen_one,
-            'transhipmen_two' => $request->transhipmen_two,
-            'transhipment_three' => $request->transhipment_three,
-            'consignee_branch_id' => $request->consignee_branch_id
-        ];
+    //     // Check for matching consignor and consignee branch IDs
+    //     if ($request->consignor_branch_id == $request->consignee_branch_id) {
+    //         return redirect()->back()->withInput()->with(['error' => 'Consignor and consignee branches must be different.'])->withInput();
+    //     }
+    //     $nextBiltiNumber = sHelper::generateNextBiltiNumber();
+    //     $onlyTranshipment = [
+    //         'consignor_branch_id' => $request->consignor_branch_id,
+    //         'transhipmen_one' => $request->transhipmen_one,
+    //         'transhipmen_two' => $request->transhipmen_two,
+    //         'transhipment_three' => $request->transhipment_three,
+    //         'consignee_branch_id' => $request->consignee_branch_id
+    //     ];
 
-        try {
-            $result = DB::transaction(function () use ($onlyTranshipment, $request, $nextBiltiNumber) {
-                // Insert data into the bookings table
-                $bookingId = DB::table('bookings')->insertGetId([
-                    // Consignor
-                    'bilti_number' => $nextBiltiNumber,
-                    'booking_date' => $request->booking_date,
-                    'consignor_branch_id' => $request->consignor_branch_id,
-                    'consignor_name' => $request->consignor_name,
-                    'consignor_address' => $request->consignor_address,
-                    'consignor_phone_number' => $request->consignor_phone_number ?: "NA",
-                    'consignor_email' => $request->consignor_email ?: "NA",
-                    'consignor_gst_number' => $request->consignor_gst_number ?: "NA",
-                    'invoice_number' => $request->invoice_number ?: "NA",
-                    'eway_bill_number' => $request->eway_bill_number ?: "NA",
-                    'mark' => $request->mark ?: "NA",
-                    'remark' => $request->remark ?: "NA",
-                    'photo_id' => $request->hasFile('photo_id') ? $request->file('photo_id')->store('photos', 'public') : 'NA',
-                    'parcel_image' => $request->hasFile('parcel_image') ? $request->file('parcel_image')->store('parcels', 'public') : 'NA',
-                    // Consignee
-                    'consignee_branch_id' => $request->consignee_branch_id,
+    //    // try {
+    //         $result = DB::transaction(function () use ($onlyTranshipment, $request, $nextBiltiNumber) {
+    //             // Insert data into the bookings table
+    //             $bookingId = DB::table('bookings')->insertGetId([
+    //                 // Consignor
+    //                 'bilti_number' => $nextBiltiNumber,
+    //                 'booking_date' => $request->booking_date,
+    //                 'consignor_branch_id' => $request->consignor_branch_id,
+    //                 'consignor_name' => $request->consignor_name,
+    //                 'consignor_address' => $request->consignor_address,
+    //                 'consignor_phone_number' => $request->consignor_phone_number ?: "NA",
+    //                 'consignor_email' => $request->consignor_email ?: "NA",
+    //                 'consignor_gst_number' => $request->consignor_gst_number ?: "NA",
+    //                 'invoice_number' => $request->invoice_number ?: "NA",
+    //                 'eway_bill_number' => $request->eway_bill_number ?: "NA",
+    //                 'mark' => $request->mark ?: "NA",
+    //                 'remark' => $request->remark ?: "NA",
+    //                 'photo_id' => $request->hasFile('photo_id') ? $request->file('photo_id')->store('photos', 'public') : 'NA',
+    //                 'parcel_image' => $request->hasFile('parcel_image') ? $request->file('parcel_image')->store('parcels', 'public') : 'NA',
+    //                 // Consignee
+    //                 'consignee_branch_id' => $request->consignee_branch_id,
 
-                    // Other Details
-                    'no_of_artical' => $request->no_of_artical,
-                    'good_of_value' => $request->good_of_value,
-                    'cantain' => $request->cantain ?: "0.00",
-                    'actual_weight' => $request->actual_weight ?: "0.00",
-                    'aadhar_card' => $request->aadhar_card ?: "0.00",
-                    'distance' => $request->distance ?: "0.00",
-                    'freight_amount' => $request->freight_amount ?: "0.00",
-                    'wbc_charges' => $request->wbc_charges ?: "0.00",
-                    'handling_charges' => $request->handling_charges ?: "0.00",
-                    'fov_amount' => $request->fov_amount ?: "0.00",
-                    'fuel_amount' => $request->fuel_amount ?: "0.00",
-                    'transhipmen_one_amount' => $request->transhipmen_one_amount ?: "0.00",
-                    'transhipmen_two_amount' => $request->transhipmen_two_amount ?: "0.00",
-                    'transhipment_three_amount' => $request->transhipment_three_amount ?: "0.00",
-                    'pickup_charges' => $request->pickup_charges ?: "0.00",
-                    'hamali_Charges' => $request->hamali_Charges ?: "0.00",
-                    'bilti_Charges' => $request->bilti_Charges ?: "0.00",
-                    'discount' => $request->discount ?: "0.00",
-                    'compney_charges' => $request->compney_charges ?: "0.00",
-                    'sub_total' => $request->sub_total ?: "0.00",
-                    'cgst' => $request->cgst ?: "0.00",
-                    'sgst' => $request->sgst ?: "0.00",
-                    'igst' => $request->igst ?: "0.00",
-                    'grand_total' => $request->grand_total ?: "0.00",
-                    'misc_charge_amount' => $request->misc_charge_amount ?: "0.00",
-                    'grand_total_amount' => $request->grand_total_amount,
-                    'status' => '1',
-                    'booking_type' => $request->booking,
-                    'manual_bilty_number' => $request->manual_bilty,
-                    'client_id' => $request->client_id,
-                    'created_at' => now(),
-                ]);
+    //                 // Other Details
+    //                 'no_of_artical' => $request->no_of_artical,
+    //                 'good_of_value' => $request->good_of_value,
+    //                 'cantain' => $request->cantain ?: "0.00",
+    //                 'actual_weight' => $request->actual_weight ?: "0.00",
+    //                 'aadhar_card' => $request->aadhar_card ?: "0.00",
+    //                 'distance' => $request->distance ?: "0.00",
+    //                 'freight_amount' => $request->freight_amount ?: "0.00",
+    //                 'wbc_charges' => $request->wbc_charges ?: "0.00",
+    //                 'handling_charges' => $request->handling_charges ?: "0.00",
+    //                 'fov_amount' => $request->fov_amount ?: "0.00",
+    //                 'fuel_amount' => $request->fuel_amount ?: "0.00",
+    //                 'transhipmen_one_amount' => $request->transhipmen_one_amount ?: "0.00",
+    //                 'transhipmen_two_amount' => $request->transhipmen_two_amount ?: "0.00",
+    //                 'transhipment_three_amount' => $request->transhipment_three_amount ?: "0.00",
+    //                 'pickup_charges' => $request->pickup_charges ?: "0.00",
+    //                 'hamali_Charges' => $request->hamali_Charges ?: "0.00",
+    //                 'bilti_Charges' => $request->bilti_Charges ?: "0.00",
+    //                 'discount' => $request->discount ?: "0.00",
+    //                 'compney_charges' => $request->compney_charges ?: "0.00",
+    //                 'sub_total' => $request->sub_total ?: "0.00",
+    //                 'cgst' => $request->cgst ?: "0.00",
+    //                 'sgst' => $request->sgst ?: "0.00",
+    //                 'igst' => $request->igst ?: "0.00",
+    //                 'grand_total' => $request->grand_total ?: "0.00",
+    //                 'misc_charge_amount' => $request->misc_charge_amount ?: "0.00",
+    //                 'grand_total_amount' => $request->grand_total_amount,
+    //                 'status' => '1',
+    //                 'booking_type' => $request->booking,
+    //                 'manual_bilty_number' => $request->manual_bilty,
+    //                 'client_id' => $request->client_id,
+    //                 'created_at' => now(),
+    //             ]);
 
-                $sequence = 1;
-                foreach ($onlyTranshipment as $key => $value) {
-                    if (!empty($value)) {
-                        Transhipment::insert([
-                            'booking_id' => $bookingId,
-                            'from_transhipment' => $value,
-                            'sequence_no' => $sequence,
-                            'status' => ($sequence == 1) ? Transhipment::RECEIVED : Transhipment::PENDING,
-                            'received_at' => ($sequence == 1) ? now() : NULL,
-                        ]);
-                        $sequence++;
-                    }
-                }
-                return [$bookingId];
-            });
-            [$bookingId] = $result;
-            // Redirect to the booking bilti page
-            return redirect()->route('bookings.bilti', ['id' => $bookingId]);
-        } catch (\Exception $e) {
-            // Log the exception
-            echo $e->getMessage();
-            exit;
-
-            // Redirect back with an error message
-            return redirect()->back()->with(['error' => 'An error occurred while processing your request. Please try again later.'])->withInput();
-        }
-    }
+    //             $sequence = 1;
+    //             foreach ($onlyTranshipment as $key => $value) {
+    //                 if (!empty($value)) {
+    //                     Transhipment::insert([
+    //                         'booking_id' => $bookingId,
+    //                         'from_transhipment' => $value,
+    //                         'sequence_no' => $sequence,
+    //                         'status' => ($sequence == 1) ? Transhipment::RECEIVED : Transhipment::PENDING,
+    //                         'received_at' => ($sequence == 1) ? now() : NULL,
+    //                     ]);
+    //                     $sequence++;
+    //                 }
+    //             }
+    //             return [$bookingId];
+    //         });
+    //         [$bookingId] = $result;
+    //         // Redirect to the booking bilti page
+    //         return redirect()->route('bookings.bilti', ['id' => $bookingId]);
+    //     // } catch (\Exception $e) {
+    //     //     // Log the exception
+    //     //     $error = $e->getMessage();
+          
+    //     //     // Redirect back with an error message
+    //     //     return redirect()->back()->with(['error' => "Something went wrong, please try again., $error"])->withInput();
+    //     // }
+    // }
 
     // public function clientBooking(Request $request)
     // {
@@ -720,7 +719,7 @@ class BookingController extends Controller
             'consignee_branch_id' => $request->consignee_branch_id
         ];
 
-        try {
+        //try {
             $result = DB::transaction(function () use ($onlyTranshipment, $request, $nextBiltiNumber) {
                 // Insert data into the bookings table
                 $bookingId = DB::table('bookings')->insertGetId([
@@ -802,14 +801,14 @@ class BookingController extends Controller
                 "alertMessage" => true,
                 "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
             ]);
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput()
-                ->with([
-                    "alertMessage" => true,
-                    "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
-                ]);
-        }
+        // } catch (\Exception $e) {
+        //     return redirect()->back()
+        //         ->withInput()
+        //         ->with([
+        //             "alertMessage" => true,
+        //             "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
+        //         ]);
+        // }
     }
 
 

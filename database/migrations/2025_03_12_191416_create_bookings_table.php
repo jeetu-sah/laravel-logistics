@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id(); // auto-incrementing id column
-            $table->string('bilti_number')->nullable();
+            $table->string('bilti_number', 30)->nullable();
             $table->enum('status', ['1', '2', '3', '4'])->default('1');
             $table->enum('booking_type', ['paid', 'topay'])->default('paid');
             $table->date('booking_date');
@@ -21,21 +21,21 @@ return new class extends Migration
             $table->unsignedBigInteger('consignee_branch_id');
             $table->integer('no_of_artical');
             $table->decimal('good_of_value', 15, 2);
-            $table->string('consignor_name');
-            $table->text('consignor_address');
-            $table->string('consignor_phone_number');
-            $table->string('consignor_gst_number');
-            $table->string('consignor_email');
+            $table->string('consignor_name', 20);
+            $table->text('consignor_address')->nullable();
+            $table->bigInteger('consignor_phone_number')->nullable();
+            $table->string('consignor_gst_number', 20)->nullable();
+            $table->string('consignor_email', 50)->nullable();
 
 
-            $table->string('consignee_name');
+            $table->string('consignee_name', 20);
             $table->text('consignee_address');
-            $table->string('consignee_phone_number');
-            $table->string('consignee_gst_number');
-            $table->string('consignee_email');
+            $table->bigInteger('consignee_phone_number');
+            $table->string('consignee_gst_number', 20);
+            $table->string('consignee_email', 40);
 
-            $table->string('invoice_number');
-            $table->string('eway_bill_number');
+            $table->string('invoice_number', 30);
+            $table->string('eway_bill_number', 20);
             $table->string('mark', 20)->nullable();
             $table->text('remark')->nullable();
             $table->string('photo_id')->nullable();
