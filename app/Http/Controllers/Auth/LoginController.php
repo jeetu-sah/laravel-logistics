@@ -66,14 +66,14 @@ class LoginController extends BaseController
                         return redirect('/branch-user/dashboard')->with(["msg" => "<div class='callout callout-success'><strong>Success </strong>  Login Successfully !!! </div>"]);
                     }
                 } else {
-                    return redirect()->back()->with(["msg" => "<div class='callout callout-danger'><strong>Wrong </strong>  password does not matched !!! </div>"]);
+                    return redirect('/login')->with(["msg" => "<div class='callout callout-danger'><strong>Wrong </strong>  password does not matched !!! </div>"])->withInput();
                 }
             } else {
-                return redirect()->back()->with(["msg" => "<div class='callout callout-danger'><strong>Wrong </strong>  Your account is blocked !!! </div>"]);
+                return redirect('/login')->with(["msg" => "<div class='callout callout-danger'><strong>Wrong </strong>  Your account is blocked !!! </div>"]);
             }
         } else {
             // Admin not found or password incorrect, redirect back with error message
-            return redirect('/')->withErrors(['error' => 'Invalid email or password']);
+            return redirect('/login')->withErrors(['error' => 'Invalid email or password']);
         }
     }
 

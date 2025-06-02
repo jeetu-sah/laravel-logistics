@@ -248,7 +248,9 @@
 
 @section('script')
 @parent
+
 <script src="{{ asset(path: 'admin_webu/plugins/select2/js/select2.full.min.js') }} "></script>
+
 <script>
     const wbcPerparcelChargesperParcel = 40; // for single parcel
     const handlingChargesPerparcel = 30; // for single parcel
@@ -262,6 +264,79 @@
     const defaultFovPercentage = 1.5; // defaultFovPercentage
     const setDefaultDistance = 100; // default distance 100 km
     const defaultTranshipment = 40;
+
+
+    const branches = @json($branch);
+    const fromSelectedBranch = ["{{$user->branch_user_id}}"];
+    const consignorNumber = parseInt("{{$user->branch_user_id}}");
+
+    const selectedBranches = fromSelectedBranch.map(Number);
+
+    const selectedTranshipmentArray = {
+        'consignor_branch_id': consignorNumber,
+        'consignee_branch_id': null,
+        'transhipmen_one': null,
+        'transhipmen_two': null,
+        'transhipment_three': null
+    }
+
+
+    const oldConsigneeBranchId = "{{ old('consignee_branch_id') }}";
+    const oldTranshipmentOne = "{{ old('transhipmen_one') }}";
+    const oldTranshipmentTwo = "{{ old('transhipmen_two') }}";
+    const oldTranshipmentThree = "{{ old('transhipment_three') }}";
+
+    const consigneeBranch = document.getElementById("consignee_branch_id");
+    const transhipmentOneElement = document.getElementById("transhipmen_one");
+    const transhipmentTwoElement = document.getElementById("transhipmen_two");
+    const transhipmentThreeElement = document.getElementById("transhipment_three");
+
+
+    async function printToSelectBranch(selectElementName, oldValue) {
+        const filteredBranches = branches.filter(item => !selectedBranches.includes(item.id));
+        filteredBranches.forEach(branch => {
+            const option = document.createElement("option");
+            option.value = branch.id;
+            option.textContent = branch.branch_name;
+            if (branch.id == oldValue) {
+                option.selected = true;
+            }
+            selectElementName.appendChild(option);
+        });
+    }
+
+    function checkDuplicateBranchValue(selectedValue) {
+        const valueMap = {};
+        for (const [key, value] of Object.entries(selectedTranshipmentArray)) {
+            if (value != null) {
+                if (!valueMap[value]) valueMap[value] = [];
+                valueMap[value].push(key);
+            }
+        }
+
+
+        const duplicated = Object.entries(valueMap)
+            .filter(([_, keys]) => keys.length > 1)
+            .map(([value, keys]) => ({
+                value: Number(value),
+                keys
+            }));
+
+        if (duplicated.length > 0) {
+            return {
+                'status': true,
+                'keys': duplicated[0].keys,
+            }
+        }
+
+        return {
+            'status': false,
+        }
+    }
+
+    function displayAndRemoveField() {
+        
+    }
 
     async function calculateFavtotalAmount() {
         //fov amount will be calculated when good of value amount should be available
@@ -315,9 +390,7 @@
     }
 
     async function calculateFreight(distance, numberOfParcel = 1) {
-        console.log('calculateFreight numberOfParcel', numberOfParcel)
         const freightTotalAmount = (distance * perKmRate) * numberOfParcel;
-
         $('#freight_amount').val(freightTotalAmount); // set value in textbox
         return freightTotalAmount
     }
@@ -450,6 +523,8 @@
         calculateInvoice(distance, numberOfArticle)
     }
 
+
+
     $(document).ready(function() {
         $('#consignor_branch_id, #consignee_branch_id').on('change', function() {
             var consignor_branch_id = $('#consignor_branch_id').val();
@@ -511,10 +586,77 @@
             calculateInvoice(distance, noOfArticles)
         });
 
-
         // Event listener for goods value (FOV calculation)
         $('#good_of_value').on('input', function() {
             calculateFOV(); // Recalculate FOV based on goods value
+        });
+
+        //print to branch dropdown. 
+        printToSelectBranch(consigneeBranch, oldConsigneeBranchId);
+
+        //select consignee_branch_id
+        $(document).on('change', '#consignee_branch_id', function() {
+            const consigneeId = $(this).val();
+            if (consigneeId) {
+                $('#transhipmen_one').attr('disabled', false);
+                selectedBranches.push(parseInt(consigneeId));
+                selectedTranshipmentArray['consignee_branch_id'] = parseInt(consigneeId);
+                const duplicateResponse = checkDuplicateBranchValue(consigneeId);
+                 console.log('duplicateResponse consignee_branch_id', duplicateResponse);
+
+                if(duplicateResponse.status == true) {
+                    printToSelectBranch(transhipmentOneElement, oldTranshipmentOne);
+                } else {
+                    displayAndRemoveField(duplicateResponse);
+                }
+            } else {
+                selectedTranshipmentArray['consignee_branch_id'] = null;
+                $('#transhipmen_one').val(null).trigger('change').prop('disabled', true);
+                $('#transhipmen_two').val(null).trigger('change').prop('disabled', true);
+                $('#transhipment_three').val(null).trigger('change').prop('disabled', true);
+            }
+        });
+        $(document).on('change', '#transhipmen_one', function() {
+            const transhipmentOneValue = $(this).val();
+            if (transhipmentOneValue) {
+                $('#transhipmen_two').attr('disabled', false);
+                selectedBranches.push(parseInt(transhipmentOneValue));
+                selectedTranshipmentArray['transhipmen_one'] = parseInt(transhipmentOneValue);
+                const duplicateResponse = checkDuplicateBranchValue(transhipmentOneValue);
+
+                console.log('duplicateResponse transhipmen_one', duplicateResponse);
+
+                printToSelectBranch(transhipmentTwoElement, oldTranshipmentOne);
+            } else {
+                selectedTranshipmentArray['consignee_branch_id'] = null;
+                $('#transhipmen_two').val(null).trigger('change').prop('disabled', true);
+                $('#transhipment_three').val(null).trigger('change').prop('disabled', true);
+            }
+        });
+        $(document).on('change', '#transhipmen_two', function() {
+            const transhipmentTwoValue = $(this).val();
+            if (transhipmentTwoValue) {
+                $('#transhipment_three').attr('disabled', false);
+                selectedBranches.push(parseInt(transhipmentTwoValue));
+                selectedTranshipmentArray['transhipmen_two'] = parseInt(transhipmentTwoValue);
+                const duplicateResponse = checkDuplicateBranchValue(transhipmentTwoValue);
+
+                console.log('duplicateResponse transhipmen_two', duplicateResponse);
+
+                printToSelectBranch(transhipmentThreeElement, oldTranshipmentThree);
+            } else {
+                selectedTranshipmentArray['consignee_branch_id'] = null;
+                $('#transhipment_three').val(null).trigger('change').prop('disabled', true);
+            }
+        });
+        $(document).on('change', '#transhipment_three', function() {
+            const transhipmentThreeValue = $(this).val();
+            if (transhipmentThreeValue) {
+                selectedBranches.push(parseInt(transhipmentThreeValue));
+                selectedTranshipmentArray['transhipment_three'] = parseInt(transhipmentThreeValue);
+                const duplicateResponse = checkDuplicateBranchValue(transhipmentThreeValue);
+                console.log('duplicateResponse transhipment_three', duplicateResponse);
+            }
         });
     });
     $(document).on('change', '#client_id', function() {
@@ -527,7 +669,6 @@
                 type: 'GET',
                 success: function(response) {
                     if (response.status == 'success') {
-                        console.log('test', response.data)
                         $('#consignee_name').val(response.data.client_name);
                         $('#consignee_phone_number').val(response.data.client_phone_number);
                         $('#consignee_address').val(response.data.client_address);

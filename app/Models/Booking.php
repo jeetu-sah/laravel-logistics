@@ -18,7 +18,7 @@ class Booking extends Model
 
     const BOOKED = 1;
     const DISPATCH = 2;
-    const ACCEPT = 3;
+    const DELIVERED = 3;
     const DELIVERED_TO_CLIENT = 4;
 
     const NORMAL_BOOKING = 'normal-booking';
@@ -125,10 +125,37 @@ class Booking extends Model
     */
     protected function getNextBookingTranshipmentAttribute()
     {
-        $nextSequence = $this->branch_specific_transhipment->sequence_no + 1;
+        $nextSequence = $this->branch_specific_transhipment?->sequence_no + 1;
 
         return $this->transhipments->where('sequence_no', $nextSequence)
             ->where('booking_id', $this->id)->first();
+    }
+
+
+    /*branch's (transhipment) booking. next_booking_transhipment_name
+        get next transhipments for the loggedin branch
+    */
+    protected function getNextBookingTranshipmentNameAttribute()
+    {
+        $countTranshipments = $this->getAlltranshipments->count();
+        $nextSequence = $this->branch_specific_transhipment?->sequence_no + 1;
+        if ($nextSequence <= $countTranshipments) {
+            return $this->getAlltranshipments->where('sequence_no', $nextSequence)->where('booking_id', $this->id)->first();
+        } else {
+            return null;
+        }
+    }
+
+    /*branch's (transhipment) booking. last_transhipment
+        get next transhipments for the loggedin branch
+    */
+    protected function getLastTranshipmentAttribute()
+    {
+        if ($this->getAlltranshipments->count() > 0) {
+            return $this->getAlltranshipments->last();
+        } 
+
+        return null;
     }
 
     /*branch's (transhipment) booking. prev_booking_transhipment
@@ -146,7 +173,8 @@ class Booking extends Model
         get for which branch should be display the received button */
     protected function getIsRevertButtonVisibleAttribute()
     {
-        if ($this->next_booking_transhipment->received_at != NULL) {
+
+        if ($this->next_booking_transhipment?->received_at != NULL) {
             return false;
         }
         return true;
@@ -159,6 +187,13 @@ class Booking extends Model
     {
         return $this->hasMany(Transhipment::class, 'booking_id')->orderBy('sequence_no');
     }
+
+    // Define the relationships if there are any
+    public function getAlltranshipments()
+    {
+        return $this->hasMany(Transhipment::class, 'booking_id')->orderBy('sequence_no');
+    }
+
     public function transhipment()
     {
         return $this->hasOne(Transhipment::class, 'booking_id', 'id');

@@ -50,6 +50,7 @@
                                     <th>Consignee Branch</th>
                                     <th>Consignee Name</th>
                                     <th>Payment Mode</th>
+                                    <th>Next Delivery Location</th>
                                     <th>Creation Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -109,6 +110,10 @@
               
                 {
                     data: 'booking_type'
+
+                },
+                {
+                    data: 'next_delivery_location'
 
                 },
                 {

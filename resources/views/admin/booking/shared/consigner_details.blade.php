@@ -1,7 +1,7 @@
 <div class="col-md-9">
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">{{ $tittle }}</h3>
+            <h3 class="card-title">{{ $title }}</h3>
         </div>
         <div class="card-body">
             @if($bookingType === \App\Models\Booking::CLIENT_BOOKING)
@@ -11,7 +11,7 @@
                     <select required class="form-select select2 form-control js-select2" name="client_id" id="client_id">
                         <option value="">Select Client</option>
                         @foreach ($clients as $client)
-                            <option value="{{ $client->id }}">{{ $client->client_name }}</option>
+                        <option value="{{ $client->id }}">{{ $client->client_name }}</option>
                         @endforeach
                     </select>
                     <div id="client_details"></div>
@@ -83,12 +83,10 @@
                 </div>
                 <div class="col-md-3">
                     <div class="">
-                        <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
+                        <select class="form-select select2 form-control js-select2 manageCalculateInvoice selectBranch"
+                            disabled
                             name="transhipmen_one" id="transhipmen_one">
                             <option value="">Select Branch Name</option>
-                            @foreach ($branch as $transshipmentBranch)
-                            <option value="{{ $transshipmentBranch->id }}" {{ old('transhipmen_one') == $transshipmentBranch->id ? 'selected' : '' }}>{{ $transshipmentBranch->branch_name }}</option>
-                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -101,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 mb-1">
-                    <select class="form-select select2 form-control js-select2" name="consignor_branch_id"
+                    <select class="form-select select2 form-control js-select2 selectBranch" name="consignor_branch_id"
                         id="consignor_branch_id">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
@@ -116,12 +114,11 @@
                     <label for="text">Transhipment 2:</label>
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
+                    <select class="form-select select2 form-control js-select2 manageCalculateInvoice selectBranch"
+                        disabled
                         name="transhipmen_two" id="transhipmen_two">
                         <option value="">Select Branch Name</option>
-                        @foreach ($branch as $transshipmentTwoBranch)
-                        <option value="{{ $transshipmentTwoBranch->id }}" {{ old('transhipmen_two') == $transshipmentTwoBranch->id ? 'selected' : '' }}>{{ $transshipmentTwoBranch->branch_name }}</option>
-                        @endforeach
+                     
                     </select>
                 </div>
             </div>
@@ -133,12 +130,8 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
-                        id="consignee_branch_id">
+                    <select class="form-select select2 form-control js-select2 toBranch selectBranch" name="consignee_branch_id" id="consignee_branch_id">
                         <option value="">Select Branch Name</option>
-                        @foreach ($branch as $transshipmentToBranch)
-                        <option value="{{ $transshipmentToBranch->id }}" {{ old('consignee_branch_id') == $transshipmentToBranch->id ? 'selected' : '' }}>{{ $transshipmentToBranch->branch_name }}</option>
-                        @endforeach
                     </select>
                 </div>
 
@@ -148,12 +141,10 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select select2 form-control js-select2 manageCalculateInvoice"
+                    <select class="form-select select2 form-control js-select2 manageCalculateInvoice selectBranch"
+                        disabled
                         name="transhipment_three" id="transhipment_three">
                         <option value="">Select Branch Name</option>
-                        @foreach ($branch as $transshipmentThirdBranch)
-                        <option value="{{ $transshipmentThirdBranch->id }}" {{ old('transhipment_three') == $transshipmentThirdBranch->id ? 'selected' : '' }}>{{ $transshipmentThirdBranch->branch_name }}</option>
-                        @endforeach
                     </select>
                 </div>
             </div>
@@ -166,7 +157,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" id="no_of_articles" name="no_of_artical" class="form-control mb-1" value="{{ old('no_of_artical') }}" />
+                        <input min="0" type="number" id="no_of_articles" name="no_of_artical" class="form-control mb-1" value="{{ old('no_of_artical') }}" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -176,7 +167,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" name="actual_weight" class="form-control mb-1" value="{{ old('actual_weight') }}" />
+                        <input type="number" min="0" name="actual_weight" class="form-control mb-1" value="{{ old('actual_weight') }}" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -196,7 +187,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="number" value="{{ old('good_of_value') }}" id="good_of_value" name="good_of_value"
+                        <input type="number" min="0" value="{{ old('good_of_value') }}" id="good_of_value" name="good_of_value"
                             oninput="calculateFOV()" class="form-control mb-1" />
                     </div>
                 </div>
@@ -279,21 +270,19 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="{{ old('consignee_email') }}" id="consignee_email"  name="consignee_email" class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_email') }}" id="consignee_email" name="consignee_email" class="form-control mb-1" />
 
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-md-3">
-
                     <label for="date">Invoice Number</label>
-
                 </div>
                 <div class="col-md-3">
                     <input type="text" value="{{ old('invoice_number') }}" name="invoice_number" id="invoice_number" class="form-control mb-1" />
                 </div>
-                 @if($bookingType === \App\Models\Booking::NO_BOOKING)
+                @if($bookingType === \App\Models\Booking::NO_BOOKING)
                 <div class="col-md-3">
                     <label for="date">Eway Bill Number:</label>
                 </div>

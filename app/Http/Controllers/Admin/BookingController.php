@@ -35,6 +35,7 @@ class BookingController extends Controller
 
     public function list(Request $request)
     {
+
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
@@ -55,7 +56,7 @@ class BookingController extends Controller
 
         // Apply pagination and order
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('bookings.created_at', 'desc')->get();
-     
+
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
@@ -74,7 +75,7 @@ class BookingController extends Controller
                 $row['offline_bilti'] = $booking->manual_bilty_number
                     ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
                     : 'N/A';
-               
+
                 // Consignor and consignee information
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name ?? 'N/A';
                 $row['consignor_name'] = $booking->consignor_name ?? 'N/A';
@@ -84,6 +85,7 @@ class BookingController extends Controller
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
                 $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type . '</span>';
+                $row['next_delivery_location'] = '<span class="badge badge-primary">' . $booking?->next_booking_transhipment?->branch?->branch_name ?? '--' . '</span>';
                 $row['action'] = '<a href="' . url("admin/clients/bookings/edit/{$booking->booking_id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->booking_id}") . '" class="btn btn-warning">Print</a>';
                 $row['created_at'] = formatDate($booking->created_at);
                 $rows[] = $row;
@@ -100,10 +102,9 @@ class BookingController extends Controller
     }
 
 
-
     public function create(Request $request)
     {
-        $data['tittle'] = "Create New Booking";
+        $data['title'] = "Create New Booking";
         $data['user'] = auth()->user();
         $data['branch'] = Branch::all();
         $data['noBillBookings'] = $request->query('no-bill-bookings'); // true, false or null
@@ -111,15 +112,8 @@ class BookingController extends Controller
         $data['currentBranch']  = Branch::currentbranch();
 
         $data['clients']  = $data['currentBranch']->clients;
-
-        // $data['clients'] = 
-        // echo "<pre>";
-        // print_r($data['clients']);exit;
-        // Return the view with the data
         return view('admin.booking.create', $data);
     }
-
-
 
 
     public function challanBookingList(Request $request)
@@ -129,13 +123,13 @@ class BookingController extends Controller
         $start = $request->input('start', 0);
         $userBranchId = Auth::user()->branch_user_id;
 
-        $bookingQuery = Booking::with(['client', 'transhipments' => function ($query) use ($userBranchId) {
+        $bookingQuery = Booking::with(['client', 'getAlltranshipments', 'transhipments' => function ($query) use ($userBranchId) {
             $query->where('from_transhipment', $userBranchId);
         }])->whereHas('transhipments', function ($query) use ($userBranchId) {
             $query->where('from_transhipment', $userBranchId)
                 ->where('dispatched_at', NULL)
                 ->where('received_at', '!=', NULL);
-        });
+        })->whereIn('status', [Booking::BOOKED, Booking::DISPATCH]);
 
         // Count the filtered records
         $bookingsCount = $bookingQuery->count();
@@ -146,7 +140,6 @@ class BookingController extends Controller
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
-
                 $row = [];
                 // Conditional logic for 'bilti_list_type'
                 if ($request->bilti_list_type === 'challan') {
@@ -180,7 +173,7 @@ class BookingController extends Controller
 
                 // Conditional logic for 'booking_type'
                 $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type_name . '</span>';
-
+                $row['next_delivery_location'] = '<span class="badge badge-primary">' . $booking?->next_booking_transhipment_name?->branch?->branch_name ?? '--' . '</span>';
                 // Action buttons (Edit and Print)
                 $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
                                   <a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
@@ -391,7 +384,7 @@ class BookingController extends Controller
     //     // } catch (\Exception $e) {
     //     //     // Log the exception
     //     //     $error = $e->getMessage();
-          
+
     //     //     // Redirect back with an error message
     //     //     return redirect()->back()->with(['error' => "Something went wrong, please try again., $error"])->withInput();
     //     // }
@@ -797,7 +790,7 @@ class BookingController extends Controller
                 return [$bookingId];
             });
             [$bookingId] = $result;
-            return redirect()->back()->with([
+            return redirect("admin/bookings/bilti/$bookingId")->with([
                 "alertMessage" => true,
                 "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
             ]);

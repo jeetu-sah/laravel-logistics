@@ -17,7 +17,8 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/login') }}"><b>Logistics </b></a>
+
+            <a href="{{ url('/login') }}"><b>Logistics</b> Forget Password</a>
         </div>
 
         @if ($errors->any())

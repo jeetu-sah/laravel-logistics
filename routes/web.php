@@ -112,6 +112,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/incoming-load', [BookingController::class, 'incomingLoad']);
             Route::get('/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
             Route::get('/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
+
+            Route::post('/booking-received', [ChallanController::class, 'received']);
         });
         // paid booking
 
@@ -170,7 +172,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('distances/update', [BranchDistace::class, 'update']);
         Route::get('distances/delete/{id}', [BranchDistace::class, 'delete']);
 
-        Route::post('/booking/recived', [ChallanController::class, 'recived']);
+
 
 
         Route::get('admin/article/create', [ArticleController::class, 'index']);
