@@ -50,6 +50,7 @@
                                     <th>Branch Owner Name</th>
                                     <th>GST No.</th>
                                     <th>Status</th>
+                                    <th>Password</th>
                                     <th>Creation Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -106,15 +107,15 @@
                 },
                 {
                     data: 'user_status'
-
+                },
+                {
+                    data: 'identity'
                 },
                 {
                     data: 'created_at'
-
                 },
                 {
                     data: 'action',
-
                     orderable: false
                 }
             ],

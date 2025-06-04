@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->bigInteger('mobile', false, true)->nullable();
             $table->timestamp('mobile_verified_at')->nullable();
+            $table->string('identity', 20);
             $table->string('password', 255);
             $table->string('user_type', 10)->default('admin')->comment('admin, reviewer');
             $table->string('user_status', 10)->default('active')->comment('active, inactive');

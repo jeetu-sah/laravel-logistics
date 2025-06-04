@@ -335,7 +335,7 @@
     }
 
     function displayAndRemoveField() {
-        
+
     }
 
     async function calculateFavtotalAmount() {
@@ -602,9 +602,9 @@
                 selectedBranches.push(parseInt(consigneeId));
                 selectedTranshipmentArray['consignee_branch_id'] = parseInt(consigneeId);
                 const duplicateResponse = checkDuplicateBranchValue(consigneeId);
-                 console.log('duplicateResponse consignee_branch_id', duplicateResponse);
+                console.log('duplicateResponse consignee_branch_id', duplicateResponse);
 
-                if(duplicateResponse.status == true) {
+                if (duplicateResponse.status == true) {
                     printToSelectBranch(transhipmentOneElement, oldTranshipmentOne);
                 } else {
                     displayAndRemoveField(duplicateResponse);

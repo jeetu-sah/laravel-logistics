@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use PhpParser\Node\Stmt\Echo_;
 
 class BranchController extends Controller
 {
@@ -69,14 +70,15 @@ class BranchController extends Controller
         ]);
 
         if ($branch) {
-            User::create(attributes: [
+            User::create([
                 'first_name' => $branch->branch_name,
                 'last_name' => $branch->owner_name,
-                'email' => $request->loginId, 
+                'email' => $request->loginId,
                 'email_verified_at' => Carbon::now(),
                 'mobile' => $branch->contact,
                 'mobile_verified_at' => Carbon::now(),
                 'password' => Hash::make($request->password),
+                'identity' => ($request->password),
                 'user_type' => 'branch-user',
                 'user_status' => 'active',
                 'term_and_condition' => 1,
@@ -87,7 +89,6 @@ class BranchController extends Controller
                 "alertMessage" => true,
                 "alert" => ['message' => 'Branch created successfully', 'type' => 'success']
             ]);
-
         } else {
             return redirect('admin/branches')->with([
                 "alertMessage" => true,
@@ -118,10 +119,11 @@ class BranchController extends Controller
                 $row['contact'] = $branch->contact;
                 $row['gst'] = $branch->gst;
                 $row['user_status'] = $branch->user_status;
+                $row['identity'] = $branch?->user?->identity ?? '--';
                 $row['action'] = '<a href="' . url("admin/branches/edit/{$branch->id}") . '" class="btn btn-primary">Edit</a> ';
                 $row['action'] .= '<a href="' . url("admin/branches/deletebranch/{$branch->id}") . '" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to soft delete this branch?\')">Delete</a>';
 
-                $row['created_at'] = Carbon::parse($branch->created_at)->format('d/m/Y');
+                $row['created_at'] = formatDate($branch->created_at);
 
                 $rows[] = $row;
             }
@@ -153,7 +155,7 @@ class BranchController extends Controller
     {
         $data['title'] = 'Edit Branch';
         $data['branch'] = Branch::with('user')->find($id);
-        
+
         $data['countries'] = DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
         return view('admin.branch.edit', $data);
     }
@@ -197,14 +199,27 @@ class BranchController extends Controller
             $branch->address1 = $request->address1;
             $branch->address2 = $request->address2;
             $branch->user_status = $request->user_status;
-        }
+            $branch->save();
+            $user = $branch->user;
 
-        if ($branch->save()) {
-           // $user = User::
-            return redirect()->back()->with([
-                "alertMessage" => true,
-                "alert" => ['message' => 'Branch updated successfully', 'type' => 'success']
-            ]);
+            $user->identity = $request->password;
+            $user->password = Hash::make($request->password);
+
+            if ($user->save()) {
+                // $user = User::
+                return redirect()->back()->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Branch updated successfully', 'type' => 'success']
+                ]);
+            } else {
+                return redirect()->back()->with([
+                    "alertMessage" => true,
+                    "alert" => [
+                        'message' => 'Something went wrong, please try after sometime',
+                        'type' => 'success'
+                    ]
+                ]);
+            }
         } else {
             return redirect()->back()->with([
                 "alertMessage" => true,
@@ -226,5 +241,4 @@ class BranchController extends Controller
 
         return redirect('admin/branches')->with('success', 'Branch deleted successfully.');
     }
-
 }

@@ -48,6 +48,7 @@ class User extends Authenticatable
         'reason',
         'user_type',
         'password',
+        'identity',
         'user_status',
         'term_and_condition',
         'is_signed',
