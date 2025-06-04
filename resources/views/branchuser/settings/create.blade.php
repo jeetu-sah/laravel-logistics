@@ -49,26 +49,28 @@
                         </div>
                         <div class="row">
 
-                            <div class="col-md-4">
+                            <div class="col-md-4 mt-2">
                                 <div class="form-group">
                                     <label for="prefix_employee_id" class="form-label">Freight</label>
                                     <input type="text" name="prefix_employee_id" class="form-control"
                                         id="prefix_employee_id" value="{{ $settings?->prefix_employee_id }}"
                                         placeholder="Freight" required />
+                                    <small class="text-danger">Distances/Km</small>
 
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mt-2">
                                 <div class="form-group">
                                     <label for="price_for_single_parcel" class="form-label">WBC</label>
                                     <input type="text" name="price_for_single_parcel" class="form-control"
                                         id="price_for_single_parcel" value="{{ $settings?->price_for_single_parcel }}"
                                         placeholder="WBC" required />
-                                    <small class="text-danger">Distances/Km</small>
+                                    <small class="text-danger">Per Parcel</small>
+
 
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mt-2">
                                 <div class="form-group">
                                     <label for="price_for_single_parcel" class="form-label">Handling Charges:</label>
                                     <input type="text" name="price_for_single_parcel" class="form-control"
