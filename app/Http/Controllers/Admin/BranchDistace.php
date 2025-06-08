@@ -69,7 +69,7 @@ class BranchDistace extends Controller
                 $row['sn'] = $start + $index + 1;
                 $row['from_branch_id'] = $distanc->from_branch_name;
                 $row['to_branch_id'] = $distanc->to_branch_name ?? 'N/A';
-                $row['distance'] = $distanc->distance;
+                $row['distance'] = $distanc->distance .' '. 'KM';
                 $row['status'] = '<a href="' . url("admin/distances/edit/{$distanc->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
                               <a href="' . url("admin/distances/delete/{$distanc->id}") . '" class="btn btn-warning">Delete</a>';
                 $rows[] = $row;
