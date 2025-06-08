@@ -121,33 +121,7 @@
 
 
                 @role('Admin')
-                <li class="nav-item has-treeview {{ request()->is('admin/distances*') ? 'menu-open' : '' }}">
-                    <a href="{{ url('admin/distances') }}"
-                        class="nav-link {{ request()->is('admin/distances*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-edit"></i>
-                        <p>
-                            Branch Distances
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ url('admin/distances') }}"
-                                class="nav-link {{ request()->is('admin/distances') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Branch Distances List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/distances/create') }}"
-                                class="nav-link {{ request()->is('admin/distances/create') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create Branch Distances</p>
-                            </a>
-                        </li>
 
-                    </ul>
-                </li>
                 <li class="nav-item has-treeview {{ request()->is('admin/branches*') ? 'menu-open' : '' }}">
                     <a href="{{ url('admin/branches') }}"
                         class="nav-link {{ request()->is('admin/branches*') ? 'active' : '' }}">
@@ -170,6 +144,33 @@
                                 class="nav-link {{ request()->is('admin/branches/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Branch</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview {{ request()->is('admin/distances*') ? 'menu-open' : '' }}">
+                    <a href="{{ url('admin/distances') }}"
+                        class="nav-link {{ request()->is('admin/distances*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Branch Distances
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('admin/distances') }}"
+                                class="nav-link {{ request()->is('admin/distances') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Branch Distances List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/distances/create') }}"
+                                class="nav-link {{ request()->is('admin/distances/create') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Branch Distances</p>
                             </a>
                         </li>
 

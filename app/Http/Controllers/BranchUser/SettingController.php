@@ -26,21 +26,19 @@ class SettingController extends Controller
             ['user_id' => Auth::user()->id],
             [
                 'user_id' => Auth::user()->id,
-
-                'prefix_employee_id' => $request->prefix_employee_id ?: 'NA',
-
-                'freight_amount' => $request->freight_amount !== null && $request->freight_amount !== '' ? $request->freight_amount : '00',
-                'wbc_charges' => $request->wbc_charges !== null && $request->wbc_charges !== '' ? $request->wbc_charges : '00',
-                'handling_charges' => $request->handling_charges !== null && $request->handling_charges !== '' ? $request->handling_charges : '00',
-                'fov_amount' => $request->fov_amount !== null && $request->fov_amount !== '' ? $request->fov_amount : '00',
-                'fuel_amount' => $request->fuel_amount !== null && $request->fuel_amount !== '' ? $request->fuel_amount : '00',
-                'transhipmen_amount' => $request->transhipmen_amount !== null && $request->transhipmen_amount !== '' ? $request->transhipmen_amount : '00',
-                'hamali_Charges' => $request->hamali_Charges !== null && $request->hamali_Charges !== '' ? $request->hamali_Charges : '00',
-                'bilti_Charges' => $request->bilti_Charges !== null && $request->bilti_Charges !== '' ? $request->bilti_Charges : '00',
-                'compney_charges' => $request->compney_charges !== null && $request->compney_charges !== '' ? $request->compney_charges : '00',
-                'cgst' => $request->cgst !== null && $request->cgst !== '' ? $request->cgst : '00',
-                'sgst' => $request->sgst !== null && $request->sgst !== '' ? $request->sgst : '00',
-                'igst' => $request->igst !== null && $request->igst !== '' ? $request->igst : '00',
+                'prefix_employee_id' => $request->prefix_employee_id ?: null,
+                'freight_amount' => $request->freight_amount ?? 0,
+                'wbc_charges' => $request->wbc_charges ?? 0,
+                'handling_charges' => $request->handling_charges ?? 0,
+                'fov_amount' => $request->fov_amount ?? 0,
+                'fuel_amount' => $request->fuel_amount ?? 0,
+                'transhipmen_amount' => $request->transhipmen_amount ?? 0,
+                'hamali_Charges' => $request->hamali_Charges ?? 0,
+                'bilti_Charges' => $request->bilti_Charges ?? 0,
+                'compney_charges' => $request->compney_charges ?? 0,
+                'cgst' => $request->cgst ?? 0,
+                'sgst' => $request->sgst ?? 0,
+                'igst' => $request->igst ?? 0,
             ]
         );
 
@@ -60,7 +58,6 @@ class SettingController extends Controller
         }
 
         if ($request->method() == "POST") {
-
             $request->validate([
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]);
@@ -75,5 +72,4 @@ class SettingController extends Controller
             }
         }
     }
-
 }
