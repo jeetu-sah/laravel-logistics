@@ -231,7 +231,7 @@ class sHelper
 		return $challanMaxID + 1;
 	}
 
-	public static function generateNextBiltiNumber()
+	public static function generateNextBiltiNumber(String $bookingStatus)
 	{
 		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
 		$latestBuiltyId = Booking::latest('id')->first()?->id;
@@ -244,8 +244,14 @@ class sHelper
 			// If no last bilti number exists, start from 1
 			$nextNumber = 1;
 		}
-		
+
 		// Return the bilti number in the format of YYMMxxx (e.g., 250131001)
-		return date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+		$nextBuiltyNumber =  date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+		
+		if ($bookingStatus === Booking::NO_BOOKING) {
+			return "NB-" . $nextBuiltyNumber;
+		}
+
+		return $nextBuiltyNumber;
 	}
 }

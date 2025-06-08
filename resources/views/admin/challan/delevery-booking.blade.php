@@ -85,7 +85,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-                        <form id="bookingForm" action="{{ url('admin/booking/recived') }}" method="post">
+                        <form id="bookingForm" action="{{ url('admin/bookings/booking-received') }}" method="post">
                             @csrf
                             <input type="hidden" value="{{ $challanDetail->id }}" name="chalan_id">
                             <div class="card-header">
@@ -101,7 +101,6 @@
                                     <table id="example" class="display">
                                         <thead>
                                             <tr>
-                                                <th>S.n</th>
                                                 <th><!-- <input type="checkbox" class="form-check-input" id="selectAll"> --></th>
                                                 <th>Created By</th>
                                                 <th>Bilti Number</th>
@@ -120,7 +119,7 @@
                                             @php $i = 1; @endphp
                                             @foreach ($bookings as $booking)
                                             <tr>
-                                                <td>{{ $i++ }}</td>
+                                              
                                                 <td>
                                                     @if($booking->visible_for === auth()->user()->branch_user_id)
                                                     <input type="checkbox" name="selectedBookings[]"

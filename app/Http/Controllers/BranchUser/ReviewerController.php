@@ -163,7 +163,7 @@ class ReviewerController extends Controller
     {
         $user = User::find($request->id);
         if ($user) {
-            $user->user_status = $request->status;
+            $user->user_status = ($user->user_status == User::ACTIVE) ? User::INACTIVE : User::ACTIVE;
             $user->save();
 
             return response()->json(['message' => 'User status updated to ' . ucfirst($request->status)]);
@@ -201,8 +201,7 @@ class ReviewerController extends Controller
 
                 $row = [];
 
-                $row['sn'] = '<a href="' . url("branch-user/employees/edit/$user->id") . '">' . $user->userId . '</a>';
-                ;
+                $row['sn'] = '<a href="' . url("branch-user/employees/edit/$user->id") . '">' . $user->userId . '</a>';;
                 $row['id'] = $user->id;
                 $row['name'] = $user->first_name;
                 $row['email'] = $user->email;

@@ -40,6 +40,7 @@
                 method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
+                    <input type="hidden" value="{{ $bookingType }}" name="booking_status" id="booking_status" class="form-control mb-1" readonly />
                     @include('admin.booking.shared.consigner_details')
                     <div class="col-md-3">
                         <div class="card card-danger">
@@ -53,7 +54,7 @@
                                         <label for="distance">Distance (KM):</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" name="distance" id="distance"
+                                        <input type="text" value="{{ old('distance') }}" name="distance" id="distance"
                                             class="form-control mb-1" />
                                     </div>
 
@@ -62,8 +63,8 @@
                                         <label for="freight_amount">Freight:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly value="" name="freight_amount"
-                                            id="freight_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('freight_amount') }}" name="freight_amount"
+                                            id="freight_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- WBC -->
@@ -71,8 +72,8 @@
                                         <label for="wbc_charges">WBC:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="wbc_charges" id="wbc_charges"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('wbc_charges') }}" name="wbc_charges" id="wbc_charges"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Handling Charges -->
@@ -80,8 +81,8 @@
                                         <label for="handling_charges">Handling Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="handling_charges" id="handling_charges"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('handling_charges') }}" name="handling_charges" id="handling_charges"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- FOV -->
@@ -89,8 +90,8 @@
                                         <label for="fov_amount">FOV:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" readonly name="fov_amount" id="fov_amount"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('fov_amount') }}" name="fov_amount" id="fov_amount"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Fuel Charges -->
@@ -98,8 +99,8 @@
                                         <label for="fuel_amount">Fuel Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly value="" name="fuel_amount"
-                                            id="fuel_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('fuel_amount') }}" name="fuel_amount"
+                                            id="fuel_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Transhipment 1 -->
@@ -107,8 +108,8 @@
                                         <label for="transhipmen_one_amount">Transhipment 1:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" readonly name="transhipmen_one_amount"
-                                            id="transhipmen_one_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('transhipmen_one_amount') }}" name="transhipmen_one_amount"
+                                            id="transhipmen_one_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Transhipment 2 -->
@@ -116,8 +117,8 @@
                                         <label for="transhipmen_two_amount">Transhipment 2:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" readonly name="transhipmen_two_amount"
-                                            id="transhipmen_two_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('transhipmen_two_amount') }}" name="transhipmen_two_amount"
+                                            id="transhipmen_two_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Transhipment 3 -->
@@ -125,8 +126,8 @@
                                         <label for="transhipment_three_amount">Transhipment 3:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" readonly name="transhipment_three_amount"
-                                            id="transhipment_three_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('transhipment_three_amount') }}" name="transhipment_three_amount"
+                                            id="transhipment_three_amount" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Pickup Charges -->
@@ -134,7 +135,7 @@
                                         <label for="pickup_charges">Pickup Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" name="pickup_charges" id="pickup_charges"
+                                        <input type="text" value="{{ old('pickup_charges') }}" name="pickup_charges" id="pickup_charges"
                                             class="form-control mb-1" />
                                     </div>
 
@@ -143,8 +144,8 @@
                                         <label for="hamali_Charges">Hamali Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="hamali_Charges" id="hamali_Charges"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('hamali_Charges') }}" name="hamali_Charges" id="hamali_Charges"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Bilti Charges -->
@@ -152,8 +153,8 @@
                                         <label for="bilti_Charges">Bilti Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="bilti_Charges" id="bilti_Charges"
-                                            class="form-control mb-1" />
+                                        <input type="text" value="{{ old('bilti_Charges') }}" name="bilti_Charges" id="bilti_Charges"
+                                            class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Discount -->
@@ -161,17 +162,14 @@
                                         <label for="discount">Discount:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" name="discount" id="discount"
-                                            class="form-control mb-1" />
+                                        <input type="text" name="discount" id="discount" class="form-control mb-1" value="{{ old('discount') }}" />
                                     </div>
-
                                     <!-- Company Charges -->
                                     <div class="col-md-6">
                                         <label for="compney_charges">Company Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly value="" name="compney_charges"
-                                            id="compney_charges" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('compney_charges') }}" name="compney_charges" id="compney_charges" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Misc Charges -->
@@ -179,8 +177,7 @@
                                         <label for="misc_charge_amount">Misc. Charges:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" name="misc_charge_amount"
-                                            id="misc_charge_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('misc_charge_amount') }}" name="misc_charge_amount" id="misc_charge_amount" class="form-control mb-1" />
                                     </div>
 
                                     <!-- Sub Total -->
@@ -188,7 +185,7 @@
                                         <label for="sub_total">Sub Total:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" value="" name="sub_total" id="sub_total"
+                                        <input type="text" value="{{ old('sub_total') }}" name="sub_total" id="sub_total"
                                             class="form-control mb-1" readonly />
                                     </div>
 
@@ -197,24 +194,21 @@
                                         <label for="cgst">CGST:</label>
                                     </div>
                                     <div class="col-md-6 cgst">
-                                        <input type="text" readonly value="" name="cgst" id="cgst"
-                                            class="form-control mb-1" readonly />
+                                        <input type="text" value="{{ old('cgst') }}" name="cgst" id="cgst" class="form-control mb-1" readonly />
                                     </div>
 
                                     <div class="col-md-6 sgst">
                                         <label for="sgst">SGST:</label>
                                     </div>
                                     <div class="col-md-6 sgst">
-                                        <input type="text" readonly value="" name="sgst" id="sgst"
-                                            class="form-control mb-1" readonly />
+                                        <input type="text" value="{{ old('sgst') }}" name="sgst" id="sgst" class="form-control mb-1" readonly />
                                     </div>
 
                                     <div class="col-md-6 igst">
                                         <label for="igst">IGST:</label>
                                     </div>
                                     <div class="col-md-6 igst">
-                                        <input type="text" readonly value="" name="igst" id="igst"
-                                            class="form-control mb-1" readonly />
+                                        <input type="text" value="{{ old('igst') }}" name="igst" id="igst" class="form-control mb-1" readonly />
                                     </div>
 
 
@@ -223,8 +217,7 @@
                                         <label for="grand_total">Grand Total:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly value="" name="grand_total"
-                                            id="grand_total" class="form-control mb-1" readonly />
+                                        <input type="text" value="{{ old('grand_total') }}" name="grand_total" id="grand_total" class="form-control mb-1" readonly />
                                     </div>
 
                                     <!-- Final Amount -->
@@ -232,18 +225,14 @@
                                         <label for="grand_total_amount">Final Amount:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" readonly name="grand_total_amount"
-                                            id="grand_total_amount" class="form-control mb-1" />
+                                        <input type="text" value="{{ old('grand_total_amount') }}" name="grand_total_amount"
+                                            id="grand_total_amount" class="form-control mb-1" readonly />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
                 <div class="row mb-3">
                     <div class="col-12">
                         {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a> --}}
@@ -259,7 +248,9 @@
 
 @section('script')
 @parent
+
 <script src="{{ asset(path: 'admin_webu/plugins/select2/js/select2.full.min.js') }} "></script>
+
 <script>
     const wbcPerparcelChargesperParcel = 40; // for single parcel
     const handlingChargesPerparcel = 30; // for single parcel
@@ -273,6 +264,79 @@
     const defaultFovPercentage = 1.5; // defaultFovPercentage
     const setDefaultDistance = 100; // default distance 100 km
     const defaultTranshipment = 40;
+
+
+    const branches = @json($branch);
+    const fromSelectedBranch = ["{{$user->branch_user_id}}"];
+    const consignorNumber = parseInt("{{$user->branch_user_id}}");
+
+    const selectedBranches = fromSelectedBranch.map(Number);
+
+    const selectedTranshipmentArray = {
+        'consignor_branch_id': consignorNumber,
+        'consignee_branch_id': null,
+        'transhipmen_one': null,
+        'transhipmen_two': null,
+        'transhipment_three': null
+    }
+
+
+    const oldConsigneeBranchId = "{{ old('consignee_branch_id') }}";
+    const oldTranshipmentOne = "{{ old('transhipmen_one') }}";
+    const oldTranshipmentTwo = "{{ old('transhipmen_two') }}";
+    const oldTranshipmentThree = "{{ old('transhipment_three') }}";
+
+    const consigneeBranch = document.getElementById("consignee_branch_id");
+    const transhipmentOneElement = document.getElementById("transhipmen_one");
+    const transhipmentTwoElement = document.getElementById("transhipmen_two");
+    const transhipmentThreeElement = document.getElementById("transhipment_three");
+
+
+    async function printToSelectBranch(selectElementName, oldValue) {
+        const filteredBranches = branches.filter(item => !selectedBranches.includes(item.id));
+        filteredBranches.forEach(branch => {
+            const option = document.createElement("option");
+            option.value = branch.id;
+            option.textContent = branch.branch_name;
+            if (branch.id == oldValue) {
+                option.selected = true;
+            }
+            selectElementName.appendChild(option);
+        });
+    }
+
+    function checkDuplicateBranchValue(selectedValue) {
+        const valueMap = {};
+        for (const [key, value] of Object.entries(selectedTranshipmentArray)) {
+            if (value != null) {
+                if (!valueMap[value]) valueMap[value] = [];
+                valueMap[value].push(key);
+            }
+        }
+
+
+        const duplicated = Object.entries(valueMap)
+            .filter(([_, keys]) => keys.length > 1)
+            .map(([value, keys]) => ({
+                value: Number(value),
+                keys
+            }));
+
+        if (duplicated.length > 0) {
+            return {
+                'status': true,
+                'keys': duplicated[0].keys,
+            }
+        }
+
+        return {
+            'status': false,
+        }
+    }
+
+    function displayAndRemoveField() {
+
+    }
 
     async function calculateFavtotalAmount() {
         //fov amount will be calculated when good of value amount should be available
@@ -326,9 +390,7 @@
     }
 
     async function calculateFreight(distance, numberOfParcel = 1) {
-        console.log('calculateFreight numberOfParcel', numberOfParcel)
         const freightTotalAmount = (distance * perKmRate) * numberOfParcel;
-
         $('#freight_amount').val(freightTotalAmount); // set value in textbox
         return freightTotalAmount
     }
@@ -367,7 +429,7 @@
 
 
     async function calculateInvoice(defaultDistance = 0, numberOfParcel = 0) {
-        console.log('calculateInvoice calculateInvoice', defaultDistance)
+
         // Get all input values
         const distance = defaultDistance || 0;
         const noOfArticles = parseInt(document.getElementById('no_of_articles').value) || 1;
@@ -462,6 +524,7 @@
     }
 
 
+
     $(document).ready(function() {
         $('#consignor_branch_id, #consignee_branch_id').on('change', function() {
             var consignor_branch_id = $('#consignor_branch_id').val();
@@ -523,11 +586,101 @@
             calculateInvoice(distance, noOfArticles)
         });
 
-
         // Event listener for goods value (FOV calculation)
         $('#good_of_value').on('input', function() {
             calculateFOV(); // Recalculate FOV based on goods value
         });
+
+        //print to branch dropdown. 
+        printToSelectBranch(consigneeBranch, oldConsigneeBranchId);
+
+        //select consignee_branch_id
+        $(document).on('change', '#consignee_branch_id', function() {
+            const consigneeId = $(this).val();
+            if (consigneeId) {
+                $('#transhipmen_one').attr('disabled', false);
+                selectedBranches.push(parseInt(consigneeId));
+                selectedTranshipmentArray['consignee_branch_id'] = parseInt(consigneeId);
+                const duplicateResponse = checkDuplicateBranchValue(consigneeId);
+                console.log('duplicateResponse consignee_branch_id', duplicateResponse);
+
+                if (duplicateResponse.status == true) {
+                    printToSelectBranch(transhipmentOneElement, oldTranshipmentOne);
+                } else {
+                    displayAndRemoveField(duplicateResponse);
+                }
+            } else {
+                selectedTranshipmentArray['consignee_branch_id'] = null;
+                $('#transhipmen_one').val(null).trigger('change').prop('disabled', true);
+                $('#transhipmen_two').val(null).trigger('change').prop('disabled', true);
+                $('#transhipment_three').val(null).trigger('change').prop('disabled', true);
+            }
+        });
+        $(document).on('change', '#transhipmen_one', function() {
+            const transhipmentOneValue = $(this).val();
+            if (transhipmentOneValue) {
+                $('#transhipmen_two').attr('disabled', false);
+                selectedBranches.push(parseInt(transhipmentOneValue));
+                selectedTranshipmentArray['transhipmen_one'] = parseInt(transhipmentOneValue);
+                const duplicateResponse = checkDuplicateBranchValue(transhipmentOneValue);
+
+                console.log('duplicateResponse transhipmen_one', duplicateResponse);
+
+                printToSelectBranch(transhipmentTwoElement, oldTranshipmentOne);
+            } else {
+                selectedTranshipmentArray['consignee_branch_id'] = null;
+                $('#transhipmen_two').val(null).trigger('change').prop('disabled', true);
+                $('#transhipment_three').val(null).trigger('change').prop('disabled', true);
+            }
+        });
+        $(document).on('change', '#transhipmen_two', function() {
+            const transhipmentTwoValue = $(this).val();
+            if (transhipmentTwoValue) {
+                $('#transhipment_three').attr('disabled', false);
+                selectedBranches.push(parseInt(transhipmentTwoValue));
+                selectedTranshipmentArray['transhipmen_two'] = parseInt(transhipmentTwoValue);
+                const duplicateResponse = checkDuplicateBranchValue(transhipmentTwoValue);
+
+                console.log('duplicateResponse transhipmen_two', duplicateResponse);
+
+                printToSelectBranch(transhipmentThreeElement, oldTranshipmentThree);
+            } else {
+                selectedTranshipmentArray['consignee_branch_id'] = null;
+                $('#transhipment_three').val(null).trigger('change').prop('disabled', true);
+            }
+        });
+        $(document).on('change', '#transhipment_three', function() {
+            const transhipmentThreeValue = $(this).val();
+            if (transhipmentThreeValue) {
+                selectedBranches.push(parseInt(transhipmentThreeValue));
+                selectedTranshipmentArray['transhipment_three'] = parseInt(transhipmentThreeValue);
+                const duplicateResponse = checkDuplicateBranchValue(transhipmentThreeValue);
+                console.log('duplicateResponse transhipment_three', duplicateResponse);
+            }
+        });
+    });
+    $(document).on('change', '#client_id', function() {
+        var clientId = $(this).val();
+        $('#consignee_name, #consignee_phone_number, #consignee_address, #consignee_gst_number, #consignee_email').val('');
+
+        if (clientId) {
+            $.ajax({
+                url: '{{ url("admin/bookings/client-detail") }}/' + clientId,
+                type: 'GET',
+                success: function(response) {
+                    if (response.status == 'success') {
+                        $('#consignee_name').val(response.data.client_name);
+                        $('#consignee_phone_number').val(response.data.client_phone_number);
+                        $('#consignee_address').val(response.data.client_address);
+                        $('#consignee_gst_number').val(response.data.client_gst_number);
+                        $('#consignee_email').val(response.data.client_email);
+                    }
+                },
+                error: function() {
+                    alert('Failed to fetch client details.');
+                }
+            });
+        }
     });
 </script>
 <script>

@@ -42,6 +42,8 @@ Route::post('track-shipment', [ShipmentController::class, 'trackShipment']);
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
+    Route::post('reset-password', [LoginController::class, 'resetPassword']);
+    Route::match(['get', 'post'], 'forget-password', [LoginController::class, 'forgetPassword']);
 });
 Route::get('/get-districts-user/{stateId}', [HomeController::class, 'getDistricts']);
 Route::post('/inquiry', [InquiryController::class, 'store']);
@@ -89,33 +91,39 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::post('/settings/change', [SettingsController::class, 'changeSettings'])->name('admin.settings.change');
         // Branch
-        Route::get('/branches', [BranchController::class, 'index']);
-        Route::get('/branches/list', [BranchController::class, 'list']);
-        Route::get('/branches/deletebranch/{id}', [BranchController::class, 'deletebranch']);
-        Route::get('/branches/create', [BranchController::class, 'create']);
-        Route::get('/branches/edit/{branchId}', [BranchController::class, 'edit']);
-        Route::post('/branches/update/{id}', [BranchController::class, 'update'])->name('admin.update');
-        Route::post('/branches/store', [BranchController::class, 'store'])->name('admin.store');
+        // Define the route for the bilti view
+        Route::prefix('branches')->group(function () {
+            Route::get('/', [BranchController::class, 'index']);
+            Route::get('/list', [BranchController::class, 'list']);
+            Route::get('/deletebranch/{id}', [BranchController::class, 'deletebranch']);
+            Route::get('/create', [BranchController::class, 'create']);
+            Route::get('/edit/{branchId}', [BranchController::class, 'edit']);
+            Route::post('/update/{id}', [BranchController::class, 'update'])->name('admin.update');
+            Route::post('/store', [BranchController::class, 'store'])->name('admin.store');
+        });
+
+
 
 
 
         // Define the route for the bilti view
         Route::prefix('bookings')->group(function () {
-             Route::get('/create', [BookingController::class, 'create']);
-             Route::post('/store', [BookingController::class, 'store']);
-               Route::get('/client', [BookingController::class, 'clientBooking']);
+            Route::get('/', [BookingController::class, 'index']);
+            Route::get('/list', [BookingController::class, 'list']);
+            Route::get('/create', [BookingController::class, 'create']);
+            Route::post('/store', [BookingController::class, 'store']);
+            // Route::get('/client', [BookingController::class, 'clientBooking']);
+            Route::get('/client-detail/{id}', [ClientController::class, 'getClientDetail']);
+            Route::get('/incoming-load', [BookingController::class, 'incomingLoad']);
+            Route::get('/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
+            Route::get('/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
+
+            Route::post('/booking-received', [ChallanController::class, 'received']);
         });
-        Route::get('/bookings/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
         // paid booking
 
-        Route::get('/bookings/incoming-load', [BookingController::class, 'incomingLoad']);
-        Route::get('/bookings', [BookingController::class, 'index']);
-       
-        
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
 
-        //Route::get('/bookings/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
-        Route::get('/bookings/list', [BookingController::class, 'list']);
         Route::get('/clients/bookings/edit/{id}', [BookingController::class, 'edit']);
         Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
@@ -129,17 +137,17 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings/clients', [BookingController::class, 'Clientshow']);
         Route::get('/bookings/clientsList', [BookingController::class, 'clientList']);
         // Route::get('/bookings/clients/bookings/{id}', [BookingController::class, 'to_client_booking']);
-      
+
         Route::post('/bookings/to-client-booking', [BookingController::class, 'to_client_booking_save']);
-
-        Route::get('/get-client-details/{id}', [ClientController::class, 'getClientDetails']);
-
         Route::get('challans/{challanId}/revert-booking/{bookingId}', [ChallanController::class, 'revertChallanbooking']);
-        Route::get('/challans', [ChallanController::class, 'index']);
-        Route::get('/challans/list', [ChallanController::class, 'list']);
-        Route::get('/challans/create', [ChallanController::class, 'create']);
-        Route::post('/challans/create', [ChallanController::class, 'store']);
-        Route::get('challans/{id}', [ChallanController::class, 'show']);
+
+        Route::prefix('challans')->group(function () {
+            Route::get('/', [ChallanController::class, 'index']);
+            Route::get('/list', [ChallanController::class, 'list']);
+            Route::get('/create', [ChallanController::class, 'create']);
+            Route::post('/create', [ChallanController::class, 'store']);
+            Route::get('/{id}', [ChallanController::class, 'show']);
+        });
 
         //Client routes
 
@@ -169,7 +177,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('distances/update', [BranchDistace::class, 'update']);
         Route::get('distances/delete/{id}', [BranchDistace::class, 'delete']);
 
-        Route::post('/booking/recived', [ChallanController::class, 'recived']);
+
 
 
         Route::get('admin/article/create', [ArticleController::class, 'index']);
@@ -188,18 +196,24 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('dashboard/')->group(function () {
             Route::get('/', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
             Route::get('/bookings/upcoming-booking', [\App\Http\Controllers\BranchUser\DashboardController::class, 'upcomingBookings']);
+            Route::get('/reports', [\App\Http\Controllers\BranchUser\DashboardController::class, 'reports']);
         });
 
-        Route::get('employees', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
-        Route::get('employees/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);
-        Route::post('employees/update-status', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'updateStatus']);
-        Route::get('employees/create', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'index']);
-        Route::get('employees/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
-        Route::post('employees/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
-        Route::post('employees/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
+        Route::prefix('employees')->group(function () {
+            Route::get('/', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
+            Route::get('/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);
+            Route::post('/update-status', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'updateStatus']);
+            Route::get('/create', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'index']);
+            Route::get('/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
+            Route::post('/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
+            Route::post('/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
+        });
 
-        Route::get('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
-        Route::post('settings', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
+        Route::prefix('settings')->group(function () {
+            Route::get('/', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
+            Route::post('/', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
+            Route::match(['get', 'post'], '/change-password', [\App\Http\Controllers\BranchUser\SettingController::class, 'changePassword']);
+        });
     });
 
     //Route::get('admin/add-new-reviewers', [ReviewerController::class, 'index']);

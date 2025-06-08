@@ -17,7 +17,8 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/login') }}"><b>Logistics </b></a>
+
+            <a href="{{ url('/login') }}"><b>Logistics</b> Forget Password</a>
         </div>
 
         @if ($errors->any())
@@ -32,38 +33,29 @@
 
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
                 @if (Session::has('msg'))
                 {!! Session::get('msg') !!}
                 @endif
-                <form action="{{ url('login') }}" method="POST" autocomplete="off">
+                <form action="{{ url('/forget-password') }}" method="POST" autocomplete="off">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" autofocus autocomplete="off" placeholder="Email"
-                            name="email" value="" />
+                        <input type="text" name="username" class="form-control" placeholder="Enter username" required />
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" autofocus autocomplete="off" placeholder="Password"
-                            name="password" value="" />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block">Request new password</button>
                         </div>
-                    </div>
-
-                    <div class="social-auth-links text-center mb-3">
-                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                     </div>
                 </form>
 
                 <p class="mb-1">
-                    <a href="{{ url('forget-password') }}">I forgot my password</a>
+                    <a href="{{ url('/login') }}">Login</a>
                 </p>
             </div>
         </div>

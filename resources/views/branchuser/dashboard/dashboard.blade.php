@@ -13,7 +13,8 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Branch Dashboard</li>
+                        <li class="breadcrumb-item active"><a href="#">Branch</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
                 </div>
             </div>
@@ -80,6 +81,125 @@
             </div>
         </div>
     </div>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Area Chart</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+                    <!-- DONUT CHART -->
+                    <div class="card card-danger">
+                        <div class="card-header">
+                            <h3 class="card-title">Booking Charts</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                               
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="bookingChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+
+                    <!-- PIE CHART -->
+                    <!-- <div class="card card-danger">
+                        <div class="card-header">
+                            <h3 class="card-title">Pie Chart</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- /.col (LEFT) -->
+                <div class="col-md-6">
+                    <!-- <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Line Chart</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Bar Chart</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+                    <!--               
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Stacked Bar Chart</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                      
+                    </div> -->
+
+
+                </div>
+                <!-- /.col (RIGHT) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     <section class="content">
         <!-- Default box -->
         <div class="card">
@@ -123,14 +243,6 @@
 
 @endsection
 
-@section('styles')
-@parent
-<style>
-    .dashboard-link {
-        color: #292828 !important;
-    }
-</style>
-@endsection
 @section('script')
 @parent
 <!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
@@ -138,6 +250,65 @@
 
 <script>
     $(document).ready(function(e) {
+        let bookingReportData;
+
+        // Make the AJAX call
+        $.ajax({
+            url: "{{ url('branch-user/dashboard/reports') }}",
+            method: 'GET',
+            data: {
+                'test': 'test'
+            },
+            success: function(response) {
+                // Check if response data exists
+                if (response && response.data) {
+                    var bookingReportData = response.data;
+                    // Get chart context
+                    var donutChartCanvas = $('#bookingChart').get(0).getContext('2d');
+
+                    // Setup chart data
+                    var donutData = {
+                        labels: [
+                            'No Booking',
+                            'Normal Booking',
+                            'Client Booking'
+                        ],
+                        datasets: [{
+                            data: bookingReportData?.numberOfbookingReports,
+                            backgroundColor: ['#f56954', '#00a65a', '#f39c12'],
+                        }]
+                    };
+
+                    var donutOptions = {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                    };
+
+                    // Create the chart after data is ready
+                    new Chart(donutChartCanvas, {
+                        type: 'doughnut',
+                        data: donutData,
+                        options: donutOptions
+                    });
+                } else {
+                    alert('Invalid data format from server.');
+                }
+            },
+            error: function() {
+                alert('Failed to fetch report data. Please try again.');
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
         new DataTable('#booking-list', {
             responsive: true,
             ajax: {
@@ -194,5 +365,10 @@
 
 @section('styles')
 @parent
+<style>
+    .dashboard-link {
+        color: #292828 !important;
+    }
+</style>
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
 @endsection

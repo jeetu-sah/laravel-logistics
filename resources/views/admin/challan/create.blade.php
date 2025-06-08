@@ -146,6 +146,7 @@
                                         <th>Consignee Name</th>
                                         <th>Destination</th>
                                         <th>Payment Mode</th>
+                                        <th>Next Transhipment</th>
                                         <th>Creation Date</th>
                                     </tr>
                                 </thead>
@@ -222,6 +223,9 @@
                 },
                 {
                     data: 'booking_type'
+                },
+                {
+                    data: 'next_delivery_location'
                 },
                 {
                     data: 'created_at'

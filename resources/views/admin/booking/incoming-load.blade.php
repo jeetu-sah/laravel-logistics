@@ -6,14 +6,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <a href="{{ url('admin/branches/create') }}"
-                        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
-                        <i class=" fa-sm text-white-50"></i>Create Branch </a>
+                    <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
+                        <i class=" fa-sm text-white-50"></i> </a>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Branch List</li>
+                        <li class="breadcrumb-item active">{{ $title }}</li>
                     </ol>
                 </div>
             </div>
@@ -23,36 +22,38 @@
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
-@endif
+    @endif
 
-@if (session('error'))
+    @if (session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
     </div>
-@endif
+    @endif
 
     <!-- Main content -->
     <section class="content">
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Branch List</h3>
+                <h3 class="card-title">{{ $title }}</h3>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="table-responsive ">
-                        <table class="display" id="branch-list">
+                        <table class="display" id="booking-list">
                             <thead>
                                 <tr>
                                     <th>SN.</th>
-                                    <th>Branch Code</th>
-                                    <th>Branch Name</th>
-                                    <th>Branch Owner Name</th>
-                                    <th>GST No.</th>
-                                    <th>Status</th>
-                                    <th>Password</th>
+                                    <th>Bilti Number</th>
+                                    <th>Offline Bitli</th>
+                                    <th>Consinger Branch</th>
+                                    <th>Consinger Name</th>
+                                    <th>Consignee Branch</th>
+                                    <th>Consignee Name</th>
+                                
+                               
+                                    <th>Payment Mode</th>
                                     <th>Creation Date</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,45 +79,39 @@
 
 <script>
     $(document).ready(function(e) {
-
-        new DataTable('#branch-list', {
+        new DataTable('#booking-list', {
             responsive: true,
             ajax: {
-                url: "{{ url('admin/branches/list') }}",
-                data: function(d) {
-                    //d.myKey = 'myValue';
-                    // d.custom = $('#myInput').val();
-                    // etc
-                }
+                url: "{{ url('admin/bookings/upcoming-booking') }}",
+                data: function(d) {}
             },
             columns: [{
                     data: 'sn'
                 },
                 {
-                    data: 'branch_code'
+                    data: 'bilti_number'
                 },
                 {
-                    data: 'branch_name'
+                    data: 'offline_bilti'
                 },
                 {
-                    data: 'owner_name'
+                    data: 'consignor_branch_id'
                 },
                 {
-                    data: 'gst'
+                    data: 'consignor_name'
+                },
+                {
+                    data: 'consignee_branch'
+                },
+                {
+                    data: 'consignee_name'
+                },
+                {
+                    data: 'booking_type'
 
                 },
                 {
-                    data: 'user_status'
-                },
-                {
-                    data: 'identity'
-                },
-                {
                     data: 'created_at'
-                },
-                {
-                    data: 'action',
-                    orderable: false
                 }
             ],
 

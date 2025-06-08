@@ -32,9 +32,9 @@
                             <table class="display" id="booking-list">
                                 <thead>
                                     <tr>
-                                        <th>SN.</th>
                                         <th>Challan Number</th>
                                         <th>Vehicle Number</th>
+                                        <th>Driver</th>
                                         <th>Type</th>
                                         <th>Created date</th>
                                         <th>Action</th>
@@ -71,14 +71,15 @@
                         // Optional: You can send more parameters here if needed.
                     }
                 },
-                columns: [{
-                        data: 'sn'
-                    },
+                columns: [
                     {
                         data: 'challan_number'
                     },
                     {
                         data: 'busNumber'
+                    },
+                    {
+                        data: 'driverName'
                     },
                     {
                         data: 'type'

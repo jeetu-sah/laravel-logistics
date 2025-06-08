@@ -9,6 +9,7 @@ use App\Models\Booking;
 use App\Models\Transhipment;
 use App\Models\LoadingChallanBooking;
 use App\Library\sHelper;
+use App\Services\BookingService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -72,8 +73,9 @@ class ChallanController extends Controller
                         $booking->branch_specific_transhipment->update();
 
                         // Update the status in the booking table (assuming 'status' is the column name)
-                        $booking->status = Booking::DISPATCH; // or the appropriate status value
+                        $booking->status = Booking::DISPATCH;
                         $booking->save();
+                        // BookingService::updateBookingStatus($booking);
                     }
                 }
                 return ['challan' => $challanRespos];
@@ -128,8 +130,8 @@ class ChallanController extends Controller
 
         $totalRecord = $loadingChallanQuery->count();
 
-   
-        $loadingChallans = $loadingChallanQuery->skip($start)->take($limit)->get();
+
+        $loadingChallans = $loadingChallanQuery->skip($start)->take($limit)->orderBy('created_at', 'DESC')->get();
 
         $rows = [];
         if ($loadingChallans->count() > 0) {
@@ -150,6 +152,7 @@ class ChallanController extends Controller
                 $row['sn'] = '<a href="' . url("admin/roles/user_permission/$loadingChallan->id?page=roles") . '">' . $loadingChallan->id . '</a>';
                 $row['challan_number'] = '<a href="' . url('admin/challans', ['id' => $loadingChallan->id]) . '">' . $loadingChallan->challan_number . '</a>';
                 $row['busNumber'] = strtoupper($loadingChallan->busNumber);
+                $row['driverName'] = strtoupper($loadingChallan->driverName);
                 $row['type'] = ($loadingChallan->user->branch_user_id == $branchId) ? '<span class="badge badge-danger">Self Created</span>' : '<span class="badge badge-danger">Created By ' . $loadingChallan?->user?->branch?->branch_name . '</span>';
                 $row['created_at'] = formatDate($loadingChallan->created_at);
                 $row['action'] = $edit_btn . " " . $change_credential;
@@ -181,124 +184,46 @@ class ChallanController extends Controller
         }
         $bookings = $data['challanDetail']->bookings;
 
-        // echo "<pre>";
-        // print_r($bookings);exit;
-
-        //enable checkbox for transhipment
-        // Fetch the challan bookings based on the challan ID and join transhipments
-        // $challanBookings = LoadingChallanBooking::where('loading_challans_id', $id)
-        //     ->join('loading_challans', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
-        //     ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
-        //     ->leftJoin('transhipments', 'transhipments.booking_id', '=', 'bookings.id') // Left join for transhipments
-        //     ->join('clients', 'clients.id', '=', 'bookings.client_id')
-        //     ->select(
-        //         'loading_challan_booking.*',
-        //         'loading_challans.status as chalanStatus',
-        //         'loading_challans.id as chalanId',
-        //         'loading_challans.challan_number',
-        //         'loading_challans.busNumber',
-        //         'loading_challans.driverName',
-        //         'loading_challans.driverMobile',
-        //         'loading_challans.locknumber',
-        //         'loading_challans.created_at',
-        //         'loading_challans.coLoder',
-        //         'clients.client_name as client_name',
-        //         'clients.client_phone_number as client_mobile',
-        //         'clients.client_address as client_address',
-        //         'clients.client_gst_number as client_gst_number',
-        //         'transhipments.id as transhipments_id',
-        //         'transhipments.sequence_no',
-        //         'transhipments.status as transhipment_status', // Add the transhipment status
-        //         'bookings.consignee_branch_id',
-        //         'bookings.status as bookingStatus',
-        //         'bookings.id as bookingId',
-        //     ) // Include the challan_number field
-        //     ->get();
-
-        // Process the fetched data
-        // $bookingDetails = [];
-        // foreach ($challanBookings as $challanBooking) {
-        //     $bookingInfo = Booking::with(['consignorBranch', 'consigneeBranch'])
-        //         ->find($challanBooking->booking_id);
-        //     $consignorBranchName = $bookingInfo->consignorBranch->branch_name ?? 'N/A';
-        //     $consigneeBranchName = $bookingInfo->consigneeBranch->branch_name ?? 'N/A';
-
-        //     if ($bookingInfo) {
-        //         $bookingInfo->consignorBranchName = $consignorBranchName;
-        //         $bookingInfo->consigneeBranchName = $consigneeBranchName;
-        //         $bookingInfo->challan_number = $challanBooking->challan_number;
-        //         $bookingInfo->busNumber = $challanBooking->busNumber;
-        //         $bookingInfo->driverName = $challanBooking->driverName;
-        //         $bookingInfo->driverMobile = $challanBooking->driverMobile;
-        //         $bookingInfo->locknumber = $challanBooking->locknumber;
-        //         $bookingInfo->chalanId = $challanBooking->chalanId;
-        //         $bookingInfo->created_at = $challanBooking->created_at;
-        //         $bookingInfo->chalanStatus = $challanBooking->chalanStatus;
-        //         $bookingInfo->coLoder = $challanBooking->coLoder;
-        //         $bookingInfo->client_name = $challanBooking->client_name;
-        //         $bookingInfo->client_mobile = $challanBooking->client_mobile;
-        //         $bookingInfo->client_address = $challanBooking->client_address;
-        //         $bookingInfo->client_gst_number = $challanBooking->client_gst_number;
-
-        //         // Include transhipment data (whether it's the user's branch or a transhipment-related booking)
-        //         $bookingInfo->transhipments_id = $challanBooking->transhipments_id;
-        //         $bookingInfo->transhipment_status = $challanBooking->transhipment_status;
-        //         $bookingInfo->to_transhipment = $challanBooking->to_transhipment;
-
-        //         $bookingInfo->consignee_branch_id = $challanBooking->consignee_branch_id;
-        //         $bookingInfo->bookingStatus = $challanBooking->bookingStatus;
-        //         $bookingInfo->bookingId = $challanBooking->bookingId;
-
-        //         // Check the transhipment status and determine if the checkbox should be shown
-        //         $bookingInfo->show_checkbox = false;
-        //         if ($challanBooking->transhipment_status == 'received' || $branchId == $challanBooking->from_transhipment) {
-        //             $bookingInfo->show_checkbox = true; // Show checkbox if the transhipment has been received or it's the user's branch
-        //         }
-
-        //         $bookingDetails[] = $bookingInfo;
-        //     }
-        // }
-
         $data['bookings'] = $bookings;
         return view('admin.challan.delevery-booking', $data);
     }
 
 
-    public function recived(Request $request)
+    public function received(Request $request)
     {
-        $selectedBookings = $request->input('selectedBookings');
-        if (count($selectedBookings) > 0) {
-            $bookings = Booking::whereIn('id', $selectedBookings)->get();
-            // $chalan_id = $request->input('chalan_id');
 
-            // $totalLoadingChallan = LoadingChallanBooking::count();
-            // $totalRecordBooking = Booking::count();
+        try {
+            $selectedBookings = $request->input('selectedBookings');
+            if (count($selectedBookings) > 0) {
+                $bookings = Booking::whereIn('id', $selectedBookings)->get();
+                DB::transaction(function () use ($bookings) {
+                    foreach ($bookings as $booking) {
+                        $booking->branch_specific_transhipment->received_at = now();
+                        $booking->branch_specific_transhipment->status = Transhipment::RECEIVED;
+                        $booking->branch_specific_transhipment->update();
 
-            foreach ($bookings as $booking) {
-                $booking->branch_specific_transhipment->received_at = now();
-                $booking->branch_specific_transhipment->status = Transhipment::RECEIVED;
-                $booking->branch_specific_transhipment->update();
+                        //update booking status
+                        BookingService::updateBookingStatus($booking);
+                    }
+                });
+
+                return redirect()->back()->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Booking Received successfully', 'type' => 'success']
+                ]);
+            } else {
+                return redirect()->back()->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Please select the bookings, which you want to received', 'type' => 'danger']
+                ]);
             }
-
-            // Check if all bookings are received for that challan
-            // $challanBookingCount = LoadingChallanBooking::where('loading_challans_id', $chalan_id)->count();
-            // $receivedBookingCount = LoadingChallanBooking::where('loading_challans_id', $chalan_id)
-            //     ->whereHas('bookings', function ($q) {
-            //         $q->where('status', 3);
-            //     })->count();
-
-            // if ($challanBookingCount == $receivedBookingCount) {
-            //     LoadingChallan::where('id', $chalan_id)->update(['status' => 'completed']);
-            // }
-            return redirect()->back()->with([
-                "alertMessage" => true,
-                "alert" => ['message' => 'Booking Received successfully', 'type' => 'success']
-            ]);
-        } else {
-            return redirect()->back()->with([
-                "alertMessage" => true,
-                "alert" => ['message' => 'Please select the bookings, which you want to received', 'type' => 'danger']
-            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
+                ]);
         }
     }
 

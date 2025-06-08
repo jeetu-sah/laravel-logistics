@@ -15,13 +15,8 @@ return new class extends Migration
             $table->string('email');  // Email address for password reset
             $table->string('token');  // Token used for password reset
             $table->timestamp('created_at')->nullable();  // Timestamp for when the token was created
-
-            // Optional: You can add a primary key constraint on email and token if you want
-            // or use a unique constraint to avoid duplicate tokens for the same email
             $table->primary(['email', 'token']);  // Composite primary key (email, token) for uniqueness
-
-            // You could also add a unique constraint if you want to ensure the token is unique per email
-            // $table->unique(['email', 'token']);
+            $table->softDeletes();
         });
     }
 

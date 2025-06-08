@@ -3159,7 +3159,7 @@
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Name:
-                                                    {{ $client->client_name }}
+                                                    {{ $booking->consignee_name ?? '--' }}
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 
@@ -3167,21 +3167,21 @@
 
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Address:
-                                                    {{ $client->client_address }}
+                                                    {{ $booking->consignee_address ?? '--' }}
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">Mobile:
-                                                    {{ $client->client_phone_number }}
+                                                    {{ $booking->consignee_phone_number ?? '--'}}
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0">GST:
-                                                    {{ $client->client_gst_number }}
+                                                    {{ $booking->consignee_gst_number ?? '--' }}
                                                     <span class="tm_ternary_color"></span>
                                                 </td>
 

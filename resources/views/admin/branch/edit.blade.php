@@ -180,6 +180,15 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <div class="col-md-4">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input class="form-control" value="{{ $branch->user->identity }}" name="password"
+                                        id="password" placeholder="Password" required>
+                                    <div class="invalid-feedback">Enter Password.</div>
+                                    @error('password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
                             </div>
                             <button class="btn btn-primary mt-3" type="submit">Submit</button>
