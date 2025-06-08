@@ -45,7 +45,7 @@
                                         <th>SN.</th>
                                         <th>From</th>
                                         <th>To</th>
-                                        <th>Distance</th>
+                                        <th>Distance in km.</th>
                                         <th>Status</th>
                                         
                                     </tr>
