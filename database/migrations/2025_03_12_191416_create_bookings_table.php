@@ -32,7 +32,7 @@ return new class extends Migration
             $table->text('consignee_address');
             $table->bigInteger('consignee_phone_number');
             $table->string('consignee_gst_number', 20);
-            $table->string('consignee_email', 40);
+            $table->string('consignee_email', 40)->nullable();
 
             $table->string('invoice_number', 30);
             $table->string('eway_bill_number', 20);

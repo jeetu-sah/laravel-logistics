@@ -4,3 +4,4 @@
     <x-alert :alert="$alert" />
     @endif
 </div>
+<div class="col-sm-12" id="notification"></div>

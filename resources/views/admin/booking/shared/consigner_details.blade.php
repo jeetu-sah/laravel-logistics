@@ -260,7 +260,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <label for="date">Email:</label>=
+                    <label for="date">Email:</label>
                 </div>
                 <div class="col-md-3">
                     <input type="text" value="{{ old('consignor_email') }}" name="consignor_email" id="consignor_email" class="form-control mb-1" />
@@ -269,7 +269,6 @@
                     <label for="date">Email:</label>
                 </div>
                 <div class="col-md-3">
-
                     <input type="text" value="{{ old('consignee_email') }}" id="consignee_email" name="consignee_email" class="form-control mb-1" />
 
                 </div>

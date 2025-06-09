@@ -43,11 +43,12 @@
                     <input type="hidden" value="{{ $bookingType }}" name="booking_status" id="booking_status" class="form-control mb-1" readonly />
                     @include('admin.booking.shared.consigner_details')
                     <div class="col-md-3">
-                        <div class="card card-danger">
+                        <div class="card card-success">
                             <div class="card-header">
                                 <h3 class="card-title">Invoice</h3>
                             </div>
                             <div class="card-body">
+
                                 <div class="row">
                                     <!-- Distance -->
                                     <div class="col-md-6">
@@ -331,11 +332,18 @@
 
         return {
             'status': false,
+
         }
     }
 
-    function displayAndRemoveField() {
-
+    function displayAndRemoveField(duplicateResponse) {
+        console.log('duplicateResponse', duplicateResponse)
+        if (duplicateResponse.status == true) {
+            duplicateResponse.keys.forEach((item) => {
+                $(`#${item}`).val(null).trigger('change');
+                $('#notification').html(`<div class='alert alert-danger'><strong>Warning </strong>  You can not select duplicate branch or transhipment !!! </div>`)
+            })
+        }
     }
 
     async function calculateFavtotalAmount() {
@@ -604,7 +612,7 @@
                 const duplicateResponse = checkDuplicateBranchValue(consigneeId);
                 console.log('duplicateResponse consignee_branch_id', duplicateResponse);
 
-                if (duplicateResponse.status == true) {
+                if (duplicateResponse.status == false) {
                     printToSelectBranch(transhipmentOneElement, oldTranshipmentOne);
                 } else {
                     displayAndRemoveField(duplicateResponse);
@@ -624,9 +632,12 @@
                 selectedTranshipmentArray['transhipmen_one'] = parseInt(transhipmentOneValue);
                 const duplicateResponse = checkDuplicateBranchValue(transhipmentOneValue);
 
-                console.log('duplicateResponse transhipmen_one', duplicateResponse);
+                if (duplicateResponse.status == false) {
+                    printToSelectBranch(transhipmentTwoElement, oldTranshipmentOne);
+                } else {
+                    displayAndRemoveField(duplicateResponse);
+                }
 
-                printToSelectBranch(transhipmentTwoElement, oldTranshipmentOne);
             } else {
                 selectedTranshipmentArray['consignee_branch_id'] = null;
                 $('#transhipmen_two').val(null).trigger('change').prop('disabled', true);
@@ -641,9 +652,12 @@
                 selectedTranshipmentArray['transhipmen_two'] = parseInt(transhipmentTwoValue);
                 const duplicateResponse = checkDuplicateBranchValue(transhipmentTwoValue);
 
-                console.log('duplicateResponse transhipmen_two', duplicateResponse);
+                if (duplicateResponse.status == false) {
+                    printToSelectBranch(transhipmentThreeElement, oldTranshipmentThree);
+                } else {
+                    displayAndRemoveField(duplicateResponse);
+                }
 
-                printToSelectBranch(transhipmentThreeElement, oldTranshipmentThree);
             } else {
                 selectedTranshipmentArray['consignee_branch_id'] = null;
                 $('#transhipment_three').val(null).trigger('change').prop('disabled', true);
@@ -655,7 +669,6 @@
                 selectedBranches.push(parseInt(transhipmentThreeValue));
                 selectedTranshipmentArray['transhipment_three'] = parseInt(transhipmentThreeValue);
                 const duplicateResponse = checkDuplicateBranchValue(transhipmentThreeValue);
-                console.log('duplicateResponse transhipment_three', duplicateResponse);
             }
         });
     });

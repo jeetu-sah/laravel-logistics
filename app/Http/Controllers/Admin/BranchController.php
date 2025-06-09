@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use PhpParser\Node\Stmt\Echo_;
 
 class BranchController extends Controller
 {
@@ -183,11 +182,17 @@ class BranchController extends Controller
             'address1' => 'required|string',
             'address2' => 'nullable|string',
             'user_status' => 'required|string',
+            'password' => 'required|string|min:6', // Ensure password is included in validation
         ]);
 
-        // Create a new Branch instance and save the data
-        $branch = Branch::find($id);
-        if ($branch != null) {
+        DB::beginTransaction();
+
+        try {
+            $branch = Branch::find($id);
+            if (!$branch) {
+                throw new \Exception('Branch not found');
+            }
+
             $branch->branch_name = $request->branch_name;
             $branch->branch_code = $request->branch_code;
             $branch->owner_name = $request->owner_name;
@@ -200,32 +205,30 @@ class BranchController extends Controller
             $branch->address2 = $request->address2;
             $branch->user_status = $request->user_status;
             $branch->save();
+
             $user = $branch->user;
+            if (!$user) {
+                throw new \Exception('Associated user not found');
+            }
 
             $user->identity = $request->password;
             $user->password = Hash::make($request->password);
+            $user->save();
 
-            if ($user->save()) {
-                // $user = User::
-                return redirect()->back()->with([
-                    "alertMessage" => true,
-                    "alert" => ['message' => 'Branch updated successfully', 'type' => 'success']
-                ]);
-            } else {
-                return redirect()->back()->with([
-                    "alertMessage" => true,
-                    "alert" => [
-                        'message' => 'Something went wrong, please try after sometime',
-                        'type' => 'success'
-                    ]
-                ]);
-            }
-        } else {
+            DB::commit();
+
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Branch updated successfully', 'type' => 'success']
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+
             return redirect()->back()->with([
                 "alertMessage" => true,
                 "alert" => [
-                    'message' => 'Something went wrong, please try after sometime',
-                    'type' => 'success'
+                    'message' => 'Something went wrong, please try again. Error: ' . $e->getMessage(),
+                    'type' => 'danger'
                 ]
             ]);
         }
