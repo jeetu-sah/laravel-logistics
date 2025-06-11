@@ -22,6 +22,7 @@ use App\Http\Controllers\Report\BookingReportController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MapClientController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Admin\IncomingBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,11 +115,16 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/store', [BookingController::class, 'store']);
             // Route::get('/client', [BookingController::class, 'clientBooking']);
             Route::get('/client-detail/{id}', [ClientController::class, 'getClientDetail']);
-            Route::get('/incoming-load', [BookingController::class, 'incomingLoad']);
-            Route::get('/upcoming-booking', action: [BookingController::class, 'upcomingBookings']);
+            // Route::get('/incoming-load', [BookingController::class, 'incomingLoad']);
+
             Route::get('/bilti/{id}', [BookingController::class, 'bilti'])->name('bookings.bilti');
 
             Route::post('/booking-received', [ChallanController::class, 'received']);
+        });
+        // Define the route for the bilti view
+        Route::prefix('incoming-booking')->group(function () {
+            Route::get('/', [IncomingBookingController::class, 'incomingLoad']);
+            Route::get('/list', [IncomingBookingController::class, 'upcomingBookings']);
         });
         // paid booking
 
@@ -130,10 +136,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/bookings/noBill', [BookingController::class, 'noBill']);
 
         Route::post('/bookings/paid-booking', [BookingController::class, 'paid_booking']);
-        // // to paid booking
-        Route::get('/bookings/to-pay-booking', [BookingController::class, 'to_pay_booking']);
-        Route::post('/bookings/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
-        // // to client booking
+        // to paid booking
+        // Route::get('/bookings/to-pay-booking', [BookingController::class, 'to_pay_booking']);
+        // Route::post('/bookings/to-pay-booking', [BookingController::class, 'to_pay_booking_save']);
+        // to client booking
         Route::get('/bookings/clients', [BookingController::class, 'Clientshow']);
         Route::get('/bookings/clientsList', [BookingController::class, 'clientList']);
         // Route::get('/bookings/clients/bookings/{id}', [BookingController::class, 'to_client_booking']);
@@ -144,10 +150,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('challans')->group(function () {
             Route::get('/', [ChallanController::class, 'index']);
             Route::get('/list', [ChallanController::class, 'list']);
+            Route::get('/incoming-challans', [ChallanController::class, 'incomingChallans']);
             Route::get('/create', [ChallanController::class, 'create']);
             Route::post('/create', [ChallanController::class, 'store']);
             Route::get('/{id}', [ChallanController::class, 'show']);
         });
+
 
         //Client routes
 
@@ -195,7 +203,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::prefix('dashboard/')->group(function () {
             Route::get('/', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
-            Route::get('/bookings/upcoming-booking', [\App\Http\Controllers\BranchUser\DashboardController::class, 'upcomingBookings']);
+            // Route::get('/bookings/upcoming-booking', [\App\Http\Controllers\BranchUser\DashboardController::class, 'upcomingBookings']);
             Route::get('/reports', [\App\Http\Controllers\BranchUser\DashboardController::class, 'reports']);
         });
 

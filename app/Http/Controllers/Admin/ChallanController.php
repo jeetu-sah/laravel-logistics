@@ -27,6 +27,15 @@ class ChallanController extends Controller
         return view('admin.challan.list', $data);
     }
 
+    /**
+     * Display a listing of the resource.
+     */
+    public function incomingChallans()
+    {
+        $data['title'] = 'Challan';
+        return view('admin.challan.incoming-challan-list', $data);
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -103,34 +112,31 @@ class ChallanController extends Controller
 
     public function list(Request $request)
     {
+        // echo "<pre>";
+        // print_r($request->challantype);exit;
         $limit = $request->input('length');
         $start = $request->input('start');
-        $search = $request->input('search')['value']; // Get the search query
+        $search = $request->input('search')['value'];
         $branchId = Auth::user()->branch_user_id;
+        $loggedinBranchUserId = Auth::user()->id;
 
 
         $loadingChallanQuery = LoadingChallan::with([
             'bookings.transhipments' => function ($query) use ($branchId) {
                 $query->where('from_transhipment', $branchId);
             }
-        ])
-            ->whereHas('bookings.transhipments', function ($query) use ($branchId) {
-                $query->where('from_transhipment', $branchId);
-            });
+        ])->whereHas('bookings.transhipments', function ($query) use ($branchId) {
+            $query->where('from_transhipment', $branchId);
+        });
+        if ($request->challantype == 'incoming-load-challan') {
+            $loadingChallanQuery->where([['created_by', '!=', $loggedinBranchUserId]]);
+        }
+        if ($request->challantype == 'self-load-challan') {
+            $loadingChallanQuery->where('created_by', $loggedinBranchUserId);
+        }
 
-        // echo "<pre>";
-        // print_r($loadingChallans);
-        // exit;
-        //    $loadingChallanQuery = LoadingChallan::query()
-        //         ->join('loading_challan_booking', 'loading_challans.id', '=', 'loading_challan_booking.loading_challans_id')
-        //         ->join('bookings', 'bookings.id', '=', 'loading_challan_booking.booking_id')
-        //         ->join('transhipments', 'transhipments.booking_id', '=', 'bookings.id')
-        //         ->select('loading_challans.*')
-        //         ->where('transhipments.from_transhipment', $branchId);
 
         $totalRecord = $loadingChallanQuery->count();
-
-
         $loadingChallans = $loadingChallanQuery->skip($start)->take($limit)->orderBy('created_at', 'DESC')->get();
 
         $rows = [];

@@ -153,7 +153,7 @@ class Booking extends Model
     {
         if ($this->getAlltranshipments->count() > 0) {
             return $this->getAlltranshipments->last();
-        } 
+        }
 
         return null;
     }
@@ -166,6 +166,32 @@ class Booking extends Model
         $prevSequence = $this->branch_specific_transhipment->sequence_no - 1;
         return $this->transhipments->where('sequence_no', $prevSequence)
             ->where('booking_id', $this->id)->first();
+    }
+
+    /*branch's (transhipment) booking. all_prev_booking_transhipment
+        get all previous transhipments for the loggedin branch
+    */
+    protected function getAllPrevBookingTranshipmentAttribute()
+    {
+        $currentTranshipmentBranch = $this->branch_specific_transhipment;
+        
+        if ($currentTranshipmentBranch->type == Transhipment::TYPE_RECEIVER) {
+            $allTranshimentId = $this->getAlltranshipments->whereNotIn('type', [Transhipment::TYPE_SENDER, Transhipment::TYPE_RECEIVER])->pluck('from_transhipment')->toArray();
+            if(count($allTranshimentId) > 0) {
+                $branches =  Branch::whereIn('id', $allTranshimentId)->get();
+                return $branches->pluck('branch_name')->join(', ');
+            }
+        }
+
+        if ($currentTranshipmentBranch->type == Transhipment::TYPE_SENDER) {
+            
+        }
+
+        if ($currentTranshipmentBranch->type == Transhipment::TYPE_TRANSHIPMENT) {
+
+        }
+        return '-';
+        
     }
 
 

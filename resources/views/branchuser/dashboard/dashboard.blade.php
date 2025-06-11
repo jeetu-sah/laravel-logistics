@@ -112,7 +112,7 @@
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
-                               
+
                             </div>
                         </div>
                         <div class="card-body">
@@ -209,18 +209,16 @@
             <div class="card-body">
                 <div class="row">
                     <div class="table-responsive ">
-                        <table class="display" id="booking-list">
+                        <table class="display" id="incoming-booking-list">
                             <thead>
                                 <tr>
-                                    <th>SN.</th>
                                     <th>Bilti Number</th>
-                                    <th>Offline Bitli</th>
-                                    <th>Consinger Name</th>
-                                    <th>Consinger Address</th>
                                     <th>Consinger Branch</th>
-                                    <th>Destinaton</th>
+                                    <th>Consignee Branch</th>
+                                    <th>Number of article</th>
                                     <th>Payment Mode</th>
-                                    <th>Booking Date</th>
+                                    <th>Transhipment</th>
+                                    <th>Creation Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -299,66 +297,50 @@
             }
         });
 
-
-
-
-
-
-
-
-
-
-
-        new DataTable('#booking-list', {
-            responsive: true,
-            ajax: {
-                url: "{{ url('branch-user/dashboard/bookings/upcoming-booking') }}",
-                data: function(d) {
-                    // Custom parameters can be added here if needed
-                    // Example:
-                    // d.filter = $('#filter-input').val();
-                }
-            },
-            columns: [{
-                    data: 'sn'
+        $(document).ready(function(e) {
+            new DataTable('#incoming-booking-list', {
+                responsive: true,
+                ajax: {
+                    url: "{{ url('admin/incoming-booking/list') }}",
+                    data: function(d) {}
                 },
-                {
-                    data: 'bilti_number'
-                },
-                {
-                    data: 'offline_bilti'
-                },
-                {
-                    data: 'consignor_name'
-                },
-                {
-                    data: 'address'
+                columns: [{
+                        data: 'bilti_number'
+                    },
 
-                },
-                {
-                    data: 'consignor_branch_id'
-                },
-                {
-                    data: 'consignee_branch_id'
-                },
-                {
-                    data: 'booking_type'
+                    {
+                        data: 'consignor_branch'
+                    },
+                    {
+                        data: 'consignee_branch'
+                    },
+                    {
+                        data: 'no_of_artical'
+                    },
+                    {
+                        data: 'booking_type'
 
-                },
-                {
-                    data: 'created_at'
+                    },
+                    {
+                        data: 'transhipment'
+                    },
 
-                },
-                // {
-                //     data: 'action',
-
-                //     orderable: false
-                // }
-            ],
-
-            processing: true,
-            serverSide: true
+                    {
+                        data: 'created_at'
+                    }
+                ],
+                columnDefs: [{
+                    targets: [3, 5],
+                    orderable: false
+                }],
+                searching: false,
+                paging: false,
+                processing: true,
+                serverSide: false
+            });
         });
+
+
     });
 </script>
 @endsection

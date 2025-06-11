@@ -14,6 +14,10 @@ class Transhipment extends Model
     const RECEIVED = 'received';
     const DISPATCHED = 'dispatched';
 
+    const TYPE_SENDER = 'sender';
+    const TYPE_RECEIVER = 'receiver';
+    const TYPE_TRANSHIPMENT = 'transhipment';
+
 
     protected $fillable = [
         'booking_id',
@@ -22,7 +26,8 @@ class Transhipment extends Model
         'updated_at',
         'received_at',
         'dispatched_at',
-        'status'
+        'status',
+        'type'
     ];
 
     // Relationship with Booking

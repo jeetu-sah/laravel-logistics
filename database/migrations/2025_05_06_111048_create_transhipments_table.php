@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('booking_id');
             $table->string('from_transhipment', 100);
-            $table->string('to_transhipment', 100);
             $table->integer('sequence_no');
+            $table->string('type', 15);
             $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');
+            $table->dateTime('received_at')->nullable();
+            $table->dateTime('dispatched_at')->nullable();
+            $table->string('status', 20)->default('pending');
             $table->timestamps();
         });
     }

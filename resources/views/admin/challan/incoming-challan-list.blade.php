@@ -5,37 +5,23 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                    <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
-                        <i class=" fa-sm text-white-50"></i> </a>
-                </div>
+                <div class="col-sm-6"></div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">{{ $title }}</li>
+                        <li class="breadcrumb-item active">Loading Incoming Challan List</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-    @endif
 
     <!-- Main content -->
     <section class="content">
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">{{ $title }}</h3>
+                <h3 class="card-title">Loading Incoming Challan List</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -43,17 +29,12 @@
                         <table class="display" id="booking-list">
                             <thead>
                                 <tr>
-                                    <th>SN.</th>
-                                    <th>Bilti Number</th>
-                                    <th>Offline Bitli</th>
-                                    <th>Consinger Branch</th>
-                                    <th>Consinger Name</th>
-                                    <th>Consignee Branch</th>
-                                    <th>Consignee Name</th>
-                                
-                               
-                                    <th>Payment Mode</th>
-                                    <th>Creation Date</th>
+                                    <th>Challan Number</th>
+                                    <th>Vehicle Number</th>
+                                    <th>Driver</th>
+                                    <th>Type</th>
+                                    <th>Created date</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,45 +59,55 @@
 <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
 
 <script>
-    $(document).ready(function(e) {
-        new DataTable('#booking-list', {
+    $(document).ready(function() {
+        var table = new DataTable('#booking-list', {
             responsive: true,
             ajax: {
-                url: "{{ url('admin/bookings/upcoming-booking') }}",
-                data: function(d) {}
+                url: "{{ url('admin/challans/list') }}",
+                data: function(d) {
+                    d.challantype = 'incoming-load-challan'
+                }
             },
             columns: [{
-                    data: 'sn'
+                    data: 'challan_number'
                 },
                 {
-                    data: 'bilti_number'
+                    data: 'busNumber'
                 },
                 {
-                    data: 'offline_bilti'
+                    data: 'driverName'
                 },
                 {
-                    data: 'consignor_branch_id'
-                },
-                {
-                    data: 'consignor_name'
-                },
-                {
-                    data: 'consignee_branch'
-                },
-                {
-                    data: 'consignee_name'
-                },
-                {
-                    data: 'booking_type'
-
+                    data: 'type'
                 },
                 {
                     data: 'created_at'
+                },
+                {
+                    data: 'action',
+                    orderable: false
                 }
             ],
-
             processing: true,
             serverSide: true
+        });
+
+        // Handle click on challan_number
+        $(document).on('click', '.challan-number', function(e) {
+            var challanNumber = $(this).data('challan-number');
+            // Use Ajax to fetch challan details
+            $.ajax({
+                url: "{{ url('admin/challans') }}/" + challanNumber,
+                method: 'GET',
+                success: function(response) {
+                    // Show challan details in a modal or any other UI component
+                    $('#challanDetailsModal').html(response);
+                    $('#challanDetailsModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    alert('Error fetching challan details!');
+                }
+            });
         });
     });
 </script>
