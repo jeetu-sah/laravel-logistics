@@ -174,24 +174,36 @@ class Booking extends Model
     protected function getAllPrevBookingTranshipmentAttribute()
     {
         $currentTranshipmentBranch = $this->branch_specific_transhipment;
-        
+
+        $allTranshiment = $this->getAlltranshipments->whereNotIn('type', [Transhipment::TYPE_SENDER, Transhipment::TYPE_RECEIVER]);
+        $allTranshipmentId = $allTranshiment->pluck('from_transhipment')->toArray();
+
         if ($currentTranshipmentBranch->type == Transhipment::TYPE_RECEIVER) {
-            $allTranshimentId = $this->getAlltranshipments->whereNotIn('type', [Transhipment::TYPE_SENDER, Transhipment::TYPE_RECEIVER])->pluck('from_transhipment')->toArray();
-            if(count($allTranshimentId) > 0) {
-                $branches =  Branch::whereIn('id', $allTranshimentId)->get();
+            if (count($allTranshipmentId) > 0) {
+                $branches =  Branch::whereIn('id', $allTranshipmentId)->get();
                 return $branches->pluck('branch_name')->join(', ');
             }
+            return '--';
         }
 
         if ($currentTranshipmentBranch->type == Transhipment::TYPE_SENDER) {
-            
+            return '--';
         }
 
         if ($currentTranshipmentBranch->type == Transhipment::TYPE_TRANSHIPMENT) {
-
+            $transhipmentString = '';
+            if (count($allTranshipmentId) > 0) {
+                foreach ($allTranshiment as $transhipment) {
+                    if ($transhipment->from_transhipment == $currentTranshipmentBranch->from_transhipment) {
+                        break;
+                    } else {
+                        $transhipmentString += $transhipment->branch->branch_name;
+                    }
+                }
+                return $transhipmentString;
+            }
         }
         return '-';
-        
     }
 
 
