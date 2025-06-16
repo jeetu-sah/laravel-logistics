@@ -184,7 +184,7 @@ class ChallanController extends Controller
         $data['challan_id'] = $id;
         $data['branchId'] = Auth::user()->branch_user_id;
         $data['challanDetail'] = LoadingChallan::find($id);
-
+    
         if ($data['challanDetail'] == NULL) {
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }

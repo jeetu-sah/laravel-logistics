@@ -106,8 +106,7 @@
                                                 <th>Bilti Number</th>
                                                 <th>Chalan Number</th>
                                                 <th>Origin</th>
-                                                <th>Consignor Name/Mobile/GST</th>
-                                                <th>Consignee Name/Mobile/GST</th>
+                                                <th>Consignor Name / <br />Consignee Name</th>
                                                 <th>Destination</th>
                                                 <th>QTY</th>
                                                 <th>Booking Type</th>
@@ -119,7 +118,7 @@
                                             @php $i = 1; @endphp
                                             @foreach ($bookings as $booking)
                                             <tr>
-                                              
+
                                                 <td>
                                                     @if($booking->visible_for === auth()->user()->branch_user_id)
                                                     <input type="checkbox" name="selectedBookings[]"
@@ -131,27 +130,18 @@
                                                 <td>{{ $challanDetail->challan_number ?? '--' }}</td>
                                                 <td>{{ $booking->consignorBranch->branch_name ?? '--' }}</td>
 
-                                                <td>{{ $booking->consignor_name }}<br>
-                                                    {{ $booking->consignor_phone_number }}<br>
-                                                    {{ $booking->consignor_gst_number }}
-                                                </td>
-
-                                                <td>{{ $booking->client->client_name ?? '--' }}<br>
-                                                    {{ $booking->client->client_mobile ?? '--' }} <br>
-                                                    {{ $booking->client->client_gst_number ?? '--' }}
-                                                </td>
+                                                <td>{{ $booking->consignor_name." / ".$booking->consignee_name }}</td>
+                                                
                                                 <td>{{ $booking->consigneeBranch->branch_name ?? '--' }}</td>
-
                                                 <td>{{ $booking->no_of_artical }}</td>
                                                 <td><span class="badge badge-danger">{{$booking->booking_type_name ?? '--'}}</span></td>
 
                                                 <td>{{ formatDate($booking->created_at) }}</td>
                                                 <td>
                                                     @if(($challanDetail->user->branch_user_id === $branchId) && ($booking->is_revert_button_visible))
-                                                     <a class="btn btn-danger revertbooking" href="#" data-reverturl='{{ url("admin/challans/$challanDetail->id/revert-booking/$booking->id") }}'>Revert Booking</a>
+                                                    <a class="btn btn-danger revertbooking" href="#" data-reverturl='{{ url("admin/challans/$challanDetail->id/revert-booking/$booking->id") }}'>Revert Booking</a>
                                                     @else
                                                     {{'--'}}
-
                                                     @endif
                                                 </td>
 

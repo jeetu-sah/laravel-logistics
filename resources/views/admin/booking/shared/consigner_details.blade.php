@@ -4,9 +4,10 @@
             <h3 class="card-title">{{ $title }}</h3>
         </div>
         <div class="card-body">
-            @if($bookingType === \App\Models\Booking::CLIENT_BOOKING)
+
             <div class="row">
-                <div class="col-md-7 mb-1">
+                @if($bookingType === \App\Models\Booking::CLIENT_BOOKING)
+                <div class="col-md-4 mb-1">
                     <label for="date">Select Client:</label>
                     <select required class="form-select select2 form-control js-select2" name="client_id" id="client_id">
                         <option value="">Select Client</option>
@@ -16,8 +17,19 @@
                     </select>
                     <div id="client_details"></div>
                 </div>
+                @endif
+                <div class="col-md-4 mb-1">
+                    <label for="date">Offline Bilty No.</label>
+                    <input type="text" class="form-control" name="manual_bilty" value="{{ old('manual_bilty') }}" id="manual_bilty" />
+
+                </div>
+                <div class="col-md-4 mb-1">
+                    <label for="date">offline Booking Date</label>
+                    <input type="date" class="form-control" name="offline_booking_date" value="{{ old('offline_booking_date') }}" id="offline_booking_date" />
+
+                </div>
             </div>
-            @endif
+
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
@@ -38,16 +50,6 @@
                     <div class="">
                         <input type="checkbox" class="form-control" name="booking" value="Topay" id="to_pay"
                             onclick="uncheckOther(this)" />
-                    </div>
-                </div>
-                <div class="col-md-2 mb-2">
-                    <div class="">
-                        <label for="manual_bilty">Offline Bilty No:</label>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <div class="">
-                        <input type="text" class="form-control" name="manual_bilty" value="{{ old('manual_bilty') }}" id="manual_bilty" />
                     </div>
                 </div>
                 <script>
@@ -118,7 +120,7 @@
                         disabled
                         name="transhipmen_two" id="transhipmen_two">
                         <option value="">Select Branch Name</option>
-                     
+
                     </select>
                 </div>
             </div>

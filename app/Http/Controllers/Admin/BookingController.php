@@ -166,7 +166,7 @@ class BookingController extends Controller
 
                 // Consignee details
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
-                $row['consignee_name'] = $booking->client->client_name ?? '--';
+                $row['consignee_name'] = $booking->consignee_name ?? '--';
 
                 $row['consignee_branch_id'] = $booking->client->client_address ?? '--';
                 $row['consignee_phone_number_1'] = $booking->consignee_phone_number ?? '';
