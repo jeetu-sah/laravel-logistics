@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MapClientController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Admin\IncomingBookingController;
+use App\Http\Controllers\BranchUser\ReviewerController;
+use App\Http\Controllers\BranchUser\SettingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -123,9 +126,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/list', [IncomingBookingController::class, 'upcomingBookings']);
         });
         // paid booking
-
         Route::get('/bookings/redirect', [BookingController::class, 'redirect']);
-
         Route::get('/clients/bookings/edit/{id}', [BookingController::class, 'edit']);
         // Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
@@ -151,8 +152,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/create', [ChallanController::class, 'store']);
             Route::get('/{id}', [ChallanController::class, 'show']);
         });
-
-
         //Client routes
 
         Route::get('/clients', [ClientController::class, 'show']);
@@ -168,8 +167,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/clients/clientMap', [MapClientController::class, 'clientMap']);
         Route::post('clients/maps', [MapClientController::class, 'mapBranches']);
         Route::post('/clients/mapClient', [MapClientController::class, 'storeClientMapping']);
-
-
         Route::get('get-distance', [ClientController::class, 'getDistance']);
 
         // /Distance
@@ -180,10 +177,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('distances/edit/{id}', [BranchDistace::class, 'edit']);
         Route::post('distances/update', [BranchDistace::class, 'update']);
         Route::get('distances/delete/{id}', [BranchDistace::class, 'delete']);
-
-
-
-
         Route::get('admin/article/create', [ArticleController::class, 'index']);
 
         // delivery 
@@ -204,19 +197,19 @@ Route::group(['middleware' => ['auth']], function () {
         });
 
         Route::prefix('employees')->group(function () {
-            Route::get('/', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'show']);
-            Route::get('/list', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'list']);
-            Route::post('/update-status', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'updateStatus']);
-            Route::get('/create', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'index']);
-            Route::get('/edit/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'edit']);
-            Route::post('/update/{id}', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'update']);
-            Route::post('/store', [\App\Http\Controllers\BranchUser\ReviewerController::class, 'store'])->name('branch-user.add_employee');
+            Route::get('/', [ReviewerController::class, 'show']);
+            Route::get('/list', [ReviewerController::class, 'list']);
+            Route::post('/update-status', [ReviewerController::class, 'updateStatus']);
+            Route::get('/create', [ReviewerController::class, 'index']);
+            Route::get('/edit/{id}', [ReviewerController::class, 'edit']);
+            Route::post('/update/{id}', [ReviewerController::class, 'update']);
+            Route::post('/store', [ReviewerController::class, 'store'])->name('branch-user.add_employee');
         });
 
         Route::prefix('settings')->group(function () {
-            Route::get('/', [\App\Http\Controllers\BranchUser\SettingController::class, 'index']);
-            Route::post('/', [\App\Http\Controllers\BranchUser\SettingController::class, 'store'])->name('branch-user.settings');
-            Route::match(['get', 'post'], '/change-password', [\App\Http\Controllers\BranchUser\SettingController::class, 'changePassword']);
+            Route::get('/', [SettingController::class, 'index']);
+            Route::post('/', [SettingController::class, 'store'])->name('branch-user.settings');
+            Route::match(['get', 'post'], '/change-password', [SettingController::class, 'changePassword']);
         });
     });
 

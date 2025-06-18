@@ -25,7 +25,7 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Branch Settings</h3>
+                    <h2 class="card-title">Manage Branch Settings</h2>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('branch-user.settings') }}" method="post" id="form"
@@ -45,7 +45,7 @@
 
                         </div>
                         <div class="card-header" style="margin: 0 0 0 -20px;">
-                            <h3 class="card-title">Branch Settings</h3>
+                            <h2 class="card-title">Booking Settings</h2>
                         </div>
                         <div class="row">
 
