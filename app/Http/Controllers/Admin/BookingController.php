@@ -84,9 +84,9 @@ class BookingController extends Controller
                 $row['consignee_address'] = $booking->consignee_address;
                 $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type . '</span>';
                 $row['next_delivery_location'] = '<span class="badge badge-primary">' . $booking?->next_booking_transhipment?->branch?->branch_name ?? '--' . '</span>';
-              
+
                 $row['action'] = '<a href="' . url("admin/clients/bookings/edit/{$booking->booking_id}") . '" class="btn btn-primary">Edit</a>';
-               
+
                 $row['created_at'] = formatDate($booking->created_at);
                 $rows[] = $row;
             }
@@ -268,7 +268,6 @@ class BookingController extends Controller
 
     public function clintList(Request $request)
     {
-
         // Get input values from the request
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
@@ -386,10 +385,6 @@ class BookingController extends Controller
                 'to_branches.branch_name as to_branch_name',
                 'to_branches.id as to_branch_id'
             );
-
-
-
-
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('from_clients.client_name', 'like', "%$search%")

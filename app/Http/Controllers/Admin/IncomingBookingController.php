@@ -25,16 +25,14 @@ class IncomingBookingController extends Controller
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
         $userBranchId = Auth::user()->branch_user_id;
-       
+
         $bookingQuery = Booking::with(['consigneeBranch', 'client', 'transhipments', 'consignorBranch', 'getAlltranshipments'])
-            ->where([['status', '=', Booking::BOOKED]])
+            ->whereIn('status', [Booking::BOOKED, Booking::DISPATCH])
             ->whereHas('transhipments', function ($query) use ($userBranchId) {
-                $query->where('from_transhipment', $userBranchId);
-                //    ->where('dispatched_at', NULL)
-                //     ->where('received_at', '!=', NULL);
-                 
+                $query->where('from_transhipment', $userBranchId)
+                    ->where('dispatched_at', NULL)->where('received_at', NULL);
             });
-            
+
         if ($search) {
             $bookingQuery->where(function ($query) use ($search) {
                 $query->where('bilti_number', 'like', "%$search%")
@@ -46,7 +44,7 @@ class IncomingBookingController extends Controller
             });
         }
         $bookingQuery->where('bookings.status', Booking::BOOKED);
-      
+
 
         $totalRecord = $bookingQuery->count();
 
@@ -72,7 +70,7 @@ class IncomingBookingController extends Controller
                 }
 
                 // Bilti and offline bilti links
-                $row['bilti_number'] = '<a href="" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['bilti_number'] = '<a href="'.url("admin/bookings/bilti/$booking->id").'" target="_blank">' . $booking->bilti_number . '</a>';
                 $row['offline_bilti'] = $booking->manual_bilty_number  ? '<a href="" target="_blank">' . $booking->manual_bilty_number . '</a>' : 'N/A';;
                 $row['consignor_branch'] = $booking?->consignorBranch?->branch_name;
                 $row['consignee_branch'] = $booking?->consigneeBranch?->branch_name;
