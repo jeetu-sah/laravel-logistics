@@ -27,6 +27,8 @@ class LoadingChallan extends Model
         'locknumber',
         'coLoder',
         'created_by',
+        'from_transhipment',
+        'to_transhipment',
         'deleted_at',
         'created_at',
         'updated_at',

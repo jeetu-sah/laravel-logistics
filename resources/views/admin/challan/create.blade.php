@@ -127,6 +127,17 @@
                                 <option value="Pending">Pending</option>
                             </select>
                         </div>
+                        <div class="col-md-12 mb-2">
+                            <label for="status">Select For Challan</label>
+                            <select class="form-control" id="for_challan" name="for_challan">
+                                <option value="">Select Branch</option>
+                                @forelse($forChallan as $branchChallan)
+                                <option value="{{$branchChallan->id ?? '--'}}">{{$branchChallan->branch_name ?? '--'}}</option>
+                                @empty
+                                <option value="Pending">No record avaialble</option>
+                                @endforelse
+                            </select>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="table-responsive">
@@ -184,21 +195,22 @@
             }
         });
 
+        $(document).on('change', '#for_challan', function(e) {
+            table.ajax.reload();
+        });
+
         // Initialize DataTable
-        new DataTable('#booking-list', {
+        var table = new DataTable('#booking-list', {
             responsive: true,
             ajax: {
                 url: "{{ url('admin/bookings/challan-booking-list') }}",
                 data: function(d) {
-
                     d.bilti_list_type = 'challan';
-                    d.custom = $('#selectAll').prop(
-                        'checked');
+                    d.for_challan = $("#for_challan").val();
+                    d.custom = $('#selectAll').prop('checked');
                 },
                 dataSrc: function(json) {
-
-                    return json
-                        .data;
+                    return json.data;
                 }
             },
             columns: [{
@@ -238,6 +250,7 @@
             processing: true,
             serverSide: true
         });
+
     });
 </script>
 @endsection

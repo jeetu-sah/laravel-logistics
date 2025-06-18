@@ -72,9 +72,7 @@ class BookingController extends Controller
 
                 // Bilti and offline bilti links
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
-                $row['offline_bilti'] = $booking->manual_bilty_number
-                    ? '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->manual_bilty_number . '</a>'
-                    : 'N/A';
+                $row['offline_bilti'] =  $booking->manual_bilty_number ?? '--';
 
                 // Consignor and consignee information
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name ?? 'N/A';
@@ -86,7 +84,9 @@ class BookingController extends Controller
                 $row['consignee_address'] = $booking->consignee_address;
                 $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type . '</span>';
                 $row['next_delivery_location'] = '<span class="badge badge-primary">' . $booking?->next_booking_transhipment?->branch?->branch_name ?? '--' . '</span>';
-                $row['action'] = '<a href="' . url("admin/clients/bookings/edit/{$booking->booking_id}") . '" class="btn btn-primary">Edit</a>&nbsp;<a href="' . url("admin/bookings/bilti/{$booking->booking_id}") . '" class="btn btn-warning">Print</a>';
+              
+                $row['action'] = '<a href="' . url("admin/clients/bookings/edit/{$booking->booking_id}") . '" class="btn btn-primary">Edit</a>';
+               
                 $row['created_at'] = formatDate($booking->created_at);
                 $rows[] = $row;
             }
@@ -122,14 +122,29 @@ class BookingController extends Controller
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
         $userBranchId = Auth::user()->branch_user_id;
+        $selectedNextTranshipmentId = $request->for_challan;
 
-        $bookingQuery = Booking::with(['client', 'getAlltranshipments', 'transhipments' => function ($query) use ($userBranchId) {
-            $query->where('from_transhipment', $userBranchId);
-        }])->whereHas('transhipments', function ($query) use ($userBranchId) {
-            $query->where('from_transhipment', $userBranchId)
-                ->where('dispatched_at', NULL)
-                ->where('received_at', '!=', NULL);
-        })->whereIn('status', [Booking::BOOKED, Booking::DISPATCH]);
+        $bookingQuery = Booking::with([
+            'client',
+            'getAlltranshipments',
+            'consigneeBranch',
+            'transhipments',
+        ])->whereHas('transhipments', function ($query) use ($userBranchId, $selectedNextTranshipmentId) {
+            $query->where('from_transhipment', $userBranchId)->where([['dispatched_at', '=', NULL], ['received_at', '!=', NULL]]);
+        });
+        if (!empty($selectedNextTranshipmentId)) {
+            $bookingQuery->whereHas('getAlltranshipments', function ($query) use ($selectedNextTranshipmentId) {
+                $query->where('from_transhipment', $selectedNextTranshipmentId);
+            });
+        }
+
+
+        //  if (!empty($selectedNextTranshipmentId)) {
+        //         //$query->orWhere([['from_transhipment', '=', $selectedNextTranshipmentId], ['received_at', '=', NULL]]);
+        //     }
+        // ->where('received_at', '!=', NULL);
+
+        $bookingQuery->whereIn('status', [Booking::BOOKED, Booking::DISPATCH]);
 
         // Count the filtered records
         $bookingsCount = $bookingQuery->count();
@@ -140,6 +155,8 @@ class BookingController extends Controller
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
+                // echo "<pre>";
+                // print_r($booking?->consigneeBranch?->branch_name);exit;
                 $row = [];
                 // Conditional logic for 'bilti_list_type'
                 if ($request->bilti_list_type === 'challan') {
@@ -167,8 +184,6 @@ class BookingController extends Controller
                 // Consignee details
                 $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignee_name'] = $booking->consignee_name ?? '--';
-
-                $row['consignee_branch_id'] = $booking->client->client_address ?? '--';
                 $row['consignee_phone_number_1'] = $booking->consignee_phone_number ?? '';
 
                 // Conditional logic for 'booking_type'
@@ -563,7 +578,7 @@ class BookingController extends Controller
                     // Other Details
                     'no_of_artical' => $request->no_of_artical ?? 0,
                     'good_of_value' => $request->good_of_value ?? 0,
-                    'cantain' => $request->cantain ?? 0,
+                    'cantain' => $request->cantain ?? '',
                     'actual_weight' => $request->actual_weight ?? 0,
                     'aadhar_card' => $request->aadhar_card ?? 0,
                     'distance' => $request->distance ?? 0,
@@ -590,6 +605,7 @@ class BookingController extends Controller
                     'status' => Booking::BOOKED,
                     'booking_type' => $request->booking,
                     'manual_bilty_number' => $request->manual_bilty,
+                    'offline_booking_date' => $request->offline_booking_date,
                     'client_id' => $request->client_id ?? null,
                     'created_at' => now(),
                     'booking_status' => $request->booking_status
@@ -613,10 +629,14 @@ class BookingController extends Controller
                 return [$bookingId];
             });
             [$bookingId] = $result;
-            return redirect("admin/bookings/bilti/$bookingId")->with([
+            return redirect()->back()->with([
                 "alertMessage" => true,
                 "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
             ]);
+            // return redirect("admin/bookings/bilti/$bookingId")->with([
+            //     "alertMessage" => true,
+            //     "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
+            // ]);
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()

@@ -20,6 +20,7 @@ return new class extends Migration
             // Add foreign key constraints
             $table->foreign('loading_challans_id')->references('id')->on('loading_challans')->onDelete('cascade');
             $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');
+             $table->timestamp('deleted_at')->nullable();
         });
     }
 

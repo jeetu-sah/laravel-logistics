@@ -12,17 +12,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('loading_challans', function (Blueprint $table) {
-            $table->id();  // Auto-incrementing id (bigint unsigned)
-            $table->string('challan_number');  // Varchar column for challan_number
-            $table->string('busNumber', 50);  // Varchar column for busNumber
-            $table->string('driverName', 50);  // Varchar column for driverName
-            $table->string('driverMobile', 11);  // Varchar column for driverMobile (max length 11)
-            $table->string('locknumber', 55);  // Varchar column for locknumber
-            $table->enum('status', ['Dispatch', 'Pending', 'Accept', ''])->default('Pending');  // Enum column for status with a default value 'Pending'
-            $table->integer('created_by');  // Integer column for created_by
-            $table->timestamp('deleted_at')->nullable();  // Timestamp column for deleted_at (nullable)
-            $table->timestamps();  // Automatically adds created_at and updated_at columns
-            $table->string('coLoder')->nullable();  // Varchar column for coLoder (nullable)
+            $table->id();
+            $table->string('challan_number', 30);
+            $table->string('busNumber', 50);
+            $table->string('driverName', 50);
+            $table->string('driverMobile', 15);
+            $table->string('locknumber', 55);
+            $table->string('status', 15)->nullable();
+            $table->integer('created_by');
+            $table->integer('from_transhipment');
+            $table->integer('to_transhipment');
+            $table->timestamp('deleted_at')->nullable();
+            $table->timestamps();
+            $table->string('coLoder')->nullable();
         });
     }
     /**

@@ -46,7 +46,7 @@
                                     <th>Bilti Number</th>
                                     <th>Consinger Branch</th>
                                     <th>Consignee Branch</th>
-                                    <th>Number of article</th>
+                                    <th>Article</th>
                                     <th>Payment Mode</th>
                                     <th>Transhipment</th>
                                     <th>Creation Date</th>

@@ -109,6 +109,7 @@
                                                 <th>Consignor Name / <br />Consignee Name</th>
                                                 <th>Destination</th>
                                                 <th>QTY</th>
+                                                <th>Cantain</th>
                                                 <th>Booking Type</th>
                                                 <th>Booked at</th>
                                                 <th>Actions</th>
@@ -118,7 +119,6 @@
                                             @php $i = 1; @endphp
                                             @foreach ($bookings as $booking)
                                             <tr>
-
                                                 <td>
                                                     @if($booking->visible_for === auth()->user()->branch_user_id)
                                                     <input type="checkbox" name="selectedBookings[]"
@@ -131,9 +131,10 @@
                                                 <td>{{ $booking->consignorBranch->branch_name ?? '--' }}</td>
 
                                                 <td>{{ $booking->consignor_name." / ".$booking->consignee_name }}</td>
-                                                
+
                                                 <td>{{ $booking->consigneeBranch->branch_name ?? '--' }}</td>
                                                 <td>{{ $booking->no_of_artical }}</td>
+                                                <td>{{ $booking->cantain ?? '--' }}</td>
                                                 <td><span class="badge badge-danger">{{$booking->booking_type_name ?? '--'}}</span></td>
 
                                                 <td>{{ formatDate($booking->created_at) }}</td>

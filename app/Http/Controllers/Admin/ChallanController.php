@@ -9,10 +9,12 @@ use App\Models\Booking;
 use App\Models\Transhipment;
 use App\Models\LoadingChallanBooking;
 use App\Library\sHelper;
+use App\Models\Branch;
 use App\Services\BookingService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 
 class ChallanController extends Controller
@@ -43,6 +45,8 @@ class ChallanController extends Controller
     public function create()
     {
         $data['title'] = 'Challan Create';
+        $data['forChallan'] = Branch::where('id', '!=', Auth::user()->branch_user_id)->get();
+
         return view('admin.challan.create', $data);
     }
 
@@ -52,6 +56,20 @@ class ChallanController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'busNumber'      => 'required|string|max:50',
+            'driverName'     => 'required|string|max:100',
+            'driverMobile'   => 'required|digits_between:10,15',
+            'locknumber'     => 'nullable|string|max:50',
+            'coLoder'        => 'nullable|string|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         if (!empty($request->bookingId)) {
             $bookings = Booking::whereIn('id', $request->bookingId)->get();
 
@@ -59,13 +77,15 @@ class ChallanController extends Controller
 
             $result = DB::transaction(function () use ($challanNumber, $request, $bookings) {
                 $challanRespos = LoadingChallan::create([
-                    'challan_number' => $challanNumber,
-                    'busNumber' => $request->busNumber,
-                    'driverName' => $request->driverName,
-                    'driverMobile' => $request->driverMobile,
-                    'locknumber' => $request->locknumber ?: 'NA',
-                    'coLoder' => $request->coLoder ?: 'NA',
-                    'created_by' => Auth::user()->id
+                    'challan_number'    => $challanNumber,
+                    'busNumber'         => $request->busNumber,
+                    'driverName'        => $request->driverName,
+                    'driverMobile'      => $request->driverMobile,
+                    'locknumber'        => $request->locknumber ?: 'NA',
+                    'coLoder'           => $request->coLoder ?: 'NA',
+                    'created_by'        => Auth::user()->id,
+                    'from_transhipment' => Auth::user()->branch_user_id,
+                    'to_transhipment'   => $request->for_challan
                 ]);
 
                 if ($challanRespos) {
@@ -82,9 +102,9 @@ class ChallanController extends Controller
                         $booking->branch_specific_transhipment->update();
 
                         // Update the status in the booking table (assuming 'status' is the column name)
-                        $booking->status = Booking::DISPATCH;
-                        $booking->save();
-                        // BookingService::updateBookingStatus($booking);
+                        // $booking->status = Booking::DISPATCH;
+                        // $booking->save();
+                        BookingService::updateBookingStatus($booking, Booking::CREATE_CHALLAN);
                     }
                 }
                 return ['challan' => $challanRespos];
@@ -112,8 +132,7 @@ class ChallanController extends Controller
 
     public function list(Request $request)
     {
-        // echo "<pre>";
-        // print_r($request->challantype);exit;
+
         $limit = $request->input('length');
         $start = $request->input('start');
         $search = $request->input('search')['value'];
@@ -121,15 +140,9 @@ class ChallanController extends Controller
         $loggedinBranchUserId = Auth::user()->id;
 
 
-        $loadingChallanQuery = LoadingChallan::with([
-            'bookings.transhipments' => function ($query) use ($branchId) {
-                $query->where('from_transhipment', $branchId);
-            }
-        ])->whereHas('bookings.transhipments', function ($query) use ($branchId) {
-            $query->where('from_transhipment', $branchId);
-        });
+        $loadingChallanQuery = LoadingChallan::query();
         if ($request->challantype == 'incoming-load-challan') {
-            $loadingChallanQuery->where([['created_by', '!=', $loggedinBranchUserId]]);
+            $loadingChallanQuery->where([['to_transhipment', '=', $branchId]]);
         }
         if ($request->challantype == 'self-load-challan') {
             $loadingChallanQuery->where('created_by', $loggedinBranchUserId);
@@ -161,7 +174,7 @@ class ChallanController extends Controller
                 $row['driverName'] = strtoupper($loadingChallan->driverName);
                 $row['type'] = ($loadingChallan->user->branch_user_id == $branchId) ? '<span class="badge badge-danger">Self Created</span>' : '<span class="badge badge-danger">Created By ' . $loadingChallan?->user?->branch?->branch_name . '</span>';
                 $row['created_at'] = formatDate($loadingChallan->created_at);
-                $row['action'] = $edit_btn . " " . $change_credential;
+                $row['action'] = '--';
 
                 $rows[] = $row;
             }
@@ -184,7 +197,7 @@ class ChallanController extends Controller
         $data['challan_id'] = $id;
         $data['branchId'] = Auth::user()->branch_user_id;
         $data['challanDetail'] = LoadingChallan::find($id);
-    
+
         if ($data['challanDetail'] == NULL) {
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }
@@ -197,7 +210,6 @@ class ChallanController extends Controller
 
     public function received(Request $request)
     {
-
         try {
             $selectedBookings = $request->input('selectedBookings');
             if (count($selectedBookings) > 0) {
@@ -209,7 +221,7 @@ class ChallanController extends Controller
                         $booking->branch_specific_transhipment->update();
 
                         //update booking status
-                        BookingService::updateBookingStatus($booking);
+                        BookingService::updateBookingStatus($booking, Booking::RECEIVED_BOOKING);
                     }
                 });
 
@@ -254,8 +266,8 @@ class ChallanController extends Controller
                             $booking->branch_specific_transhipment->status = Transhipment::RECEIVED;
                             $booking->branch_specific_transhipment->update();
 
-                            $booking->status = Booking::BOOKED;
-                            $booking->save();
+                            //update booking status
+                            BookingService::updateBookingStatus($booking, Booking::REVERT);
 
                             return [
                                 "alertMessage" => true,

@@ -18,12 +18,16 @@ class Booking extends Model
 
     const BOOKED = 1;
     const DISPATCH = 2;
-    const DELIVERED = 3;
+    const RECEIVED_FINAL_TRANSHIPMENT = 3;
     const DELIVERED_TO_CLIENT = 4;
 
     const NORMAL_BOOKING = 'normal-booking';
     const CLIENT_BOOKING = 'client-booking';
     const NO_BOOKING = 'no-booking';
+
+    const REVERT_BOOKING = 'revert_booking';
+    const CREATE_CHALLAN = 'create_challan';
+    const RECEIVED_BOOKING = 'received_booking';
 
 
     // Specify the primary key (if it's not 'id')
@@ -42,6 +46,9 @@ class Booking extends Model
         'no_of_artical',
         'actual_weight',
         'cantain',
+        'aadhar_card',
+        'manual_bilty_number',
+        'offline_booking_date',
         'good_of_value',
         'consignor_name',
         'consignor_address',
@@ -80,7 +87,8 @@ class Booking extends Model
         'bilti_number',
         'status',
         'booking_type',
-        'booking_status'
+        'booking_status',
+        'client_id',
     ];
 
     // If you want to hide attributes from arrays
@@ -158,6 +166,29 @@ class Booking extends Model
         return null;
     }
 
+    /*
+        branch's (transhipment) booking. first_transhipment
+    */
+    protected function getFirstTranshipmentAttribute()
+    {
+        if ($this->getAlltranshipments->count() > 0) {
+            return $this->getAlltranshipments->where('sequence_no', 1)->first();
+        }
+        return null;
+    }
+
+    /*branch's (transhipment) booking. second_last_transhipment
+        get next transhipments for the loggedin branch
+    */
+    protected function getSecondLastTranshipmentAttribute()
+    {
+        if ($this->getAlltranshipments->count() > 0) {
+            return $this->getAlltranshipments->reverse()->skip(1)->first();
+        }
+
+        return null;
+    }
+
     /*branch's (transhipment) booking. prev_booking_transhipment
         get previous transhipments for the loggedin branch
     */
@@ -187,17 +218,19 @@ class Booking extends Model
         }
 
         if ($currentTranshipmentBranch->type == Transhipment::TYPE_SENDER) {
-            return '--';
+            return '---';
         }
 
         if ($currentTranshipmentBranch->type == Transhipment::TYPE_TRANSHIPMENT) {
+
             $transhipmentString = '';
             if (count($allTranshipmentId) > 0) {
                 foreach ($allTranshiment as $transhipment) {
+
                     if ($transhipment->from_transhipment == $currentTranshipmentBranch->from_transhipment) {
                         break;
                     } else {
-                        $transhipmentString += $transhipment->branch->branch_name;
+                        $transhipmentString .= $transhipment->branch->branch_name;
                     }
                 }
                 return $transhipmentString;

@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
 
-            <div class="row">
+            <div class="row mb-2">
                 @if($bookingType === \App\Models\Booking::CLIENT_BOOKING)
                 <div class="col-md-4 mb-1">
                     <label for="date">Select Client:</label>

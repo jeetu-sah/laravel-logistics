@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->text('description');
             $table->enum('status', ['open', 'closed'])->default('open');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
