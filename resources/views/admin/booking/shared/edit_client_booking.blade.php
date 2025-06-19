@@ -1,43 +1,34 @@
 <div class="col-md-9">
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">{{ $tittle }}</h3>
+            <h3 class="card-title">{{ $title }}</h3>
         </div>
-
         <div class="card-body">
-            <div class="row">
-
-                <div class="col-md-7 mb-1">
-                    <label for="date">Select Client:</label>
-                    <select required class="form-select select2 form-control js-select2" name="client_id" id="client_id">
-                        <option value="">Select Client</option>
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}"
-                                {{ $client->id == $booking->client_id ? 'selected' : '' }}>
-                                {{ $client->client_name }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    <div id="client_details"></div>
-
-
+            @if ($bookingType === \App\Models\Booking::CLIENT_BOOKING)
+                <div class="row">
+                    <div class="col-md-7 mb-1">
+                        <label for="date">Select Client:</label>
+                        <select required class="form-select select2 form-control js-select2" name="client_id"
+                            id="client_id">
+                            <option value="">Select Client</option>
+                            @foreach ($clients as $client)
+                                <option value="{{ $client->id }}">{{ $client->client_name }}</option>
+                            @endforeach
+                        </select>
+                        <div id="client_details"></div>
+                    </div>
                 </div>
-
-            </div>
+            @endif
             <div class="row">
-
                 <div class="col-md-2">
                     <div class="">
                         <label for="date">Paid:</label>
                     </div>
                 </div>
-
                 <div class="col-md-1">
+
                     <input type="checkbox" name="booking" class="form-control" value="Paid" id="paid"
                         onclick="uncheckOther(this)" {{ $booking->booking_type == 'Paid' ? 'checked' : '' }} />
-
-
                 </div>
 
                 <div class="col-md-1 mb-2">
@@ -49,7 +40,6 @@
                     <div class="">
                         <input type="checkbox" class="form-control" name="booking" value="Topay" id="to_pay"
                             onclick="uncheckOther(this)" {{ $booking->booking_type == 'Topay' ? 'checked' : '' }} />
-
                     </div>
                 </div>
                 <div class="col-md-2 mb-2">
@@ -59,10 +49,10 @@
                 </div>
                 <div class="col-md-3 mb-2">
                     <div class="">
-                        <input type="text" class="form-control" name="manual_bilty" value=""
-                            {{ $booking->manual_bilty_number }} id="manual_bilty" />
-
+                        <input type="text" class="form-control" name="manual_bilty"
+                            value="{{ old('manual_bilty', $booking->manual_bilty_number) }}" id="manual_bilty" />
                     </div>
+
                 </div>
                 <script>
                     function uncheckOther(checkbox) {
@@ -86,10 +76,9 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" class="form-control" value="{{ $booking->booking_date }}" id="booking-time"
-                        name="booking_date" />
-
-
+                    <input type="date" class="form-control"
+                        value="{{ old('booking_date', $booking->booking_date ?? now()->format('Y-m-d')) }}"
+                        id="booking-time" name="booking_date" />
 
                 </div>
 
@@ -100,22 +89,13 @@
                 </div>
                 <div class="col-md-3">
                     <div class="">
-                        <select onchange="calculateTransshipment()" class="form-select select2 form-control js-select2"
-                            name="transhipmen_one" id="transhipmen_one">
+                        <select class="form-select select2 form-control js-select2 manageCalculateInvoice selectBranch"
+                            disabled name="transhipmen_one" id="transhipmen_one">
                             <option value="">Select Branch Name</option>
-                            @foreach ($branch as $branchList)
-                                <option value="{{ $branchList->id }}"
-                                    {{ $branchList->id == $booking->from_transhipment ? 'selected' : '' }}>
-                                    {{ $branchList->branch_name }}
-                                </option>
-                            @endforeach
                         </select>
-
-
                     </div>
                 </div>
             </div>
-
 
             <div class="row">
                 <div class="col-md-2">
@@ -124,37 +104,29 @@
                     </div>
                 </div>
                 <div class="col-md-3 mb-1">
-
-                    <select class="form-select select2 form-control js-select2" name="consignor_branch_id"
+                    <select class="form-select select2 form-control js-select2 selectBranch" name="consignor_branch_id"
                         id="consignor_branch_id">
+                        <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}"
-                                {{ $branchList->id == $booking->consignor_branch_id ? 'selected' : '' }}>
+                            <option value="{{ $branchList->id }}" @if ($branchList->id != $user->branch_user_id) disabled @endif
+                                @if ($branchList->id == $user->branch_user_id) selected @endif>
                                 {{ $branchList->branch_name }}
                             </option>
                         @endforeach
                     </select>
-
                 </div>
                 <div class="col-md-2">
-
                     <label for="text">Transhipment 2:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <select onchange="calculateTransshipment()" class="form-select select2 form-control js-select2"
-                        name="transhipmen_two" id="transhipmen_two">
+                    <select class="form-select select2 form-control js-select2 manageCalculateInvoice selectBranch"
+                        disabled name="transhipmen_two" id="transhipmen_two">
                         <option value="">Select Branch Name</option>
-                        @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                            </option>
-                        @endforeach
+
                     </select>
-
-
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
@@ -162,32 +134,22 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-
-                    <select class="form-select select2 form-control js-select2" name="consignee_branch_id"
-                        id="consignee_branch_id">
-                        <option value="">Select Brnach</option>
-                        @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                            </option>
-                        @endforeach
+                    <select class="form-select select2 form-control js-select2 toBranch selectBranch"
+                        name="consignee_branch_id" id="consignee_branch_id">
+                        <option value="">Select Branch Name</option>
                     </select>
-
                 </div>
+
                 <div class="col-md-2">
                     <div class="">
                         <label for="text">Transhipment 3:</label>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <select onchange="calculateTransshipment()" class="form-select select2 form-control js-select2"
-                        name="transhipment_three" id="transhipment_three">
+                    <select class="form-select select2 form-control js-select2 manageCalculateInvoice selectBranch"
+                        disabled name="transhipment_three" id="transhipment_three">
                         <option value="">Select Branch Name</option>
-                        @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}">{{ $branchList->branch_name }}
-                            </option>
-                        @endforeach
                     </select>
-
                 </div>
             </div>
 
@@ -199,8 +161,8 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" oninput="calculateTransshipment()" id="no_of_articles"
-                            name="no_of_artical" class="form-control mb-1" />
+                        <input min="0" type="number" id="no_of_articles" name="no_of_artical"
+                            class="form-control mb-1" value="{{ old('no_of_artical', $booking->no_of_artical) }}" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -210,7 +172,8 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" name="actual_weight" value="" class="form-control mb-1" />
+                        <input type="number" min="0" name="actual_weight" class="form-control mb-1"
+                            value="{{ old('actual_weight', $booking->actual_weight) }}" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -220,7 +183,8 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="text" value="" name="cantain" class="form-control mb-1" />
+                        <input type="text" name="cantain" value="{{ old('cantain', $booking->cantain) }}"
+                            class="form-control mb-1" />
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -230,11 +194,11 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="number" value="" id="good_of_value" name="good_of_value"
-                            oninput="calculatefov()" class="form-control mb-1" />
+                        <input type="number" min="0"
+                            value="{{ old('good_of_value', $booking->good_of_value) }}" id="good_of_value"
+                            name="good_of_value" oninput="calculateFOV()" class="form-control mb-1" />
                     </div>
                 </div>
-
             </div>
 
             <div class="row">
@@ -244,187 +208,133 @@
             <div class="row">
                 <div class="col-md-3">
                     <label for="date">Name:</label>
-
                 </div>
                 <div class="col-md-3">
-                    <input type="text" name="consignor_name" value="" class="form-control mb-1" />
+                    <input type="text" name="consignor_name"
+                        value="{{ old('consignor_name', $booking->consignor_name) }}" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
-
                     <label for="date">Name:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" id="consignee_name" value="" name="consignee_name"
-                        class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('consignee_name', $booking->consignee_name) }}"
+                        id="consignee_name" name="consignee_name" class="form-control mb-1" />
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-md-3">
-
                     <label for="date">Address:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" id="client_address" name="consignor_address"
-                        class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('consignor_address', $booking->consignor_address) }}"
+                        name="consignor_address" id="consignor_address" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
-
                     <label for="date">Address:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" id="consignee_address" name="consignee_address"
-                        class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_address', $booking->consignee_address) }}"
+                        name="consignee_address" id="consignee_address" class="form-control mb-1" />
 
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-md-3">
-
                     <label for="date">mobile:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" name="consignor_phone_number" class="form-control mb-1" />
-
+                    <input type="mobile"
+                        value="{{ old('consignor_phone_number', $booking->consignor_phone_number) }}"
+                        name="consignor_phone_number" id="consignor_phone_number" class="form-control mb-1" />
                 </div>
-
                 <div class="col-md-3">
-
                     <label for="date">mobile:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" id="consignee_phone" value="" name="consignee_phone_number"
-                        class="form-control mb-1" />
-
+                    <input type="mobile"
+                        value="{{ old('consignee_phone_number', $booking->consignee_phone_number) }}"
+                        name="consignee_phone_number" id="consignee_phone_number" class="form-control mb-1" />
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-md-3">
-
                     <label for="date">GST:</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" value="" name="consignor_gst_number" class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('consignor_gst_number', $booking->consignor_gst_number) }}"
+                        name="consignor_gst_number" id="consignor_gst_number" class="form-control mb-1" />
                 </div>
-
                 <div class="col-md-3">
-
                     <label for="date">GST:</label>
-
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" value="" id="consignee_gst_number" name="consignee_gst_number"
-                        class="form-control mb-1" />
+                    <input type="text" value="{{ old('consignee_gst_number', $booking->consignee_gst_number) }}"
+                        name="consignee_gst_number" id="consignee_gst_number" class="form-control mb-1" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="date">Email:</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" value="{{ old('consignor_email', $booking->consignor_email) }}"
+                        name="consignor_email" id="consignor_email" class="form-control mb-1" />
+                </div>
+                <div class="col-md-3">
+                    <label for="date">Email:</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" value="{{ old('consignee_email', $booking->consignee_email) }}"
+                        id="consignee_email" name="consignee_email" class="form-control mb-1" />
 
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-md-3">
-
-                    <label for="date">Email:</label>
-
-                </div>
-                <div class="col-md-3">
-
-                    <input type="text" value="" name="consignor_email" class="form-control mb-1" />
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <label for="date">Email:</label>
-
-                </div>
-                <div class="col-md-3">
-
-                    <input type="text" value="" id="consignee_email" name="consignee_email"
-                        class="form-control mb-1" />
-
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-
                     <label for="date">Invoice Number</label>
-
                 </div>
                 <div class="col-md-3">
-
-                    <input type="text" placeholder="Invoice Number" name="invoice_number"
-                        class="form-control mb-1" />
-
+                    <input type="text" value="{{ old('invoice_number', $booking->invoice_number) }}"
+                        name="invoice_number" id="invoice_number" class="form-control mb-1" />
                 </div>
-
-                <div class="col-md-3">
-
-                    <label for="date">Eway Bill Number:</label>
-
-                </div>
-                <div class="col-md-3">
-
-                    <input type="text" placeholder="" value="" name="eway_bill_number"
-                        class="form-control mb-1" />
-
-                </div>
-
+                @if ($bookingType === \App\Models\Booking::NO_BOOKING)
+                    <div class="col-md-3">
+                        <label for="date">Eway Bill Number:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" value="{{ old('eway_bill_number', $booking->eway_bill_number) }}"
+                            name="eway_bill_number" class="form-control mb-1" />
+                    </div>
+                @endif
             </div>
             <div class="row">
                 <div class="col-md-4">
-
                     <label for="date">Aadhar card</label>
-                    <input type="text" value="" name="aadhar_card" class="form-control mb-1 mb-1" />
-                </div>
-                <div class="col-md-4">
-                    <label for="date">Value Declare by Consignee.</label>
-                    <input type="number" name="mark" placeholder="Value Declare by Consignee."
+                    <input type="text" value="{{ old('aadhar_card', $booking->aadhar_card) }}" name="aadhar_card"
                         class="form-control mb-1 mb-1" />
                 </div>
                 <div class="col-md-4">
-
-                    <label for="date">Remark</label>
-                    <textarea type="text" name="remark" class="form-control mb-1 mb-1">Remark</textarea>
-
-
+                    <label for="date">Value Declare by Consignee.</label>
+                    <input type="text" value="{{ old('mark', $booking->mark) }}" name="mark"
+                        class="form-control mb-1 mb-1" />
                 </div>
-
-
-
-
+                <div class="col-md-4">
+                    <label for="date">Remark</label>
+                    <input type="text" value="{{ old('remark', $booking->remark) }}" name="remark"
+                        class="form-control mb-1 mb-1" />
+                </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
 
-                    <label for="date">Upload Photo ID Image:</label>
-                    <input type="file" class="form-control mb-1 mb-1" name="photo_id" />
-
-                </div>
                 <div class="col-md-3">
                     <label for="parcel_image">Capture Image</label>
                     <input type="file" name="parcel_image" id="parcel_image" class="form-control mb-1" />
                 </div>
-
                 <script>
                     let stream;
 
@@ -522,12 +432,13 @@
                     <canvas id="canvas" style="display: none;"></canvas>
 
                     <!-- Optionally, display the captured photo in an image element -->
-                    <img id="capturedImage" width="225" height="200" style="display: none;"
-                        alt="Captured Image" />
+                    {{-- <img id="capturedImage" width="225" height="200" style="" alt="Captured Image"
+                        src="{{ asset('public/' . $booking->parcel_image) }}" /> --}}
+
+                    <img id="capturedImage" width="225" height="200" style="" alt="Captured Image"
+                        src="{{ asset('storage/app/public/' . $booking->parcel_image) }}" />
+
                 </div>
-
-
-
 
             </div>
         </div>
@@ -535,60 +446,3 @@
     </div>
 
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-
-        function fetchDistance() {
-            var consignor_branch_id = $('#consignor_branch_id').val();
-            var consignee_branch_id = $('#consignee_branch_id').val();
-
-            if (consignor_branch_id && consignee_branch_id) {
-                $.ajax({
-                    url: '{{ url('admin/get-distance') }}',
-                    method: 'GET',
-                    data: {
-                        consignor_branch_id: consignor_branch_id,
-                        consignee_branch_id: consignee_branch_id
-                    },
-                    success: function(response) {
-                        if (response.distance) {
-                            var distance = parseFloat(response.distance);
-                            $('#distance').val(distance);
-                            calculateInvoice(distance); // distance milte hi freight calculate
-                        } else {
-                            $('#distance').val('');
-                            $('#freight_amount').val('');
-                            alert('Error: ' + (response.error || 'Unknown error'));
-                        }
-                    },
-                    error: function() {
-                        $('#distance').val('');
-                        $('#freight_amount').val('');
-                        alert('Failed to fetch distance. Please try again.');
-                    }
-                });
-            } else {
-                $('#distance').val('');
-                $('#freight_amount').val('');
-            }
-        }
-
-        $('#consignor_branch_id, #consignee_branch_id').on('change', fetchDistance);
-
-        // Initial call agar dono pre-selected hain
-        fetchDistance();
-    });
-
-    function calculateInvoice(distance) {
-        var ratePerKm = 0.20;
-
-        if (!isNaN(distance) && distance > 0) {
-            var freight = distance * ratePerKm;
-            $('#freight_amount').val(freight.toFixed(2));
-        } else {
-            $('#freight_amount').val('');
-        }
-    }
-</script>
