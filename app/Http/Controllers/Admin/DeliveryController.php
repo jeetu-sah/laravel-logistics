@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\Booking;
 use App\Http\Controllers\Controller;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Branch;
+
 class DeliveryController extends Controller
 {
     /**
@@ -17,7 +19,7 @@ class DeliveryController extends Controller
     public function index()
     {
 
-        return view('admin.delivery.create');
+        return view('admin.delivery.list');
     }
     public function list(Request $request)
     {
@@ -25,7 +27,7 @@ class DeliveryController extends Controller
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        $totalRecord = Booking::where('status', 3)->count();
+        $totalRecord = Booking::where('status', Booking::RECEIVED_FINAL_TRANSHIPMENT)->count();
         $bookingQuery = Booking::query();
         $bookingQuery->where('consignee_branch_id', Auth::user()->branch_user_id);
         // $bookingQuery->orWhere('consignee_branch_id', Auth::user()->branch_user_id);
@@ -42,16 +44,7 @@ class DeliveryController extends Controller
                 // echo "<pre>";
                 // print_r($booking->id);exit;
                 $row = [];
-                if ($request->bilti_list_type === 'challan') {
-                    $row['sn'] = '<div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
-                                            <label class="form-check-label" for="exampleCheck1"></label>
-                                        </div>';
-                } else {
-                    $row['sn'] = $start + $index + 1; // Corrected SN to start from the current page's start index
-                }
-
-                $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['bilti_number'] = $booking->bilti_number;
 
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
@@ -62,25 +55,15 @@ class DeliveryController extends Controller
                 $row['consignee_name'] = $booking->consignee_name;
                 $row['consignee_address'] = $booking->consignee_address;
                 $row['consignee_phone_number_1'] = $booking->consignor_gst_number;
+
                 $row['consignee_gst'] = $booking->consignee_gst_number;
 
-                // Conditional logic for booking_type
-                if ($booking->booking_type == 'Paid') {
-                    $row['booking_type'] = 'Paid ';
-                } elseif ($booking->booking_type == 'Topay') {
-                    $row['booking_type'] = 'To Pay ';
-                } else {
-                    $row['booking_type'] = 'Unknown';
-                }
-
+                $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type . '</span>';
+                $row['grand_total_amount'] = "&#8377;" . $booking?->grand_total_amount;
+                // Format the creation date
+                $row['created_at'] = formatDate($booking->created_at);
                 // Action column
                 $row['action'] = ' <a href="' . url("admin/delivery/create/{$booking->id}") . '" class="btn btn-success">Ready to Deliver</a>';
-
-
-                // Format the creation date
-                $row['created_at'] = date('d-m-Y', strtotime($booking->created_at));
-
-
                 // Append row to the array
                 $rows[] = $row;
             }
@@ -170,7 +153,6 @@ class DeliveryController extends Controller
 
             // Redirect or send the ID as a response
             return redirect()->route('admin.delivery.receipt', ['id' => $deliveryReceiptId]);
-
         } catch (\Exception $e) {
             echo $e->getMessage();
             exit;
@@ -262,10 +244,8 @@ class DeliveryController extends Controller
 
             )
             ->first();
-            // echo "<pre>";
-            // print_r($data['booking']);exit;
+        // echo "<pre>";
+        // print_r($data['booking']);exit;
         return view('admin.delivery.deliver', $data);
     }
-
-
 }

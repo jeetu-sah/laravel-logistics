@@ -12,51 +12,42 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">{{ $title }}</li>
+                        <li class="breadcrumb-item active">Ready To Delivery</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-    @endif
 
     <!-- Main content -->
     <section class="content">
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">{{ $title }}</h3>
+                <h3 class="card-title">Ready To Delivery</h3>
             </div>
             <div class="card-body">
+
                 <div class="row">
                     <div class="table-responsive ">
-                        <table class="display" id="incoming-booking-list">
+                        <table class="display" id="booking-list">
                             <thead>
                                 <tr>
-                                    <th>Bilti No.</th>
-                                    <th>Offline Bilti No / Date.</th>
+                                    <th>Bilti Number</th>
                                     <th>Consignor Name</th>
+                                    <th>Consignor Branch</th>
                                     <th>Consignee Name</th>
-                                    <th>Article</th>
+                                    <th>Destinaton</th>
                                     <th>Payment Mode</th>
-                                    <th>Transhipment</th>
                                     <th>Amount</th>
-                                    <th>Creation Date</th>
+                                    <th>Received Date</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -76,47 +67,50 @@
 
 <script>
     $(document).ready(function(e) {
-        new DataTable('#incoming-booking-list', {
+
+        new DataTable('#booking-list', {
             responsive: true,
             ajax: {
-                url: "{{ url('admin/incoming-booking/list') }}",
-                data: function(d) {}
+                url: "{{ url('admin/delivery/list') }}",
+                data: function(d) {
+                    // Custom parameters can be added here if needed
+                    // Example:
+                    // d.filter = $('#filter-input').val();
+                }
             },
             columns: [{
                     data: 'bilti_number'
                 },
                 {
-                    data: 'offline_bilti_number'
-                },
-
-                {
                     data: 'consignor_name'
+                },
+                {
+                    data: 'consignor_branch_id'
+
                 },
                 {
                     data: 'consignee_name'
                 },
                 {
-                    data: 'no_of_artical'
+                    data: 'consignee_branch_id'
+
                 },
                 {
                     data: 'booking_type'
 
                 },
                 {
-                    data: 'transhipment'
-                },
-                {
                     data: 'grand_total_amount'
-                },
 
+                },
                 {
                     data: 'created_at'
+                },
+                {
+                    data: 'action',
+                    orderable: false
                 }
             ],
-            columnDefs: [{
-                targets: [3, 5],
-                orderable: false
-            }],
 
             processing: true,
             serverSide: true

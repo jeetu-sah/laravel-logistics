@@ -212,12 +212,14 @@
                         <table class="display" id="incoming-booking-list">
                             <thead>
                                 <tr>
-                                    <th>Bilti Number</th>
-                                    <th>Consinger Branch</th>
-                                    <th>Consignee Branch</th>
-                                    <th>Number of article</th>
+                                    <th>Bilti No.</th>
+                                    <th>Offline Bilti No / Date.</th>
+                                    <th>Consignor Name</th>
+                                    <th>Consignee Name</th>
+                                    <th>Article</th>
                                     <th>Payment Mode</th>
                                     <th>Transhipment</th>
+                                    <th>Amount</th>
                                     <th>Creation Date</th>
                                 </tr>
                             </thead>
@@ -304,15 +306,19 @@
                     url: "{{ url('admin/incoming-booking/list') }}",
                     data: function(d) {}
                 },
-                columns: [{
+                columns: [
+                    {
                         data: 'bilti_number'
+                    },
+                    {
+                        data: 'offline_bilti_number'
                     },
 
                     {
-                        data: 'consignor_branch'
+                        data: 'consignor_name'
                     },
                     {
-                        data: 'consignee_branch'
+                        data: 'consignee_name'
                     },
                     {
                         data: 'no_of_artical'
@@ -323,6 +329,9 @@
                     },
                     {
                         data: 'transhipment'
+                    },
+                    {
+                        data: 'grand_total_amount'
                     },
 
                     {

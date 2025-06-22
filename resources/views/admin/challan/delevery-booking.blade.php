@@ -106,7 +106,8 @@
                                                 <th>Bilti Number</th>
                                                 <th>Chalan Number</th>
                                                 <th>Origin</th>
-                                                <th>Consignor Name / <br />Consignee Name</th>
+                                                <th>Consignor</th>
+                                                <th>Consignee</th>
                                                 <th>Destination</th>
                                                 <th>QTY</th>
                                                 <th>Cantain</th>
@@ -130,7 +131,8 @@
                                                 <td>{{ $challanDetail->challan_number ?? '--' }}</td>
                                                 <td>{{ $booking->consignorBranch->branch_name ?? '--' }}</td>
 
-                                                <td>{{ $booking->consignor_name." / ".$booking->consignee_name }}</td>
+                                                <td>{{ $booking->consignor_name }}</td>
+                                                <td>{{ $booking->consignee_name }}</td>
 
                                                 <td>{{ $booking->consigneeBranch->branch_name ?? '--' }}</td>
                                                 <td>{{ $booking->no_of_artical }}</td>

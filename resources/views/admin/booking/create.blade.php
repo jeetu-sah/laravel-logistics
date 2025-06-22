@@ -7,9 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
-                        <i class="fa-sm text-white-50"></i>
-                    </a>
+                    
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">

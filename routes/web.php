@@ -25,6 +25,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Admin\IncomingBookingController;
 use App\Http\Controllers\BranchUser\ReviewerController;
 use App\Http\Controllers\BranchUser\SettingController;
+use App\Http\Controllers\BranchUser\DashboardController;
 
 
 /*
@@ -112,6 +113,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/list', [BookingController::class, 'list']);
             Route::get('/create', [BookingController::class, 'create']);
             Route::post('/store', [BookingController::class, 'store']);
+            Route::get('/edit/{id}', [BookingController::class, 'edit']);
+            Route::post('/update/{id}', [BookingController::class, 'update']);
             // Route::get('/client', [BookingController::class, 'clientBooking']);
             Route::get('/client-detail/{id}', [ClientController::class, 'getClientDetail']);
             // Route::get('/incoming-load', [BookingController::class, 'incomingLoad']);
@@ -130,7 +133,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/clients/bookings/edit/{id}', [BookingController::class, 'edit']);
         // Route::get('/bookings/challan-booking-list', [BookingController::class, 'challanBookingList']);
         //  Route::get('/booking/create', [BookingController::class, 'index']);
-        Route::get('/bookings/noBill', [BookingController::class, 'noBill']);
+        // Route::get('/bookings/noBill', [BookingController::class, 'noBill']);
 
         Route::post('/bookings/paid-booking', [BookingController::class, 'paid_booking']);
         // to paid booking
@@ -180,9 +183,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('admin/article/create', [ArticleController::class, 'index']);
 
         // delivery 
-
-        Route::get('delivery', [DeliveryController::class, 'index']);
-        Route::get('delivery/list', [DeliveryController::class, 'list']);
+        Route::prefix('delivery')->group(function () {
+            Route::get('/', [DeliveryController::class, 'index']);
+            Route::get('/list', [DeliveryController::class, 'list']);
+        });
+        // Route::get('delivery', [DeliveryController::class, 'index']);
         Route::get('delivery/create/{id}', [DeliveryController::class, 'create']);
         Route::post('delivery/store', [DeliveryController::class, 'store']);
         Route::get('admin/delivery/receipt/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.receipt');
@@ -191,7 +196,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('branch-user/')->group(function () {
 
         Route::prefix('dashboard/')->group(function () {
-            Route::get('/', [\App\Http\Controllers\BranchUser\DashboardController::class, 'index']);
+            Route::get('/', [DashboardController::class, 'index']);
             // Route::get('/bookings/upcoming-booking', [\App\Http\Controllers\BranchUser\DashboardController::class, 'upcomingBookings']);
             Route::get('/reports', [\App\Http\Controllers\BranchUser\DashboardController::class, 'reports']);
         });

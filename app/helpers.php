@@ -61,3 +61,8 @@ function formatDate($date)
 {
     return \Carbon\Carbon::parse($date)->format('d/m/Y h:i A');
 }
+
+function formatOnlyDate($date)
+{
+    return \Carbon\Carbon::parse($date)->format('d/m/Y');
+}

@@ -28,9 +28,9 @@ class IncomingBookingController extends Controller
 
         $bookingQuery = Booking::with(['consigneeBranch', 'client', 'transhipments', 'consignorBranch', 'getAlltranshipments'])
             ->whereIn('status', [Booking::BOOKED, Booking::DISPATCH])
+            ->where('consignee_branch_id', $userBranchId)
             ->whereHas('transhipments', function ($query) use ($userBranchId) {
-                $query->where('from_transhipment', $userBranchId)
-                    ->where('dispatched_at', NULL)->where('received_at', NULL);
+                $query->where('dispatched_at', NULL)->where('received_at', NULL);
             });
 
         if ($search) {
@@ -43,9 +43,6 @@ class IncomingBookingController extends Controller
                     });
             });
         }
-        $bookingQuery->where('bookings.status', Booking::BOOKED);
-
-
         $totalRecord = $bookingQuery->count();
 
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
@@ -70,10 +67,14 @@ class IncomingBookingController extends Controller
                 }
 
                 // Bilti and offline bilti links
-                $row['bilti_number'] = '<a href="'.url("admin/bookings/bilti/$booking->id").'" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['bilti_number'] = '<a href="' . url("admin/bookings/bilti/$booking->id") . '" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['offline_bilti_number'] = $booking->manual_bilty_number . " / " . formatOnlyDate($booking->manual_bilty_number);
                 $row['offline_bilti'] = $booking->manual_bilty_number  ? '<a href="" target="_blank">' . $booking->manual_bilty_number . '</a>' : 'N/A';;
                 $row['consignor_branch'] = $booking?->consignorBranch?->branch_name;
                 $row['consignee_branch'] = $booking?->consigneeBranch?->branch_name;
+                $row['consignor_name'] = $booking?->consignor_name;
+                $row['grand_total_amount'] = "&#8377;" . $booking?->grand_total_amount;
+                $row['consignee_name'] = $booking?->consignee_name;
                 $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type_name . '</span>' ?? '--';
                 $row['no_of_artical'] = '<span class="badge badge-primary">' . $booking->no_of_artical . '</span>' ?? '--';
 
