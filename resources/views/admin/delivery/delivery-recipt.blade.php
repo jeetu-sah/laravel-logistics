@@ -3185,8 +3185,6 @@
                                                 Amount(Rs.)</td>
                                         </tr>
 
-
-
                                         <tr class="tm_gray_bg tm_border_left tm_border_right">
                                             <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Freight
                                                 Charges
