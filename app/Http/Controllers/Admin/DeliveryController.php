@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\DeliveryReceipt;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Booking;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Library\sHelper;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Branch;
@@ -21,6 +22,7 @@ class DeliveryController extends Controller
 
         return view('admin.delivery.list');
     }
+
     public function list(Request $request)
     {
 
@@ -63,7 +65,7 @@ class DeliveryController extends Controller
                 // Format the creation date
                 $row['created_at'] = formatDate($booking->created_at);
                 // Action column
-                $row['action'] = ' <a href="' . url("admin/delivery/create/{$booking->id}") . '" class="btn btn-success">Ready to Deliver</a>';
+                $row['action'] = ' <a href="' . url("admin/delivery/create/{$booking->id}") . '" class="btn btn-success">Generate Gatepass</a>';
                 // Append row to the array
                 $rows[] = $row;
             }
@@ -78,7 +80,7 @@ class DeliveryController extends Controller
             "data" => $rows,
         ];
 
-        return response()->json($json_data); // Return a JSON response
+        return response()->json($json_data);
     }
     /**
      * Show the form for creating a new resource.
@@ -90,8 +92,8 @@ class DeliveryController extends Controller
 
     public function store(Request $request)
     {
+
         try {
-            // Validate the request data
             $request->validate([
                 'freight_charges' => 'required|numeric',
                 'hamali_charges' => 'required|numeric',
@@ -100,9 +102,10 @@ class DeliveryController extends Controller
                 'grand_total' => 'required|numeric',
                 'received_amount' => 'required|numeric',
                 'pending_amount' => 'required|numeric',
-                'parcel_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Added validation for image
+                'parcel_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
+            DB::beginTransaction();
             // Handle image upload if present
             $imagePath = null;
             if ($request->hasFile('parcel_image')) {
@@ -110,55 +113,59 @@ class DeliveryController extends Controller
                 $imagePath = $request->file('parcel_image')->store('parcel_images', 'public');
             }
 
-            // Get the last delivery number from the delivery_numbers table
-            $lastDelivery = DB::table('delivery_numbers')->orderBy('id', 'desc')->first();
-
-            // If no previous delivery exists, start with DEL-001
-            if ($lastDelivery) {
-                // Generate the next serial number by incrementing the last serial number
-                $serialNumber = 'DEL-' . str_pad((intval(substr($lastDelivery->delivery_number, 4)) + 1), 3, '0', STR_PAD_LEFT);
-            } else {
-                // If no deliveries exist, start with DEL-001
-                $serialNumber = 'DEL-001';
-            }
+            $serialNumber = sHelper::getNextDeliveryNumber();
 
             // Insert the data into the delivery_receipts table
-            $deliveryReceiptId = DB::table('delivery_receipts')->insertGetId([
-                'booking_id' => $request->booking_id, // assuming booking_id is passed in the request
-                'freight_charges' => $request->freight_charges,
-                'hamali_charges' => $request->hamali_charges,
-                'demruge_charges' => $request->demruge_charges,
-                'others_charges' => $request->others_charges,
-                'grand_total' => $request->grand_total,
-                'received_amount' => $request->received_amount,
+            $deliveryReceipt = DeliveryReceipt::create([
+                'booking_id' => $request->booking_id,
+                'freight_charges' => $request->freight_charges ?? 0,
+                'hamali_charges' => $request->hamali_charges ?? 0,
+                'demruge_charges' => $request->demruge_charges ?? 0,
+                'others_charges' => $request->others_charges ?? 0,
+                'grand_total' => $request->grand_total ?? 0,
+                'received_amount' => $request->received_amount ?? 0,
                 'pending_amount' => $request->pending_amount,
                 'delivery_number' => $serialNumber,
                 'recived_by' => $request->recived_by,
                 'reciver_mobile' => $request->reciver_mobile,
                 'status' => 'Delivered', // or any default value you need
-                'parcel_image' => $imagePath, // Store the image path
+                'parcel_image' => $imagePath ?? '--', // Store the image path
             ]);
+            if ($deliveryReceipt) {
+                // Insert the serial number and booking_id into the delivery_numbers table
+                DB::table('delivery_numbers')->insert([
+                    'delivery_number' => $serialNumber,
+                    'booking_id' => $request->booking_id,
+                    'status' => 1,  // Assuming 'status' 1 means active
+                ]);
 
-            // Insert the serial number and booking_id into the delivery_numbers table
-            DB::table('delivery_numbers')->insert([
-                'delivery_number' => $serialNumber,
-                'booking_id' => $request->booking_id,
-                'status' => 1,  // Assuming 'status' 1 means active
-            ]);
+                $booking = Booking::find(id: $request->booking_id);
+                if ($booking) {
+                    $booking->status = Booking::DELIVERED_TO_CLIENT;
+                    $booking->save();
+                }
 
-            // Update the booking's status to 4 (Delivered)
-            DB::table('bookings')
-                ->where('id', $request->booking_id) // Update the booking with the given booking_id
-                ->update(['status' => 4]);
+                DB::commit();
+                return redirect()->route('admin.delivery.receipt', ['id' => $deliveryReceipt->id])->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Delivery receipt created successfully!!!', 'type' => 'success']
+                ]);
 
-            // Redirect or send the ID as a response
-            return redirect()->route('admin.delivery.receipt', ['id' => $deliveryReceiptId]);
+            } else {
+
+                DB::rollBack();
+                return redirect()->back()->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
+                ]);
+            }
+
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            exit;
-
-            // Optionally, redirect back with an error message
-            return redirect()->back()->with('error', 'There was an issue while saving the delivery receipt. Please try again.');
+            // echo $e->getMessage();
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
+            ]);
         }
     }
 
@@ -168,43 +175,12 @@ class DeliveryController extends Controller
     public function show($id)
     {
         // Fetch the delivery receipt data by ID
-        $deliveryReceipt = DB::table('delivery_receipts')
-            ->join('delivery_numbers', 'delivery_numbers.id', '=', 'delivery_receipts.id')
-            ->join('bookings', 'delivery_receipts.booking_id', '=', 'bookings.id')
-            ->join('branches as consignor_branch', 'bookings.consignor_branch_id', '=', 'consignor_branch.id')
-            ->join('branches as consignee_branch', 'bookings.consignee_branch_id', '=', 'consignee_branch.id')
-            ->where('delivery_receipts.id', $id)
-            ->select(
-                'delivery_receipts.*',
-                'bookings.manual_bilty_number',
-                'bookings.bilti_number',
-                'bookings.consignor_name',
-                'bookings.consignor_branch_id',
-                'bookings.consignor_phone_number',
-                'bookings.consignee_branch_id',
-                'bookings.consignee_name',
-                'bookings.consignee_phone_number',
-                'bookings.no_of_artical',
-                'bookings.no_of_artical',
-                'bookings.actual_weight',
-                'bookings.booking_type',
-                'bookings.created_at as bookingDate',
-                'delivery_numbers.delivery_number',
-                'consignor_branch.branch_name as consignor_branch_name',
-                'consignee_branch.branch_name as consignee_branch_name',
-
-            )
-            ->first();
-
-
+        $deliveryReceipt = DeliveryReceipt::with(['booking'])->find($id);
 
         if (!$deliveryReceipt) {
-            return redirect()->route('admin.delivery.deliverd.index')->with('error', 'Delivery receipt not found!');
+            return redirect('admin/delivery')->with('error', 'Delivery receipt not found!');
         }
-        // echo "<pre>";
-        // print_r($deliveryReceipt);
-        // exit;
-        // Return the view with the delivery receipt data
+    
         return view('admin.delivery.delivery-recipt', compact('deliveryReceipt'));
     }
 
@@ -244,8 +220,7 @@ class DeliveryController extends Controller
 
             )
             ->first();
-        // echo "<pre>";
-        // print_r($data['booking']);exit;
+
         return view('admin.delivery.deliver', $data);
     }
 }

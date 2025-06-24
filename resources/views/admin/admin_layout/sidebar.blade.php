@@ -317,11 +317,9 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="{{ url('admin/delivery') }}"
-                        class="nav-link {{ request()->is('admin/delivery') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('admin/delivery*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shipping-fast"></i>
-                        <p>
-                            Delivery
-                        </p>
+                        <p>Delivery</p>
                     </a>
                 </li>
                 <li class="nav-item has-treeview {{ request()->is('admin/report*') ? 'menu-open' : '' }} ">

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\BranchSetting;
 use App\Models\LoadingChallan;
+use App\Models\DeliveryReceipt;
 
 class sHelper
 {
@@ -114,7 +115,8 @@ class sHelper
 		if (!empty($image_name)) {
 			switch ($status) {
 				case 2:
-					return url("storage/profile_image/$image_name");;
+					return url("storage/profile_image/$image_name");
+					;
 					break;
 				case 'C':
 					return '<span class="badge badge-danger">Closed</span>';
@@ -213,7 +215,7 @@ class sHelper
 	{
 		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
 
-		$userMaxID =  User::max('userId');
+		$userMaxID = User::max('userId');
 		if ($userMaxID == NULL) {
 			return (1000 + 1);
 		}
@@ -224,14 +226,30 @@ class sHelper
 	{
 		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
 
-		$challanMaxID =  LoadingChallan::max('challan_number');
+		$challanMaxID = LoadingChallan::max('challan_number');
 		if ($challanMaxID == NULL) {
 			return (1000 + 1);
 		}
 		return $challanMaxID + 1;
 	}
 
-	public static function generateNextBiltiNumber(String $bookingStatus)
+	public static function getNextDeliveryNumber()
+	{
+		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
+		$prefix = 'DEL-';
+		$deliverySerielNumber = DeliveryReceipt::latest()->first();
+
+
+		if ($deliverySerielNumber == NULL) {
+			return $prefix . '001';
+		}
+
+		$next = $deliverySerielNumber->id + 1;
+		return $prefix . str_pad($next, 3, '0', STR_PAD_LEFT);
+
+	}
+
+	public static function generateNextBiltiNumber(string $bookingStatus)
 	{
 		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
 		$latestBuiltyId = Booking::latest('id')->first()?->id;
@@ -246,8 +264,8 @@ class sHelper
 		}
 
 		// Return the bilti number in the format of YYMMxxx (e.g., 250131001)
-		$nextBuiltyNumber =  date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-		
+		$nextBuiltyNumber = date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
 		if ($bookingStatus === Booking::NO_BOOKING) {
 			return "NB-" . $nextBuiltyNumber;
 		}

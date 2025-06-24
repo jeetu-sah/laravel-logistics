@@ -14,12 +14,18 @@ class DeliveryReceipt extends Model
 
     // The attributes that are mass assignable
     protected $fillable = [
+        'id',
         'booking_id',
         'freight_charges',
         'hamali_charges',
         'demruge_charges',
         'others_charges',
+        'received_amount',
+        'pending_amount',
         'grand_total',
+        'recived_by',
+        'reciver_mobile',
+        'parcel_image',
         'delivery_number',
         'status',
     ];

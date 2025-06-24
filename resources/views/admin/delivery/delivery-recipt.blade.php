@@ -3009,13 +3009,8 @@
                         <div class="tm_invoice_right tm_text_right" style="margin-top:-47px;">
 
                             <p><b>GSTIN: 09AHQPV3722R2Z7</b></p><span style="font-size: 20px;">
-
-                                <b> <br>Recipt Number<br>
-                                    {{ $deliveryReceipt->delivery_number }}
-
-                                </b>
+                                <b> <br>Recipt Number<br>{{ $deliveryReceipt->delivery_number }}</b>
                             </span>
-
                         </div>
                     </div>
                     <div class="tm_invoice_info tm_mb20">
@@ -3024,12 +3019,12 @@
                         {{-- <div class="tm_invoice_info_list">
                             <b>Booking Type:
                                 @if ($deliveryReceipt->booking_type == 'Paid')
-                                    Paid
+                                Paid
                                 @elseif ($deliveryReceipt->booking_type == 'Topay')
-                                    To Pay
-                              
+                                To Pay
+
                                 @else
-                                    Unknown
+                                Unknown
                                 @endif
                             </b>
 
@@ -3045,26 +3040,23 @@
                                         <tr>
                                             <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg"> Booking
                                                 Station -
-                                                {{ $deliveryReceipt->consignor_branch_name }}
+                                                {{ $deliveryReceipt?->booking?->consignorBranch?->branch_name ?? '--' }}
                                             </th>
                                             <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">
-                                                Delivery Station - {{ $deliveryReceipt->consignee_branch_name }}
+                                                Delivery Station -
+                                                {{ $deliveryReceipt?->booking?->consigneeBranch?->branch_name ?? '--' }}
                                             </th>
 
                                             <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">
-                                                Article:{{ $deliveryReceipt->no_of_artical }}
+                                                Article:{{ $deliveryReceipt?->booking?->no_of_artical }}
 
                                             </th>
                                             <th class="tm_width_4 tm_semi_bold tm_primary_color tm_gray_bg">
-                                                Offline Bilti:{{ $deliveryReceipt->manual_bilty_number ?: 'NA' }}<br>
-                                                LR Number:{{ $deliveryReceipt->bilti_number }}
-
-
+                                                Offline
+                                                Bilti:{{ $deliveryReceipt?->booking?->manual_bilty_number ?: 'NA' }}<br>
+                                                LR Number:{{ $deliveryReceipt?->booking?->bilti_number }}
                                             </th>
-
                                         </tr>
-
-
                                     </tbody>
                                 </table>
                             </div>
@@ -3072,24 +3064,17 @@
                         <div class="tm_invoice_footer tm_border_left tm_border_left_none_md">
                             <div class="tm_left_footer tm_padd_left_15_md">
                                 <div style="margin-top:10px;">
-
-
                                     <table>
                                         <tbody>
-
-
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0"><b>
-                                                        <b>Date Of Booking -
-                                                            {{ \Carbon\Carbon::parse($deliveryReceipt->bookingDate)->format('d-m-Y') }}</b>
+                                                        <b>Date Of Booking - {{ formatDate($deliveryReceipt?->booking?->booking_date) ?? '--' }}</b>
                                                 </td>
 
                                             </tr>
                                             <tr class="tm_gray_bg tm_border_left tm_border_right">
                                                 <td class="tm_width_1 tm_primary_color tm_border_none tm_pt0"><b>Recived
-                                                        By
-                                                        Thank From:</b>
-
+                                                        By Thank From:</b>
                                                     <b> {{ ucfirst($deliveryReceipt->recived_by) }}</b>
                                                 </td>
 
@@ -3116,6 +3101,7 @@
                                                 by Consignor)</th>
 
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">
+                                                {{ $deliveryReceipt?->booking?->cantain ?: '--' }}
                                             </th>
 
                                         </tr>
@@ -3126,7 +3112,7 @@
                                                 declared by consignor</th>
 
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">
-
+                                                 {{ $deliveryReceipt?->booking?->good_of_value ?: '--' }}
                                             </th>
 
                                         </tr>
@@ -3134,7 +3120,7 @@
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg"> Remark</th>
 
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">
-
+                                                 {{ $deliveryReceipt?->booking?->remark ?: '--' }}
                                             </th>
 
                                         </tr>
@@ -3151,8 +3137,7 @@
                                     </p>
 
                                     <p style="margin-left: 20px; margin-right: 20px; line-height: 1.6;">
-                                        <img src="{{ asset('site/img/indianQr.jpg') }}" width="150px"
-                                            height="auto" />
+                                        <img src="{{ asset('site/img/indianQr.jpg') }}" width="150px" height="auto" />
                                     </p>
                                 </div>
                                 <Small><b>Note : 1)Material must have been insured by owner in case of total value is
@@ -3237,8 +3222,9 @@
                                             </td>
                                         </tr>
 
-                                        <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right" >
-                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color" style="color:#2527d2">
+                                        <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right">
+                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color"
+                                                style="color:#2527d2">
                                                 Grand
                                                 Total </td>
                                             <td
@@ -3247,7 +3233,8 @@
                                             </td>
                                         </tr>
                                         <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color" style="color:#34c759">
+                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color"
+                                                style="color:#34c759">
                                                 Recived Amount </td>
                                             <td
                                                 class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right">
@@ -3255,7 +3242,8 @@
                                             </td>
                                         </tr>
                                         <tr class="tm_border_top tm_gray_bg tm_border_left tm_border_right">
-                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color" style="color:#e41912">
+                                            <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color"
+                                                style="color:#e41912">
                                                 Pending Amount </td>
                                             <td
                                                 class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right">
@@ -3293,12 +3281,10 @@
                                 <path
                                     d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24"
                                     fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
-                                <rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32"
-                                    fill="none" stroke="currentColor" stroke-linejoin="round"
-                                    stroke-width="32" />
-                                <path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24"
-                                    fill="none" stroke="currentColor" stroke-linejoin="round"
-                                    stroke-width="32" />
+                                <rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32" fill="none"
+                                    stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
+                                <path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none"
+                                    stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
                                 <circle cx="392" cy="184" r="24" fill='currentColor' />
                             </svg>
                         </span>
@@ -3309,8 +3295,8 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                                 <path
                                     d="M320 336h76c55 0 100-21.21 100-75.6s-53-73.47-96-75.6C391.11 99.74 329 48 256 48c-69 0-113.44 45.79-128 91.2-60 5.7-112 35.88-112 98.4S70 336 136 336h56M192 400.1l64 63.9 64-63.9M256 224v224.03"
-                                    fill="none" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="32" />
+                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="32" />
                             </svg>
                         </span>
                         <span class="tm_btn_text">Download</span>
@@ -3334,7 +3320,7 @@
         <script src="assets/js/html2canvas.min.js"></script>
         <script src="assets/js/main.js"></script>
         <script>
-            (function() {
+            (function () {
                 function c() {
                     var b = a.contentDocument || a.contentWindow.document;
                     if (b) {
@@ -3357,8 +3343,8 @@
                     if ('loading' !== document.readyState) c();
                     else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c);
                     else {
-                        var e = document.onreadystatechange || function() {};
-                        document.onreadystatechange = function(b) {
+                        var e = document.onreadystatechange || function () { };
+                        document.onreadystatechange = function (b) {
                             e(b);
                             'loading' !== document.readyState && (document.onreadystatechange = e, c())
                         }
@@ -3366,7 +3352,8 @@
                 }
             })();
         </script>
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+        <script defer
+            src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
             integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
             data-cf-beacon='{"rayId":"904d61013ae92450","version":"2025.1.0","r":1,"token":"6f756f02820545e3be40ddc6eb6154c3","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}'
             crossorigin="anonymous"></script>

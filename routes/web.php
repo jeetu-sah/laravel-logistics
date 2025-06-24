@@ -184,13 +184,13 @@ Route::group(['middleware' => ['auth']], function () {
 
         // delivery 
         Route::prefix('delivery')->group(function () {
+            // Route::get('delivery', [DeliveryController::class, 'index']);
             Route::get('/', [DeliveryController::class, 'index']);
             Route::get('/list', [DeliveryController::class, 'list']);
+            Route::get('/create/{id}', [DeliveryController::class, 'create']);
+            Route::post('/store', [DeliveryController::class, 'store']);
+            Route::get('/receipt/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.receipt');
         });
-        // Route::get('delivery', [DeliveryController::class, 'index']);
-        Route::get('delivery/create/{id}', [DeliveryController::class, 'create']);
-        Route::post('delivery/store', [DeliveryController::class, 'store']);
-        Route::get('admin/delivery/receipt/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.receipt');
     });
 
     Route::prefix('branch-user/')->group(function () {

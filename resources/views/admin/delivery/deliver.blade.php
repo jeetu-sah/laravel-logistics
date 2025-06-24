@@ -2,7 +2,25 @@
 @section('main_content')
     <div class="content-wrapper" style="min-height: 1419.51px;">
         <!-- Content Header (Page header) -->
-
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
+                            <i class=" fa-sm text-white-50"></i> </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Generate Gatepass</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                @include('common.notification')
+            </div>
+        </section>
 
         <section class="content">
             <div class="container-fluid">
@@ -21,14 +39,7 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-striped align-middle"
                                                 style="font-size: 18px;">
-                                                <thead class="table-dark text-center">
-                                                    <tr>
-                                                        <th>Field</th>
-                                                        <th>Details</th>
-                                                        <th>Field</th>
-                                                        <th>Details</th>
-                                                    </tr>
-                                                </thead>
+
                                                 <tbody>
                                                     <tr>
                                                         <td><strong>Consignor Name</strong></td>
@@ -46,35 +57,42 @@
                                                     <tr>
                                                         <td><strong>Offline Bili Number</strong></td>
                                                         <td>{{ $booking->manual_bilty_number ?: 'NA' }}</td>
-                                                        <td><strong>Date Of Booking</strong></td>
-                                                        <td>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-m-y') }}
+                                                        <td><strong>Offline Booking Date</strong></td>
+                                                        <td>{{ formatOnlyDate($booking->created_at) }}
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><strong>Number Of Article</strong></td>
+                                                        <td><strong>Date Of Booking</strong></td>
+                                                        <td>{{ formatDate($booking->created_at) }}
+                                                        <td><strong>Article</strong></td>
                                                         <td>{{ $booking->no_of_artical }}</td>
-                                                        <td><strong>Privet Mark</strong></td>
-                                                        <td>{{ $booking->remark }}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td><strong>Mark</strong></td>
+                                                        <td colspan="3">{{ $booking->remark ?? '--' }}</td>
+                                                    </tr>
+
                                                     <tr>
                                                         <td><strong>Contain</strong></td>
                                                         <td colspan="3">{{ $booking->cantain }}</td>
 
                                                     </tr>
                                                     <tr>
-                                                       
+
                                                         <td><strong>Receiver Mobile</strong></td>
                                                         <td colspan="3">
-                                                            <input type="tel" class="form-control" name="reciver_mobile"
+                                                            <input type="number" class="form-control"
+                                                                value="{{ old('reciver_mobile') }}" name="reciver_mobile"
                                                                 placeholder="Mobile" maxlength="12" required>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                       
+
                                                         <td><strong>Received By</strong></td>
                                                         <td colspan="3">
-                                                            <input type="text" class="form-control" name="recived_by"
-                                                                placeholder="Name" maxlength="40" required>
+                                                            <input type="text" value="{{ old('recived_by') }}"
+                                                                class="form-control" name="recived_by" placeholder="Name"
+                                                                maxlength="40" required>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -106,10 +124,12 @@
                                             <label for="freight_charges">Freight Charges:</label>
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <input type="number" class="form-control" id="rs_amount_1" readonly
+                                            <input type="number" 
+                                                class="form-control" 
+                                                id="rs_amount_1" 
                                                 value="{{ $booking->booking_type == 'Topay' ? $booking->grand_total_amount : 0 }}"
                                                 required name="freight_charges" placeholder="₹.00"
-                                                oninput="calculateTotal()">
+                                                oninput="calculateTotal()" readonly />
                                         </div>
 
                                         <!-- Hamali Charges -->
@@ -117,9 +137,9 @@
                                             <label for="hamali_charges">Hamali Charges:</label>
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <input type="number" class="form-control" id="rs_amount_2" value=""
-                                                required name="hamali_charges" placeholder="₹.00"
-                                                oninput="calculateTotal()">
+                                            <input type="number" class="form-control" id="rs_amount_2"
+                                                value="{{ old('hamali_charges') }}" required name="hamali_charges"
+                                                placeholder="₹.00" oninput="calculateTotal()">
                                         </div>
 
                                         <!-- Demurrage Charges -->
@@ -127,9 +147,9 @@
                                             <label for="demruge_charges">Demurrage Charges:</label>
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <input type="number" class="form-control" id="rs_amount_3" value=""
-                                                required name="demruge_charges" placeholder="₹.00"
-                                                oninput="calculateTotal()">
+                                            <input type="number" class="form-control" id="rs_amount_3"
+                                                value="{{ old('demruge_charges') }}" name="demruge_charges"
+                                                placeholder="₹.00" oninput="calculateTotal()" required />
                                         </div>
 
                                         <!-- Other Charges -->
@@ -137,9 +157,9 @@
                                             <label for="others_charges">Other Charges:</label>
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <input type="number" class="form-control" id="rs_amount_4" value=""
-                                                required name="others_charges" placeholder="₹.00"
-                                                oninput="calculateTotal()">
+                                            <input type="number" class="form-control" id="rs_amount_4"
+                                                value="{{ old('others_charges') }}" name="others_charges" placeholder="₹.00"
+                                                oninput="calculateTotal()" required />
                                         </div>
 
                                         <!-- Discount -->
@@ -147,8 +167,9 @@
                                             <label for="discount">Discount:</label>
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <input type="number" class="form-control" id="rs_amount_5" value=""
-                                                required name="discount" placeholder="₹.00" oninput="calculateTotal()">
+                                            <input type="text" class="form-control" id="rs_amount_5"
+                                                value="{{ old('discount') }}" required name="discount" placeholder="₹.00"
+                                                oninput="calculateTotal()">
                                         </div>
 
                                         <!-- Grand Total -->
@@ -156,23 +177,25 @@
                                             <label for="grand_total">Grand Total:</label>
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <input type="number" class="form-control" id="grand_total" value=""
-                                                required name="grand_total" placeholder="₹.00" readonly>
+                                            <input type="number" class="form-control" id="grand_total"
+                                                value="{{ old('grand_total') }}" name="grand_total" placeholder="₹.00"
+                                                required readonly />
                                         </div>
                                         <div class="col-md-6" style="font-size: 25px; color: green;">
                                             <label for="received_amount">Recived Amount:</label>
                                         </div>
                                         <div class="col-md-6 mb-2">
                                             <input type="number" class="form-control" id="received_amount"
-                                                oninput="calculateTotal()" value="" required name="received_amount"
-                                                placeholder="₹.00">
+                                                oninput="calculateTotal()" value="{{ old('received_amount') }}" required
+                                                name="received_amount" placeholder="₹.00">
                                         </div>
                                         <div class="col-md-6" style="font-size: 25px; color: red;">
                                             <label for="pendingAmount">Pending Amount:</label>
                                         </div>
                                         <div class="col-md-6 mb-2">
-                                            <input type="number" class="form-control" id="pendingAmount" value=""
-                                                required name="pending_amount" placeholder="₹.00" readonly>
+                                            <input type="number" class="form-control" id="pendingAmount"
+                                                value="{{ old('pending_amount') }}" required name="pending_amount"
+                                                placeholder="₹.00" readonly>
                                         </div>
 
                                         <div class="col-md-6" style="display: none;">
@@ -192,16 +215,16 @@
                                                 // Check if browser supports getUserMedia
                                                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                                                     navigator.mediaDevices.getUserMedia({
-                                                            video: true
-                                                        })
-                                                        .then(function(userStream) {
+                                                        video: true
+                                                    })
+                                                        .then(function (userStream) {
                                                             stream = userStream;
                                                             // Set the webcam stream to the video element
                                                             video.srcObject = stream;
                                                             video.style.display = 'block'; // Show the video element
                                                             captureButton.style.display = 'inline-block'; // Show the capture button
                                                         })
-                                                        .catch(function(err) {
+                                                        .catch(function (err) {
                                                             alert('Error accessing webcam: ' + err);
                                                         });
                                                 } else {
@@ -286,8 +309,8 @@
                                         <div class="col-md-6">
 
                                             <!-- Button to open webcam -->
-                                            <button type="button" class="btn btn-primary mt-4"
-                                                onclick="openWebCam()">Open Webcam</button>
+                                            <button type="button" class="btn btn-primary mt-4" onclick="openWebCam()">Open
+                                                Webcam</button>
 
 
                                         </div>
@@ -319,7 +342,8 @@
 
                     <div class="row mb-3">
                         <div class="col-12">
-                            {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a> --}}
+                            {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a>
+                            --}}
                             <input type="submit" value="Save & Print" class="btn btn-success float-right">
                         </div>
                     </div>
