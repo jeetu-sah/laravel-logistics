@@ -92,18 +92,18 @@ class DeliveryController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'freight_charges' => 'required|numeric',
+            'hamali_charges' => 'required|numeric',
+            'demruge_charges' => 'required|numeric',
+            'others_charges' => 'required|numeric',
+            'grand_total' => 'required|numeric',
+            'received_amount' => 'required|numeric',
+            'pending_amount' => 'required|numeric',
+            'parcel_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
         try {
-            $request->validate([
-                'freight_charges' => 'required|numeric',
-                'hamali_charges' => 'required|numeric',
-                'demruge_charges' => 'required|numeric',
-                'others_charges' => 'required|numeric',
-                'grand_total' => 'required|numeric',
-                'received_amount' => 'required|numeric',
-                'pending_amount' => 'required|numeric',
-                'parcel_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
 
             DB::beginTransaction();
             // Handle image upload if present
@@ -157,7 +157,7 @@ class DeliveryController extends Controller
                 return redirect()->back()->with([
                     "alertMessage" => true,
                     "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
-                ]);
+                ])->withInput();
             }
 
         } catch (\Exception $e) {
@@ -165,7 +165,7 @@ class DeliveryController extends Controller
             return redirect()->back()->with([
                 "alertMessage" => true,
                 "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
-            ]);
+            ])->withInput();
         }
     }
 
@@ -180,7 +180,7 @@ class DeliveryController extends Controller
         if (!$deliveryReceipt) {
             return redirect('admin/delivery')->with('error', 'Delivery receipt not found!');
         }
-    
+
         return view('admin.delivery.delivery-recipt', compact('deliveryReceipt'));
     }
 

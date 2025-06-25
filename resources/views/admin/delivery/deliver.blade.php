@@ -62,13 +62,13 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><strong>Date Of Booking</strong></td>
+                                                        <td><strong>Online Booking Date</strong></td>
                                                         <td>{{ formatDate($booking->created_at) }}
                                                         <td><strong>Article</strong></td>
                                                         <td>{{ $booking->no_of_artical }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><strong>Mark</strong></td>
+                                                        <td><strong>Remark</strong></td>
                                                         <td colspan="3">{{ $booking->remark ?? '--' }}</td>
                                                     </tr>
 
