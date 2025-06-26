@@ -63,6 +63,9 @@
                     <li class="nav-item">
                         <a class="nav-link font20 bottom-border" aria-current="page" href="#career">Career</a>
                     </li>
+                    <li class="franchise ">
+                        <a class="nav-link font20 bottom-border" aria-current="page" target="_blank" href="{{ url('franchise') }}">Franchise</a>
+                    </li>
                 </ul>
                 <div class="me-4">
                     <i class="fa-solid fa-headphones primarycolor font20"></i>

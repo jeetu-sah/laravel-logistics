@@ -98,14 +98,14 @@ class Booking extends Model
 
 
     //visible_for
-    protected function getVisibleForAttribute(): Int | null
+    protected function getVisibleForAttribute(): int|null
     {
         $bookingVisibleForBranch = $this->transhipments->where('status', Transhipment::PENDING)->first();
         return $bookingVisibleForBranch?->from_transhipment;
     }
 
     //booking_type_name
-    protected function getBookingtypeNameAttribute(): string | null
+    protected function getBookingtypeNameAttribute(): string|null
     {
         return $this->bookingType[$this->booking_type];
     }
@@ -211,7 +211,7 @@ class Booking extends Model
 
         if ($currentTranshipmentBranch->type == Transhipment::TYPE_RECEIVER) {
             if (count($allTranshipmentId) > 0) {
-                $branches =  Branch::whereIn('id', $allTranshipmentId)->get();
+                $branches = Branch::whereIn('id', $allTranshipmentId)->get();
                 return $branches->pluck('branch_name')->join(', ');
             }
             return '--';
