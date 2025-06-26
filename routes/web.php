@@ -26,7 +26,7 @@ use App\Http\Controllers\Admin\IncomingBookingController;
 use App\Http\Controllers\BranchUser\ReviewerController;
 use App\Http\Controllers\BranchUser\SettingController;
 use App\Http\Controllers\BranchUser\DashboardController;
-
+use App\Http\Controllers\FranchiseApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +43,9 @@ use App\Http\Controllers\BranchUser\DashboardController;
 Route::post('apply', [ApplicationController::class, 'store'])->name('applications.store');
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
+Route::get('franchise', [FranchiseApplicationController::class, 'index']);
+Route::post('/franchise/application/store', [FranchiseApplicationController::class, 'store'])->name('franchise.application.store');
+
 Route::post('track-shipment', [ShipmentController::class, 'trackShipment']);
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', [LoginController::class, 'index'])->name('/');
