@@ -21,9 +21,12 @@ return new class extends Migration {
             $table->decimal('grand_total', 10, 2)->default(0.00);
             $table->decimal('received_amount', 10, 2)->default(0.00);
             $table->decimal('pending_amount', 10, 2)->default(0.00);
+            $table->decimal('discount', 10, 2)->default(0.00);
             $table->string('recived_by', 50);
-            $table->bigInteger('reciver_mobile');
-            $table->string('status', 10);
+            $table->bigInteger('branch_id');
+            $table->bigInteger('reciver_mobile')->nullable();
+            $table->string('status', 10)->default('generated-gatepass');
+            $table->text('remark')->nullable();
             $table->string('delivery_number', 15);
             $table->timestamps();
 

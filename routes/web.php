@@ -47,6 +47,7 @@ Route::get('franchise', [FranchiseApplicationController::class, 'index']);
 Route::post('/franchise/application/store', [FranchiseApplicationController::class, 'store'])->name('franchise.application.store');
 
 Route::post('track-shipment', [ShipmentController::class, 'trackShipment']);
+
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
@@ -188,11 +189,12 @@ Route::group(['middleware' => ['auth']], function () {
         // delivery 
         Route::prefix('delivery')->group(function () {
             // Route::get('delivery', [DeliveryController::class, 'index']);
-            Route::get('/', [DeliveryController::class, 'index']);
+            Route::get('gatepass/', [DeliveryController::class, 'index']);
             Route::get('/list', [DeliveryController::class, 'list']);
-            Route::get('/create/{id}', [DeliveryController::class, 'create']);
-            Route::post('/store', [DeliveryController::class, 'store']);
-            Route::get('/receipt/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.receipt');
+            Route::get('/gatepass/amount', [DeliveryController::class, 'gatepassamounts']);
+            Route::get('gatepass/create/{id}', [DeliveryController::class, 'create']);
+            Route::post('/gatepass/store', [DeliveryController::class, 'store']);
+            Route::get('/gatepass/receipt/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.receipt');
         });
     });
 

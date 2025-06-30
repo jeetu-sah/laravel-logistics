@@ -3099,28 +3099,23 @@
                                         <tr>
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">Goods Contained (Declare
                                                 by Consignor)</th>
-
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">
                                                 {{ $deliveryReceipt?->booking?->cantain ?: '--' }}
                                             </th>
-
                                         </tr>
-
-
                                         <tr>
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">Actual Goods value
                                                 declared by consignor</th>
 
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">
-                                                 {{ $deliveryReceipt?->booking?->good_of_value ?: '--' }}
+                                                {{ $deliveryReceipt?->booking?->good_of_value ?: '--' }}
                                             </th>
 
                                         </tr>
                                         <tr>
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg"> Remark</th>
-
                                             <th class="tm_width_1 tm_primary_color tm_gray_bg">
-                                                 {{ $deliveryReceipt?->booking?->remark ?: '--' }}
+                                                {{ $deliveryReceipt?->remark ?: '--' }}
                                             </th>
 
                                         </tr>
@@ -3251,7 +3246,7 @@
 
                                 {{-- <p class=" tm_border_top_0 tm_bold tm_f16 tm_primary_color">Rs.
                                     {{ numberToWords($booking->grand_total_amount) }}
-                                    Only</p> --}}
+                                Only</p> --}}
 
                                 </tr>
 
@@ -3284,18 +3279,8 @@
                         </span>
                         <span class="tm_btn_text">Print</span>
                     </a>
-                    {{-- <button id="tm_download_btn" class="tm_invoice_btn tm_color2">
-                        <span class="tm_btn_icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                                <path
-                                    d="M320 336h76c55 0 100-21.21 100-75.6s-53-73.47-96-75.6C391.11 99.74 329 48 256 48c-69 0-113.44 45.79-128 91.2-60 5.7-112 35.88-112 98.4S70 336 136 336h56M192 400.1l64 63.9 64-63.9M256 224v224.03"
-                                    fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="32" />
-                            </svg>
-                        </span>
-                        <span class="tm_btn_text">Download</span>
-                    </button> --}}
-                    <button id="tm_back_btn" class="tm_invoice_btn tm_color2" onclick="window.history.back();">
+
+                    <a href="{{ url('admin/delivery/gatepass') }}" id="tm_back_btn" class="tm_invoice_btn tm_color2">
                         <span class="tm_btn_icon">
                             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                                 <path d="M144 256l192-192v128h160v128H336v128L144 256z" fill="none"
@@ -3304,7 +3289,7 @@
                             </svg>
                         </span>
                         <span class="tm_btn_text">Back</span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -3314,7 +3299,7 @@
         <script src="assets/js/html2canvas.min.js"></script>
         <script src="assets/js/main.js"></script>
         <script>
-            (function () {
+            (function() {
                 function c() {
                     var b = a.contentDocument || a.contentWindow.document;
                     if (b) {
@@ -3337,8 +3322,8 @@
                     if ('loading' !== document.readyState) c();
                     else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c);
                     else {
-                        var e = document.onreadystatechange || function () { };
-                        document.onreadystatechange = function (b) {
+                        var e = document.onreadystatechange || function() {};
+                        document.onreadystatechange = function(b) {
                             e(b);
                             'loading' !== document.readyState && (document.onreadystatechange = e, c())
                         }

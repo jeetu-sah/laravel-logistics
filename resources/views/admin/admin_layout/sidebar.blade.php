@@ -315,12 +315,32 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="{{ url('admin/delivery') }}"
+                
+                <li class="nav-item has-treeview {{ request()->is('admin/delivery*') ? 'menu-open' : '' }} ">
+                    <a href="{{ url('admin/delivery/generate-gatepass') }}"
                         class="nav-link {{ request()->is('admin/delivery*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-shipping-fast"></i>
-                        <p>Delivery</p>
+                         <i class="nav-icon fas fa-shipping-fast"></i>
+                        <p>
+                            Delivery
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('admin/delivery/gatepass') }}"
+                                class="nav-link {{ request()->is('admin/delivery/gatepass') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Gatepass</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/delivery/gatepass/amount') }}"
+                                class="nav-link {{ request()->is('admin/delivery/gatepass/amount') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Amount</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item has-treeview {{ request()->is('admin/report*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('admin/report') }}"

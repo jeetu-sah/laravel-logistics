@@ -27,6 +27,9 @@ class DeliveryReceipt extends Model
         'reciver_mobile',
         'parcel_image',
         'delivery_number',
+        'discount',
+        'remark',
+        'branch_id',
         'status',
     ];
 
