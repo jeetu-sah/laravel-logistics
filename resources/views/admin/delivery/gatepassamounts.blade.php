@@ -29,17 +29,17 @@
             <div class="card-body">
                 <div class="row">
                     <div class="table-responsive ">
-                        <table class="display" id="booking-list">
+                        <table class="display" id="gatepass-amount-list">
                             <thead>
                                 <tr>
                                     <th>Bilti Number</th>
-                                    <th>Consignor Name</th>
-                                    <th>Consignor Branch</th>
-                                    <th>Consignee Name</th>
-                                    <th>Destinaton</th>
-                                    <th>Payment Mode</th>
-                                    <th>Amount</th>
-                                    <th>Received Date</th>
+                                    <th>Delivery Number</th>
+                                    <th>Reciver mobile</th>
+                                    <th>Recived by</th>
+                                    <th>Total Amount</th>
+                                    <th>Received Amount</th>
+                                    <th>Pending Amount</th>
+                                    <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -67,10 +67,10 @@
 <script>
     $(document).ready(function(e) {
 
-        new DataTable('#booking-list', {
+        new DataTable('#gatepass-amount-list', {
             responsive: true,
             ajax: {
-                url: "{{ url('admin/delivery/list') }}",
+                url: "{{ url('admin/delivery/gatepass/amount/ajax-list') }}",
                 data: function(d) {
                     // Custom parameters can be added here if needed
                     // Example:
@@ -81,25 +81,23 @@
                     data: 'bilti_number'
                 },
                 {
-                    data: 'consignor_name'
+                    data: 'delivery_number'
                 },
                 {
-                    data: 'consignor_branch_id'
+                    data: 'reciver_mobile'
+                },
+                {
+                    data: 'recived_by'
+                },
+                {
+                    data: 'grand_total'
+                },
+                {
+                    data: 'received_amount'
 
                 },
                 {
-                    data: 'consignee_name'
-                },
-                {
-                    data: 'consignee_branch_id'
-
-                },
-                {
-                    data: 'booking_type'
-
-                },
-                {
-                    data: 'grand_total_amount'
+                    data: 'pending_amount'
 
                 },
                 {

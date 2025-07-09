@@ -337,7 +337,7 @@
                             <a href="{{ url('admin/delivery/gatepass/amount') }}"
                                 class="nav-link {{ request()->is('admin/delivery/gatepass/amount') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Manage Amount</p>
+                                <p>Manage Gatepass Amount</p>
                             </a>
                         </li>
                     </ul>

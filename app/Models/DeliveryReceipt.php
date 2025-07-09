@@ -38,4 +38,9 @@ class DeliveryReceipt extends Model
     {
         return $this->belongsTo(Booking::class, 'booking_id');
     }
+
+    public function payment()
+    {
+        return $this->hasMany(DeliveryReceiptPayment::class, 'delivery_receipt_id');
+    }
 }
