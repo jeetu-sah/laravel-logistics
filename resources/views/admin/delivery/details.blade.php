@@ -24,7 +24,7 @@
 
     <section class="content">
         <div class="container-fluid">
-            <form action="{{ url('admin/delivery/gatepass/store') }}" method="POST" enctype="multipart/form-data">
+            <form action='{{ url("admin/delivery/gatepass-amount/add-payments/$deliveryReceipt->id") }}' method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" value="{{ $deliveryReceipt->booking->id }}" name="booking_id">
                 <div class="row">
@@ -126,8 +126,9 @@
                                         <label for="received_amount">Recived Amount:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control" id="received_amount"
-                                            oninput="calculateTotal()" value="{{ old('received_amount') }}" required
+                                        <input type="number" class="form-control"
+                                            id="received_amount"
+                                            value="{{ old('received_amount') }}" required
                                             name="received_amount" placeholder="₹.00">
                                     </div>
                                     <div class="col-md-6" style="font-size: 25px; color: red;">
@@ -135,8 +136,7 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="number" class="form-control" id="pendingAmount"
-                                            value="{{ old('pending_amount') }}" required name="pending_amount"
-                                            placeholder="₹.00" readonly>
+                                            value="{{ $pendingAmount }}" required name="pending_amount" readonly />
                                     </div>
                                     <div class="col-md-6" style="font-size: 25px; color: blue;">
                                         <label for="grand_total">Note:</label>
@@ -159,4 +159,30 @@
         </div>
     </section>
 </div>
+@endsection
+
+
+@section('script')
+@parent
+<!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
+<script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+
+<script>
+    $(document).ready(function(e) {
+        $(document).on('input', '#received_amount', function() {
+            var receivedAmount = parseFloat($(this).val()) || 0;
+            var pendingAmount = "{{$pendingAmount}}";
+            if (receivedAmount > pendingAmount) {
+                alert('Received amount cannot be greater than pending amount.');
+                $(this).val(pendingAmount);
+                receivedAmount = pendingAmount;
+            }
+
+            var newPendingAmount = (pendingAmount - receivedAmount).toFixed(2);
+            $('#pendingAmount').val(newPendingAmount);
+        });
+
+
+    });
+</script>
 @endsection

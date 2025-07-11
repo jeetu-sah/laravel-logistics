@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+
 
 class DeliveryReceiptPayment extends Model
 {
@@ -22,5 +24,18 @@ class DeliveryReceiptPayment extends Model
     public function deliveryReceipt()
     {
         return $this->belongsTo(DeliveryReceipt::class);
+    }
+
+
+    public function booking(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Booking::class,
+            DeliveryReceipt::class,
+            'id',
+            'id',
+            'delivery_receipt_id',
+            'booking_id'
+        );
     }
 }

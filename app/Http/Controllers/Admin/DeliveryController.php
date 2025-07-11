@@ -29,14 +29,16 @@ class DeliveryController extends Controller
      */
     public function details($deliveryReceiptId)
     {
-        // echo $deliveryReceiptId;exit;
         $data['title'] = 'Delivery | Details| Payment';
+        $data['pendingAmount'] = 0;
         $data['deliveryReceipt'] = DeliveryReceipt::with(['booking'])->where('id', $deliveryReceiptId)->first();
-
+        if ($data['deliveryReceipt']) {
+            $data['pendingAmount'] = $data['deliveryReceipt']->booking->bookingPendingAmount();
+        }
         return view('admin.delivery.details', $data);
     }
 
-    public function gatepassamounts()
+    public function gatepassAmounts()
     {
         $data['title'] = 'Delivery | Gatepass | Amount';
         return view('admin.delivery.gatepassamounts', $data);
@@ -135,7 +137,7 @@ class DeliveryController extends Controller
                 $row['pending_amount'] = "&#8377;" . $deliveryReceipt?->pending_amount ?? '--';
 
                 $row['created_at'] = formatDate($deliveryReceipt->created_at);
-                $row['action'] = '<a href="#" class="btn btn-primary">Edit</a> &nbsp; <a href="' . url("admin/delivery/gatepass/detail/{$deliveryReceipt->id}") . '" class="btn btn-success">Detail</a>';
+                $row['action'] = '<a href="#" class="btn btn-primary">Edit</a> &nbsp; <a href="' . url("admin/delivery/gatepass-amount/detail/{$deliveryReceipt->id}") . '" class="btn btn-success">Detail</a>';
                 $rows[] = $row;
             }
         }
@@ -235,6 +237,47 @@ class DeliveryController extends Controller
     }
 
     /**
+     * addDeliveryPayment 
+     */
+    public function addDeliveryPayment(Request $request, $deliveryReceptId)
+    {
+        $request->validate([
+            'received_amount' => 'required|numeric',
+            'pending_amount' => 'required|numeric',
+            'notes' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            DB::beginTransaction();
+            $deliveryReceipt = DeliveryReceipt::find($deliveryReceptId);
+            if (!$deliveryReceipt) {
+                return redirect()->back()->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Delivery receipt not found!', 'type' => 'danger']
+                ]);
+            }
+
+            $deliveryReceiptPayment = DeliveryReceiptPayment::create([
+                'delivery_receipt_id' => $deliveryReceptId,
+                'pending_amount' => $request->pending_amount,
+                'received_amount' => $request->received_amount,
+                'notes' => $request->note ?? NULL,
+            ]);
+            DB::commit();
+            return redirect("admin/delivery/gatepass-amount/detail/$deliveryReceptId")->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Delivery receipt created successfully!!!', 'type' => 'success']
+            ]);
+        } catch (\Exception $e) {
+            // echo $e->getMessage();
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
+            ])->withInput();
+        }
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show($id)
@@ -270,7 +313,7 @@ class DeliveryController extends Controller
     {
         //
     }
-    
+
     public function create($id)
     {
         $data['title'] = 'Delivery | Gatepass | Create';

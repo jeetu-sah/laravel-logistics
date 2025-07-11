@@ -289,4 +289,28 @@ class Booking extends Model
     {
         return $this->belongsToMany(Branch::class, 'transhipments', 'booking_id', 'from_transhipment');
     }
+
+    public function deliveryReceiptPayments()
+    {
+        return $this->hasManyThrough(
+            DeliveryReceiptPayment::class,
+            DeliveryReceipt::class,
+            'booking_id',
+            'delivery_receipt_id',
+            'id',
+            'id'
+        );
+    }
+
+    public function bookingPendingAmount(): float
+    {
+        $totalReceived = $this->deliveryReceiptPayments->sum('received_amount');
+        return max(0, (float) $this->grand_total_amount - $totalReceived);
+    }
+
+    public function bookingReceivedAmount(): float
+    {
+        $totalReceived = $this->deliveryReceiptPayments->sum('received_amount');
+        return max(0, (float) $totalReceived);
+    }
 }
