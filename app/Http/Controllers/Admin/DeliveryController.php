@@ -114,6 +114,7 @@ class DeliveryController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('delivery_number', 'like', "%$search%")
+                    ->orwhere('recived_by', 'like', "%$search%")
                     ->orWhereHas('booking', function ($bookingQuery) use ($search) {
                         $bookingQuery->where('bilti_number', 'like', "%$search%");
                     });
@@ -133,11 +134,11 @@ class DeliveryController extends Controller
                 $row['recived_by'] = $deliveryReceipt?->recived_by ?? '--';
 
                 $row['grand_total'] = "&#8377;" . $deliveryReceipt?->grand_total ?? '--';
-                $row['received_amount'] = "&#8377;" . $deliveryReceipt?->received_amount ?? '--';
-                $row['pending_amount'] = "&#8377;" . $deliveryReceipt?->pending_amount ?? '--';
+                $row['received_amount'] = "&#8377;" . $deliveryReceipt?->booking->bookingReceivedAmount() ?? '--';
+                $row['pending_amount'] = "&#8377;" . $deliveryReceipt?->booking?->bookingPendingAmount() ?? '--';
 
                 $row['created_at'] = formatDate($deliveryReceipt->created_at);
-                $row['action'] = '<a href="#" class="btn btn-primary">Edit</a> &nbsp; <a href="' . url("admin/delivery/gatepass-amount/detail/{$deliveryReceipt->id}") . '" class="btn btn-success">Detail</a>';
+                $row['action'] = '<a href="' . url("admin/delivery/gatepass-amount/detail/{$deliveryReceipt->id}") . '" class="btn btn-success">Payments Details</a>';
                 $rows[] = $row;
             }
         }
@@ -179,7 +180,11 @@ class DeliveryController extends Controller
                 $imagePath = $request->file('parcel_image')->store('parcel_images', 'public');
             }
 
-            $serialNumber = sHelper::getNextDeliveryNumber();
+            if (!empty($request->delivery_number)) {
+                $serialNumber = $request->delivery_number;
+            } else {
+                $serialNumber = sHelper::getNextDeliveryNumber();
+            }
 
             // Insert the data into the delivery_receipts table
             $deliveryReceipt = DeliveryReceipt::create([

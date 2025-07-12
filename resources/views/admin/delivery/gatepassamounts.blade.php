@@ -24,7 +24,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Gatepass Amounts</h3>
+                <h3 class="card-title">Gatepass List</h3>
             </div>
             <div class="card-body">
                 <div class="row">

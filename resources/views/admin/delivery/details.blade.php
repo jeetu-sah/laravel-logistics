@@ -82,8 +82,8 @@
                                                 <tr>
                                                     <td><strong>Booking Type</strong></td>
                                                     <td>{{ $deliveryReceipt?->booking?->booking_type ?? '--' }}</td>
-                                                    <td><strong>Remark</strong></td>
-                                                    <td>{{ $deliveryReceipt->remark ?? '--' }}</td>
+                                                    <td class="text-success"><strong>Total Received Amount</strong></td>
+                                                    <td>{{ $deliveryReceipt->booking->bookingReceivedAmount() ?? '--' }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Freight Charges:</strong></td>
@@ -153,6 +153,46 @@
 
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Payment list</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Received Amount</th>
+                                            <th>Pending Amount</th>
+                                            <th>Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($deliveryReceipt?->booking->deliveryReceiptPayments as $deliveryReceiptPayment)
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>&#8377;{{$deliveryReceiptPayment->pending_amount ?? 0}}</td>
+                                            <td>&#8377;{{$deliveryReceiptPayment->received_amount ?? 0}}</td>
+                                            <td>{{$deliveryReceiptPayment->notes ?? '--'}}</td>
+                                        </tr>
+
+                                        @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center">No payments found.</td>
+                                        </tr>
+                                        @endforelse
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
                     </div>
                 </div>
             </form>

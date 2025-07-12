@@ -72,6 +72,17 @@
 
                                                 </tr>
                                                 <tr>
+                                                    <td><strong>Delivery / Gatepass number</strong></td>
+                                                    <td colspan="3">
+                                                        <input type="text"
+                                                            value="{{ old('delivery_number') }}"
+                                                            class="form-control"
+                                                            name="delivery_number"
+                                                            placeholder="Delivery / Gatepass number"
+                                                            maxlength="40" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td><strong>Carrier By</strong></td>
                                                     <td colspan="3">
                                                         <input type="text"
@@ -81,6 +92,7 @@
                                                             maxlength="40" required>
                                                     </td>
                                                 </tr>
+
                                                 <tr>
                                                     <td><strong>Carrier Mobile</strong></td>
                                                     <td colspan="3">
