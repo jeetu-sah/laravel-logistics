@@ -81,6 +81,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::put('careers/update/{id}', [CareerController::class, 'update'])->name('careers.update');
         Route::delete('careers/delete/{id}', [CareerController::class, 'destroy'])->name('careers.delete');
 
+        //admin/settings
+        Route::prefix('admin-settings')->group(function () {
+             Route::get('/', [SettingsController::class, 'index']);
+             Route::get('/create', [SettingsController::class, 'create']);
+             Route::post('/store', [SettingsController::class, 'store']);
+        });
+
         // Client Booking Report
         // Booking Report
         Route::get('reports/bookings-report', [BookingReportController::class, 'index']);

@@ -113,8 +113,6 @@
                                         </table>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -152,7 +150,8 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="number" class="form-control" id="rs_amount_2"
-                                            value="{{ old('hamali_charges') }}" required name="hamali_charges"
+                                            value="{{ old('hamali_charges') }}"
+                                            name="hamali_charges"
                                             placeholder="₹.00" oninput="calculateTotal()">
                                     </div>
 
@@ -162,8 +161,10 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="number" class="form-control" id="rs_amount_3"
-                                            value="{{ old('demruge_charges') }}" name="demruge_charges"
-                                            placeholder="₹.00" oninput="calculateTotal()" required />
+                                            value="{{ old('demruge_charges') }}"
+                                            name="demruge_charges"
+                                            placeholder="₹.00"
+                                            oninput="calculateTotal()" />
                                     </div>
 
                                     <!-- Other Charges -->
@@ -172,8 +173,10 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="number" class="form-control" id="rs_amount_4"
-                                            value="{{ old('others_charges') }}" name="others_charges" placeholder="₹.00"
-                                            oninput="calculateTotal()" required />
+                                            value="{{ old('others_charges') }}"
+                                            name="others_charges"
+                                            placeholder="₹.00"
+                                            oninput="calculateTotal()" />
                                     </div>
 
                                     <!-- Discount -->
@@ -182,7 +185,9 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="text" class="form-control" id="rs_amount_5"
-                                            value="{{ old('discount') }}" required name="discount" placeholder="₹.00"
+                                            value="{{ old('discount') }}"
+                                            name="discount"
+                                            placeholder="₹.00"
                                             oninput="calculateTotal()">
                                     </div>
 
@@ -192,24 +197,29 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="number" class="form-control" id="grand_total"
-                                            value="{{ old('grand_total') }}" name="grand_total" placeholder="₹.00"
-                                            required readonly />
+                                            value="{{ old('grand_total') }}"
+                                            name="grand_total"
+                                            placeholder="₹.00"
+                                            readonly />
                                     </div>
                                     <div class="col-md-6" style="font-size: 25px; color: green;">
                                         <label for="received_amount">Recived Amount:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="number" class="form-control" id="received_amount"
-                                            oninput="calculateTotal()" value="{{ old('received_amount') }}" required
-                                            name="received_amount" placeholder="₹.00">
+                                            oninput="calculateTotal()"
+                                            value="{{ old('received_amount') }}"
+                                            name="received_amount" placeholder="₹.00" />
                                     </div>
                                     <div class="col-md-6" style="font-size: 25px; color: red;">
                                         <label for="pendingAmount">Pending Amount:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control" id="pendingAmount"
-                                            value="{{ old('pending_amount') }}" required name="pending_amount"
-                                            placeholder="₹.00" readonly>
+                                        <input type="number" class="form-control"
+                                            id="pendingAmount"
+                                            value="{{ old('pending_amount') }}"
+                                            name="pending_amount"
+                                            placeholder="₹.00" readonly />
                                     </div>
 
                                     <div class="col-md-6" style="display: none;">
@@ -350,14 +360,11 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-12">
-                        {{-- <a href="{{ url('admin/booking/to-pay-booking') }}" class="btn btn-secondary">Reset</a>
-                        --}}
+                     
                         <input type="submit" value="Save & Print" class="btn btn-success float-right">
                     </div>
                 </div>

@@ -193,13 +193,7 @@
                                 <p>Client List</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/clients/create') }}"
-                                class="nav-link {{ request()->is('admin/clients/create') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>New Client </p>
-                            </a>
-                        </li>
+
                         <li class="nav-item">
                             <a href="{{ url('admin/clients/map') }}"
                                 class="nav-link {{ request()->is('admin/clients/map') ? 'active' : '' }}">
@@ -216,7 +210,20 @@
                         </li>
 
 
+
                     </ul>
+
+
+                </li>
+                <li class="nav-item has-treeview {{ request()->is('admin/admin-settings*') ? 'menu-open' : '' }} ">
+                    <a href="{{ url('admin/admin-settings') }}"
+                        class="nav-link {{ request()->is('admin/admin-settings*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Settings
+                        </p>
+                    </a>
+
                 </li>
                 @endrole
 
@@ -330,7 +337,7 @@
                             <a href="{{ url('admin/delivery/gatepass') }}"
                                 class="nav-link {{ request()->is('admin/delivery/gatepass') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Manage Gatepass</p>
+                                <p>Create Gatepass</p>
                             </a>
                         </li>
                         <li class="nav-item">

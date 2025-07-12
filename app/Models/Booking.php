@@ -302,15 +302,4 @@ class Booking extends Model
         );
     }
 
-    public function bookingPendingAmount(): float
-    {
-        $totalReceived = $this->deliveryReceiptPayments->sum('received_amount');
-        return max(0, (float) $this->grand_total_amount - $totalReceived);
-    }
-
-    public function bookingReceivedAmount(): float
-    {
-        $totalReceived = $this->deliveryReceiptPayments->sum('received_amount');
-        return max(0, (float) $totalReceived);
-    }
 }

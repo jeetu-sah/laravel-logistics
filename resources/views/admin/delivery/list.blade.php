@@ -62,7 +62,6 @@
 
 @section('script')
 @parent
-<!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
 <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
 
 <script>

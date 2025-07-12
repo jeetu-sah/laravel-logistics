@@ -220,7 +220,7 @@ class ClientController extends Controller
                                   <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
 
                 // Format the creation date
-                $row['created_at'] = date('d-m-Y', strtotime($client->created_at));
+                $row['created_at'] = formatDate($client->created_at);
 
                 // Append the row to the rows array
                 $rows[] = $row;
@@ -250,18 +250,8 @@ class ClientController extends Controller
     public function edit(string $id)
     {
         $data['tittle'] = 'Edit Client Details';
-        $data['client'] = DB::table('clients')
-            ->join('branches as consignor_branch', 'clients.consignor_branch_id', '=', 'consignor_branch.id')
-            ->join('branches as consignee_branch', 'clients.consignee_branch_id', '=', 'consignee_branch.id')
-            ->where('clients.id', $id)
-            ->select(
-                'clients.*',  // Select all columns from clients table
-                'consignor_branch.id as consignor_branch_id',
-                'consignor_branch.branch_name as consignor_branch_name',
-                'consignee_branch.id as consignee_branch_id',
-                'consignee_branch.branch_name as consignee_branch_name'
-            )
-            ->first();
+        $data['client'] = Client::find($id);
+
         $data['branch'] = Branch::all();
 
         return view('admin.client.edit', $data);

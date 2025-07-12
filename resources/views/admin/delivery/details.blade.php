@@ -83,7 +83,7 @@
                                                     <td><strong>Booking Type</strong></td>
                                                     <td>{{ $deliveryReceipt?->booking?->booking_type ?? '--' }}</td>
                                                     <td class="text-success"><strong>Total Received Amount</strong></td>
-                                                    <td>{{ $deliveryReceipt->booking->bookingReceivedAmount() ?? '--' }}</td>
+                                                    <td>{{ $deliveryReceipt->bookingReceivedAmount() ?? '--' }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Freight Charges:</strong></td>
@@ -101,15 +101,13 @@
                                                     <td><strong>Discount</strong></td>
                                                     <td>&#8377;{{ $deliveryReceipt->discount }}</td>
                                                     <td><strong>Grand Total</strong></td>
-                                                    <td>&#8377;{{ $deliveryReceipt->booking->grand_total_amount ?? '--' }}</td>
+                                                    <td>&#8377;{{ $deliveryReceipt->grand_total ?? '--' }}</td>
                                                 </tr>
 
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -135,7 +133,7 @@
                                         <label for="pendingAmount">Pending Amount:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control" id="pendingAmount"
+                                        <input type="text" class="form-control" id="pendingAmount"
                                             value="{{ $pendingAmount }}" required name="pending_amount" readonly />
                                     </div>
                                     <div class="col-md-6" style="font-size: 25px; color: blue;">
@@ -173,11 +171,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse($deliveryReceipt?->booking->deliveryReceiptPayments as $deliveryReceiptPayment)
+                                        @forelse($deliveryReceipt?->payments as $deliveryReceiptPayment)
                                         <tr>
                                             <td>1.</td>
-                                            <td>&#8377;{{$deliveryReceiptPayment->pending_amount ?? 0}}</td>
                                             <td>&#8377;{{$deliveryReceiptPayment->received_amount ?? 0}}</td>
+                                            <td>&#8377;{{$deliveryReceiptPayment->pending_amount ?? 0}}</td>
                                             <td>{{$deliveryReceiptPayment->notes ?? '--'}}</td>
                                         </tr>
 
@@ -209,9 +207,13 @@
 
 <script>
     $(document).ready(function(e) {
+        var pendingAmount = "{{$pendingAmount}}";
+        console.log('pendingAmount', pendingAmount)
         $(document).on('input', '#received_amount', function() {
             var receivedAmount = parseFloat($(this).val()) || 0;
-            var pendingAmount = "{{$pendingAmount}}";
+            var pendingAmountNumber = "{{$pendingAmount}}";
+            let pendingAmount = parseFloat(pendingAmountNumber.replace(/,/g, ''));;
+
             if (receivedAmount > pendingAmount) {
                 alert('Received amount cannot be greater than pending amount.');
                 $(this).val(pendingAmount);

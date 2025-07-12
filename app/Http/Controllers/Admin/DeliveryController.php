@@ -29,12 +29,18 @@ class DeliveryController extends Controller
      */
     public function details($deliveryReceiptId)
     {
+
         $data['title'] = 'Delivery | Details| Payment';
         $data['pendingAmount'] = 0;
         $data['deliveryReceipt'] = DeliveryReceipt::with(['booking'])->where('id', $deliveryReceiptId)->first();
+
+
         if ($data['deliveryReceipt']) {
-            $data['pendingAmount'] = $data['deliveryReceipt']->booking->bookingPendingAmount();
+            $data['pendingAmount'] = $data['deliveryReceipt']->bookingPendingAmount();
         }
+        // echo "<pre>";
+        // print_r($data['deliveryReceipt']);
+        // exit;
         return view('admin.delivery.details', $data);
     }
 
@@ -134,8 +140,8 @@ class DeliveryController extends Controller
                 $row['recived_by'] = $deliveryReceipt?->recived_by ?? '--';
 
                 $row['grand_total'] = "&#8377;" . $deliveryReceipt?->grand_total ?? '--';
-                $row['received_amount'] = "&#8377;" . $deliveryReceipt?->booking->bookingReceivedAmount() ?? '--';
-                $row['pending_amount'] = "&#8377;" . $deliveryReceipt?->booking?->bookingPendingAmount() ?? '--';
+                $row['received_amount'] = "&#8377;" . $deliveryReceipt?->bookingReceivedAmount() ?? '--';
+                $row['pending_amount'] = "&#8377;" . $deliveryReceipt?->bookingPendingAmount() ?? '--';
 
                 $row['created_at'] = formatDate($deliveryReceipt->created_at);
                 $row['action'] = '<a href="' . url("admin/delivery/gatepass-amount/detail/{$deliveryReceipt->id}") . '" class="btn btn-success">Payments Details</a>';
@@ -164,12 +170,12 @@ class DeliveryController extends Controller
     {
         $request->validate([
             'freight_charges' => 'required|numeric',
-            'hamali_charges' => 'required|numeric',
-            'demruge_charges' => 'required|numeric',
-            'others_charges' => 'required|numeric',
-            'grand_total' => 'required|numeric',
-            'received_amount' => 'required|numeric',
-            'pending_amount' => 'required|numeric',
+            'hamali_charges' => 'nullable|numeric',
+            'demruge_charges' => 'nullable|numeric',
+            'others_charges' => 'nullable|numeric',
+            'grand_total' => 'nullable|numeric',
+            'received_amount' => 'nullable|numeric',
+            'pending_amount' => 'nullable|numeric',
             'parcel_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 

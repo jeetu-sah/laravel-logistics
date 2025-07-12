@@ -167,8 +167,6 @@ class BookingController extends Controller
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
-                // echo "<pre>";
-                // print_r($booking?->consigneeBranch?->branch_name);exit;
                 $row = [];
                 // Conditional logic for 'bilti_list_type'
                 if ($request->bilti_list_type === 'challan') {
@@ -201,7 +199,7 @@ class BookingController extends Controller
                 // Conditional logic for 'booking_type'
                 $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type_name . '</span>';
                 $row['next_delivery_location'] = '<span class="badge badge-primary">' . $booking?->next_booking_transhipment_name?->branch?->branch_name ?? '--' . '</span>';
-                // Action buttons (Edit and Print)
+             
                 $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
                                   <a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
 
@@ -223,14 +221,6 @@ class BookingController extends Controller
         return response()->json($json_data);
     }
 
-
-
-    // public function noBill()
-    // {
-    //     $data['branch'] = Branch::all();
-    //     $data['tittle'] = "No Bill";
-    //     return view('admin.booking.create-no-bill-booking', $data);
-    // }
 
     public function bilti($id)
     {
@@ -359,87 +349,87 @@ class BookingController extends Controller
         return view('admin.booking.clientList', $data);
     }
 
-    public function clientList(Request $request)
-    {
-        $search = $request->input('search')['value'] ?? null;
-        $limit = $request->input('length', 10);
-        $start = $request->input('start', 0);
+    // public function clientList(Request $request)
+    // {
+    //     $search = $request->input('search')['value'] ?? null;
+    //     $limit = $request->input('length', 10);
+    //     $start = $request->input('start', 0);
 
-        $branchId = Auth::user()->branch_user_id;
+    //     $branchId = Auth::user()->branch_user_id;
 
-        $query = DB::table('client_to_client_map')
-            ->join('clients as from_clients', 'from_clients.id', '=', 'client_to_client_map.from_client_id')
-            ->join('clients as to_clients', 'to_clients.id', '=', 'client_to_client_map.to_client_id')
+    //     $query = DB::table('client_to_client_map')
+    //         ->join('clients as from_clients', 'from_clients.id', '=', 'client_to_client_map.from_client_id')
+    //         ->join('clients as to_clients', 'to_clients.id', '=', 'client_to_client_map.to_client_id')
 
-            // Join for from_client's branch
-            ->join('client_branch_map as from_cbm', 'from_cbm.client_id', '=', 'from_clients.id')
-            ->join('branches as from_branches', 'from_branches.id', '=', 'from_cbm.branch_id')
+    //         // Join for from_client's branch
+    //         ->join('client_branch_map as from_cbm', 'from_cbm.client_id', '=', 'from_clients.id')
+    //         ->join('branches as from_branches', 'from_branches.id', '=', 'from_cbm.branch_id')
 
-            // Join for to_client's branch
-            ->join('client_branch_map as to_cbm', 'to_cbm.client_id', '=', 'to_clients.id')
-            ->join('branches as to_branches', 'to_branches.id', '=', 'to_cbm.branch_id')
+    //         // Join for to_client's branch
+    //         ->join('client_branch_map as to_cbm', 'to_cbm.client_id', '=', 'to_clients.id')
+    //         ->join('branches as to_branches', 'to_branches.id', '=', 'to_cbm.branch_id')
 
-            ->where('from_cbm.branch_id', $branchId)
+    //         ->where('from_cbm.branch_id', $branchId)
 
-            ->select(
-                'client_to_client_map.*',
-                'from_clients.client_name as from_client_name',
-                'from_clients.client_phone_number as from_client_phone_number',
+    //         ->select(
+    //             'client_to_client_map.*',
+    //             'from_clients.client_name as from_client_name',
+    //             'from_clients.client_phone_number as from_client_phone_number',
 
-                'to_clients.client_name as to_client_name',
-                'to_clients.client_phone_number as to_client_phone_number',
+    //             'to_clients.client_name as to_client_name',
+    //             'to_clients.client_phone_number as to_client_phone_number',
 
-                'from_branches.branch_name as from_branch_name',
-                'from_branches.id as from_branch_id',
+    //             'from_branches.branch_name as from_branch_name',
+    //             'from_branches.id as from_branch_id',
 
-                'to_branches.branch_name as to_branch_name',
-                'to_branches.id as to_branch_id'
-            );
-        if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('from_clients.client_name', 'like', "%$search%")
-                    ->orWhere('to_clients.client_name', 'like', "%$search%");
-            });
-        }
+    //             'to_branches.branch_name as to_branch_name',
+    //             'to_branches.id as to_branch_id'
+    //         );
+    //     if (!empty($search)) {
+    //         $query->where(function ($q) use ($search) {
+    //             $q->where('from_clients.client_name', 'like', "%$search%")
+    //                 ->orWhere('to_clients.client_name', 'like', "%$search%");
+    //         });
+    //     }
 
-        $total = $query->count();
+    //     $total = $query->count();
 
-        $clients = $query
-            ->orderBy('client_to_client_map.created_at', 'desc')
-            ->skip($start)
-            ->take($limit)
-            ->get();
+    //     $clients = $query
+    //         ->orderBy('client_to_client_map.created_at', 'desc')
+    //         ->skip($start)
+    //         ->take($limit)
+    //         ->get();
 
-        // Prepare data
-        $rows = [];
-        $data = [];
+    //     // Prepare data
+    //     $rows = [];
+    //     $data = [];
 
-        foreach ($clients as $index => $client) {
-            $row = [];
-            $row['sn'] = $start + $index + 1;
+    //     foreach ($clients as $index => $client) {
+    //         $row = [];
+    //         $row['sn'] = $start + $index + 1;
 
-            // Link to booking with from_client_id
-            $row['from_client_id'] = '<a href="' . url('admin/bookings/clients/bookings', ['id' => $client->id]) . '">' . $client->id . '</a>';
+    //         // Link to booking with from_client_id
+    //         $row['from_client_id'] = '<a href="' . url('admin/bookings/clients/bookings', ['id' => $client->id]) . '">' . $client->id . '</a>';
 
-            $row['from_client_name'] = $client->from_client_name;
+    //         $row['from_client_name'] = $client->from_client_name;
 
-            $row['to_client_name'] = $client->to_client_name;
-            $row['to_client_phone_number'] = $client->to_client_phone_number ?? '-';
-            $row['to_branch_name'] = $client->to_branch_name ?? '-';
+    //         $row['to_client_name'] = $client->to_client_name;
+    //         $row['to_client_phone_number'] = $client->to_client_phone_number ?? '-';
+    //         $row['to_branch_name'] = $client->to_branch_name ?? '-';
 
-            $row['created_at'] = $client->created_at;
-            $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-            <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
-            $data[] = $row;
-        }
+    //         $row['created_at'] = $client->created_at;
+    //         $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
+    //         <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
+    //         $data[] = $row;
+    //     }
 
-        return response()->json([
-            'draw' => intval($request->input('draw')),
-            'recordsTotal' => $total,
-            'recordsFiltered' => $total,
-            'data' => $data,
-        ]);
-    }
+    //     return response()->json([
+    //         'draw' => intval($request->input('draw')),
+    //         'recordsTotal' => $total,
+    //         'recordsFiltered' => $total,
+    //         'data' => $data,
+    //     ]);
+    // }
 
 
 

@@ -39,8 +39,23 @@ class DeliveryReceipt extends Model
         return $this->belongsTo(Booking::class, 'booking_id');
     }
 
-    public function payment()
+    public function payments()
     {
         return $this->hasMany(DeliveryReceiptPayment::class, 'delivery_receipt_id');
+    }
+
+    public function bookingPendingAmount()
+    {
+        $totalReceived = $this->payments->sum('received_amount');
+
+        $pendingAmount = max(0, (float) $this->grand_total - $totalReceived);
+        return number_format($pendingAmount, 2) ?? '0.0';
+    }
+
+    public function bookingReceivedAmount()
+    {
+        $totalReceived = $this->payments->sum('received_amount');
+        $receivedAmount =  max(0, (float) $totalReceived);
+        return number_format($receivedAmount, 2) ?? '0.0';
     }
 }
