@@ -177,43 +177,14 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview {{ request()->is('admin/clients*') ? 'menu-open' : '' }} ">
-                    <a href="{{ url('admin/admin/role-list') }}"
+                    <a href="{{ url('admin/clients') }}"
                         class="nav-link {{ request()->is('admin/clients*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-edit"></i>
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Client
+                            Clients
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ url('admin/clients') }}"
-                                class="nav-link {{ request()->is('admin/clients') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Client List</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ url('admin/clients/map') }}"
-                                class="nav-link {{ request()->is('admin/clients/map') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Branch Map</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/clients/clientMap') }}"
-                                class="nav-link {{ request()->is('admin/clients/clientMap') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Client Map</p>
-                            </a>
-                        </li>
-
-
-
-                    </ul>
-
-
                 </li>
                 <li class="nav-item has-treeview {{ request()->is('admin/admin-settings*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('admin/admin-settings') }}"

@@ -35,36 +35,37 @@
             </div>
             <div class="card-body">
                 @role('Admin')
-                <table class="table" id="settingsTable">
-                    <thead>
+                <table class="table table-bordered table-hover align-middle" id="settingsTable">
+                    <thead class="table-light">
                         <tr>
-                            <th style="width: 10px">#</th>
+                            <th style="width: 50px;">#</th>
                             <th>Setting Name</th>
-                            <th>Value</th>
-                            <th>Action</th>
+                            <th style="width: 50px;">Value</th>
+                            <th class="text-center" style="width: 120px;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                        $sn = 1;
-                        @endphp
+                        @php $sn = 1; @endphp
                         @forelse($settings as $setting)
-
                         <tr>
                             <td>{{ $sn++ }}.</td>
-                            <td>{{$setting->key_name ?? '--'}}</td>
-                            <td>{{$setting->value ?? 0}}</td>
-                            <td><a class="btn btn-danger" href='{{ url("admin/admin-settings/delete/$setting->id") }}'>Delete</a></td>
+                            <td>{{ $setting->key_name ?? '--' }}</td>
+                            <td>{{ $setting->value ?? 0 }}</td>
+                            <td class="text-center">
+                                <a href="{{ url('admin/admin-settings/delete/' . $setting->id) }}"
+                                    class="btn btn-sm btn-danger delete-setting">
+                                    Delete
+                                </a>
+                            </td>
                         </tr>
-
                         @empty
                         <tr>
-                            <td colspan="4" class="text-center">No payments found.</td>
+                            <td colspan="4" class="text-center text-muted">No settings found.</td>
                         </tr>
                         @endforelse
-
                     </tbody>
                 </table>
+
                 @endrole
             </div>
         </div>
@@ -88,6 +89,16 @@
             "info": true,
             "autoWidth": false,
             "responsive": true,
+        });
+        $(document).on('click', '.delete-setting', function(e) {
+            e.preventDefault();
+
+            const url = $(this).attr('href');
+            const confirmed = confirm('Are you sure you want to delete this setting?');
+
+            if (confirmed) {
+                window.location.href = url;
+            }
         });
     });
 </script>

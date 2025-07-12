@@ -1,21 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Branch;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class MapClientController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($clientId)
     {
-        $data['client'] = Client::all();
-        $data['branch'] = Branch::all();
         $data['tittle'] = 'Map Client';
-        return view('admin.client.map', $data);
+        $data['clientDetails'] = Client::with('branches')->find($clientId);
+        $data['selectedBranches'] = $data['clientDetails']->branches->pluck('id')->toArray();
+
+        $data['branch'] = Branch::all();
+        return view('admin.client.client-map', $data);
     }
     public function clientMap(Request $request)
     {
@@ -31,51 +35,61 @@ class MapClientController extends Controller
      * Show the form for creating a new resource.
      */
 
-    public function mapBranches(Request $request)
+    public function mapBranches(Request $request, $id)
     {
         $request->validate([
-            'client_id' => 'required|exists:clients,id',
             'client_branch_id' => 'required|array',
             'client_branch_id.*' => 'exists:branches,id'
         ]);
 
-        $clientId = $request->input('client_id');
+        $clientId = $id;
         $branchIds = $request->input('client_branch_id');
 
         $inserted = 0;
         $skipped = 0;
 
-        foreach ($branchIds as $branchId) {
-            // Check if the mapping already exists
-            $exists = DB::table('client_branch_map')
-                ->where('client_id', $clientId)
-                ->where('branch_id', $branchId)
-                ->exists();
+        try {
+            DB::beginTransaction();
 
-            if (!$exists) {
-                DB::table('client_branch_map')->insert([
-                    'client_id' => $clientId,
-                    'branch_id' => $branchId,
-                ]);
-                $inserted++;
-            } else {
-                $skipped++;
+            foreach ($branchIds as $branchId) {
+                // Check if the mapping already exists
+                $exists = DB::table('client_branch_map')
+                    ->where('client_id', $clientId)
+                    ->where('branch_id', $branchId)
+                    ->exists();
+
+                if (!$exists) {
+                    DB::table('client_branch_map')->insert([
+                        'client_id' => $clientId,
+                        'branch_id' => $branchId,
+                    ]);
+                    $inserted++;
+                } else {
+                    $skipped++;
+                }
             }
-        }
 
-        if ($inserted > 0) {
-            return redirect()->back()->with('success', "$inserted branch(es) mapped successfully!");
-        } else {
-            return redirect()->back()->with('info', 'All selected branches are already mapped.');
+            DB::commit();
+
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => $inserted > 0 ? 'Assign successfully' : 'No new assignments made.', 'type' => 'success']
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong.', 'type' => 'danger']
+            ]);
         }
     }
 
 
     public function storeClientMapping(Request $request)
     {
-       
+
         $fromClientId = $request->input('from_client_id');
-       
+
         $toClientIds = $request->input('to_client_ids', []);
         foreach ($toClientIds as $toClientId) {
             DB::table('client_to_client_map')->insert([
@@ -88,6 +102,4 @@ class MapClientController extends Controller
 
         return redirect()->back()->with('success', 'Client mapping updated successfully.');
     }
-
-
 }

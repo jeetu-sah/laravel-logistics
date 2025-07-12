@@ -71,7 +71,20 @@ class SettingsController extends Controller
     {
         $data['title'] = 'Admin | Settings | Create';
         $data['settings'] = Setting::pluck('value', 'key')->toArray();
-       
+
         return view('admin.settings.create', $data);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function delete($id)
+    {
+        $client = Setting::find($id);
+        $client->delete();
+        return redirect()->back()->with([
+            "alertMessage" => true,
+            "alert" => ['message' => 'Record deleted successfully', 'type' => 'success']
+        ]);
     }
 }

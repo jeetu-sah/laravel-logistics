@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('admin-settings')->group(function () {
              Route::get('/', [SettingsController::class, 'index']);
              Route::get('/create', [SettingsController::class, 'create']);
+             Route::get('/delete/{id}', [SettingsController::class, 'delete']);
              Route::post('/store', [SettingsController::class, 'store']);
         });
 
@@ -177,9 +178,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('clients/delete/{id}', [ClientController::class, 'delete']);
 
 
-        Route::get('/clients/map', [MapClientController::class, 'index']);
-        Route::get('/clients/clientMap', [MapClientController::class, 'clientMap']);
-        Route::post('clients/maps', [MapClientController::class, 'mapBranches']);
+        Route::get('/clients/map-to-branch/{id}', [MapClientController::class, 'index']);
+        // Route::get('/clients/clientMap', [MapClientController::class, 'clientMap']);
+        Route::post('clients/maps/{id}', [MapClientController::class, 'mapBranches']);
         Route::post('/clients/mapClient', [MapClientController::class, 'storeClientMapping']);
         Route::get('get-distance', [ClientController::class, 'getDistance']);
 

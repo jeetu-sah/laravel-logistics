@@ -227,7 +227,7 @@ class BookingReportController extends Controller
 
             $row['created_at'] = $client->created_at;
             $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-            <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
+            <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a> ';
             $data[] = $row;
         }
 
@@ -244,8 +244,6 @@ class BookingReportController extends Controller
     {
         $data['clientId'] = $id;
         $data['title'] = 'Bookings';
-
-
         return view('admin.report.client-bookings', $data);
     }
 

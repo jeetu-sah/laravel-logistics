@@ -217,7 +217,8 @@ class ClientController extends Controller
                 $row['client_email'] = $client->client_email;
                 $row['client_aadhar_card'] = $client->client_aadhar_card;
                 $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-                                  <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
+                                  <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning delete-client">Delete</a> &nbsp;
+                                  <a href="' . url("admin/clients/map-to-branch/{$client->id}") . '" class="btn btn-info">Map to branch</a>';
 
                 // Format the creation date
                 $row['created_at'] = formatDate($client->created_at);
@@ -367,7 +368,6 @@ class ClientController extends Controller
      */
     public function delete($id)
     {
-        // Soft delete a client
         $client = Client::find($id);
         $client->delete();
         return redirect('admin/clients')->with('success', 'Record deleted successfully');

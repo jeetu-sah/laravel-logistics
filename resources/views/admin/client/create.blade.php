@@ -30,9 +30,9 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center w-100">
                     <h2 class="card-title mb-0">Create Client</h2>
-                    <a href="{{ url('admin/clients/create') }}"
+                    <a href="{{ url('admin/clients') }}"
                         class="btn btn-sm btn-success shadow-sm">
-                        <i class="fa fa-user fa-sm text-white-50"></i>&nbsp;Create List
+                        <i class="fa fa-list fa-sm text-white-50"></i>&nbsp;Client List
                     </a>
                 </div>
             </div>

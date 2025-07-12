@@ -134,6 +134,17 @@
             processing: true,
             serverSide: true
         });
+
+        $(document).on('click', '.delete-client', function(e) {
+            e.preventDefault();
+
+            const url = $(this).attr('href');
+            const confirmed = confirm('Are you sure you want to delete this setting?');
+
+            if (confirmed) {
+                window.location.href = url;
+            }
+        });
     });
 </script>
 @endsection
