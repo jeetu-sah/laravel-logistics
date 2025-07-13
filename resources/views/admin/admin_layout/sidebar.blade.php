@@ -182,7 +182,6 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Clients
-                          
                         </p>
                     </a>
                 </li>

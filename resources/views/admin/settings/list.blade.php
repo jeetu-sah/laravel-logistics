@@ -60,7 +60,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="text-center text-muted">No settings found.</td>
+                            <td  class="text-center text-muted">No settings found.</td>
                         </tr>
                         @endforelse
                     </tbody>
