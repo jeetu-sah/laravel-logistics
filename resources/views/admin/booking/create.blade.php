@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    
+
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -22,7 +22,7 @@
             @include('common.notification')
         </div>
     </section>
-    
+
 
     <section class="content">
         <div class="container-fluid">
@@ -234,6 +234,19 @@
         </div>
     </section>
 </div>
+@if(Session::has('alertMessage'))
+     @php $redirectBookingId = Session::get("redirectBookingId") @endphp
+<script>
+     setTimeout(function () {
+            const redirectBookingId = "{{ $redirectBookingId }}";
+            if (redirectBookingId) {
+                const redirectUrl = "{{ url('/admin/bookings/print-bilti') }}/" + redirectBookingId;
+                window.open(redirectUrl, '_blank');
+            }
+    }, 2000); 
+  
+</script>
+@endif
 @endsection
 
 

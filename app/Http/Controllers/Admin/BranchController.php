@@ -98,6 +98,7 @@ class BranchController extends Controller
 
     public function list(Request $request)
     {
+        
         $limit = $request->input('length', 10); // Default to 10 if 'length' is not provided
         $start = $request->input('start', 0);   // Default to 0 if 'start' is not provided
 

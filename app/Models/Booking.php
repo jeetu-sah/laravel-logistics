@@ -40,26 +40,20 @@ class Booking extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
+        'id',
+        'bilti_number',
+        'status',
+        'booking_type',
         'booking_date',
         'consignor_branch_id',
         'consignee_branch_id',
         'no_of_artical',
-        'actual_weight',
-        'cantain',
-        'aadhar_card',
-        'manual_bilty_number',
-        'offline_booking_date',
         'good_of_value',
         'consignor_name',
         'consignor_address',
         'consignor_phone_number',
         'consignor_gst_number',
         'consignor_email',
-        'consignee_name',
-        'consignee_address',
-        'consignee_phone_number',
-        'consignee_gst_number',
-        'consignee_email',
         'invoice_number',
         'eway_bill_number',
         'mark',
@@ -72,6 +66,9 @@ class Booking extends Model
         'handling_charges',
         'fov_amount',
         'fuel_amount',
+        'transhipmen_one_amount',
+        'transhipmen_two_amount',
+        'transhipment_three_amount',
         'pickup_charges',
         'hamali_Charges',
         'bilti_Charges',
@@ -84,11 +81,20 @@ class Booking extends Model
         'grand_total',
         'misc_charge_amount',
         'grand_total_amount',
-        'bilti_number',
-        'status',
-        'booking_type',
-        'booking_status',
+        'created_at',
+        'updated_at',
+        'actual_weight',
+        'cantain',
+        'aadhar_card',
+        'manual_bilty_number',
         'client_id',
+        'consignee_name',
+        'consignee_address',
+        'consignee_phone_number',
+        'consignee_gst_number',
+        'consignee_email',
+        'booking_status',
+        'offline_booking_date',
     ];
 
     // If you want to hide attributes from arrays
@@ -301,5 +307,4 @@ class Booking extends Model
             'id'
         );
     }
-
 }

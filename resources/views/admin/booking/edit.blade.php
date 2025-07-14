@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-
+                    <a target="_blank" href='{{url("admin/bookings/print-bilti/$booking->id") }}' class="btn btn-warning">Print</a>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -22,259 +22,252 @@
             @include('common.notification')
         </div>
     </section>
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
 
     <section class="content">
         <div class="container-fluid">
-            <form action='{{ url("admin/bookings/update/$booking->id") }}'
-                method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <input type="hidden" value="{{ $bookingType }}" name="booking_status" id="booking_status" class="form-control mb-1" readonly />
-                    @include('admin.booking.shared.edit_consignor_details')
-                    <div class="col-md-3">
-                        <div class="card card-success">
-                            <div class="card-header">
-                                <h3 class="card-title">Invoice</h3>
-                            </div>
-                            <div class="card-body">
+            <div class="row mb-2">
+                <form action='{{ url("admin/bookings/update/$booking->id") }}'
+                    method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <input type="hidden" value="{{ $bookingType }}" name="booking_status" id="booking_status" class="form-control mb-1" readonly />
+                        @include('admin.booking.shared.edit_consignor_details')
+                        <div class="col-md-3">
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h3 class="card-title">Invoice</h3>
+                                </div>
+                                <div class="card-body">
 
-                                <div class="row">
-                                    <!-- Distance -->
-                                    <div class="col-md-6">
-                                        <label for="distance">Distance (KM):</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" value="{{ $booking->distance }}" name="distance" id="distance"
-                                            class="form-control mb-1" />
-                                    </div>
+                                    <div class="row">
+                                        <!-- Distance -->
+                                        <div class="col-md-6">
+                                            <label for="distance">Distance (KM):</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" value="{{ $booking->distance }}" name="distance" id="distance"
+                                                class="form-control mb-1" />
+                                        </div>
 
-                                    <!-- Freight -->
-                                    <div class="col-md-6">
-                                        <label for="freight_amount">Freight:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" value="{{ $booking->freight_amount }}" name="freight_amount"
-                                            id="freight_amount" class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Freight -->
+                                        <div class="col-md-6">
+                                            <label for="freight_amount">Freight:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" value="{{ $booking->freight_amount }}" name="freight_amount"
+                                                id="freight_amount" class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- WBC -->
-                                    <div class="col-md-6">
-                                        <label for="wbc_charges">WBC:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" value="{{ $booking->wbc_charges }}" name="wbc_charges" id="wbc_charges"
-                                            class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- WBC -->
+                                        <div class="col-md-6">
+                                            <label for="wbc_charges">WBC:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" value="{{ $booking->wbc_charges }}" name="wbc_charges" id="wbc_charges"
+                                                class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Handling Charges -->
-                                    <div class="col-md-6">
-                                        <label for="handling_charges">Handling Charges:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" value="{{ $booking->handling_charges }}" name="handling_charges" id="handling_charges"
-                                            class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Handling Charges -->
+                                        <div class="col-md-6">
+                                            <label for="handling_charges">Handling Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" value="{{ $booking->handling_charges }}" name="handling_charges" id="handling_charges"
+                                                class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- FOV -->
-                                    <div class="col-md-6">
-                                        <label for="fov_amount">FOV:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" value="{{ $booking->fov_amount }}" name="fov_amount" id="fov_amount"
-                                            class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- FOV -->
+                                        <div class="col-md-6">
+                                            <label for="fov_amount">FOV:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" value="{{ $booking->fov_amount }}" name="fov_amount" id="fov_amount"
+                                                class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Fuel Charges -->
-                                    <div class="col-md-6">
-                                        <label for="fuel_amount">Fuel Charges:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" value="{{ $booking->fuel_amount }}" name="fuel_amount"
-                                            id="fuel_amount" class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Fuel Charges -->
+                                        <div class="col-md-6">
+                                            <label for="fuel_amount">Fuel Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" value="{{ $booking->fuel_amount }}" name="fuel_amount"
+                                                id="fuel_amount" class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Transhipment 1 -->
-                                    <div class="col-md-6">
-                                        <label for="transhipmen_one_amount">Transhipment 1:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->transhipmen_one_amount }}"
-                                            name="transhipmen_one_amount"
-                                            id="transhipmen_one_amount" class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Transhipment 1 -->
+                                        <div class="col-md-6">
+                                            <label for="transhipmen_one_amount">Transhipment 1:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->transhipmen_one_amount }}"
+                                                name="transhipmen_one_amount"
+                                                id="transhipmen_one_amount" class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Transhipment 2 -->
-                                    <div class="col-md-6">
-                                        <label for="transhipmen_two_amount">Transhipment 2:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->transhipmen_two_amount }}"
-                                            name="transhipmen_two_amount"
-                                            id="transhipmen_two_amount" class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Transhipment 2 -->
+                                        <div class="col-md-6">
+                                            <label for="transhipmen_two_amount">Transhipment 2:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->transhipmen_two_amount }}"
+                                                name="transhipmen_two_amount"
+                                                id="transhipmen_two_amount" class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Transhipment 3 -->
-                                    <div class="col-md-6">
-                                        <label for="transhipment_three_amount">Transhipment 3:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->transhipment_three_amount }}"
-                                            name="transhipment_three_amount"
-                                            id="transhipment_three_amount" class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Transhipment 3 -->
+                                        <div class="col-md-6">
+                                            <label for="transhipment_three_amount">Transhipment 3:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->transhipment_three_amount }}"
+                                                name="transhipment_three_amount"
+                                                id="transhipment_three_amount" class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Pickup Charges -->
-                                    <div class="col-md-6">
-                                        <label for="pickup_charges">Pickup Charges:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->pickup_charges }}"
-                                            name="pickup_charges" id="pickup_charges"
-                                            class="form-control mb-1" />
-                                    </div>
+                                        <!-- Pickup Charges -->
+                                        <div class="col-md-6">
+                                            <label for="pickup_charges">Pickup Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->pickup_charges }}"
+                                                name="pickup_charges" id="pickup_charges"
+                                                class="form-control mb-1" />
+                                        </div>
 
-                                    <!-- Hamali Charges -->
-                                    <div class="col-md-6">
-                                        <label for="hamali_Charges">Hamali Charges:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->hamali_Charges }}"
-                                            name="hamali_Charges" id="hamali_Charges"
-                                            class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Hamali Charges -->
+                                        <div class="col-md-6">
+                                            <label for="hamali_Charges">Hamali Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->hamali_Charges }}"
+                                                name="hamali_Charges" id="hamali_Charges"
+                                                class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Bilti Charges -->
-                                    <div class="col-md-6">
-                                        <label for="bilti_Charges">Bilti Charges:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->bilti_Charges }}"
-                                            name="bilti_Charges"
-                                            id="bilti_Charges"
-                                            class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Bilti Charges -->
+                                        <div class="col-md-6">
+                                            <label for="bilti_Charges">Bilti Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->bilti_Charges }}"
+                                                name="bilti_Charges"
+                                                id="bilti_Charges"
+                                                class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Discount -->
-                                    <div class="col-md-6">
-                                        <label for="discount">Discount:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            name="discount"
-                                            id="discount"
-                                            class="form-control mb-1"
-                                            value="{{ $booking->discount }}" />
-                                    </div>
-                                    <!-- Company Charges -->
-                                    <div class="col-md-6">
-                                        <label for="compney_charges">Company Charges:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->compney_charges }}"
-                                            name="compney_charges"
-                                            id="compney_charges" class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Discount -->
+                                        <div class="col-md-6">
+                                            <label for="discount">Discount:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                name="discount"
+                                                id="discount"
+                                                class="form-control mb-1"
+                                                value="{{ $booking->discount }}" />
+                                        </div>
+                                        <!-- Company Charges -->
+                                        <div class="col-md-6">
+                                            <label for="compney_charges">Company Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->compney_charges }}"
+                                                name="compney_charges"
+                                                id="compney_charges" class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Misc Charges -->
-                                    <div class="col-md-6">
-                                        <label for="misc_charge_amount">Misc. Charges:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->misc_charge_amount }}"
-                                            name="misc_charge_amount"
-                                            id="misc_charge_amount" class="form-control mb-1" />
-                                    </div>
+                                        <!-- Misc Charges -->
+                                        <div class="col-md-6">
+                                            <label for="misc_charge_amount">Misc. Charges:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->misc_charge_amount }}"
+                                                name="misc_charge_amount"
+                                                id="misc_charge_amount" class="form-control mb-1" />
+                                        </div>
 
-                                    <!-- Sub Total -->
-                                    <div class="col-md-6">
-                                        <label for="sub_total">Sub Total:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->sub_total }}"
-                                            name="sub_total" id="sub_total"
-                                            class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Sub Total -->
+                                        <div class="col-md-6">
+                                            <label for="sub_total">Sub Total:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->sub_total }}"
+                                                name="sub_total" id="sub_total"
+                                                class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- GST: CGST, SGST, IGST -->
-                                    <div class="col-md-6 cgst">
-                                        <label for="cgst">CGST:</label>
-                                    </div>
-                                    <div class="col-md-6 cgst">
-                                        <input type="text"
-                                            value="{{ $booking->cgst }}"
-                                            name="cgst" id="cgst" class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- GST: CGST, SGST, IGST -->
+                                        <div class="col-md-6 cgst">
+                                            <label for="cgst">CGST:</label>
+                                        </div>
+                                        <div class="col-md-6 cgst">
+                                            <input type="text"
+                                                value="{{ $booking->cgst }}"
+                                                name="cgst" id="cgst" class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <div class="col-md-6 sgst">
-                                        <label for="sgst">SGST:</label>
-                                    </div>
-                                    <div class="col-md-6 sgst">
-                                        <input type="text"
-                                            value="{{ $booking->sgst }}"
-                                            name="sgst" id="sgst" class="form-control mb-1" readonly />
-                                    </div>
+                                        <div class="col-md-6 sgst">
+                                            <label for="sgst">SGST:</label>
+                                        </div>
+                                        <div class="col-md-6 sgst">
+                                            <input type="text"
+                                                value="{{ $booking->sgst }}"
+                                                name="sgst" id="sgst" class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <div class="col-md-6 igst">
-                                        <label for="igst">IGST:</label>
-                                    </div>
-                                    <div class="col-md-6 igst">
-                                        <input type="text"
-                                            value="{{ $booking->igst }}"
-                                            name="igst" id="igst" class="form-control mb-1" readonly />
-                                    </div>
+                                        <div class="col-md-6 igst">
+                                            <label for="igst">IGST:</label>
+                                        </div>
+                                        <div class="col-md-6 igst">
+                                            <input type="text"
+                                                value="{{ $booking->igst }}"
+                                                name="igst" id="igst" class="form-control mb-1" readonly />
+                                        </div>
 
 
-                                    <!-- Grand Total -->
-                                    <div class="col-md-6">
-                                        <label for="grand_total">Grand Total:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->grand_total }}"
-                                            name="grand_total"
-                                            id="grand_total"
-                                            class="form-control mb-1" readonly />
-                                    </div>
+                                        <!-- Grand Total -->
+                                        <div class="col-md-6">
+                                            <label for="grand_total">Grand Total:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->grand_total }}"
+                                                name="grand_total"
+                                                id="grand_total"
+                                                class="form-control mb-1" readonly />
+                                        </div>
 
-                                    <!-- Final Amount -->
-                                    <div class="col-md-6">
-                                        <label for="grand_total_amount">Final Amount:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text"
-                                            value="{{ $booking->grand_total_amount }}"
-                                            name="grand_total_amount"
-                                            id="grand_total_amount" class="form-control mb-1" readonly />
+                                        <!-- Final Amount -->
+                                        <div class="col-md-6">
+                                            <label for="grand_total_amount">Final Amount:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text"
+                                                value="{{ $booking->grand_total_amount }}"
+                                                name="grand_total_amount"
+                                                id="grand_total_amount" class="form-control mb-1" readonly />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <input type="submit" value="Edit & Print" class="btn btn-success float-right">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <input type="submit" value="Edit" class="btn btn-success float-right">
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </section>
 </div>
@@ -643,7 +636,7 @@
         //print to branch dropdown. 
         printToSelectBranch(consigneeBranch, oldConsigneeBranchId, 'consignee_branch_id', selectedConsigneeId);
 
-        
+
 
         //select consignee_branch_id
         $(document).on('change', '#consignee_branch_id', function() {
