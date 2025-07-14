@@ -17,9 +17,8 @@ class ClientController extends Controller
      */
     public function index()
     {
+        $data['title'] = 'Client Details';
         $data['branch'] = Branch::all();
-
-        $data['tittle'] = 'Client Details';
         return view('admin.client.create', $data);
     }
 
@@ -69,109 +68,13 @@ class ClientController extends Controller
         }
     }
 
-    public function ClintstoreBkp(Request $request)
-    {
-        try {
-            // Validate the request data
-            $validatedData = $request->validate([
-                // Consignor
-                'consignor_branch_id' => 'required|exists:branches,id',
-                'consignee_branch_id' => 'required|exists:branches,id',
-                'aadhar_card' => 'nullable', // Optional
-
-                // Consignee
-                'consignor_name' => 'nullable|string', // Required
-                'consignee_name' => 'nullable|string', // Required
-                'consignor_address' => 'nullable|string', // Optional
-                'consignee_address' => 'nullable|string', // Optional
-                'consignor_phone_number' => 'nullable|string', // Optional
-                'consignee_phone_number' => 'nullable|string', // Optional
-                'consignor_gst_number' => 'nullable|string', // Optional
-                'consignee_gst_number' => 'nullable|string', // Optional
-                'consignor_email' => 'nullable|email', // Optional
-                'consignee_email' => 'nullable|email', // Optional
-
-                // Invoice details
-                'distance' => 'nullable|numeric', // Optional
-                'freight_amount' => 'nullable|numeric', // Optional
-                'wbc_charges' => 'nullable|numeric', // Optional
-                'handling_charges' => 'nullable|numeric', // Optional
-                'fov_amount' => 'nullable|numeric', // Optional
-                'fuel_amount' => 'nullable|numeric', // Optional
-                'pickup_charges' => 'nullable|numeric', // Optional
-                'hamali_Charges' => 'nullable|numeric', // Optional
-                'bilti_Charges' => 'nullable|numeric', // Optional
-                'discount' => 'nullable|numeric', // Optional
-                'compney_charges' => 'nullable|numeric', // Optional
-                'sub_total' => 'nullable|numeric', // Optional
-                'cgst' => 'nullable|numeric', // Optional
-                'sgst' => 'nullable|numeric', // Optional
-                'igst' => 'nullable|numeric', // Optional
-                'grand_total' => 'nullable|numeric', // Optional
-                'misc_charge_amount' => 'nullable|numeric', // Optional
-                'grand_total_amount' => 'required|numeric', // Required
-            ]);
-
-            // Check for matching consignor and consignee branch IDs
-            if ($validatedData['consignor_branch_id'] == $validatedData['consignee_branch_id']) {
-                return redirect()->back()->withErrors(['error' => 'Consignor and consignee branches must be different.'])->withInput();
-            }
-
-            // Insert data into the clients table
-            $bookingId = DB::table('clients')->insertGetId([
-                // Consignor
-                'consignor_branch_id' => $validatedData['consignor_branch_id'],
-                'consignor_name' => $validatedData['consignor_name'],
-                'consignor_address' => $validatedData['consignor_address'] ?? null,
-                'consignor_phone_number' => $validatedData['consignor_phone_number'] ?? null,
-                'consignor_email' => $validatedData['consignor_email'] ?? null,
-                'consignor_gst_number' => $validatedData['consignor_gst_number'] ?? null,
-                // Consignee
-                'consignee_branch_id' => $validatedData['consignee_branch_id'],
-                'consignee_name' => $validatedData['consignee_name'],
-                'consignee_address' => $validatedData['consignee_address'] ?? null,
-                'consignee_phone_number' => $validatedData['consignee_phone_number'] ?? null,
-                'consignee_email' => $validatedData['consignee_email'] ?? null,
-                'consignee_gst_number' => $validatedData['consignee_gst_number'] ?? null,
-                // Other Details
-                'aadhar_card' => $validatedData['aadhar_card'] ?? null,
-                'distance' => $validatedData['distance'] ?? 00,
-                'freight_amount' => $validatedData['freight_amount'] ?? 00,
-                'wbc_charges' => $validatedData['wbc_charges'] ?? 00,
-                'handling_charges' => $validatedData['handling_charges'] ?? 00,
-                'fov_amount' => $validatedData['fov_amount'] ?? 00,
-                'fuel_amount' => $validatedData['fuel_amount'] ?? 00,
-                'pickup_charges' => $validatedData['pickup_charges'] ?? 00,
-                'hamali_Charges' => $validatedData['hamali_Charges'] ?? 00,
-                'bilti_Charges' => $validatedData['bilti_Charges'] ?? 00,
-                'discount' => $validatedData['discount'] ?? 00,
-                'compney_charges' => $validatedData['compney_charges'] ?? 00,
-                'sub_total' => $validatedData['sub_total'] ?? 00,
-                'cgst' => $validatedData['cgst'] ?? 00,
-                'sgst' => $validatedData['sgst'] ?? 00,
-                'igst' => $validatedData['igst'] ?? 00,
-                'grand_total' => $validatedData['grand_total'] ?? 00,
-                'misc_charge_amount' => $validatedData['misc_charge_amount'] ?? 00,
-                'grand_total_amount' => $validatedData['grand_total_amount'],
-                'status' => '1',
-                'created_at' => now(),
-            ]);
-
-            // Redirect to the booking bilti page
-            return redirect('admin/clients')->with('success', 'Client Created Successfully');
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-        }
-    }
-
-
 
     /**
      * Display the specified resource.
      */
     public function show()
     {
-        $data['tittle'] = "Client List";
+        $data['title'] = "Client List";
         return view('admin.client.list', $data);
     }
 
@@ -250,7 +153,7 @@ class ClientController extends Controller
      */
     public function edit(string $id)
     {
-        $data['tittle'] = 'Edit Client Details';
+        $data['title'] = 'Edit Client Details';
         $data['client'] = Client::find($id);
 
         $data['branch'] = Branch::all();
@@ -392,14 +295,6 @@ class ClientController extends Controller
             return response()->json(['error' => 'Distance not found']);
         }
     }
-
-    // public function map()
-    // {
-    //     $data['client'] = Client::all();
-    //     $data['branch'] = Branch::all();
-    //     $data['tittle'] = 'Map Client';
-    //     return view('admin.client.map', $data);
-    // }
 
     public function getClientDetail($id)
     {

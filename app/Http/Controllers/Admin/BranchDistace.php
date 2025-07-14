@@ -11,12 +11,13 @@ class BranchDistace extends Controller
 {
     public function index()
     {
-        $data['tittle'] = 'Distance';
+        $data['title'] = 'Distance';
         return view('admin.distances.list', $data);
     }
+
     public function create()
     {
-        $data['tittle'] = 'Create Distance';
+        $data['title'] = 'Create Distance';
         $data['branch'] = Branch::all();
         return view('admin.distances.create', $data);
     }
@@ -88,9 +89,9 @@ class BranchDistace extends Controller
 
     public function edit($id)
     {
+        $data['title'] = 'Edit Distance';
         $distance = Distances::findOrFail($id);
         $branches = Branch::all();
-        $data['title'] = 'Edit Distance';
         $data['distance'] = $distance;
         $data['branches'] = $branches;
         return view('admin.distances.edit', $data);

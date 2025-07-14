@@ -14,18 +14,19 @@ class MapClientController extends Controller
      */
     public function index($clientId)
     {
-        $data['tittle'] = 'Map Client';
+        $data['title'] = 'Map Client';
         $data['clientDetails'] = Client::with('branches')->find($clientId);
         $data['selectedBranches'] = $data['clientDetails']->branches->pluck('id')->toArray();
 
         $data['branch'] = Branch::all();
         return view('admin.client.client-map', $data);
     }
+
     public function clientMap(Request $request)
     {
-        $tittle = 'Client Map';
-        $clients = Client::all();
-        return view('admin.client.clientMap', compact('clients', 'tittle'));
+        $data['title'] = 'Client Map';
+        $data['clients'] = Client::all();
+        return view('admin.client.clientMap', $data);
     }
 
 
