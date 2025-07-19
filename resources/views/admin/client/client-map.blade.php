@@ -35,37 +35,71 @@
             </div>
             <div class="card-body">
                 @role('Admin')
-
-                <form action='{{ url("admin/clients/maps/$clientDetails->id") }}' method="POST" enctype="multipart/form-data">
+                <h4>Map to as a Consignor</h4>
+                <form class="mt-5" action='{{ url("admin/clients/maps/$clientDetails->id") }}' method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <label class="form-label">Select Branches</label>
-                            <div class="form-check">
+                            <input type="hidden" name="map_type" value="as_consignor" />
+
+                            <div class="row">
                                 @foreach ($branch as $branchList)
-                                <div class="form-check mb-1">
-                                    <input class="form-check-input"
-                                        type="checkbox"
-                                        name="client_branch_id[]"
-                                        value="{{ $branchList->id }}"
-                                        id="branch_{{ $branchList->id }}"
-                                        {{ in_array($branchList->id, $selectedBranches ?? []) ? 'checked' : '' }} />
-                                    <label class="form-check-label" for="branch_{{ $branchList->id }}">
-                                        {{ $branchList->branch_name }}
-                                    </label>
+                                <div class="col-lg-4 col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                            type="checkbox"
+                                            name="client_branch_id[]"
+                                            value="{{ $branchList->id }}"
+                                            id="branch_{{ $branchList->id }}"
+                                            {{ in_array($branchList->id, $selectedConsignorBranches ?? []) ? 'checked' : '' }} />
+                                        <label class="form-check-label" for="branch_{{ $branchList->id }}">
+                                            {{ $branchList->branch_name }}
+                                        </label>
+                                    </div>
                                 </div>
                                 @endforeach
                             </div>
-                            @error('client_branch_id')
-                            <div class="text-danger">{{ $message }}</div>
-                            @enderror
                         </div>
+
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Map Branches</button>
+                    <button type="submit" class="btn btn-primary">Client map to branch as Consignor</button>
                 </form>
 
+                <hr />
+                <h4 class="mt-5">Map to as a Consignee</h4>
+                <form class="mt-5" action='{{ url("admin/clients/maps/$clientDetails->id") }}' method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
 
+                        <div class="col-md-12 mb-2">
+                            <label class="form-label">Select Branches</label>
+                            <input type="hidden" name="map_type" value="as_consignee" />
+
+                            <div class="row">
+                                @foreach ($branch as $branchList)
+                                <div class="col-lg-4 col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                            type="checkbox"
+                                            name="client_branch_id[]"
+                                            value="{{ $branchList->id }}"
+                                            id="branch_consignee_{{ $branchList->id }}"
+                                            {{ in_array($branchList->id, $selectedConsigneeBranches ?? []) ? 'checked' : '' }} />
+                                        <label class="form-check-label" for="branch_consignee_{{ $branchList->id }}">
+                                            {{ $branchList->branch_name }}
+                                        </label>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <button type="submit" class="btn btn-primary">Client map to branch as Consignee</button>
+                </form>
 
                 @endrole
             </div>

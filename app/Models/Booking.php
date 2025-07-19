@@ -88,6 +88,7 @@ class Booking extends Model
         'aadhar_card',
         'manual_bilty_number',
         'client_id',
+        'client_to_id',
         'consignee_name',
         'consignee_address',
         'consignee_phone_number',

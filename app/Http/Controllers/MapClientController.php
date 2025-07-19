@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Client;
+use App\Models\ClientMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,8 +16,24 @@ class MapClientController extends Controller
     public function index($clientId)
     {
         $data['title'] = 'Map Client';
-        $data['clientDetails'] = Client::with('branches')->find($clientId);
-        $data['selectedBranches'] = $data['clientDetails']->branches->pluck('id')->toArray();
+        $clientDetails = Client::with('branches')->find($clientId);
+        $data['selectedConsignorBranches'] = $clientDetails->branches
+            ->filter(function ($branch) {
+                return $branch->pivot->type === ClientMap::TYPE_CONSIGNOR;
+            })
+            ->pluck('id')
+            ->toArray();
+
+        $data['selectedConsigneeBranches'] = $clientDetails->branches
+            ->filter(function ($branch) {
+                return $branch->pivot->type === ClientMap::TYPE_CONSIGNEE;
+            })
+            ->pluck('id')
+            ->toArray();
+
+        $data['clientDetails'] = $clientDetails;
+
+
 
         $data['branch'] = Branch::all();
         return view('admin.client.client-map', $data);
@@ -45,36 +62,37 @@ class MapClientController extends Controller
 
         $clientId = $id;
         $branchIds = $request->input('client_branch_id');
-
-        $inserted = 0;
-        $skipped = 0;
+        $mapType = $request->input('map_type');
 
         try {
             DB::beginTransaction();
 
-            foreach ($branchIds as $branchId) {
-                // Check if the mapping already exists
-                $exists = DB::table('client_branch_map')
-                    ->where('client_id', $clientId)
-                    ->where('branch_id', $branchId)
-                    ->exists();
+            ClientMap::where('client_id', $clientId)
+                ->where('type', $mapType)
+                ->delete();
 
-                if (!$exists) {
-                    DB::table('client_branch_map')->insert([
+            foreach ($branchIds as $branchId) {
+                ClientMap::updateOrCreate(
+                    [
                         'client_id' => $clientId,
                         'branch_id' => $branchId,
-                    ]);
-                    $inserted++;
-                } else {
-                    $skipped++;
-                }
+                        'type' => $mapType,
+                    ],
+                    [
+                        'status' => 'active',
+                        'type' => $mapType,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+
+                    ]
+                );
             }
 
             DB::commit();
 
             return redirect()->back()->with([
                 "alertMessage" => true,
-                "alert" => ['message' => $inserted > 0 ? 'Assign successfully' : 'No new assignments made.', 'type' => 'success']
+                "alert" => ['message' => "Assign successfully.", 'type' => 'success']
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -86,21 +104,21 @@ class MapClientController extends Controller
     }
 
 
-    public function storeClientMapping(Request $request)
-    {
+    // public function storeClientMapping(Request $request)
+    // {
 
-        $fromClientId = $request->input('from_client_id');
+    //     $fromClientId = $request->input('from_client_id');
 
-        $toClientIds = $request->input('to_client_ids', []);
-        foreach ($toClientIds as $toClientId) {
-            DB::table('client_to_client_map')->insert([
-                'from_client_id' => $fromClientId,
-                'to_client_id' => $toClientId,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+    //     $toClientIds = $request->input('to_client_ids', []);
+    //     foreach ($toClientIds as $toClientId) {
+    //         DB::table('client_to_client_map')->insert([
+    //             'from_client_id' => $fromClientId,
+    //             'to_client_id' => $toClientId,
+    //             'created_at' => now(),
+    //             'updated_at' => now(),
+    //         ]);
+    //     }
 
-        return redirect()->back()->with('success', 'Client mapping updated successfully.');
-    }
+    //     return redirect()->back()->with('success', 'Client mapping updated successfully.');
+    // }
 }

@@ -235,16 +235,15 @@
     </section>
 </div>
 @if(Session::has('alertMessage'))
-     @php $redirectBookingId = Session::get("redirectBookingId") @endphp
+@php $redirectBookingId = Session::get("redirectBookingId") @endphp
 <script>
-     setTimeout(function () {
-            const redirectBookingId = "{{ $redirectBookingId }}";
-            if (redirectBookingId) {
-                const redirectUrl = "{{ url('/admin/bookings/print-bilti') }}/" + redirectBookingId;
-                window.open(redirectUrl, '_blank');
-            }
-    }, 2000); 
-  
+    setTimeout(function() {
+        const redirectBookingId = "{{ $redirectBookingId }}";
+        if (redirectBookingId) {
+            const redirectUrl = "{{ url('/admin/bookings/print-bilti') }}/" + redirectBookingId;
+            window.open(redirectUrl, '_blank');
+        }
+    }, 0);
 </script>
 @endif
 @endsection
@@ -675,7 +674,7 @@
             }
         });
     });
-    $(document).on('change', '#client_id', function() {
+    $(document).on('change', '#client_to_id', function() {
         var clientId = $(this).val();
         $('#consignee_name, #consignee_phone_number, #consignee_address, #consignee_gst_number, #consignee_email').val('');
 
@@ -690,6 +689,29 @@
                         $('#consignee_address').val(response.data.client_address);
                         $('#consignee_gst_number').val(response.data.client_gst_number);
                         $('#consignee_email').val(response.data.client_email);
+                    }
+                },
+                error: function() {
+                    alert('Failed to fetch client details.');
+                }
+            });
+        }
+    });
+    $(document).on('change', '#client_from_id', function() {
+        var clientId = $(this).val();
+        $('#consignor_name, #consignor_address, #consignor_phone_number, #consignor_gst_number, #consignor_email').val('');
+
+        if (clientId) {
+            $.ajax({
+                url: '{{ url("admin/bookings/client-detail") }}/' + clientId,
+                type: 'GET',
+                success: function(response) {
+                    if (response.status == 'success') {
+                        $('#consignor_name').val(response.data.client_name);
+                        $('#consignor_phone_number').val(response.data.client_phone_number);
+                        $('#consignor_address').val(response.data.client_address);
+                        $('#consignor_gst_number').val(response.data.client_gst_number);
+                        $('#consignor_email').val(response.data.client_email);
                     }
                 },
                 error: function() {

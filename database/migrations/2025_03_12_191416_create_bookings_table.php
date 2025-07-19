@@ -68,6 +68,7 @@ return new class extends Migration
             $table->string('manual_bilty_number', 20)->nullable();
             $table->dateTime('offline_booking_date')->nullable();
             $table->integer('client_id')->nullable();
+            $table->integer('client_to_id')->nullable();
             $table->string('booking_status', 20)->default('normal-booking');
             $table->timestamps();
         });

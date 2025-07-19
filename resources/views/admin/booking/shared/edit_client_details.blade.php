@@ -1,7 +1,7 @@
 <div class="col-md-9">
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">{{ $tittle }}</h3>
+            <h3 class="card-title">{{ $title }}</h3>
         </div>
 
         <div class="card-body">
@@ -17,14 +17,14 @@
                         id="consignor_branch_id">
                         <option value="">Select Branch Name</option>
                         @foreach ($branch as $branchList)
-                            <option value="{{ $branchList->id }}" @if ($branchList->id == $client->consignor_branch_id) selected @endif>
-                                {{ $branchList->branch_name }}
-                            </option>
+                        <option value="{{ $branchList->id }}" @if ($branchList->id == $client->consignor_branch_id) selected @endif>
+                            {{ $branchList->branch_name }}
+                        </option>
                         @endforeach
 
                     </select>
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -41,10 +41,10 @@
                         <option value="{{ $branchList->id }}" @if ($branchList->id == $client->consignee_branch_id) selected @endif>
                             {{ $branchList->branch_name }}
                         </option>
-                    @endforeach
+                        @endforeach
                     </select>
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -62,7 +62,7 @@
                 <div class="col-md-3">
                     <input type="text" name="consignor_name" value="{{ $client->consignor_name }}" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -75,7 +75,7 @@
 
                     <input type="text" name="consignee_name" value="{{ $client->consignee_name }}" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -91,7 +91,7 @@
 
                     <input type="text" value="{{ $client->consignor_address }}" name="consignor_address" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -105,7 +105,7 @@
 
                     <input type="text" value="{{ $client->consignee_address }}" name="consignee_address" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -121,7 +121,7 @@
 
                     <input type="text" value="{{ $client->consignor_phone_number }}" name="consignor_phone_number" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -135,7 +135,7 @@
 
                     <input type="text" value="{{ $client->consignee_phone_number }}" name="consignee_phone_number" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -151,7 +151,7 @@
 
                     <input type="text" value="{{ $client->consignor_gst_number }}" name="consignor_gst_number" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -165,7 +165,7 @@
 
                     <input type="text" value="{{ $client->consignee_gst_number }}" name="consignee_gst_number" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -179,9 +179,9 @@
                 </div>
                 <div class="col-md-3">
 
-                    <input type="text" name="consignor_email" value="{{ $client->consignor_email }}"  class="form-control mb-1" />
+                    <input type="text" name="consignor_email" value="{{ $client->consignor_email }}" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -195,7 +195,7 @@
 
                     <input type="text" value="{{ $client->consignee_email }}" name="consignee_email" class="form-control mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
                 </div>
@@ -208,7 +208,7 @@
                     <label for="date">Aadhar card</label>
                     <input type="text" name="aadhar_card" value="{{ $client->aadhar_card }}" class="form-control mb-1 mb-1" />
                     @error('consignor_branch_id')
-                        <div class="text-danger">{{ $message }}</div>
+                    <div class="text-danger">{{ $message }}</div>
                     @enderror
 
 
@@ -221,4 +221,3 @@
     </div>
 
 </div>
-

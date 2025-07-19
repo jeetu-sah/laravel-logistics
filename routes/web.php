@@ -174,14 +174,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/clients/create', [ClientController::class, 'index']);
         Route::post('/clients/store', [ClientController::class, 'store']);
         Route::get('clients/edit/{id}', [ClientController::class, 'edit']);
-        Route::post('clients/update', [ClientController::class, 'update']);
+        Route::post('clients/update/{id}', [ClientController::class, 'update']);
         Route::get('clients/delete/{id}', [ClientController::class, 'delete']);
 
 
         Route::get('/clients/map-to-branch/{id}', [MapClientController::class, 'index']);
         // Route::get('/clients/clientMap', [MapClientController::class, 'clientMap']);
         Route::post('clients/maps/{id}', [MapClientController::class, 'mapBranches']);
-        Route::post('/clients/mapClient', [MapClientController::class, 'storeClientMapping']);
+        // Route::post('/clients/mapClient', [MapClientController::class, 'storeClientMapping']);
         Route::get('get-distance', [ClientController::class, 'getDistance']);
 
         // /Distance

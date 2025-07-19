@@ -4,13 +4,22 @@
             <h3 class="card-title">{{ $title }}</h3>
         </div>
         <div class="card-body">
-
             <div class="row mb-2">
                 @if($bookingType === \App\Models\Booking::CLIENT_BOOKING)
-                <div class="col-md-4 mb-1">
-                    <label for="date">Select Client:</label>
-                    <select required class="form-select select2 form-control js-select2" name="client_id" id="client_id">
-                        <option value="">Select Client</option>
+                <div class="col-md-6 mb-1">
+                    <label for="date">Select From Client:</label>
+                    <select required class="form-select select2 form-control js-select2" name="client_from_id" id="client_from_id">
+                        <option value="">Select From Client</option>
+                        @foreach ($clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->client_name }}</option>
+                        @endforeach
+                    </select>
+                    <div id="client_details"></div>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <label for="date">Select To Client:</label>
+                    <select required class="form-select select2 form-control js-select2" name="client_to_id" id="client_to_id">
+                        <option value="">Select To Client</option>
                         @foreach ($clients as $client)
                         <option value="{{ $client->id }}">{{ $client->client_name }}</option>
                         @endforeach
@@ -18,40 +27,43 @@
                     <div id="client_details"></div>
                 </div>
                 @endif
-                <div class="col-md-4 mb-1">
-                    <label for="date">Offline Bilty No.</label>
+            </div>
+            <div class="form-row align-items-end mb-3">
+                <div class="col-md-3 mb-1">
+                    <label for="manual_bilty">Offline Bilty No.</label>
                     <input type="text" class="form-control" name="manual_bilty" value="{{ old('manual_bilty') }}" id="manual_bilty" />
-
                 </div>
-                <div class="col-md-4 mb-1">
-                    <label for="date">offline Booking Date</label>
-                    <input type="date" class="form-control" name="offline_booking_date" value="{{ old('offline_booking_date') }}" id="offline_booking_date" />
 
+                <div class="col-md-3 mb-1">
+                    <label for="offline_booking_date">Offline Booking Date</label>
+                    <input type="date" class="form-control" name="offline_booking_date" value="{{ old('offline_booking_date') }}" id="offline_booking_date" />
+                </div>
+
+                <div class="col-md-2 mb-1 ml-4 d-flex align-items-center">
+                    <div class="form-check">
+                        <input type="checkbox"
+                            name="booking"
+                            class="form-check-input"
+                            style="transform: scale(3.2); margin-top: -1px;"
+                            value="Paid" id="paid"
+                            {{ ($bookingType === \App\Models\Booking::CLIENT_BOOKING) ? 'checked' : '' }}
+                            onclick="uncheckOther(this)" />
+                        <label class="form-check-label ml-4" style="font-size:18px;" for="paid"><strong>Paid</strong></label>
+                    </div>
+                </div>
+
+                <div class="col-md-2 mb-1 d-flex align-items-center">
+                    <div class="form-check">
+                        <input type="checkbox"
+                            style="transform: scale(3.2); margin-top: -1px;"
+                            class="form-check-input" name="booking" value="Topay" id="to_pay" onclick="uncheckOther(this)" />
+                        <label class="form-check-label ml-4" for="to_pay"><strong>To Pay</strong></label>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-2">
-                    <div class="">
-                        <label for="date">Paid:</label>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <input type="checkbox" name="booking" class="form-control" value="Paid" id="paid"
-                        onclick="uncheckOther(this)" />
-                </div>
 
-                <div class="col-md-1 mb-2">
-                    <div class="">
-                        <label for="date">To Pay:</label>
-                    </div>
-                </div>
-                <div class="col-md-1 mb-2">
-                    <div class="">
-                        <input type="checkbox" class="form-control" name="booking" value="Topay" id="to_pay"
-                            onclick="uncheckOther(this)" />
-                    </div>
-                </div>
                 <script>
                     function uncheckOther(checkbox) {
                         // Get all checkboxes with the name 'paid' and 'to_pay'
@@ -204,7 +216,7 @@
                     <label for="date">Name:</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" name="consignor_name" value="{{ old('consignor_name') }}" class="form-control mb-1" />
+                    <input type="text" name="consignor_name" value="{{ old('consignor_name') }}" id="consignor_name" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">

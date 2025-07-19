@@ -29,7 +29,7 @@ class Client extends Model
 
     public function branches()
     {
-        return $this->belongsToMany(Branch::class, 'client_branch_map', 'client_id', 'branch_id');
+        return $this->belongsToMany(Branch::class, 'client_branch_map', 'client_id', 'branch_id')->withPivot('type');
     }
 
 

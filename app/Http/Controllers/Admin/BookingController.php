@@ -437,8 +437,7 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        // echo "<pre>";
-        // print_r($request->all());exit;
+       
         $validator = Validator::make($request->all(), [
             'booking_date' => 'required|date',
             'transhipmen_one' => 'nullable',
@@ -571,6 +570,7 @@ class BookingController extends Controller
                 'manual_bilty_number' => $request->manual_bilty,
                 'offline_booking_date' => $request->offline_booking_date,
                 'client_id' => $request->client_id ?? null,
+                'client_to_id' => $request->client_to_id ?? null,
                 'created_at' => now(),
                 'booking_status' => $request->booking_status
             ]);
