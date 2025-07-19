@@ -98,11 +98,13 @@ class BookingController extends Controller
         $data['title'] = "Create New Booking";
         $data['user'] = auth()->user();
         $data['branch'] = Branch::all();
-        $data['noBillBookings'] = $request->query('no-bill-bookings'); // true, false or null
+        $data['noBillBookings'] = $request->query('no-bill-bookings');
         $data['bookingType'] = $request->query('booking');
         $data['currentBranch']  = Branch::currentbranch();
 
         $data['clients']  = $data['currentBranch']->clients;
+        $data['toClients']  = $data['currentBranch']->toClients;
+       
         return view('admin.booking.create', $data);
     }
 

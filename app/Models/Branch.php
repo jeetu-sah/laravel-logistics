@@ -49,7 +49,14 @@ class Branch extends Model
 
     public function clients()
     {
-        return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id');
+        return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id')
+                    ->withPivot('type')->wherePivot('type', ClientMap::TYPE_CONSIGNOR);;
+    }
+
+    public function toClients()
+    {
+        return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id')
+                    ->withPivot('type')->wherePivot('type', ClientMap::TYPE_CONSIGNEE);;
     }
 
     public static function currentbranch()

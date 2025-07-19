@@ -20,7 +20,7 @@
                     <label for="date">Select To Client:</label>
                     <select required class="form-select select2 form-control js-select2" name="client_to_id" id="client_to_id">
                         <option value="">Select To Client</option>
-                        @foreach ($clients as $client)
+                        @foreach ($toClients as $client)
                         <option value="{{ $client->id }}">{{ $client->client_name }}</option>
                         @endforeach
                     </select>
