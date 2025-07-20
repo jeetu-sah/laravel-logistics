@@ -49,7 +49,7 @@ class BookingController extends Controller
             $bookingQuery->where('bilti_number', 'like', "%$search%")
                 ->orWhere('consignor_name', 'like', "%$search%")
                 ->orWhere('consignee_name', 'like', "%$search%")
-                ->orWhere('clients.client_name', 'like', "%$search%");
+                ->orWhere('manual_bilty_number', 'like', "%$search%");
         }
         // Count the total records
         $totalRecord = $bookingQuery->count();
@@ -62,7 +62,7 @@ class BookingController extends Controller
             foreach ($bookings as $index => $booking) {
                 $row = [];
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
-                $row['offline_bilti'] =  $booking->manual_bilty_number ?? '--';
+                $row['offline_bilti'] = ($booking->manual_bilty_number ?? '--') . "/" . formatOnlyDate($booking->offline_booking_date);
 
                 // Consignor and consignee information
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name ?? 'N/A';
@@ -104,7 +104,7 @@ class BookingController extends Controller
 
         $data['clients']  = $data['currentBranch']->clients;
         $data['toClients']  = $data['currentBranch']->toClients;
-       
+
         return view('admin.booking.create', $data);
     }
 
@@ -439,7 +439,7 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-       
+
         $validator = Validator::make($request->all(), [
             'booking_date' => 'required|date',
             'transhipmen_one' => 'nullable',
