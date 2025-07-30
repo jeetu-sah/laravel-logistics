@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogOutController;
@@ -206,6 +207,14 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('gatepass/create/{id}', [DeliveryController::class, 'create']);
             Route::post('/gatepass/store', [DeliveryController::class, 'store']);
             Route::get('/gatepass/receipt/{id}', [DeliveryController::class, 'show'])->name('admin.delivery.receipt');
+        });
+        // accounts 
+        Route::prefix('accounts')->group(function () {
+            // Route::get('delivery', [DeliveryController::class, 'index']);
+            Route::get('create', [AccountsController::class, 'create']);
+            Route::get('index/', [AccountsController::class, 'index']);
+            Route::post('store/', [AccountsController::class, 'store']);
+            Route::get('list/', [AccountsController::class, 'list']);
         });
     });
 

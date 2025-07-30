@@ -319,6 +319,14 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item has-treeview {{ request()->is('admin/accounts*') ? 'menu-open' : '' }} ">
+                    <a href="{{ url('admin/accounts/index') }}"
+                        class="nav-link {{ request()->is('admin/accounts*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Accounts</p>
+                    </a>
+                  
+                </li>
                 <li class="nav-item has-treeview {{ request()->is('admin/report*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('admin/report') }}"
                         class="nav-link {{ request()->is('admin/report*') ? 'active' : '' }}">

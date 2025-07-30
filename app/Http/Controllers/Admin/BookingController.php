@@ -134,96 +134,96 @@ class BookingController extends Controller
 
 
 
-    // public function challanBookingList(Request $request)
-    // {
-    //     $search = $request->input('search')['value'] ?? null;
-    //     $limit = $request->input('length', 10);
-    //     $start = $request->input('start', 0);
-    //     $userBranchId = Auth::user()->branch_user_id;
-    //     $selectedNextTranshipmentId = $request->for_challan;
+    public function challanBookingList(Request $request)
+    {
+        $search = $request->input('search')['value'] ?? null;
+        $limit = $request->input('length', 10);
+        $start = $request->input('start', 0);
+        $userBranchId = Auth::user()->branch_user_id;
+        $selectedNextTranshipmentId = $request->for_challan;
 
-    //     $bookingQuery = Booking::with([
-    //         'client',
-    //         'getAlltranshipments',
-    //         'consigneeBranch',
-    //         'transhipments',
-    //     ])->whereHas('transhipments', function ($query) use ($userBranchId, $selectedNextTranshipmentId) {
-    //         $query->where('from_transhipment', $userBranchId)->where([['dispatched_at', '=', NULL], ['received_at', '!=', NULL]]);
-    //     });
-    //     if (!empty($selectedNextTranshipmentId)) {
-    //         $bookingQuery->whereHas('getAlltranshipments', function ($query) use ($selectedNextTranshipmentId) {
-    //             $query->where('from_transhipment', $selectedNextTranshipmentId);
-    //         });
-    //     }
-    //     //  if (!empty($selectedNextTranshipmentId)) {
-    //     //         //$query->orWhere([['from_transhipment', '=', $selectedNextTranshipmentId], ['received_at', '=', NULL]]);
-    //     //     }
-    //     // ->where('received_at', '!=', NULL);
+        $bookingQuery = Booking::with([
+            'client',
+            'getAlltranshipments',
+            'consigneeBranch',
+            'transhipments',
+        ])->whereHas('transhipments', function ($query) use ($userBranchId, $selectedNextTranshipmentId) {
+            $query->where('from_transhipment', $userBranchId)->where([['dispatched_at', '=', NULL], ['received_at', '!=', NULL]]);
+        });
+        if (!empty($selectedNextTranshipmentId)) {
+            $bookingQuery->whereHas('getAlltranshipments', function ($query) use ($selectedNextTranshipmentId) {
+                $query->where('from_transhipment', $selectedNextTranshipmentId);
+            });
+        }
+        //  if (!empty($selectedNextTranshipmentId)) {
+        //         //$query->orWhere([['from_transhipment', '=', $selectedNextTranshipmentId], ['received_at', '=', NULL]]);
+        //     }
+        // ->where('received_at', '!=', NULL);
 
-    //     $bookingQuery->whereIn('status', [Booking::BOOKED, Booking::DISPATCH]);
+        $bookingQuery->whereIn('status', [Booking::BOOKED, Booking::DISPATCH]);
 
-    //     // Count the filtered records
-    //     $bookingsCount = $bookingQuery->count();
-    //     // Get the actual records with pagination
-    //     $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('bookings.created_at', 'desc')->get();
+        // Count the filtered records
+        $bookingsCount = $bookingQuery->count();
+        // Get the actual records with pagination
+        $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('bookings.created_at', 'desc')->get();
 
 
-    //     $rows = [];
-    //     if ($bookings->count() > 0) {
-    //         foreach ($bookings as $index => $booking) {
-    //             $row = [];
-    //             // Conditional logic for 'bilti_list_type'
-    //             if ($request->bilti_list_type === 'challan') {
-    //                 $row['sn'] = '<div class="form-check">
-    //                                   <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
-    //                                   <label class="form-check-label" for="exampleCheck1"></label>
-    //                               </div>';
-    //             } else {
-    //                 $row['sn'] = $start + $index + 1;
-    //             }
+        $rows = [];
+        if ($bookings->count() > 0) {
+            foreach ($bookings as $index => $booking) {
+                $row = [];
+                // Conditional logic for 'bilti_list_type'
+                if ($request->bilti_list_type === 'challan') {
+                    $row['sn'] = '<div class="form-check">
+                                      <input type="checkbox" class="form-check-input" name="bookingId[]" value="' . $booking->id . '">
+                                      <label class="form-check-label" for="exampleCheck1"></label>
+                                  </div>';
+                } else {
+                    $row['sn'] = $start + $index + 1;
+                }
 
-    //             // Link for 'bilti_number' and 'offline_bilti'
-    //             $row['bilti_number'] = '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
-    //             $row['offline_bilti'] = $booking->manual_bilty_number
-    //                 ? '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->manual_bilty_number . '</a>'
-    //                 : '-';
+                // Link for 'bilti_number' and 'offline_bilti'
+                $row['bilti_number'] = '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->bilti_number . '</a>';
+                $row['offline_bilti'] = $booking->manual_bilty_number
+                    ? '<a target="_blank" href="' . route('bookings.bilti', ['id' => $booking->id]) . '">' . $booking->manual_bilty_number . '</a>'
+                    : '-';
 
-    //             // Consignor details
-    //             $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
-    //             $row['consignor_name'] = $booking->consignor_name ?? '--';
+                // Consignor details
+                $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
+                $row['consignor_name'] = $booking->consignor_name ?? '--';
 
-    //             $row['phone_number_1'] = $booking->consignor_phone_number ?? '--';
-    //             $row['gst_number'] = $booking->gst_number;
+                $row['phone_number_1'] = $booking->consignor_phone_number ?? '--';
+                $row['gst_number'] = $booking->gst_number;
 
-    //             // Consignee details
-    //             $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
-    //             $row['consignee_name'] = $booking->consignee_name ?? '--';
-    //             $row['consignee_phone_number_1'] = $booking->consignee_phone_number ?? '';
+                // Consignee details
+                $row['consignee_branch_id'] = $booking?->consigneeBranch?->branch_name;
+                $row['consignee_name'] = $booking->consignee_name ?? '--';
+                $row['consignee_phone_number_1'] = $booking->consignee_phone_number ?? '';
 
-    //             // Conditional logic for 'booking_type'
-    //             $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type_name . '</span>';
-    //             $row['next_delivery_location'] = '<span class="badge badge-primary">' . $booking?->next_booking_transhipment_name?->branch?->branch_name ?? '--' . '</span>';
+                // Conditional logic for 'booking_type'
+                $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type_name . '</span>';
+                $row['next_delivery_location'] = '<span class="badge badge-primary">' . $booking?->next_booking_transhipment_name?->branch?->branch_name ?? '--' . '</span>';
 
-    //             $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-    //                               <a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
+                $row['action'] = '<a href="' . url("admin/bookings/edit/{$booking->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
+                                  <a href="' . url("admin/bookings/bilti/{$booking->id}") . '" class="btn btn-warning">Print</a>';
 
-    //             // Created timestamp
-    //             $row['created_at'] = formatDate($booking->created_at);
-    //             $rows[] = $row;
-    //         }
-    //     }
+                // Created timestamp
+                $row['created_at'] = formatDate($booking->created_at);
+                $rows[] = $row;
+            }
+        }
 
-    //     // Prepare the response data
-    //     $json_data = [
-    //         "draw" => intval($request->input('draw')),
-    //         "recordsTotal" => $bookingsCount,
-    //         "recordsFiltered" => $bookingsCount,
-    //         "data" => $rows,
-    //     ];
+        // Prepare the response data
+        $json_data = [
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => $bookingsCount,
+            "recordsFiltered" => $bookingsCount,
+            "data" => $rows,
+        ];
 
-    //     // Return the JSON response
-    //     return response()->json($json_data);
-    // }
+        // Return the JSON response
+        return response()->json($json_data);
+    }
 
 
     public function printBilti($id)

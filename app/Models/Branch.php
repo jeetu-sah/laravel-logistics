@@ -47,6 +47,12 @@ class Branch extends Model
         return $this->hasOne(User::class, 'branch_user_id');
     }
 
+    public function combineClients()
+    {
+        return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id')
+                    ->withPivot('type');
+    }
+
     public function clients()
     {
         return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id')

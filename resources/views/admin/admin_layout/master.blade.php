@@ -43,6 +43,8 @@
             border-color: transparent;
         }
     </style>
+ 
+    <link rel="stylesheet" href="{{ asset('datatables/dataTables.css') }}" />
     @section('styles')
 
     @show
@@ -227,6 +229,8 @@
 
     <!-- PAGE SCRIPTS -->
     <script src="{{ asset('admin_webu/dist/js/pages/dashboard2.js') }}"></script>
+
+    <script src="{{ asset('datatables/dataTables.js') }}"></script>
 
     @section('script')
     @show
