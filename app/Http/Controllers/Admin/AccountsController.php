@@ -16,15 +16,18 @@ class AccountsController extends Controller
     public function index()
     {
         $data['title'] = 'Accounts | List';
+        $data['combineClients'] = Branch::currentbranch()?->combineClients?->unique('id')?->values() ?? [];
         return view('admin.accounts.list', $data);
     }
 
     public function create()
     {
         $data['title'] = 'Accounts | Create';
-        $data['branch'] = Branch::currentbranch();;
-        $data['combineClients'] = Branch::currentbranch()->combineClients->unique('id')->values();
+        $data['branch'] = Branch::currentbranch();
 
+        $data['combineClients'] = Branch::currentbranch()?->combineClients?->unique('id')?->values() ?? [];
+        // echo "<pre>";
+        // print_r($data['combineClients']);exit;
         return view('admin.accounts.create', $data);
     }
 
@@ -80,11 +83,28 @@ class AccountsController extends Controller
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
 
-        $query = ClientTransaction::query();
+
+        $clientId = $request->input('client_id');
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
+
+        $query = ClientTransaction::with(['client']);
         $query->where('branch_id', Auth::user()->branch_user_id);
         if ($search) {
             $query->where('id', 'like', "%$search%")
-                ->orWhere('client_id', 'like', "%$search%");
+                ->orWhereHas('client', function ($q2) use ($search) {
+                    $q2->where('client_name', 'like', "%$search%");
+                });
+        }
+        // Apply filters
+        if ($clientId) {
+            $query->where('client_id', $clientId);
+        }
+        if ($dateFrom) {
+            $query->whereDate('transaction_date', '>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $query->whereDate('transaction_date', '<=', $dateTo);
         }
         $totalRecord = $query->count();
         $clientTransactions = $query->skip($start)->take($limit)->get();

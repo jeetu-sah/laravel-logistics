@@ -48,11 +48,13 @@
                                     <select class="form-select select2 form-control js-select2" name="consignor_branch_id"
                                         id="consignor_branch_id">
                                             <option value="">Select Client</option>
-                                            @forelse ($combineClients as $client)
-                                            <option value="{{ $client->id }}">{{ $client->client_name }}</option>
-                                            @empty
-                                              <option value="">No Record found</option>
-                                            @endforelse
+                                            @if(count($combineClients) > 0)
+                                                @forelse ($combineClients as $client)
+                                                <option value="{{ $client->id }}">{{ $client->client_name }}</option>
+                                                @empty
+                                                <option value="">No Record found</option>
+                                                @endforelse
+                                            @endif
                                     </select>
                                 </div>
                             </div>
