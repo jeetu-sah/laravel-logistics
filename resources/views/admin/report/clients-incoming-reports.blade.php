@@ -23,7 +23,7 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center w-100">
                     <h2 class="card-title mb-0">Client Incoming Load Reports</h2>
-                   
+
                 </div>
             </div>
             <div class="card-body">
@@ -62,17 +62,21 @@
                             <thead>
                                 <tr>
                                     <th>SN.</th>
-                                    <th>Client</th>
-                                    <th>Consigner Name</th>
-                                    <th>Consignee Name</th>
-                                    <th>Consignee Number</th>
-                                    <th>Consignee Branch</th>
-                                    <th>Creation Date</th>
+                                    <th>Online / Offline Bilti No.</th>
+                                    <th>Booking Date</th>
+                                    <th>Articles</th>
+                                    <th>Origin</th>
+                                    <th>Consignor</th>
+                                    <th>Destinaton</th>
+                                    <th>Consignee</th>
                                     <th>Amount</th>
+                                    <th>Type</th>
+                                    <th>Dispatch Date</th>
+                                    <th>Challan No.</th>
                                 </tr>
                             </thead>
                             <tbody>
-                               
+
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -114,7 +118,7 @@
         var table = new DataTable('#account-list', {
             responsive: true,
             ajax: {
-                url: "{{ url('admin/reports/clients-outgoing-reports/list') }}",
+                url: "{{ url('admin/reports/clients-incoming-reports/list') }}",
                 data: function(d) {
                     d.client_id = $('#client_id').val();
                     d.date_from = $('#date_from').val();
@@ -125,26 +129,43 @@
                     data: 'sn'
                 },
                 {
-                    data: 'client_ids'
+                    data: 'bilti_number'
                 },
                 {
-                    data: 'from_client_name'
+                    data: 'booking_date'
                 },
                 {
-                    data: 'to_client_name'
+                    data: 'no_of_artical'
                 },
                 {
-                    data: 'to_client_phone_number'
+                    data: 'origin',
+                    orderable: false
                 },
                 {
-                    data: 'to_branch_name'
+                    data: 'consignor_name'
                 },
                 {
-                    data: 'created_at'
+                    data: 'destination',
+                    orderable: false
                 },
                 {
-                    data: 'amount'
-                } // <-- New column
+                    data: 'consignee_name'
+                },
+                {
+                    data: 'amount',
+                    orderable: false
+                },
+                {
+                    data: 'booking_type'
+                },
+                {
+                    data: 'dispatch_date',
+                    orderable: false
+                },
+                {
+                    data: 'challan_number',
+                    orderable: false
+                }
             ],
             processing: true,
             serverSide: true,

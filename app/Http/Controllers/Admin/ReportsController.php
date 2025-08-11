@@ -29,7 +29,7 @@ class ReportsController extends Controller
         $branchId = Auth::user()->branch_user_id;
         $query = Booking::where([
             ['booking_status', '=', Booking::CLIENT_BOOKING],
-            ['consignor_branch_id', '=', $branchId],
+            ['consignee_branch_id', '=', $branchId],
             ['status', '=', Booking::DELIVERED_TO_CLIENT],
         ]);
 
@@ -105,8 +105,6 @@ class ReportsController extends Controller
             ['consignor_branch_id', '=', $branchId],
             ['status', '=', Booking::DELIVERED_TO_CLIENT],
         ]);
-
-
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
@@ -268,7 +266,7 @@ class ReportsController extends Controller
         return view('admin.report.incoming-booking-report', $data);
     }
 
-     public function incomingBookingAjaxList(Request $request)
+    public function incomingBookingAjaxList(Request $request)
     {
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
@@ -350,5 +348,4 @@ class ReportsController extends Controller
             'data' => $rows
         ]);
     }
-
 }
