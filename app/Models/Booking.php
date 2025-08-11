@@ -21,6 +21,11 @@ class Booking extends Model
     const RECEIVED_FINAL_TRANSHIPMENT = 3;
     const DELIVERED_TO_CLIENT = 4;
 
+    const BOOKING_TYPE_PAID = "Paid";
+    const BOOKING_TYPE_TOPAY = "Topay";
+    const BOOKING_TYPE_TOCLIENT = "Toclient";
+  
+
     const NORMAL_BOOKING = 'normal-booking';
     const CLIENT_BOOKING = 'client-booking';
     const NO_BOOKING = 'no-booking';
@@ -103,6 +108,12 @@ class Booking extends Model
 
     public $bookingType = ['Topay' => 'To Pay', 'To Client', 'Paid' => 'Paid'];
 
+
+
+    public function delivery_receipt()
+    {
+        return $this->hasOne(DeliveryReceipt::class, 'booking_id');
+    }
 
     //visible_for
     protected function getVisibleForAttribute(): int|null
@@ -307,5 +318,12 @@ class Booking extends Model
             'id',
             'id'
         );
+    }
+
+    public function getSpecificBranchBookingChallan($branchId)
+    {
+        return LoadingChallan::whereHas('bookings', function ($query) {
+            $query->where('bookings.id', $this->id);
+        })->where('from_transhipment', $branchId)->first();
     }
 }

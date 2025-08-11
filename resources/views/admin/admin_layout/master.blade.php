@@ -42,8 +42,13 @@
             background-color: #dc3545;
             border-color: transparent;
         }
+
+        body {
+            zoom: 0.8;
+            /* 70% size */
+        }
     </style>
- 
+
     <link rel="stylesheet" href="{{ asset('datatables/dataTables.css') }}" />
     @section('styles')
 
@@ -74,7 +79,7 @@
             </form> --}}
 
             <!-- Right navbar links -->
-           
+
             <ul class="navbar-nav ml-auto">
                 <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown">

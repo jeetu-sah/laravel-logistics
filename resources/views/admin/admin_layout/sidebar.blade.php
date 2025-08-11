@@ -338,14 +338,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url('admin/reports/bookings-report') }}"
-                                class="nav-link {{ request()->is('admin/reports/bookings-report') ? 'active' : '' }}">
+                            <a href="{{ url('admin/reports/outgoing-bookings-report') }}"
+                                class="nav-link {{ request()->is('admin/reports/outgoing-bookings-report') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Bookings Reports</p>
+                                <p>Outgoing Load Reports</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/reports/clients') }}"
+                            <a href="{{ url('admin/reports/incoming-bookings-report') }}"
+                                class="nav-link {{ request()->is('admin/reports/incoming-bookings-report') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Incoming Load Reports</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url('admin/reports/clients-reports') }}"
                                 class="nav-link {{ request()->is('admin/reports/clients') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Clients Bookings Reports</p>

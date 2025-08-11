@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MapClientController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Admin\IncomingBookingController;
+use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\BranchUser\ReviewerController;
 use App\Http\Controllers\BranchUser\SettingController;
 use App\Http\Controllers\BranchUser\DashboardController;
@@ -84,19 +85,25 @@ Route::group(['middleware' => ['auth']], function () {
 
         //admin/settings
         Route::prefix('admin-settings')->group(function () {
-             Route::get('/', [SettingsController::class, 'index']);
-             Route::get('/create', [SettingsController::class, 'create']);
-             Route::get('/delete/{id}', [SettingsController::class, 'delete']);
-             Route::post('/store', [SettingsController::class, 'store']);
+            Route::get('/', [SettingsController::class, 'index']);
+            Route::get('/create', [SettingsController::class, 'create']);
+            Route::get('/delete/{id}', [SettingsController::class, 'delete']);
+            Route::post('/store', [SettingsController::class, 'store']);
+        });
+
+        // Booking Report
+        Route::prefix('reports')->group(function () {
+            Route::get('clients-reports', [ReportsController::class, 'clientBooking']);
+            Route::get('clients/list', [ReportsController::class, 'clientBookingReportsAjaxList']);
+            Route::get('outgoing-bookings-report', [ReportsController::class, 'outgoingBookingIndex']);
+            Route::get('outgoing-bookings/list', [ReportsController::class, 'outgoingBookingAjaxList']);
+            
+            Route::get('incoming-bookings-report', [ReportsController::class, 'incomingBookingIndex']);
+            Route::get('incoming-bookings/list', [ReportsController::class, 'incomingBookingAjaxList']);
         });
 
         // Client Booking Report
-        // Booking Report
-        Route::get('reports/bookings-report', [BookingReportController::class, 'index']);
-        Route::get('reports/bookings/list', [BookingReportController::class, 'list']);
-        // Client Booking Report
-        Route::get('reports/clients', [BookingReportController::class, 'clientBooking']);
-        Route::get('reports/clients/list', [BookingReportController::class, 'clientList']);
+    
         Route::get('reports/clients/bookings/list', [BookingReportController::class, 'clientBookingview']);
         Route::get('reports/clients/bookings/revenue/{fromId}/{toId}', [BookingReportController::class, 'clientBookingRevenue']);
         Route::get('reports/clients/bookings/{id}', [BookingReportController::class, 'clientBookingList']);

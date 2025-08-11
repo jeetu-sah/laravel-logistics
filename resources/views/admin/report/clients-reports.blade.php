@@ -12,7 +12,8 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Accounts</li>
+                        <li class="breadcrumb-item">Reports</li>
+                        <li class="breadcrumb-item active">Client Booking Reports</li>
                     </ol>
                 </div>
             </div>
@@ -67,26 +68,27 @@
                         <table class="display" id="account-list">
                             <thead>
                                 <tr>
-                                    <th>TRANSACTION ID</th>
-                                    <th>CLIENT NAME</th>
-                                    <th>CREDIT AMOUNT</th>
-                                    <th>DEBIT AMOUNT</th>
-                                    <th>REMARK</th>
-                                    <th>TRANSACTION DATE</th>
-                                    <th>CREATED DATE</th>
-                                    <th>ACTION</th>
+                                    <th>SN.</th>
+                                    <th>Client</th>
+                                    <th>Consigner Name</th>
+                                    <th>Consignee Name</th>
+                                    <th>Consignee Number</th>
+                                    <th>Consignee Branch</th>
+                                    <th>Creation Date</th>
+                                    <th>Amount</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                {{-- Fill with your data using Blade or JavaScript --}}
+                            </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="2" style="text-align:right">Total:</th>
-                                    <th id="total-credit">0.00</th>
-                                    <th id="total-debit">0.00</th>
-                                    <th colspan="4"></th>
+                                    <th colspan="7" style="text-align:right">Total:</th>
+                                    <th id="total-amount">0</th>
                                 </tr>
                             </tfoot>
                         </table>
+
 
                     </div>
                 </div>
@@ -109,6 +111,7 @@
 
 <script>
     $(document).ready(function(e) {
+
         function parseValue(val) {
             if (typeof val === 'number') return val;
             if (typeof val === 'string') return parseFloat(val.replace(/[^0-9.\-]/g, '')) || 0;
@@ -118,7 +121,7 @@
         var table = new DataTable('#account-list', {
             responsive: true,
             ajax: {
-                url: "{{ url('admin/accounts/list') }}",
+                url: "{{ url('admin/reports/clients/list') }}",
                 data: function(d) {
                     d.client_id = $('#client_id').val();
                     d.date_from = $('#date_from').val();
@@ -126,36 +129,37 @@
                 }
             },
             columns: [{
-                    data: 'id'
+                    data: 'sn'
                 },
                 {
-                    data: 'client_name'
+                    data: 'client_ids'
                 },
                 {
-                    data: 'credit_amount'
+                    data: 'from_client_name'
                 },
                 {
-                    data: 'debit_amount'
+                    data: 'to_client_name'
                 },
                 {
-                    data: 'description'
+                    data: 'to_client_phone_number'
                 },
                 {
-                    data: 'transaction_date'
+                    data: 'to_branch_name'
                 },
                 {
                     data: 'created_at'
                 },
                 {
-                    data: 'action',
-                    orderable: false
-                }
+                    data: 'amount'
+                } // <-- New column
             ],
-
             processing: true,
             serverSide: true,
+
+
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
+
                 let totalCredit = api.column(2, {
                         page: 'current'
                     }).data()
@@ -170,6 +174,7 @@
                 $(api.column(3).footer()).html(totalDebit.toFixed(2));
             }
         });
+
 
         $('#filter-form').on('submit', function(e) {
             e.preventDefault();

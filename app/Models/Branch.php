@@ -12,9 +12,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Branch extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
+
     protected $dates = ['deleted_at'];
+
+    const ACTIVE = 'active';
+    const INACTIVE = 'inactive';
+
     protected $fillable = [
         'branch_name',
         'branch_code',
@@ -23,16 +27,12 @@ class Branch extends Model
         'gst',
         'country_name',
         'state_name',
-        'city_name', // assuming this is the same as district_name in your form
+        'city_name',
         'address1',
         'address2',
         'user_status',
     ];
 
-
-    /**
-     * Get the comments for the blog post.
-     */
     public function fromBookings(): HasMany
     {
         return $this->hasMany(Booking::class, 'consignor_branch_id');
@@ -50,19 +50,19 @@ class Branch extends Model
     public function combineClients()
     {
         return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id')
-                    ->withPivot('type');
+            ->withPivot('type');
     }
 
     public function clients()
     {
         return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id')
-                    ->withPivot('type')->wherePivot('type', ClientMap::TYPE_CONSIGNOR);;
+            ->withPivot('type')->wherePivot('type', ClientMap::TYPE_CONSIGNOR);;
     }
 
     public function toClients()
     {
         return $this->belongsToMany(Client::class, 'client_branch_map', 'branch_id', 'client_id')
-                    ->withPivot('type')->wherePivot('type', ClientMap::TYPE_CONSIGNEE);;
+            ->withPivot('type')->wherePivot('type', ClientMap::TYPE_CONSIGNEE);;
     }
 
     public static function currentbranch()

@@ -12,7 +12,8 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Accounts</li>
+                        <li class="breadcrumb-item">Reports</li>
+                        <li class="breadcrumb-item active">Outgoing Booking Reports</li>
                     </ol>
                 </div>
             </div>
@@ -20,29 +21,16 @@
     </section>
 
     <section class="content">
-        <!-- Default box -->
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center w-100">
-                    <h2 class="card-title mb-0">Accounts List</h2>
-                    <a href="{{ url('admin/accounts/create') }}" class="btn btn-sm btn-success shadow-sm">
-                        <i class="fa fa-user fa-sm text-white-50"></i> Add Accounts
-                    </a>
+                    <h2 class="card-title mb-0">Outgoing Booking Reports</h2>
+
                 </div>
             </div>
             <div class="card-body">
                 <form id="filter-form" class="mb-4">
                     <div class="row">
-                        <div class="col-md-3">
-                            <label for="client_id" class="form-label">Client</label>
-                            <select id="client_id" name="client_id" class="form-select select2 form-control js-select2">
-                                <option value="">-- All Clients --</option>
-                                @foreach($combineClients as $client)
-                                <option value="{{ $client->id }}">{{ $client->client_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
                         <div class="col-md-3">
                             <label for="date_from" class="form-label">From Date</label>
                             <input type="date" name="date_from" id="date_from" class="form-control">
@@ -52,8 +40,27 @@
                             <label for="date_to" class="form-label">To Date</label>
                             <input type="date" name="date_to" id="date_to" class="form-control">
                         </div>
+
+                        <div class="col-md-3">
+                            <label for="booking_type" class="form-label">Booking Type</label>
+                            <select name="booking_type" id="booking_type" class="form-control">
+                                <option value="">-- All --</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Topay">To Pay</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="consignee_branch_id" class="form-label">Consignee Branch</label>
+                            <select id="consignee_branch_id" name="consignee_branch_id" class="form-select select2 form-control js-select2">
+                                <option value="">-- All Clients --</option>
+                                @foreach($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="margin-top:20px">
                         <div class="col-md-3 d-flex align-items-end">
                             <button type="submit" class="btn btn-primary me-2">Filter</button> &nbsp;
                             <button type="button" id="reset-filters" class="btn btn-secondary">Reset</button>
@@ -64,33 +71,32 @@
                 {{-- Data Table --}}
                 <div class="row">
                     <div class="table-responsive">
-                        <table class="display" id="account-list">
+                        <table class="display" id="outgoing-booking-list">
                             <thead>
                                 <tr>
-                                    <th>TRANSACTION ID</th>
-                                    <th>CLIENT NAME</th>
-                                    <th>CREDIT AMOUNT</th>
-                                    <th>DEBIT AMOUNT</th>
-                                    <th>REMARK</th>
-                                    <th>TRANSACTION DATE</th>
-                                    <th>CREATED DATE</th>
-                                    <th>ACTION</th>
+                                    <th>SN.</th>
+                                    <th>Online / Offline Bilti No.</th>
+                                    <th>Booking Date</th>
+                                    <th>Articles</th>
+                                    <th>Origin</th>
+                                    <th>Consignor</th>
+                                    <th>Destinaton</th>
+                                    <th>Consignee</th>
+                                    <th>Amount</th>
+                                    <th>Type</th>
+                                    <th>Dispatch Date</th>
+                                    <th>Challan No.</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+
+                            </tbody>
                             <tfoot>
-                                <tr>
-                                    <th colspan="2" style="text-align:right">Total:</th>
-                                    <th id="total-credit">0.00</th>
-                                    <th id="total-debit">0.00</th>
-                                    <th colspan="4"></th>
-                                </tr>
+                               
                             </tfoot>
                         </table>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -109,53 +115,80 @@
 
 <script>
     $(document).ready(function(e) {
+
+
+
         function parseValue(val) {
             if (typeof val === 'number') return val;
             if (typeof val === 'string') return parseFloat(val.replace(/[^0-9.\-]/g, '')) || 0;
             return 0;
         }
 
-        var table = new DataTable('#account-list', {
+        var table = new DataTable('#outgoing-booking-list', {
             responsive: true,
+            scrollY: "400px",
+            scrollX: true,
+            scrollCollapse: true,
+            searching: false, 
             ajax: {
-                url: "{{ url('admin/accounts/list') }}",
+                url: "{{ url('admin/reports/outgoing-bookings/list') }}",
                 data: function(d) {
                     d.client_id = $('#client_id').val();
                     d.date_from = $('#date_from').val();
                     d.date_to = $('#date_to').val();
+                    d.booking_type = $('#booking_type').val();
+                    d.consignee_branch_id = $('#consignee_branch_id').val();
                 }
             },
             columns: [{
-                    data: 'id'
+                    data: 'sn'
                 },
                 {
-                    data: 'client_name'
+                    data: 'bilti_number'
                 },
                 {
-                    data: 'credit_amount'
+                    data: 'booking_date'
                 },
                 {
-                    data: 'debit_amount'
+                    data: 'no_of_artical'
                 },
                 {
-                    data: 'description'
+                    data: 'origin',
+                    orderable: false
                 },
                 {
-                    data: 'transaction_date'
+                    data: 'consignor_name'
                 },
                 {
-                    data: 'created_at'
+                    data: 'destination',
+                    orderable: false
                 },
                 {
-                    data: 'action',
+                    data: 'consignee_name'
+                },
+                {
+                    data: 'amount',
+                    orderable: false
+                },
+                {
+                    data: 'booking_type'
+                },
+                {
+                    data: 'dispatch_date',
+                    orderable: false
+                },
+                {
+                    data: 'challan_number',
                     orderable: false
                 }
             ],
-
             processing: true,
             serverSide: true,
+
+
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
+
                 let totalCredit = api.column(2, {
                         page: 'current'
                     }).data()
@@ -170,6 +203,7 @@
                 $(api.column(3).footer()).html(totalDebit.toFixed(2));
             }
         });
+
 
         $('#filter-form').on('submit', function(e) {
             e.preventDefault();
@@ -189,7 +223,6 @@
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <link rel="stylesheet" href="{{ asset('admin_webu/plugins/select2/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('admin_webu/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-
 <style>
     .select2.select2-container {
         width: 100% !important;

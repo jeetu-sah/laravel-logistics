@@ -24,4 +24,14 @@ class LoadingChallanBooking extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function challan()
+    {
+        return $this->belongsTo(LoadingChallan::class, 'loading_challans_id');
+    }
+
+    public function booking()
+    {
+        return $this->belongsTo(Booking::class, 'booking_id');
+    }
 }

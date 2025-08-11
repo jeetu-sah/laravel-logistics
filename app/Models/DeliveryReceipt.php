@@ -33,7 +33,6 @@ class DeliveryReceipt extends Model
         'status',
     ];
 
-    // Optional: You can define relationships if needed. For example:
     public function booking()
     {
         return $this->belongsTo(Booking::class, 'booking_id');

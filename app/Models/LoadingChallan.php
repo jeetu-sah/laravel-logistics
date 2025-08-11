@@ -58,6 +58,11 @@ class LoadingChallan extends Model
     //     return $this->hasManyThrough(Booking::class, LoadingChallanBooking::class, 'loading_challans_id', 'id', 'id', 'booking_id');
     // }
 
+    public function challanBookings()
+    {
+        return $this->hasMany(LoadingChallanBooking::class, 'loading_challans_id');
+    }
+
 
     /*is_received_button_visible
         get for which branch should be display the received button */
@@ -69,5 +74,4 @@ class LoadingChallan extends Model
         }
         return $flag;
     }
-
 }

@@ -116,8 +116,8 @@ class AccountsController extends Controller
                 $row['id'] = $transaction->id;
                 $row['client_name'] = $transaction?->client?->client_name ?? '--';
                 $row['type'] = $transaction?->type;
-                $row['credit_amount'] = ($transaction->type == ClientTransaction::TYPE_CREDIT) ? $transaction->amount : '--';
-                $row['debit_amount'] = ($transaction->type == ClientTransaction::TYPE_DEBIT) ? $transaction->amount : '--';
+                $row['credit_amount'] = ($transaction->type == ClientTransaction::TYPE_CREDIT) ? $transaction->amount : '';
+                $row['debit_amount'] = ($transaction->type == ClientTransaction::TYPE_DEBIT) ? $transaction->amount : '';
                 $row['description'] = $transaction->description;
                 $row['transaction_date'] = formatDate($transaction?->transaction_date);
                 $row['created_at'] = formatDate($transaction->created_at);

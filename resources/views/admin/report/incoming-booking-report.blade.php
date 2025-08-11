@@ -12,7 +12,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">{{ $title }}</li>
+                            <li class="breadcrumb-item active">Bookings Reports</li>
                         </ol>
                     </div>
                 </div>
@@ -28,15 +28,6 @@
                 <div class="card-body">
                     <form id="bookingFilterForm">
                         <!-- Booking Type Filter -->
-                        <div class="form-group d-inline-block mr-3">
-                            <label for="client_name">Select Client</label>
-                            <select id="client_name" name="client_name" class="form-select select2 form-control js-select2">
-                                <option value="">--Select Booking Type--</option>
-                                @foreach ($client as $clients)
-                                    <option value="{{ $clients->id }}">{{ $clients->client_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="form-group d-inline-block mr-3">
                             <label for="booking_type">Booking Type</label>
                             <select id="booking_type" name="booking_type"
@@ -124,9 +115,7 @@
 
 @section('script')
     @parent
-    <!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
-    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+    
     <script>
         $(document).ready(function() {
             // Initialize the DataTable
@@ -135,7 +124,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ url('admin/reports/bookings/list') }}",
+                    url: "{{ url('admin/reports/incoming-bookings/list') }}",
                     data: function(d) {
                         // Add custom filter data to the DataTable request
                         d.client_name = $('#client_name').val(); // Get selected booking type
