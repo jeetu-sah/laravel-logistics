@@ -93,8 +93,12 @@ Route::group(['middleware' => ['auth']], function () {
 
         // Booking Report
         Route::prefix('reports')->group(function () {
-            Route::get('clients-reports', [ReportsController::class, 'clientBooking']);
-            Route::get('clients/list', [ReportsController::class, 'clientBookingReportsAjaxList']);
+            Route::get('clients-incoming-reports', [ReportsController::class, 'clientIncomingBookingIndex']);
+            Route::get('clients-incoming-reports/list', [ReportsController::class, 'clientIncomingBookingReportsAjaxList']);
+            
+            Route::get('clients-outgoing-reports', [ReportsController::class, 'clientOutgoingBookingIndex']);
+            Route::get('clients-outgoing-reports/list', [ReportsController::class, 'clientOutgoingBookingReportsAjaxList']);
+            
             Route::get('outgoing-bookings-report', [ReportsController::class, 'outgoingBookingIndex']);
             Route::get('outgoing-bookings/list', [ReportsController::class, 'outgoingBookingAjaxList']);
             

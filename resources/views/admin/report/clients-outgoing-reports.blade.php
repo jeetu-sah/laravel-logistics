@@ -5,15 +5,12 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                    <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
-                        <i class=" fa-sm text-white-50"></i> </a>
-                </div>
+                <div class="col-sm-6"></div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item">Reports</li>
-                        <li class="breadcrumb-item active">Client Booking Reports</li>
+                        <li class="breadcrumb-item active">Client Outgoing Load Reports</li>
                     </ol>
                 </div>
             </div>
@@ -25,10 +22,8 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center w-100">
-                    <h2 class="card-title mb-0">Accounts List</h2>
-                    <a href="{{ url('admin/accounts/create') }}" class="btn btn-sm btn-success shadow-sm">
-                        <i class="fa fa-user fa-sm text-white-50"></i> Add Accounts
-                    </a>
+                    <h2 class="card-title mb-0">Client Outgoing Load Reports</h2>
+                    
                 </div>
             </div>
             <div class="card-body">
@@ -61,8 +56,6 @@
                         </div>
                     </div>
                 </form>
-
-                {{-- Data Table --}}
                 <div class="row">
                     <div class="table-responsive">
                         <table class="display" id="account-list">
@@ -79,7 +72,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- Fill with your data using Blade or JavaScript --}}
+                               
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -121,7 +114,7 @@
         var table = new DataTable('#account-list', {
             responsive: true,
             ajax: {
-                url: "{{ url('admin/reports/clients/list') }}",
+                url: "{{ url('admin/reports/clients-outgoing-reports/list') }}",
                 data: function(d) {
                     d.client_id = $('#client_id').val();
                     d.date_from = $('#date_from').val();

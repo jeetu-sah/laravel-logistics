@@ -341,35 +341,28 @@
                             <a href="{{ url('admin/reports/outgoing-bookings-report') }}"
                                 class="nav-link {{ request()->is('admin/reports/outgoing-bookings-report') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Outgoing Load Reports</p>
+                                <p>Outgoing Load </p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ url('admin/reports/incoming-bookings-report') }}"
                                 class="nav-link {{ request()->is('admin/reports/incoming-bookings-report') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Incoming Load Reports</p>
+                                <p>Incoming Load </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/reports/clients-reports') }}"
-                                class="nav-link {{ request()->is('admin/reports/clients') ? 'active' : '' }}">
+                            <a href="{{ url('admin/reports/clients-outgoing-reports') }}"
+                                class="nav-link {{ request()->is('admin/reports/clients-outgoing-reports') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Clients Bookings Reports</p>
+                                <p>Clients Outgoing Load</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/report/chalan-reports') }}"
-                                class="nav-link {{ request()->is('admin/report/chalan-reports') || request()->is('admin/report') ? 'active' : '' }}">
+                            <a href="{{ url('admin/reports/clients-incoming-reports') }}"
+                                class="nav-link {{ request()->is('admin/reports/clients-incoming-reports') || request()->is('admin/reports') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Challan Reports</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/report/delevery-reports') }}"
-                                class="nav-link {{ request()->is('admin/report/delevery-reports') || request()->is('admin/challans') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Delevery Reports</p>
+                                <p>Clients Incoming Load</p>
                             </a>
                         </li>
                     </ul>
