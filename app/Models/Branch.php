@@ -31,6 +31,7 @@ class Branch extends Model
         'address1',
         'address2',
         'user_status',
+        'incoming_commission_price'
     ];
 
     public function fromBookings(): HasMany
@@ -68,5 +69,10 @@ class Branch extends Model
     public static function currentbranch()
     {
         return self::where('id', Auth::user()->branch_user_id)->first();
+    }
+
+    public function commisionsList()
+    {
+        return $this->hasMany(BranchCommision::class, 'consignor_branch_id', 'id');
     }
 }

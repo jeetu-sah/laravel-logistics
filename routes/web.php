@@ -98,16 +98,16 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::get('clients-incoming-reports', [ReportsController::class, 'clientIncomingBookingIndex']);
             Route::get('clients-incoming-reports/list', [ReportsController::class, 'clientIncomingBookingReportsAjaxList']);
-            
+
             Route::get('outgoing-bookings-report', [ReportsController::class, 'outgoingBookingIndex']);
             Route::get('outgoing-bookings/list', [ReportsController::class, 'outgoingBookingAjaxList']);
-            
+
             Route::get('incoming-bookings-report', [ReportsController::class, 'incomingBookingIndex']);
             Route::get('incoming-bookings/list', [ReportsController::class, 'incomingBookingAjaxList']);
         });
 
         // Client Booking Report
-    
+
         Route::get('reports/clients/bookings/list', [BookingReportController::class, 'clientBookingview']);
         Route::get('reports/clients/bookings/revenue/{fromId}/{toId}', [BookingReportController::class, 'clientBookingRevenue']);
         Route::get('reports/clients/bookings/{id}', [BookingReportController::class, 'clientBookingList']);
@@ -126,6 +126,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/list', [BranchController::class, 'list']);
             Route::get('/deletebranch/{id}', [BranchController::class, 'deletebranch']);
             Route::get('/create', [BranchController::class, 'create']);
+            Route::get('/commision/{id}', [BranchController::class, 'commision']);
+            Route::post('/store-commision/{id}', [BranchController::class, 'storeCommision']);
             Route::get('/edit/{branchId}', [BranchController::class, 'edit']);
             Route::post('/update/{id}', [BranchController::class, 'update'])->name('admin.update');
             Route::post('/store', [BranchController::class, 'store'])->name('admin.store');

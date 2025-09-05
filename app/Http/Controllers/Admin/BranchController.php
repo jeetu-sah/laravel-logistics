@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\User;
+use App\Models\BranchCommision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -26,11 +27,24 @@ class BranchController extends Controller
      */
     public function create()
     {
-
         $data['countries'] = DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
         $data['states'] = DB::table('country_states')->get();
-
         return view('admin.branch.create', $data);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function commision($id)
+    {
+        $data['title'] = 'Branch list | commision';
+        $data['branch'] = Branch::with(['user', 'commisionsList'])->find($id);
+        $data['branches'] = Branch::where('id', '!=', $id)->get();
+         
+        // echo "<pre>";
+        // print_r($data['branch']);exit;
+
+        return view('admin.branch.commision', $data);
     }
     /**
      * Store a newly created resource in storage.
@@ -66,6 +80,7 @@ class BranchController extends Controller
             'address1' => $request->input('address1'),
             'address2' => $request->input('address2'),
             'user_status' => $request->input('user_status'),
+            'incoming_commission_price' => $request->input('incoming_commission_price')
         ]);
 
         if ($branch) {
@@ -98,9 +113,9 @@ class BranchController extends Controller
 
     public function list(Request $request)
     {
-        
-        $limit = $request->input('length', 10); // Default to 10 if 'length' is not provided
-        $start = $request->input('start', 0);   // Default to 0 if 'start' is not provided
+
+        $limit = $request->input('length', 10);
+        $start = $request->input('start', 0);
 
         // Get total record count
         $totalRecord = Branch::count(); // Simplified to directly get the count
@@ -120,8 +135,29 @@ class BranchController extends Controller
                 $row['gst'] = $branch->gst;
                 $row['user_status'] = $branch->user_status;
                 $row['identity'] = $branch?->user?->identity ?? '--';
-                $row['action'] = '<a href="' . url("admin/branches/edit/{$branch->id}") . '" class="btn btn-primary">Edit</a> ';
-                $row['action'] .= '<a href="' . url("admin/branches/deletebranch/{$branch->id}") . '" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to soft delete this branch?\')">Delete</a>';
+                $row['action'] = '
+                <div class="dropdown">
+                    <button class="btn btn-light btn-sm" type="button" id="actionMenu' . $branch->id . '" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-list"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="actionMenu' . $branch->id . '">
+                       <li>
+                            <a class="dropdown-item" href="' . url("admin/branches/edit/{$branch->id}") . '">
+                                <i class="fas fa-pencil-alt me-2"></i> Edit
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="' . url("admin/branches/deletebranch/{$branch->id}") . '" onclick="return confirm(\'Are you sure you want to soft delete this branch?\')">
+                                <i class="fas fa-trash me-2"></i> Delete
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-success" href="' . url("admin/branches/commision/{$branch->id}") . '">
+                                <i class="fas fa-percent me-2"></i> Set Commisions
+                            </a>
+                        </li>
+                    </ul>
+                </div>';
 
                 $row['created_at'] = formatDate($branch->created_at);
 
@@ -143,9 +179,33 @@ class BranchController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Branch $branches)
+    public function storeCommision(Request $request, $id)
     {
-        //
+        $request->validate([
+            'branch_name'        => 'required|array|min:1',
+            'branch_name.*'      => 'exists:branches,id|different:' . $id,
+            'commission_amount'  => 'required|array',
+        ]);
+
+        foreach ($request->branch_name as $branchId) {
+            $amount = $request->commission_amount[$branchId] ?? null;
+
+            BranchCommision::updateOrCreate(
+                [
+                    'consignor_branch_id' => $id,
+                    'consignee_branch_id' => $branchId,
+                ],
+                [
+                    'amount'   => $amount,
+                    'status'   => 'active',
+                ]
+            );
+        }
+
+        return redirect()->back()->with([
+            "alertMessage" => true,
+            "alert" => ['message' => 'Branch commisions set successfully', 'type' => 'success']
+        ]);
     }
 
     /**
@@ -155,7 +215,6 @@ class BranchController extends Controller
     {
         $data['title'] = 'Edit Branch';
         $data['branch'] = Branch::with('user')->find($id);
-
         $data['countries'] = DB::table('countries')->whereIn('code', ['NP', 'IN'])->get();
         return view('admin.branch.edit', $data);
     }
@@ -205,6 +264,7 @@ class BranchController extends Controller
             $branch->address1 = $request->address1;
             $branch->address2 = $request->address2;
             $branch->user_status = $request->user_status;
+            $branch->incoming_commission_price = $request->incoming_commission_price;
             $branch->save();
 
             $user = $branch->user;
@@ -237,12 +297,8 @@ class BranchController extends Controller
 
     public function deletebranch($id)
     {
-
         $branch = Branch::findOrFail($id);
-
-        // Soft delete the branch
         $branch->delete();
-
         return redirect('admin/branches')->with('success', 'Branch deleted successfully.');
     }
 }

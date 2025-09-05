@@ -45,8 +45,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="date">Select Client</label>
-                                    <select class="form-select select2 form-control js-select2" name="consignor_branch_id"
-                                        id="consignor_branch_id">
+                                    <select class="form-select select2 form-control js-select2" name="client_id"
+                                        id="client_id">
                                             <option value="">Select Client</option>
                                             @if(count($combineClients) > 0)
                                                 @forelse ($combineClients as $client)
@@ -116,10 +116,6 @@
 
 @section('styles')
 @parent
-<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-<link rel="stylesheet" href="{{ asset('admin_webu/plugins/select2/css/select2.min.css') }}">
-<link rel="stylesheet" href="{{ asset('admin_webu/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-
 <style>
     .select2.select2-container {
         width: 100% !important;

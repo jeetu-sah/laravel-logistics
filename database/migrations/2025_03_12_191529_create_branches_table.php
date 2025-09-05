@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id(); // auto-incrementing id column
             $table->string('branch_name');
+            $table->double('incoming_commission_price', 8, 2)->default(0);
             $table->string('branch_code');
             $table->string('owner_name');
             $table->string('contact');

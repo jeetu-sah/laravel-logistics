@@ -33,10 +33,11 @@ class AccountsController extends Controller
 
     public function store(Request $request)
     {
+       
         try {
             $validatedData = $request->validate([
                 'branch_id'            => 'required|integer|exists:branches,id',
-                'consignor_branch_id'  => 'required|integer|exists:branches,id', // assuming it's client_id
+                'client_id'  => 'required|integer',
                 'type'                 => 'required|in:debit,credit',
                 'amount'               => 'required|numeric|min:0',
                 'transaction_date'     => 'required|date',
@@ -45,7 +46,7 @@ class AccountsController extends Controller
 
             $transaction = ClientTransaction::create([
                 'branch_id'        => $validatedData['branch_id'],
-                'client_id'        => $validatedData['consignor_branch_id'],
+                'client_id'        => $validatedData['client_id'],
                 'type'             => $validatedData['type'],
                 'amount'           => $validatedData['amount'],
                 'description'      => $validatedData['remark'],
