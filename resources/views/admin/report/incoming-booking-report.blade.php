@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="consignee_branch_id" class="form-label">Consignee Branch</label>
+                            <label for="consignee_branch_id" class="form-label">Destination branch</label>
                             <select id="consignee_branch_id" name="consignee_branch_id" class="form-select select2 form-control js-select2">
                                 <option value="">-- All Clients --</option>
                                 @foreach($branches as $branch)
@@ -91,8 +91,12 @@
                             <tbody>
 
                             </tbody>
-                            <tfoot>
-                               
+                           <tfoot>
+                                <tr>
+                                    <th colspan="8" style="text-align:right">Total:</th>
+                                    <th></th> 
+                                    <th colspan="3"></th>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -185,22 +189,16 @@
             processing: true,
             serverSide: true,
 
-
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
+                var json = api.ajax.json();
 
-                let totalCredit = api.column(2, {
-                        page: 'current'
-                    }).data()
-                    .reduce((a, b) => parseValue(a) + parseValue(b), 0);
+                console.log('json', json.total_amount)
 
-                let totalDebit = api.column(3, {
-                        page: 'current'
-                    }).data()
-                    .reduce((a, b) => parseValue(a) + parseValue(b), 0);
-
-                $(api.column(2).footer()).html(totalCredit.toFixed(2));
-                $(api.column(3).footer()).html(totalDebit.toFixed(2));
+                if (json && json.total_amount) {
+                    // Put total_amount in Amount column (index 8)
+                    $(api.column(8).footer()).html(json.total_amount);
+                }
             }
         });
 

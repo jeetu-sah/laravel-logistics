@@ -64,6 +64,7 @@
                                     <th>SN.</th>
                                     <th>Online / Offline Bilti No.</th>
                                     <th>Booking Date</th>
+                                     <th>Client Origin / Destination</th>
                                     <th>Articles</th>
                                     <th>Origin</th>
                                     <th>Consignor</th>
@@ -80,8 +81,9 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="7" style="text-align:right">Total:</th>
-                                    <th id="total-amount">0</th>
+                                    <th colspan="10" style="text-align:right">Total:</th>
+                                    <th></th>
+                                    <th colspan="3"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -141,6 +143,9 @@
                     data: 'booking_date'
                 },
                 {
+                    data: 'client_origin_destination'
+                },
+                {
                     data: 'no_of_artical'
                 },
                 {
@@ -175,23 +180,13 @@
             ],
             processing: true,
             serverSide: true,
-
-
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
+                var json = api.ajax.json();
 
-                let totalCredit = api.column(2, {
-                        page: 'current'
-                    }).data()
-                    .reduce((a, b) => parseValue(a) + parseValue(b), 0);
-
-                let totalDebit = api.column(3, {
-                        page: 'current'
-                    }).data()
-                    .reduce((a, b) => parseValue(a) + parseValue(b), 0);
-
-                $(api.column(2).footer()).html(totalCredit.toFixed(2));
-                $(api.column(3).footer()).html(totalDebit.toFixed(2));
+                if (json && json.total_amount) {
+                    $(api.column(8).footer()).html(json.total_amount);
+                }
             }
         });
 

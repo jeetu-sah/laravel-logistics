@@ -298,6 +298,11 @@ class Booking extends Model
         return $this->belongsTo(Client::class, 'client_id');
     }
 
+    public function clientTo()
+    {
+        return $this->belongsTo(Client::class, 'client_to_id');
+    }
+
     public function consigneeBranch()
     {
         return $this->belongsTo(Branch::class, 'consignee_branch_id');
