@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 class BranchController extends Controller
 {
@@ -40,9 +42,6 @@ class BranchController extends Controller
         $data['title'] = 'Branch list | commision';
         $data['branch'] = Branch::with(['user', 'commisionsList'])->find($id);
         $data['branches'] = Branch::where('id', '!=', $id)->get();
-         
-        // echo "<pre>";
-        // print_r($data['branch']);exit;
 
         return view('admin.branch.commision', $data);
     }
@@ -181,31 +180,42 @@ class BranchController extends Controller
      */
     public function storeCommision(Request $request, $id)
     {
-        $request->validate([
-            'branch_name'        => 'required|array|min:1',
-            'branch_name.*'      => 'exists:branches,id|different:' . $id,
-            'commission_amount'  => 'required|array',
-        ]);
+        try {
+            $request->validate([
+                'branch_name'        => 'required|array|min:1',
+                'branch_name.*'      => 'exists:branches,id|different:' . $id,
+                'commission_amount'  => 'required|array',
+            ]);
 
-        foreach ($request->branch_name as $branchId) {
-            $amount = $request->commission_amount[$branchId] ?? null;
+            foreach ($request->branch_name as $branchId) {
+                $amount = $request->commission_amount[$branchId] ?? null;
 
-            BranchCommision::updateOrCreate(
-                [
-                    'consignor_branch_id' => $id,
-                    'consignee_branch_id' => $branchId,
-                ],
-                [
-                    'amount'   => $amount,
-                    'status'   => 'active',
-                ]
-            );
+                BranchCommision::updateOrCreate(
+                    [
+                        'consignor_branch_id' => $id,
+                        'consignee_branch_id' => $branchId,
+                    ],
+                    [
+                        'amount'   => $amount,
+                        'status'   => 'active',
+                    ]
+                );
+            }
+
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Branch commissions set successfully', 'type' => 'success']
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Error saving branch commission: " . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->back()->with([
+                "alertMessage" => true,
+                "alert" => ['message' => 'Something went wrong while saving commissions. Please try again.', 'type' => 'danger']
+            ]);
         }
-
-        return redirect()->back()->with([
-            "alertMessage" => true,
-            "alert" => ['message' => 'Branch commisions set successfully', 'type' => 'success']
-        ]);
     }
 
     /**
