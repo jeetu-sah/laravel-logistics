@@ -205,6 +205,22 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="col-md-4 mb-2">
+                                <label for="gst" class="form-label">Fix Transhipment Commision Price</label>
+                                <input class="form-control"
+                                    name="transhipment_commission_price"
+                                    id="transhipment_commission_price"
+                                    placeholder="Fix Transhipment Commision Price"
+                                    value="{{ $branch->transhipment_commission_price ?? '0' }}"
+                                    required />
+                                <div id="incomingHint" class="form-text">
+                                    This will applicable for per article
+                                </div>
+                                <div class="invalid-feedback">Enter Fix Transhipment Commision Price</div>
+                                @error('transhipment_commission_price')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
 
                         </div>
                         <button class="btn btn-primary mt-3" type="submit">Submit</button>

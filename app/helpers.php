@@ -66,3 +66,28 @@ function formatOnlyDate($date)
 {
     return \Carbon\Carbon::parse($date)->format('d/m/Y');
 }
+
+
+if (!function_exists('indian_number_format')) {
+    function indian_number_format($num)
+    {
+        $num = (string) $num;
+        $decimal = '';
+
+        // Handle decimals
+        if (strpos($num, '.') !== false) {
+            list($num, $decimal) = explode('.', $num);
+            $decimal = '.' . $decimal;
+        }
+
+        $len = strlen($num);
+        if ($len > 3) {
+            $last3 = substr($num, -3);
+            $rest = substr($num, 0, -3);
+            $rest = preg_replace("/\B(?=(\d{2})+(?!\d))/", ",", $rest);
+            $num = $rest . ',' . $last3;
+        }
+
+        return $num . $decimal;
+    }
+}

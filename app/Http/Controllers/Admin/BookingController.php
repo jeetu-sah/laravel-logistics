@@ -120,6 +120,13 @@ class BookingController extends Controller
         $data['currentBranch']  = Branch::currentbranch();
         $data['clients']  = $data['currentBranch']->clients;
         $data['booking'] = Booking::with(['transhipments'])->where('id', $id)->first();
+      
+        // print_r($data['booking']->incoming_booking_commisions);exit;
+
+        // $bookingCommisions = Booking::bookingCommisions($data['booking']);
+        // echo "<pre>";
+        // print_r($data['booking']->transhipments[1]->commision);exit;
+
         $transhipments = $data['booking']->transhipments;
         $data['transhipmentOne'] = $data['transhipmentTwo'] = $data['transhipmentThree'] = NULL;
 

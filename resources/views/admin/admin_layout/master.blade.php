@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="{{ asset('admin_webu/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css">
+
     <style>
         .select2.select2-container {
             width: 100% !important;
@@ -343,16 +346,16 @@
     <script src="{{ asset('admin_webu/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('admin_webu/dist/js/adminlte.js') }}"></script>
-
-    <!-- OPTIONAL SCRIPTS -->
     <script src="{{ asset('admin_webu/dist/js/demo.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <!-- PAGE PLUGINS -->
     <!-- jQuery Mapael -->
     <script src="{{ asset('admin_webu/plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
     <script src="{{ asset('admin_webu/plugins/raphael/raphael.min.js') }}"></script>
     <script src="{{ asset('admin_webu/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
-    <script src="{{ asset('admin_webu/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+
     <!-- ChartJS -->
     <script src="{{ asset('admin_webu/plugins/chart.js/Chart.min.js') }}"></script>
 

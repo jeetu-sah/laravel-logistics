@@ -79,7 +79,8 @@ class BranchController extends Controller
             'address1' => $request->input('address1'),
             'address2' => $request->input('address2'),
             'user_status' => $request->input('user_status'),
-            'incoming_commission_price' => $request->input('incoming_commission_price')
+            'incoming_commission_price' => $request->input('incoming_commission_price'),
+            'transhipment_commission_price' => $request->input('transhipment_commission_price'),
         ]);
 
         if ($branch) {
@@ -275,6 +276,7 @@ class BranchController extends Controller
             $branch->address2 = $request->address2;
             $branch->user_status = $request->user_status;
             $branch->incoming_commission_price = $request->incoming_commission_price;
+            $branch->transhipment_commission_price = $request->transhipment_commission_price;
             $branch->save();
 
             $user = $branch->user;

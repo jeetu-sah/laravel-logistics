@@ -31,7 +31,8 @@ class Branch extends Model
         'address1',
         'address2',
         'user_status',
-        'incoming_commission_price'
+        'incoming_commission_price',
+        'transhipment_commission_price'
     ];
 
     public function fromBookings(): HasMany
@@ -75,4 +76,7 @@ class Branch extends Model
     {
         return $this->hasMany(BranchCommision::class, 'consignor_branch_id', 'id');
     }
+
+    
+
 }
