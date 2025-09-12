@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\BranchUser\ReviewerController;
 use App\Http\Controllers\BranchUser\SettingController;
 use App\Http\Controllers\BranchUser\DashboardController;
+use App\Http\Controllers\BranchUser\CommissionsController;
 use App\Http\Controllers\FranchiseApplicationController;
 
 /*
@@ -247,6 +248,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/edit/{id}', [ReviewerController::class, 'edit']);
             Route::post('/update/{id}', [ReviewerController::class, 'update']);
             Route::post('/store', [ReviewerController::class, 'store'])->name('branch-user.add_employee');
+        });
+        Route::prefix('commissions')->group(function () {
+           Route::resource('/', CommissionsController::class);
+
+          
         });
 
         Route::prefix('settings')->group(function () {

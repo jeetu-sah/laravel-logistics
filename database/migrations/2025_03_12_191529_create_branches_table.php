@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // auto-incrementing id column
             $table->string('branch_name');
             $table->double('incoming_commission_price', 8, 2)->default(0);
+            $table->double('transhipment_commission_price', 8, 2)->default(0);
             $table->string('branch_code');
             $table->string('owner_name');
             $table->string('contact');

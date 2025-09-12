@@ -67,7 +67,7 @@ class IncomingBookingController extends Controller
                 }
 
                 // Bilti and offline bilti links
-                $row['bilti_number'] = '<a href="' . url("admin/bookings/bilti/$booking->id") . '" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['bilti_number'] = '<a href="' . url("admin/bookings/print-bilti/$booking->id") . '" target="_blank">' . $booking->bilti_number . '</a>';
                 $row['offline_bilti_number'] = $booking->manual_bilty_number . " / " . formatOnlyDate($booking->offline_booking_date);
                 $row['offline_bilti'] = $booking->manual_bilty_number  ? '<a href="" target="_blank">' . $booking->offline_booking_date . '</a>' : 'N/A';;
                 $row['consignor_branch'] = $booking?->consignorBranch?->branch_name;

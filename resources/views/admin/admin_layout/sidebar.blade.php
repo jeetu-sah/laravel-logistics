@@ -33,6 +33,18 @@
                         </p>
                     </a>
                 </li>
+                @role('Branchuser')
+                <li class="nav-item">
+                    <a href="{{ url('/branch-user/commissions') }}"
+                        class="nav-link {{ sHelper::activeSideBar(Request::path(), ['branch-user/commissions']) }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Commissions
+                        </p>
+                    </a>
+                </li>
+               @endrole
+
                 @role('Admin')
                 <li class="nav-item has-treeview {{ request()->is('admin/role-list*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('/') }}"

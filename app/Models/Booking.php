@@ -24,7 +24,7 @@ class Booking extends Model
     const BOOKING_TYPE_PAID = "Paid";
     const BOOKING_TYPE_TOPAY = "Topay";
     const BOOKING_TYPE_TOCLIENT = "Toclient";
-  
+
 
     const NORMAL_BOOKING = 'normal-booking';
     const CLIENT_BOOKING = 'client-booking';
@@ -331,4 +331,87 @@ class Booking extends Model
             $query->where('bookings.id', $this->id);
         })->where('from_transhipment', $branchId)->first();
     }
+
+    //outgoing_booking_commisions
+    public function getOutgoingBookingCommisionsAttribute()
+    {
+        $commisionPrice = BranchCommision::where('consignor_branch_id', $this->consignor_branch_id)
+            ->where('consignee_branch_id', $this->consignee_branch_id)
+            ->first();
+        if ($commisionPrice) {
+            $totalBookingCommision = $this->no_of_artical * $commisionPrice->amount;
+            return $totalBookingCommision;
+        }
+        return 0;
+    }
+
+
+    //incoming_booking_commisions
+    public function getIncomingBookingCommisionsAttribute()
+    {
+        
+        $incomingCommisionProcess = $this->consigneeBranch?->incoming_commission_price;
+        if ($this->consigneeBranch && $incomingCommisionProcess) {
+            $totalBookingCommision = $this->no_of_artical * $incomingCommisionProcess;
+            return $totalBookingCommision;
+        }
+        return 0;
+    }
+
+    // public static function bookingCommisions($booking)
+    // {
+       
+    //     $totalBookingCommision = 0;
+    //     $transhipments = $booking->transhipments;
+    //     if($transhipments->count() > 0) {
+    //          echo "<pre>";
+    //         print_r($transhipments);exit;
+    //     }
+    //     $commisionPrice = BranchCommision::where('consignor_branch_id', $booking->consignor_branch_id)
+    //         ->where('consignee_branch_id', $booking->consignee_branch_id)
+    //         ->first();
+    //     if ($commisionPrice) {
+    //         $price = $commisionPrice->amount;
+    //         $booking->outgoing_commision = $booking->no_of_artical * $price;
+    //     }
+
+    //     $bookingTranshipment = $booking->transhipments;
+    //     if ($bookingTranshipment->count() > 0) {
+    //         foreach ($bookingTranshipment as $transhipment) {
+    //             if ($transhipment->type == Transhipment::TYPE_SENDER) {
+    //                 $nextBookigngTranshipment = $booking->next_booking_transhipment;
+
+    //                 echo "<pre>";
+    //                 print_r($booking);
+    //                 exit;
+    //             }
+    //             if ($transhipment->type == Transhipment::TYPE_RECEIVER) {
+    //             }
+    //             if ($transhipment->type == Transhipment::TYPE_TRANSHIPMENT) {
+    //                 if ($transhipment->from_transhipment == Auth::user()->branch_user_id) {
+    //                     $commisionPrice = BranchCommision::where('consignor_branch_id', $transhipment->from_transhipment)
+    //                         ->where('consignee_branch_id', $transhipment->to_transhipment)
+    //                         ->first();
+    //                     if ($commisionPrice) {
+    //                         $totalBookingCommision = $booking->no_of_artical * $commisionPrice->amount;
+    //                         return $totalBookingCommision;
+    //                     }
+    //                 }
+    //             }
+
+    //             echo "<pre>";
+    //             print_r($transhipment);
+    //             exit;
+    //         }
+
+    //         $commisionPrice = BranchCommision::where('consignor_branch_id', $booking->consignor_branch_id)
+    //             ->where('consignee_branch_id', $booking->consignee_branch_id)
+    //             ->first();
+    //         if ($commisionPrice) {
+    //             $totalBookingCommision = $booking->no_of_artical * $commisionPrice->amount;
+    //             return $totalBookingCommision;
+    //         }
+    //     }
+    //     return 0;
+    // }
 }

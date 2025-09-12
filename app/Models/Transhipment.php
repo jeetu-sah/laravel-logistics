@@ -41,4 +41,26 @@ class Transhipment extends Model
     {
         return $this->belongsTo(Branch::class, 'from_transhipment');
     }
+
+
+    //commision
+    public function getCommisionAttribute()
+    {
+        if ($this->type === self::TYPE_SENDER && $this->booking) {
+            $consigneeId = $this->booking->consignee_branch_id;
+            $commisionPrice = BranchCommision::where('consignor_branch_id', $this->from_transhipment)
+                ->where('consignee_branch_id', $consigneeId)
+                ->first();
+            if ($commisionPrice) {
+                return $commisionPrice->amount * $this->booking->no_of_artical;
+            }
+            return 0;
+        } elseif ($this->type === self::TYPE_TRANSHIPMENT && $this->branch) {
+
+            return $this->branch->transhipment_commission_price * $this->booking->no_of_artical;
+        } else if ($this->type === self::TYPE_RECEIVER && $this->booking) {
+
+            return $this->branch->incoming_commission_price * $this->booking->no_of_artical;
+        }
+    }
 }
