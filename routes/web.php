@@ -250,7 +250,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/store', [ReviewerController::class, 'store'])->name('branch-user.add_employee');
         });
         Route::prefix('commissions')->group(function () {
-           Route::resource('/', CommissionsController::class);
+            Route::get('/search-commisions', [CommissionsController::class, 'filterCommisions'])->name('branch-user.commissions.filter');
+            Route::resource('/', CommissionsController::class);
 
           
         });

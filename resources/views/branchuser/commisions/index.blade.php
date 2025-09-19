@@ -44,6 +44,7 @@
                                     <span class="input-group-text"><i class="fas fa-filter"></i></span>
                                 </div>
                                 <select id="commissionFilter" class="form-control">
+                                    <option value="">Select Filters</option>
                                     <option value="weekly">Weekly</option>
                                     <option value="monthly">Monthly</option>
                                     <option value="yearly">Yearly</option>
@@ -59,15 +60,11 @@
                         </div>
                         <div class="col-md-4" id="yearlyPickerWrapper" style="display:none;">
                             <div class="input-group">
-                                <input type="text" class="form-control" id="year_picker" placeholder="Select Month & Year">
+                                <input type="text" class="form-control" id="year_picker" placeholder="Select Year">
 
                             </div>
                         </div>
                     </div>
-
-
-
-
                     <div class="row mb-3" id="customDateRange" style="display:none;">
                         <div class="col-md-4">
                             <input type="text" class="form-control" id="start_date" placeholder="Select Start Date">
@@ -105,7 +102,7 @@
                                     </span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Total Outgoing Load Commissions</span>
-                                        <span class="info-box-number">₹&nbsp;{{ indian_number_format($totalOutgoingCommisions ?? 0) }}</span>
+                                        <span class="info-box-number" id="outgoingCommisions">₹&nbsp;{{ indian_number_format($totalOutgoingCommisions ?? 0) }}</span>
                                     </div>
                                 </div>
                             </a>
@@ -120,7 +117,7 @@
                                     </span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Total Incoming Load Commissions</span>
-                                        <span class="info-box-number">₹&nbsp;{{ indian_number_format($totalIncmingCommisions ?? 0) }}</span>
+                                        <span class="info-box-number" id="incomingCommisions">₹&nbsp;{{ indian_number_format($totalIncmingCommisions ?? 0) }}</span>
                                     </div>
                                 </div>
                             </a>
@@ -135,7 +132,7 @@
                                     </span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Total Transhipment Commissions</span>
-                                        <span class="info-box-number">₹&nbsp;{{ indian_number_format($totalTranshipmentCommisions ?? 0) }}</span>
+                                        <span class="info-box-number" id="transhipmentCommisions">₹&nbsp;{{ indian_number_format($totalTranshipmentCommisions ?? 0) }}</span>
                                     </div>
                                 </div>
                             </a>
@@ -199,50 +196,55 @@
             console.log($(this).val());
             if ($(this).val() === 'custom') {
                 $('#customDateRange').show();
+                $('#customDateWrapper, #monthlyPickerWrapper, #yearlyPickerWrapper').hide();
             } else if ($(this).val() === 'monthly') {
-
-                $('#customDateWrapper, #customEndWrapper').hide();
+                $('#customDateWrapper, #customEndWrapper, #yearlyPickerWrapper').hide();
                 $('#monthlyPickerWrapper').show();
             } else if ($(this).val() === 'yearly') {
                 $('#yearlyPickerWrapper').show();
+                $('#customDateRange, #monthlyPickerWrapper').hide();
             } else {
-                $('#customDateRange').hide();
-                fetchCommissions({
-                    filter: $(this).val()
-                });
+                $('#customDateRange, #monthlyPickerWrapper, #yearlyPickerWrapper').hide();
             }
         });
 
         // Apply custom filter
         $('#applyCustomFilter').on('click', function() {
+            let commissionFilter = $('#commissionFilter').val();
             let startDate = $('#start_date').val();
             let endDate = $('#end_date').val();
+            let monthPicker = $('#month_picker').val();
+            let yearPicker = $('#year_picker').val();
 
+            if (!commissionFilter) {
+                alert("Please select filters.");
+            }
             if (!startDate || !endDate) {
                 alert("Please select both start and end date.");
                 return;
             }
 
             fetchCommissions({
-                filter: 'custom',
+                filter: commissionFilter,
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                month_picker: monthPicker,
+                year_picker: yearPicker
             });
         });
 
         // Fetch commissions from server
         function fetchCommissions(params) {
             $.ajax({
-                url: "{{ url('branch-user/commissions/filter') }}",
-                method: "GET",
+                url: "{{ route('branch-user.commissions.filter') }}",
+                method: "get",
                 data: params,
                 success: function(response) {
-                    if (response.success) {
-                        $('.info-box-number').eq(0).html("₹ " + response.data.totalOutgoing);
-                        $('.info-box-number').eq(1).html("₹ " + response.data.totalIncoming);
-                        $('.info-box-number').eq(2).html("₹ " + response.data.totalTranshipment);
-                    } else {
-                        alert("No data found for this filter.");
+                    console.log('response.data.totalOutgoingCommisions', response)
+                    if (response.status == 'success') {
+                        $('#outgoingCommisions').html("₹ " + response.data.totalOutgoingCommisions);
+                        $('#incomingCommisions').html("₹ " + response.data.totalIncmingCommisions);
+                        $('#transhipmentCommisions').html("₹ " + response.data.totalTranshipmentCommisions);
                     }
                 },
                 error: function() {
@@ -250,12 +252,6 @@
                 }
             });
         }
-
-        // Load default filter
-        fetchCommissions({
-            filter: 'weekly'
-        });
-
     });
 </script>
 @endsection
