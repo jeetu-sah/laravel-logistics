@@ -29,6 +29,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2)->default(0);
 
             $table->string('status', 15)->default('active')->comment('active, inactive');
+            $table->string('type', 15)->default('outgoing')->comment('outgoing, incoming');
 
             $table->timestamps();
         });

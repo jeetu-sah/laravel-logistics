@@ -49,7 +49,7 @@ Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('franchise', [FranchiseApplicationController::class, 'index']);
 Route::post('/franchise/application/store', [FranchiseApplicationController::class, 'store'])->name('franchise.application.store');
 
-Route::post('track-shipment', [ShipmentController::class, 'trackShipment']);
+Route::get('track-shipment/{builtyNumber}', [ShipmentController::class, 'trackShipment']);
 
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', [LoginController::class, 'index'])->name('/');
