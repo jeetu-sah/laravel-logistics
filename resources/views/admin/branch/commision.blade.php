@@ -1,93 +1,191 @@
 @extends('admin.admin_layout.master')
+
 @section('main_content')
-<div class="content-wrapper" style="min-height: 1419.51px;">
-    <!-- Content Header (Page header) -->
+<div class="content-wrapper">
+
+    <!-- Page Header -->
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <a href="{{ url('admin/branches') }}"
-                        class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-                            class="fa-sm text-white-50"></i> Branch List</a>
+            <div class="row align-items-center">
+                <div class="col-sm-7">
+                    <h3 class="mb-1 text-dark">Branch Commission Management</h3>
+                    <p class="text-muted mb-0">
+                        Configure <strong>Outgoing</strong> and <strong>Incoming</strong> commissions
+                        for branch: <span class="text-primary">{{ $branch->branch_name ?? '--' }}</span>
+                    </p>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Set Branch Commisions</li>
-                    </ol>
+                <div class="col-sm-5 text-right">
+                    <a href="{{ url('admin/branches') }}" class="btn btn-success btn-sm shadow-sm">
+                        <i class="fas fa-list mr-1"></i> Back to Branch List
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="row mb-2">
-            @include('common.notification')
+            <div class="row mt-3">
+                @include('common.notification')
+            </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- Main Content -->
     <section class="content">
-        <!-- Default box -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Set Branch Commisions for {{ $branch->branch_name ?? '--'}}</h3>
-            </div>
-            <div class="card-body">
-                <form action="{{ url('admin/branches/store-commision/2') }}"
-                    method="post"
-                    id="form"
-                    name="pForm"
-                    enctype="multipart/form-data"
-                    class="needs-validation"
-                    novalidate>
-                    @csrf
-                    @forelse($branches as $b)
-                        @php
-                            $commission = $branch->commisionsList->where('consignee_branch_id', $b->id)->first();
-                        @endphp
-                    <div class="row">
-                        <!-- Branch Name -->
-                        <div class="col-md-4 mb-3">
-                            <label for="branch_name_{{ $b->id }}" class="form-label">Branch Name</label>
-                            <select class="form-control"
-                                name="branch_name[]"
-                                id="branch_name"
-                                required>
-                                <option value="{{$b->id}}">{{$b->branch_name ?? '--'}}</option>
-                            </select>
+        <div class="container-fluid">
 
-                            <div class="invalid-feedback">Please select a branch</div>
-                            @error('branch_name')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
+            <div class="card shadow-sm">
+                <!-- Custom Tab Header -->
+                <div class="card-header bg-light border-bottom-0 p-0">
+                    <ul class="nav nav-pills nav-justified" id="commissionTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link py-3 font-weight-bold 
+                {{ session('activeTab', 'outgoing') === 'outgoing' ? 'active' : '' }}"
+                                id="outgoing-tab" data-toggle="tab" href="#outgoing" role="tab">
+                                <i class="fas fa-arrow-up text-primary mr-2"></i> Outgoing Commissions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link py-3 font-weight-bold 
+                {{ session('activeTab') === 'incoming' ? 'active' : '' }}"
+                                id="incoming-tab" data-toggle="tab" href="#incoming" role="tab">
+                                <i class="fas fa-arrow-down text-success mr-2"></i> Incoming Commissions
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="card-body">
+                    <div class="tab-content" id="commissionTabsContent">
+
+                        <!-- Outgoing Commissions -->
+                        <div class="tab-pane fade show active" id="outgoing" role="tabpanel">
+                            <h5 class="mb-3 text-primary"><i class="fas fa-cogs mr-1"></i> Outgoing Commission Settings</h5>
+                            <form action='{{ url("admin/branches/store-commision/$branch->id") }}' method="post" novalidate>
+                                @csrf
+                                <input type="hidden" name="type" value="outgoing" />
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Branch</th>
+                                                <th>Commission Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($branches as $b)
+                                            @php
+                                            $commission = $branch->outgoingCommisions->where('consignee_branch_id', $b->id)->first();
+                                            @endphp
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="branch_name[]" value="{{ $b->id }}">
+                                                    <span class="font-weight-bold">{{ $b->branch_name ?? '--' }}</span>
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        class="form-control"
+                                                        name="commission_amount[{{ $b->id }}]"
+                                                        placeholder="Enter Amount"
+                                                        value="{{ old('commission_amount.' . $b->id, $commission->amount ?? '') }}"
+                                                        required>
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <td colspan="2" class="text-center text-muted">No branches available.</td>
+                                            </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="text-right">
+                                    <button class="btn btn-primary mt-2" type="submit">
+                                        <i class="fas fa-save mr-1"></i> Save Outgoing Commissions
+                                    </button>
+                                </div>
+                            </form>
                         </div>
 
-                        <!-- Commission Amount -->
-                        <div class="col-md-4">
-                            <label for="commission_amount_{{ $b->id }}" class="form-label">Commission Amount</label>
-                            <input type="number"
-                                class="form-control"
-                                name="commission_amount[{{ $b->id }}]"
-                                id="commission_amount_{{ $b->id }}"
-                                placeholder="Enter Commission Amount"
-                                value="{{ old('commission_amount.' . $b->id, $commission->amount ?? '') }}"
-                                required>
-                            <div class="invalid-feedback">Please enter the commission amount</div>
-                            @error('commission_amount.' . $b->id)
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <!-- Incoming Commissions -->
+                        <div class="tab-pane fade" id="incoming" role="tabpanel">
+                            <h5 class="mb-3 text-success"><i class="fas fa-cogs mr-1"></i> Incoming Commission Settings</h5>
+                            <form action='{{ url("admin/branches/store-commision/$branch->id") }}' method="post" novalidate>
+                                @csrf
+                                <input type="hidden" name="type" value="incoming" />
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Branch</th>
+                                                <th>Commission Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($branches as $b)
+                                            @php
+                                            $commission = $branch->incomingCommisions->where('consignee_branch_id', $b->id)->first();
+                                            @endphp
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="branch_name[]" value="{{ $b->id }}">
+                                                    <span class="font-weight-bold">{{ $b->branch_name ?? '--' }}</span>
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        class="form-control"
+                                                        name="commission_amount[{{ $b->id }}]"
+                                                        placeholder="Enter Amount"
+                                                        value="{{ old('commission_amount.' . $b->id, $commission->amount ?? '') }}"
+                                                        required>
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <td colspan="2" class="text-center text-muted">No branches available.</td>
+                                            </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="text-right">
+                                    <button class="btn btn-success mt-2" type="submit">
+                                        <i class="fas fa-save mr-1"></i> Save Incoming Commissions
+                                    </button>
+                                </div>
+                            </form>
                         </div>
+
                     </div>
-                    @empty
-                    <p>No other branches available to set commission.</p>
-                    @endforelse
-
-                    <button class="btn btn-primary mt-3" type="submit">Submit</button>
-                </form>
+                </div>
             </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
 
+        </div>
     </section>
-    <!-- /.content -->
 </div>
+
+<!-- Extra Styling -->
+<style>
+    .nav-pills .nav-link {
+        border-radius: 0;
+        transition: 0.3s ease;
+        font-size: 15px;
+    }
+
+    .nav-pills .nav-link.active {
+        background: #f8f9fa;
+        border-bottom: 3px solid #007bff;
+        color: #007bff !important;
+    }
+
+    .nav-pills .nav-link:hover {
+        background: #f1f1f1;
+    }
+
+    #incoming-tab.active {
+        border-bottom: 3px solid #28a745 !important;
+        color: #28a745 !important;
+    }
+</style>
 @endsection
