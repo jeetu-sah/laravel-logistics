@@ -82,6 +82,7 @@
                                                 </td>
                                                 <td>
                                                     <input type="number"
+                                                        step="0.01"
                                                         class="form-control"
                                                         name="commission_amount[{{ $b->id }}]"
                                                         placeholder="Enter Amount"
@@ -133,6 +134,7 @@
                                                 </td>
                                                 <td>
                                                     <input type="number"
+                                                        step="0.01"
                                                         class="form-control"
                                                         name="commission_amount[{{ $b->id }}]"
                                                         placeholder="Enter Amount"

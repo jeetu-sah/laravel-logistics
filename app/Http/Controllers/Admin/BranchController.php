@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 
@@ -113,7 +114,6 @@ class BranchController extends Controller
 
     public function list(Request $request)
     {
-
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
 
@@ -159,7 +159,7 @@ class BranchController extends Controller
                     </ul>
                 </div>';
 
-                $row['created_at'] = formatDate($branch->created_at);
+                $row['created_at'] = $branch->created_at ? formatDate($branch->created_at) : '--';
 
                 $rows[] = $row;
             }

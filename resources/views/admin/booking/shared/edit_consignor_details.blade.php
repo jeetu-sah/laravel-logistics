@@ -202,6 +202,7 @@
                     <div class="">
                         <input type="number"
                             min="0"
+                            step="0.01"
                             name="actual_weight"
                             class="form-control mb-1"
                             value="{{ $booking->actual_weight }}" />
@@ -225,6 +226,7 @@
                 <div class="col-md-2">
                     <div class="">
                         <input type="number" min="0"
+                            step="0.01"
                             value="{{ $booking->good_of_value }}"
                             id="good_of_value"
                             name="good_of_value"
