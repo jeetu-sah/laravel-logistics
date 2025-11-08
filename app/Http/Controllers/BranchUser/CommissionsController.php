@@ -73,4 +73,129 @@ class CommissionsController extends Controller
     {
         //
     }
+
+    public function filterCommisions(Request $request)
+    {
+        $branch  = Branch::currentbranch();
+        $filter = $request->input('filter');
+
+        if ($filter == 'weekly') {
+            $totalOutgoingCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_SENDER]
+            ])->whereBetween('dispatched_at', [now()->startOfWeek(), now()->endOfWeek()])
+                ->get()->sum('commision');
+
+            $totalIncmingCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_RECEIVER]
+            ])->whereBetween('received_at', [now()->startOfWeek(), now()->endOfWeek()])
+                ->get()->sum('commision');
+
+            $totalTranshipmentCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_TRANSHIPMENT]
+            ])->whereBetween('dispatched_at', [now()->startOfWeek(), now()->endOfWeek()])
+                ->get()->sum('commision');
+
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'totalOutgoingCommisions' => $totalOutgoingCommisions,
+                    'totalIncmingCommisions' => $totalIncmingCommisions,
+                    'totalTranshipmentCommisions' => $totalTranshipmentCommisions
+                ]
+            ]);
+        }
+        if ($filter === 'custom') {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $totalOutgoingCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_SENDER]
+            ])->whereBetween('dispatched_at', [$start_date, $end_date])
+                ->get()->sum('commision');
+
+            $totalIncmingCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_RECEIVER]
+            ])->whereBetween('received_at', [$start_date, $end_date])
+                ->get()->sum('commision');
+
+            $totalTranshipmentCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_TRANSHIPMENT]
+            ])->whereBetween('dispatched_at', [$start_date, $end_date])
+                ->get()->sum('commision');
+
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'totalOutgoingCommisions' => $totalOutgoingCommisions,
+                    'totalIncmingCommisions' => $totalIncmingCommisions,
+                    'totalTranshipmentCommisions' => $totalTranshipmentCommisions
+                ]
+            ]);
+        } elseif ($filter === 'monthly') {
+            $month = $request->input('month_picker');
+            $totalOutgoingCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_SENDER]
+            ])
+                ->whereMonth('dispatched_at', date('m', strtotime($month)))
+                ->whereYear('dispatched_at', date('Y', strtotime($month)))
+                ->get()->sum('commision');
+
+            $totalIncmingCommisions =   Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_RECEIVER]
+            ])
+                ->whereMonth('received_at', date('m', strtotime($month)))
+                ->whereYear('received_at', date('Y', strtotime($month)))
+                ->get()->sum('commision');
+
+            $totalTranshipmentCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_TRANSHIPMENT]
+            ])
+                ->whereMonth('dispatched_at', date('m', strtotime($month)))
+                ->whereYear('dispatched_at', date('Y', strtotime($month)))
+                ->get()->sum('commision');;
+
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'totalOutgoingCommisions' => $totalOutgoingCommisions,
+                    'totalIncmingCommisions' => $totalIncmingCommisions,
+                    'totalTranshipmentCommisions' => $totalTranshipmentCommisions,
+
+                ]
+            ]);
+        } elseif ($filter === 'yearly') {
+            $year = $request->input('year_picker');
+            $totalOutgoingCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_SENDER]
+            ])->whereYear('dispatched_at', $year)->get()->sum('commision');
+
+            $totalIncmingCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_RECEIVER]
+            ])->whereYear('received_at', $year)->get()->sum('commision');
+
+            $totalTranshipmentCommisions = Transhipment::where([
+                ['from_transhipment', '=', $branch->id],
+                ['type', '=', Transhipment::TYPE_TRANSHIPMENT]
+            ])->whereYear('dispatched_at', $year)->get()->sum('commision');
+
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'totalOutgoingCommisions' => $totalOutgoingCommisions,
+                    'totalIncmingCommisions' => $totalIncmingCommisions,
+                    'totalTranshipmentCommisions' => $totalTranshipmentCommisions,
+                ]
+            ]);
+        }
+    }
 }

@@ -96,7 +96,9 @@
                                                 <tr>
                                                     <td><strong>Carrier Mobile</strong></td>
                                                     <td colspan="3">
-                                                        <input type="number" class="form-control"
+                                                        <input type="number"
+                                                            step="0.01"
+                                                            class="form-control"
                                                             value="{{ old('reciver_mobile') }}" name="reciver_mobile"
                                                             placeholder="Mobile" maxlength="12" required>
                                                     </td>
@@ -137,6 +139,7 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="number"
+                                            step="0.01"
                                             class="form-control"
                                             id="rs_amount_1"
                                             value="{{ $booking->booking_type == 'Topay' ? $booking->grand_total_amount : 0 }}"
@@ -149,7 +152,9 @@
                                         <label for="hamali_charges">Hamali Charges:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control" id="rs_amount_2"
+                                        <input type="number"
+                                            step="0.01"
+                                            class="form-control" id="rs_amount_2"
                                             value="{{ old('hamali_charges') }}"
                                             name="hamali_charges"
                                             placeholder="₹.00" oninput="calculateTotal()">
@@ -160,7 +165,9 @@
                                         <label for="demruge_charges">Demurrage Charges:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control" id="rs_amount_3"
+                                        <input type="number" 
+                                            step="0.01"
+                                            class="form-control" id="rs_amount_3"
                                             value="{{ old('demruge_charges') }}"
                                             name="demruge_charges"
                                             placeholder="₹.00"
@@ -172,7 +179,9 @@
                                         <label for="others_charges">Other Charges:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control" id="rs_amount_4"
+                                        <input type="number" 
+                                            step="0.01"
+                                            class="form-control" id="rs_amount_4"
                                             value="{{ old('others_charges') }}"
                                             name="others_charges"
                                             placeholder="₹.00"
@@ -196,7 +205,9 @@
                                         <label for="grand_total">Grand Total:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control" id="grand_total"
+                                        <input type="number" 
+                                            step="0.01"
+                                            class="form-control" id="grand_total"
                                             value="{{ old('grand_total') }}"
                                             name="grand_total"
                                             placeholder="₹.00"
@@ -206,7 +217,9 @@
                                         <label for="received_amount">Recived Amount:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control" id="received_amount"
+                                        <input type="number" 
+                                            step="0.01"
+                                            class="form-control" id="received_amount"
                                             oninput="calculateTotal()"
                                             value="{{ old('received_amount') }}"
                                             name="received_amount" placeholder="₹.00" />
@@ -215,7 +228,9 @@
                                         <label for="pendingAmount">Pending Amount:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control"
+                                        <input type="number" 
+                                            step="0.01"
+                                            class="form-control"
                                             id="pendingAmount"
                                             value="{{ old('pending_amount') }}"
                                             name="pending_amount"

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 
@@ -40,7 +41,7 @@ class BranchController extends Controller
     public function commision($id)
     {
         $data['title'] = 'Branch list | commision';
-        $data['branch'] = Branch::with(['user', 'commisionsList'])->find($id);
+        $data['branch'] = Branch::with(['user', 'incomingCommisions', 'outgoingCommisions'])->find($id);
         $data['branches'] = Branch::where('id', '!=', $id)->get();
 
         return view('admin.branch.commision', $data);
@@ -113,7 +114,6 @@ class BranchController extends Controller
 
     public function list(Request $request)
     {
-
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
 
@@ -159,7 +159,7 @@ class BranchController extends Controller
                     </ul>
                 </div>';
 
-                $row['created_at'] = formatDate($branch->created_at);
+                $row['created_at'] = $branch->created_at ? formatDate($branch->created_at) : '--';
 
                 $rows[] = $row;
             }
@@ -189,33 +189,42 @@ class BranchController extends Controller
             ]);
 
             foreach ($request->branch_name as $branchId) {
-                $amount = $request->commission_amount[$branchId] ?? null;
 
-                BranchCommision::updateOrCreate(
-                    [
-                        'consignor_branch_id' => $id,
-                        'consignee_branch_id' => $branchId,
-                    ],
-                    [
-                        'amount'   => $amount,
-                        'status'   => 'active',
-                    ]
-                );
+                $amount = $request->commission_amount[$branchId] ?? null;
+                if ($amount) {
+                    BranchCommision::updateOrCreate(
+                        [
+                            'consignor_branch_id' => $id,
+                            'consignee_branch_id' => $branchId,
+                            'type' => $request->type,
+                        ],
+                        [
+                            'amount'   => $amount,
+                            'status'   => 'active',
+                            'type' => $request->type,
+                        ]
+                    );
+                }
             }
 
-            return redirect()->back()->with([
-                "alertMessage" => true,
-                "alert" => ['message' => 'Branch commissions set successfully', 'type' => 'success']
-            ]);
+            return redirect()->back()
+                ->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Branch commissions set successfully', 'type' => 'success'],
+                    "activeTab" => request('type')
+                ])
+                ->withInput();
         } catch (\Exception $e) {
             Log::error("Error saving branch commission: " . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
 
-            return redirect()->back()->with([
-                "alertMessage" => true,
-                "alert" => ['message' => 'Something went wrong while saving commissions. Please try again.', 'type' => 'danger']
-            ]);
+            return redirect()->back()
+                ->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Something went wrong while saving commissions. Please try again.', 'type' => 'danger'],
+                    "activeTab" => request('type')
+                ])->withInput();
         }
     }
 

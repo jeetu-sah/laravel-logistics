@@ -148,7 +148,6 @@ class ChallanController extends Controller
             $loadingChallanQuery->where('created_by', $loggedinBranchUserId);
         }
 
-
         $totalRecord = $loadingChallanQuery->count();
         $loadingChallans = $loadingChallanQuery->skip($start)->take($limit)->orderBy('created_at', 'DESC')->get();
 

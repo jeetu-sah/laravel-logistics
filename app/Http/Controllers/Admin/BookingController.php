@@ -104,7 +104,6 @@ class BookingController extends Controller
 
         $data['clients']  = $data['currentBranch']->clients;
         $data['toClients']  = $data['currentBranch']->toClients;
-
         return view('admin.booking.create', $data);
     }
 
@@ -458,13 +457,13 @@ class BookingController extends Controller
             'cantain' => 'required',
             'aadhar_card' => 'nullable',
             'no_of_artical' => 'required|integer',
-            'good_of_value' => 'required|numeric',
+            'good_of_value' => 'nullable|numeric',
             'consignor_name' => 'required|string',
             'consignee_name' => 'required|string',
-            'consignor_address' => 'required|string',
-            'consignee_address' => 'required|string',
+            'consignor_address' => 'nullable|string',
+            'consignee_address' => 'nullable|string',
             'consignor_phone_number' => 'nullable|numeric',
-            'consignee_phone_number' => 'required|numeric',
+            'consignee_phone_number' => 'nullable|numeric',
             'consignor_gst_number' => 'nullable|string',
             'consignee_gst_number' => 'nullable|string',
             'invoice_number' => 'nullable|string',

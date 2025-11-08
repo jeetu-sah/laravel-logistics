@@ -56,10 +56,11 @@ function numberToWords($number)
     }
 }
 
-
-function formatDate($date)
-{
-    return \Carbon\Carbon::parse($date)->format('d/m/Y h:i A');
+if (!function_exists('formatDate')) {
+    function formatDate($date, $format = 'd-m-Y')
+    {
+        return \Carbon\Carbon::parse($date)->format('d/m/Y h:i A');
+    }
 }
 
 function formatOnlyDate($date)

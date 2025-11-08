@@ -199,7 +199,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" oninput="calculateTransshipment()" id="no_of_articles"
+                        <input type="number" step="0.01" oninput="calculateTransshipment()" id="no_of_articles"
                             name="no_of_artical" class="form-control mb-1" />
                     </div>
                 </div>
@@ -210,7 +210,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" name="actual_weight" value="" class="form-control mb-1" />
+                        <input type="number" step="0.01" name="actual_weight" value="" class="form-control mb-1" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -230,7 +230,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="number" value="" id="good_of_value" name="good_of_value"
+                        <input type="number"  step="0.01" value="" id="good_of_value" name="good_of_value"
                             oninput="calculatefov()" class="form-control mb-1" />
                     </div>
                 </div>
@@ -398,7 +398,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="date">Value Declare by Consignee.</label>
-                    <input type="number" name="mark" placeholder="Value Declare by Consignee."
+                    <input type="number" step="0.01" step="0.01" name="mark" placeholder="Value Declare by Consignee."
                         class="form-control mb-1 mb-1" />
                 </div>
                 <div class="col-md-4">

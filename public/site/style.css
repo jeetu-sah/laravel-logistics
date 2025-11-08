@@ -980,3 +980,68 @@
      padding-left: 64px;
      padding-right: 64px;
  }
+
+ /* Progress tracker design */
+.track {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.step {
+    text-align: center;
+    position: relative;
+    flex: 1;
+}
+
+.step .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e9ecef;
+    color: #6c757d;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.step .text {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+/* Active / Completed Step */
+.step.active .icon,
+.step.completed .icon {
+    background: #4caf50;
+    color: white;
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+}
+
+.step.active .text,
+.step.completed .text {
+    color: #4caf50;
+}
+
+/* Connector line */
+.track::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 10%;
+    right: 10%;
+    height: 4px;
+    background: #e9ecef;
+    z-index: -1;
+    border-radius: 4px;
+}
+
+.track .step.completed ~ .step::before {
+    background: #4caf50;
+}

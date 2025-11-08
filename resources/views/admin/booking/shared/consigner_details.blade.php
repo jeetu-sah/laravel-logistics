@@ -181,7 +181,7 @@
                 </div>
                 <div class="col-md-1">
                     <div class="">
-                        <input type="number" min="0" name="actual_weight" class="form-control mb-1" value="{{ old('actual_weight') }}" />
+                        <input type="number" min="0" name="actual_weight" class="form-control mb-1" step="0.01" value="{{ old('actual_weight') }}" step="0.01" />
                     </div>
                 </div>
                 <div class="col-md-1">
@@ -201,7 +201,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <input type="number" min="0" value="{{ old('good_of_value') }}" id="good_of_value" name="good_of_value"
+                        <input type="number" min="0"  step="0.01" value="{{ old('good_of_value') }}" id="good_of_value" name="good_of_value"
                             oninput="calculateFOV()" class="form-control mb-1" />
                     </div>
                 </div>
@@ -257,6 +257,7 @@
                     <input type="mobile" value="{{ old('consignee_phone_number') }}" name="consignee_phone_number" id="consignee_phone_number" class="form-control mb-1" />
                 </div>
             </div>
+            @if($bookingType !== \App\Models\Booking::NO_BOOKING)
             <div class="row">
                 <div class="col-md-3">
                     <label for="date">GST:</label>
@@ -272,6 +273,7 @@
                     <input type="text" value="{{ old('consignee_gst_number') }}" name="consignee_gst_number" id="consignee_gst_number" class="form-control mb-1" />
                 </div>
             </div>
+            @endif
             <div class="row">
                 <div class="col-md-3">
                     <label for="date">Email:</label>
@@ -288,6 +290,7 @@
                 </div>
 
             </div>
+            @if($bookingType !== \App\Models\Booking::NO_BOOKING)
             <div class="row">
                 <div class="col-md-3">
                     <label for="date">Invoice Number</label>
@@ -295,15 +298,16 @@
                 <div class="col-md-3">
                     <input type="text" value="{{ old('invoice_number') }}" name="invoice_number" id="invoice_number" class="form-control mb-1" />
                 </div>
-                @if($bookingType === \App\Models\Booking::NO_BOOKING)
+               
                 <div class="col-md-3">
                     <label for="date">Eway Bill Number:</label>
                 </div>
                 <div class="col-md-3">
                     <input type="text" value="{{ old('eway_bill_number') }}" name="eway_bill_number" class="form-control mb-1" />
                 </div>
-                @endif
+               
             </div>
+             @endif
             <div class="row">
                 <div class="col-md-4">
                     <label for="date">Aadhar card</label>

@@ -21,8 +21,15 @@ class BranchCommision extends Model
         'consignor_branch_id',
         'consignee_branch_id',
         'amount',
+        'type',
         'status'
     ];
+
+    /**
+     * Commission types.
+     */
+    public const TYPE_OUTGOING = 'outgoing';
+    public const TYPE_INCOMING = 'incoming';
 
     /**
      * Get the consignor branch.
@@ -30,6 +37,23 @@ class BranchCommision extends Model
     public function consignorBranch()
     {
         return $this->belongsTo(Branch::class, 'consignor_branch_id');
+    }
+
+    /**
+     * Scope for outgoing commissions.
+     */
+    public function scopeOutgoing($query)
+    {
+        return $query->where('type', self::TYPE_OUTGOING);
+    }
+
+
+    /**
+     * Scope for incoming commissions.
+     */
+    public function scopeIncoming($query)
+    {
+        return $query->where('type', self::TYPE_INCOMING);
     }
 
     /**

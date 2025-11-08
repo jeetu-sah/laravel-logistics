@@ -118,16 +118,14 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-
-
                                     <div class="col-md-6" style="font-size: 25px; color: green;">
                                         <label for="received_amount">Recived Amount:</label>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" class="form-control"
+                                        <input type="number" class="form-control" step="0.01"
                                             id="received_amount"
-                                            value="{{ old('received_amount') }}" required
-                                            name="received_amount" placeholder="₹.00">
+                                            value="{{ old('received_amount') }}"
+                                            name="received_amount" step="0.01" placeholder="₹.00" required>
                                     </div>
                                     <div class="col-md-6" style="font-size: 25px; color: red;">
                                         <label for="pendingAmount">Pending Amount:</label>

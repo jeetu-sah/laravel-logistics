@@ -88,7 +88,7 @@
                 <div class="row g-3 mt-3">
                     <div class="col-md-2">
                         <label class="form-label">Age *</label>
-                        <input type="number" class="form-control" name="age" placeholder="e.g. 23" required>
+                        <input type="number" class="form-control" step="0.01" name="age" placeholder="e.g. 23" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Email *</label>
@@ -111,7 +111,7 @@
                 <div class="row g-3 mt-3">
                     <div class="col-md-6">
                         <label class="form-label">Total Cash available (Rands) *</label>
-                        <input type="number" class="form-control" name="total_cash_invest" required>
+                        <input type="number" step="0.01" class="form-control" name="total_cash_invest" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Own (free) Cash *</label>

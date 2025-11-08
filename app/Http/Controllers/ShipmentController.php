@@ -1,41 +1,80 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Booking;
+use App\Models\Transhipment;
 use Illuminate\Http\Request;
 
 class ShipmentController extends Controller
 {
 
 
-    public function trackShipment(Request $request)
+    public function trackShipment($builtiNumber)
     {
-        // Validate the shipment number
-        $request->validate([
-            'shipment_number' => 'required|string',
-        ]);
+        $title = 'Track Shipment';
 
-        // Assuming you have a Booking model for the shipments
-        $shipment = Booking::where('bilti_number', $request->shipment_number)
-            ->orWhere('manual_bilty_number', $request->shipment_number)
+        $booking = Booking::where('bilti_number', $builtiNumber)
+            ->orWhere('manual_bilty_number', $builtiNumber)
             ->first();
 
-
-        if ($shipment) {
-            // Return a successful response with tracking data
-            return response()->json([
-                'success' => true,
-                'status' => $shipment->status, // Assuming status is stored as a number (1, 2, 3, or 4)
-            ]);
-        } else {
-            // If shipment not found, return an error response
-            return response()->json([
-                'success' => false,
-                'message' => 'Shipment not found.',
-            ]);
+        if (!$booking) {
+            return redirect()->back()->with('error', 'Booking not found');
         }
+
+        // Fetch all tracking updates ordered by sequence
+        $trackingUpdates = Transhipment::where('booking_id', $booking->id)
+            ->orderBy('sequence_no', 'asc')
+            ->get();
+
+        // Prepare timeline steps dynamically
+        $steps = [];
+
+        foreach ($trackingUpdates as $update) {
+            $branchName = $update->branch ? $update->branch->branch_name : '';
+
+            if ($update->type == 'sender') {
+                // Sender step = Order Booked
+                $steps[] = [
+                    'branchName' => $branchName ?: 'Sender',
+                    'name' => 'Order Booked',
+                    'status' => $update->dispatched_at ? 'completed' : 'pending',
+                    'dispatched_at' => formatDate($update->dispatched_at),
+                    'received_at' => null,
+                ];
+            } elseif ($update->type == 'transhipment') {
+                // Transhipment: Received first
+                $steps[] = [
+                    'branchName' => $branchName ?: 'Transhipment',
+                    'name' => 'Received at ' . $branchName,
+                    'status' => $update->received_at ? 'completed' : 'pending',
+                    'dispatched_at' => null,
+                    'received_at' => formatDate($update->received_at),
+                ];
+
+                // Transhipment: Dispatched after received
+                $steps[] = [
+                    'branchName' => $branchName ?: 'Transhipment',
+                    'name' => 'Dispatched from ' . $branchName,
+                    'status' => $update->dispatched_at ? 'completed' : 'pending',
+                    'dispatched_at' => formatDate($update->dispatched_at),
+                    'received_at' => null,
+                ];
+            } elseif ($update->type == 'receiver') {
+                // Receiver step
+                $steps[] = [
+                    'branchName' => $branchName ?: 'Receiver',
+                    'name' => 'Received at Receiver',
+                    'status' => $update->received_at ? 'completed' : 'pending',
+                    'dispatched_at' => formatDate($update->dispatched_at),
+                    'received_at' => formatDate($update->received_at),
+                ];
+            }
+        }
+
+        // echo "<pre>";
+        // print_r($steps);
+        // exit;
+        return view('home.track-shipment', compact('booking', 'steps', 'title'));
     }
-
-
-
 }

@@ -72,11 +72,15 @@ class Branch extends Model
         return self::where('id', Auth::user()->branch_user_id)->first();
     }
 
-    public function commisionsList()
+    public function outgoingCommisions()
     {
-        return $this->hasMany(BranchCommision::class, 'consignor_branch_id', 'id');
+        return $this->hasMany(BranchCommision::class, 'consignor_branch_id', 'id')
+            ->where('type', BranchCommision::TYPE_OUTGOING);
     }
 
-    
-
+    public function incomingCommisions()
+    {
+        return $this->hasMany(BranchCommision::class, 'consignor_branch_id', 'id')
+            ->where('type', BranchCommision::TYPE_INCOMING);
+    }
 }
