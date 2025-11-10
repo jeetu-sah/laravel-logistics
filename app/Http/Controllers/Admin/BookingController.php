@@ -161,10 +161,24 @@ class BookingController extends Controller
                 $query->where('from_transhipment', $selectedNextTranshipmentId);
             });
         }
-        //  if (!empty($selectedNextTranshipmentId)) {
-        //         //$query->orWhere([['from_transhipment', '=', $selectedNextTranshipmentId], ['received_at', '=', NULL]]);
-        //     }
-        // ->where('received_at', '!=', NULL);
+        // 🔍 Apply search filter if provided
+        $bookingQuery->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('bilti_number', 'LIKE', "%{$search}%")
+                ->orWhere('manual_bilty_number', 'LIKE', "%{$search}%")
+                ->orWhere('consignor_name', 'LIKE', "%{$search}%")
+                ->orWhere('consignee_name', 'LIKE', "%{$search}%")
+                ->orWhere('consignor_phone_number', 'LIKE', "%{$search}%")
+                ->orWhere('consignee_phone_number', 'LIKE', "%{$search}%")
+                ->orWhereHas('consignorBranch', function ($b) use ($search) {
+                    $b->where('branch_name', 'LIKE', "%{$search}%");
+                })
+                ->orWhereHas('consigneeBranch', function ($b) use ($search) {
+                    $b->where('branch_name', 'LIKE', "%{$search}%");
+                });
+            });
+        });
+
 
         $bookingQuery->whereIn('status', [Booking::BOOKED, Booking::DISPATCH]);
 
@@ -226,8 +240,6 @@ class BookingController extends Controller
             "recordsFiltered" => $bookingsCount,
             "data" => $rows,
         ];
-
-        // Return the JSON response
         return response()->json($json_data);
     }
 

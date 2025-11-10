@@ -62,6 +62,7 @@ class ChallanController extends Controller
             'driverMobile'   => 'required|digits_between:10,15',
             'locknumber'     => 'nullable|string|max:50',
             'coLoder'        => 'nullable|string|max:100',
+            'for_challan'    => 'required'
         ]);
 
         if ($validator->fails()) {

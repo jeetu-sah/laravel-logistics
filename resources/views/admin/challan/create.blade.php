@@ -129,7 +129,7 @@
                         </div>
                         <div class="col-md-12 mb-2">
                             <label for="status">Select For Challan</label>
-                            <select class="form-control" id="for_challan" name="for_challan">
+                            <select class="form-control" id="for_challan" name="for_challan" required>
                                 <option value="">Select Branch</option>
                                 @forelse($forChallan as $branchChallan)
                                 <option value="{{$branchChallan->id ?? '--'}}">{{$branchChallan->branch_name ?? '--'}}</option>
