@@ -30,6 +30,8 @@ use App\Http\Controllers\BranchUser\SettingController;
 use App\Http\Controllers\BranchUser\DashboardController;
 use App\Http\Controllers\BranchUser\CommissionsController;
 use App\Http\Controllers\FranchiseApplicationController;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +44,33 @@ use App\Http\Controllers\FranchiseApplicationController;
 |
 */
 
+Route::get('debug-lang', function () {
+    return [
+        'session_locale' => session('locale'),
+        'app_locale' => app()->getLocale(),
+        'config_locale' => config('app.locale'),
+        'all_sessions' => session()->all(),
+    ];
+});
+
+Route::get('lang/{locale}', function ($locale) {
+    $availableLocales = ['en', 'hi', 'es', 'fr'];
+    
+    if (!in_array($locale, $availableLocales)) {
+        $locale = config('app.fallback_locale');
+    }
+
+    // Store in session
+    Session::put('locale', $locale);
+    
+    // Set application locale
+    App::setLocale($locale);
+    
+    // Also set in cookie for persistence
+    cookie()->queue(cookie()->forever('locale', $locale));
+    
+    return redirect()->back()->with('success', __('Language changed to :locale', ['locale' => $locale]));
+})->name('lang.switch');
 
 Route::post('apply', [ApplicationController::class, 'store'])->name('applications.store');
 
@@ -252,8 +281,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('commissions')->group(function () {
             Route::get('/search-commisions', [CommissionsController::class, 'filterCommisions'])->name('branch-user.commissions.filter');
             Route::resource('/', CommissionsController::class);
-
-          
         });
 
         Route::prefix('settings')->group(function () {

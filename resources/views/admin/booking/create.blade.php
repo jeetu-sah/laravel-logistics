@@ -5,14 +5,22 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-2 align-items-center">
                 <div class="col-sm-6">
-
+                    <h4 class="m-0 text-primary">
+                        <i class="fas fa-truck"></i> Create Booking
+                    </h4>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">bookings</a></li>
+                    <ol class="breadcrumb float-sm-right mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="">Bookings</a>
+                        </li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div>
@@ -22,8 +30,6 @@
             @include('common.notification')
         </div>
     </section>
-
-
     <section class="content">
         <div class="container-fluid">
             <form action="{{ url('admin/bookings/store' . ($noBillBookings ? '?no-bill-bookings=true' : '')) }}"
