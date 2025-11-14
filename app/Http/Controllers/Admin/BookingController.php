@@ -449,14 +449,14 @@ class BookingController extends Controller
         ];
 
         DB::beginTransaction();
-        // try {
+        try {
             $photoPath = $parcelPath = null;
             if ($request->hasFile('photo_id')) {
-                $uploadedPathsOfPhotos = $storage->uploadWithDetails('photo', $request->file('photo_id'));
+                $uploadedPathsOfPhotos = $storage->uploadWithDetails($photoFolderName, $request->file('photo_id'));
                 $photoPath = $uploadedPathsOfPhotos['full_url'];
             }
             if ($request->hasFile('parcel_image')) {
-                $uploadedPathsOfParcel = $storage->uploadWithDetails('photo', $request->file('parcel_image'));
+                $uploadedPathsOfParcel = $storage->uploadWithDetails($parcelFolderName, $request->file('parcel_image'));
                 $parcelPath = $uploadedPathsOfParcel['full_url'];
             }
             // Insert data into the bookings table
@@ -543,15 +543,15 @@ class BookingController extends Controller
                 "redirectBookingId" => $booking->id,
                 "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
             ]);
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     return redirect()->back()
-        //         ->withInput()
-        //         ->with([
-        //             "alertMessage" => true,
-        //             "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
-        //         ]);
-        // }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
+                ]);
+        }
     }
 
     public function update(Request $request, $id)
