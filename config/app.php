@@ -97,6 +97,10 @@ return [
     */
 
     'fallback_locale' => 'en',
+    'available_locales' => [
+        'en' => 'English',
+        'hi' => 'Hindi'
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -169,6 +173,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\AzureStorageServiceProvider::class,
     ])->toArray(),
 
     /*

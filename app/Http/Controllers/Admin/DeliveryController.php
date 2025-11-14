@@ -175,8 +175,7 @@ class DeliveryController extends Controller
             'others_charges' => 'nullable|numeric',
             'grand_total' => 'nullable|numeric',
             'received_amount' => 'nullable|numeric',
-            'pending_amount' => 'nullable|numeric',
-            'parcel_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'pending_amount' => 'nullable|numeric'
         ]);
 
         try {
@@ -211,7 +210,6 @@ class DeliveryController extends Controller
                 'parcel_image' => $imagePath ?? '--',
             ]);
             if ($deliveryReceipt) {
-                //update and create new record for payment. 
                 DeliveryReceiptPayment::create([
                     'delivery_receipt_id' => $deliveryReceipt->id,
                     'pending_amount' => $request->pending_amount,

@@ -4,20 +4,23 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-2 align-items-center">
                 <div class="col-sm-6">
-                    <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
-                        <i class=" fa-sm text-white-50"></i> </a>
+                    <h4 class="m-0 text-primary">
+                        <i class="fas fa-clipboard-list me-2"></i> {{ __('Manifest') }}
+                    </h4>
                 </div>
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Loading Challan List</li>
+                    <ol class="breadcrumb float-sm-right mb-0">
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">{{ __('Home') }}</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('Manifest') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('Loading Challan List') }}</li>
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
+
 
     <!-- Main content -->
     <section class="content">
