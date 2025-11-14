@@ -14,8 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-use PhpParser\Node\Stmt\Echo_;
-use Psy\Readline\Transient;
+use Illuminate\Support\Facades\App;
+use App\Services\CloudStorageService;
 
 class BookingController extends Controller
 {
@@ -119,7 +119,7 @@ class BookingController extends Controller
         $data['currentBranch']  = Branch::currentbranch();
         $data['clients']  = $data['currentBranch']->clients;
         $data['booking'] = Booking::with(['transhipments'])->where('id', $id)->first();
-      
+
         // print_r($data['booking']->incoming_booking_commisions);exit;
 
         // $bookingCommisions = Booking::bookingCommisions($data['booking']);
@@ -165,17 +165,17 @@ class BookingController extends Controller
         $bookingQuery->when($search, function ($query, $search) {
             $query->where(function ($q) use ($search) {
                 $q->where('bilti_number', 'LIKE', "%{$search}%")
-                ->orWhere('manual_bilty_number', 'LIKE', "%{$search}%")
-                ->orWhere('consignor_name', 'LIKE', "%{$search}%")
-                ->orWhere('consignee_name', 'LIKE', "%{$search}%")
-                ->orWhere('consignor_phone_number', 'LIKE', "%{$search}%")
-                ->orWhere('consignee_phone_number', 'LIKE', "%{$search}%")
-                ->orWhereHas('consignorBranch', function ($b) use ($search) {
-                    $b->where('branch_name', 'LIKE', "%{$search}%");
-                })
-                ->orWhereHas('consigneeBranch', function ($b) use ($search) {
-                    $b->where('branch_name', 'LIKE', "%{$search}%");
-                });
+                    ->orWhere('manual_bilty_number', 'LIKE', "%{$search}%")
+                    ->orWhere('consignor_name', 'LIKE', "%{$search}%")
+                    ->orWhere('consignee_name', 'LIKE', "%{$search}%")
+                    ->orWhere('consignor_phone_number', 'LIKE', "%{$search}%")
+                    ->orWhere('consignee_phone_number', 'LIKE', "%{$search}%")
+                    ->orWhereHas('consignorBranch', function ($b) use ($search) {
+                        $b->where('branch_name', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('consigneeBranch', function ($b) use ($search) {
+                        $b->where('branch_name', 'LIKE', "%{$search}%");
+                    });
             });
         });
 
@@ -371,92 +371,11 @@ class BookingController extends Controller
         return view('admin.booking.clientList', $data);
     }
 
-    // public function clientList(Request $request)
-    // {
-    //     $search = $request->input('search')['value'] ?? null;
-    //     $limit = $request->input('length', 10);
-    //     $start = $request->input('start', 0);
-
-    //     $branchId = Auth::user()->branch_user_id;
-
-    //     $query = DB::table('client_to_client_map')
-    //         ->join('clients as from_clients', 'from_clients.id', '=', 'client_to_client_map.from_client_id')
-    //         ->join('clients as to_clients', 'to_clients.id', '=', 'client_to_client_map.to_client_id')
-
-    //         // Join for from_client's branch
-    //         ->join('client_branch_map as from_cbm', 'from_cbm.client_id', '=', 'from_clients.id')
-    //         ->join('branches as from_branches', 'from_branches.id', '=', 'from_cbm.branch_id')
-
-    //         // Join for to_client's branch
-    //         ->join('client_branch_map as to_cbm', 'to_cbm.client_id', '=', 'to_clients.id')
-    //         ->join('branches as to_branches', 'to_branches.id', '=', 'to_cbm.branch_id')
-
-    //         ->where('from_cbm.branch_id', $branchId)
-
-    //         ->select(
-    //             'client_to_client_map.*',
-    //             'from_clients.client_name as from_client_name',
-    //             'from_clients.client_phone_number as from_client_phone_number',
-
-    //             'to_clients.client_name as to_client_name',
-    //             'to_clients.client_phone_number as to_client_phone_number',
-
-    //             'from_branches.branch_name as from_branch_name',
-    //             'from_branches.id as from_branch_id',
-
-    //             'to_branches.branch_name as to_branch_name',
-    //             'to_branches.id as to_branch_id'
-    //         );
-    //     if (!empty($search)) {
-    //         $query->where(function ($q) use ($search) {
-    //             $q->where('from_clients.client_name', 'like', "%$search%")
-    //                 ->orWhere('to_clients.client_name', 'like', "%$search%");
-    //         });
-    //     }
-
-    //     $total = $query->count();
-
-    //     $clients = $query
-    //         ->orderBy('client_to_client_map.created_at', 'desc')
-    //         ->skip($start)
-    //         ->take($limit)
-    //         ->get();
-
-    //     // Prepare data
-    //     $rows = [];
-    //     $data = [];
-
-    //     foreach ($clients as $index => $client) {
-    //         $row = [];
-    //         $row['sn'] = $start + $index + 1;
-
-    //         // Link to booking with from_client_id
-    //         $row['from_client_id'] = '<a href="' . url('admin/bookings/clients/bookings', ['id' => $client->id]) . '">' . $client->id . '</a>';
-
-    //         $row['from_client_name'] = $client->from_client_name;
-
-    //         $row['to_client_name'] = $client->to_client_name;
-    //         $row['to_client_phone_number'] = $client->to_client_phone_number ?? '-';
-    //         $row['to_branch_name'] = $client->to_branch_name ?? '-';
-
-    //         $row['created_at'] = $client->created_at;
-    //         $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-    //         <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning">Delete</a>';
-    //         $data[] = $row;
-    //     }
-
-    //     return response()->json([
-    //         'draw' => intval($request->input('draw')),
-    //         'recordsTotal' => $total,
-    //         'recordsFiltered' => $total,
-    //         'data' => $data,
-    //     ]);
-    // }
-
-
-
-    public function store(Request $request)
+    public function store(Request $request, CloudStorageService $storage)
     {
+        $prefixFolderName = env('DEVELOPMENT_MODE') ? 'dev-photos' : 'prod-photos';
+        $photoFolderName = $prefixFolderName . '/photo';
+        $parcelFolderName = $prefixFolderName . '/parcel';
 
         $validator = Validator::make($request->all(), [
             'booking_date' => 'required|date',
@@ -513,7 +432,6 @@ class BookingController extends Controller
                 $validator->errors()->add('consignor_branch_id', 'Consignor and consignee branches must be different.');
             }
         });
-
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
@@ -531,8 +449,16 @@ class BookingController extends Controller
         ];
 
         DB::beginTransaction();
-        try {
-
+        // try {
+            $photoPath = $parcelPath = null;
+            if ($request->hasFile('photo_id')) {
+                $uploadedPathsOfPhotos = $storage->uploadWithDetails('photo', $request->file('photo_id'));
+                $photoPath = $uploadedPathsOfPhotos['full_url'];
+            }
+            if ($request->hasFile('parcel_image')) {
+                $uploadedPathsOfParcel = $storage->uploadWithDetails('photo', $request->file('parcel_image'));
+                $parcelPath = $uploadedPathsOfParcel['full_url'];
+            }
             // Insert data into the bookings table
             $booking = Booking::create([
                 // Consignor
@@ -548,8 +474,8 @@ class BookingController extends Controller
                 'eway_bill_number' => $request->eway_bill_number ?? '',
                 'mark' => $request->mark ?? '',
                 'remark' => $request->remark ?? '',
-                'photo_id' => $request->hasFile('photo_id') ? $request->file('photo_id')->store('photos', 'public') : 'NA',
-                'parcel_image' => $request->hasFile('parcel_image') ? $request->file('parcel_image')->store('parcels', 'public') : 'NA',
+                'photo_id' => $photoPath,
+                'parcel_image' => $parcelPath,
                 // Consignee
                 'consignee_branch_id' => $request->consignee_branch_id,
                 'consignee_name' => $request->consignee_name,
@@ -586,7 +512,7 @@ class BookingController extends Controller
                 'misc_charge_amount' => $request->misc_charge_amount ?? 0,
                 'grand_total_amount' => $request->grand_total_amount,
                 'status' => Booking::BOOKED,
-                'booking_type' => $request->booking,
+                'booking_type' => $request->booking ?? Booking::BOOKING_TYPE_PAID,
                 'manual_bilty_number' => $request->manual_bilty,
                 'offline_booking_date' => $request->offline_booking_date,
                 'client_id' => $request->client_id ?? null,
@@ -617,15 +543,15 @@ class BookingController extends Controller
                 "redirectBookingId" => $booking->id,
                 "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
             ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()
-                ->withInput()
-                ->with([
-                    "alertMessage" => true,
-                    "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
-                ]);
-        }
+        // } catch (\Exception $e) {
+        //     DB::rollBack();
+        //     return redirect()->back()
+        //         ->withInput()
+        //         ->with([
+        //             "alertMessage" => true,
+        //             "alert" => ['message' => 'An error occurred while processing your request. Please try again later', 'type' => 'danger']
+        //         ]);
+        // }
     }
 
     public function update(Request $request, $id)
