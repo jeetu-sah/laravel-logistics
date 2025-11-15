@@ -55,31 +55,33 @@ Route::get('debug-lang', function () {
 
 Route::get('lang/{locale}', function ($locale) {
     $availableLocales = ['en', 'hi', 'es', 'fr'];
-    
+
     if (!in_array($locale, $availableLocales)) {
         $locale = config('app.fallback_locale');
     }
 
     // Store in session
     Session::put('locale', $locale);
-    
+
     // Set application locale
     App::setLocale($locale);
-    
+
     // Also set in cookie for persistence
     cookie()->queue(cookie()->forever('locale', $locale));
-    
+
     return redirect()->back()->with('success', __('Language changed to :locale', ['locale' => $locale]));
 })->name('lang.switch');
 
 Route::post('apply', [ApplicationController::class, 'store'])->name('applications.store');
 
-Route::get('/', [HomeController::class, 'index'])->name('/');
+// Route::get('/', [HomeController::class, 'index'])->name('/');
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
 Route::get('franchise', [FranchiseApplicationController::class, 'index']);
 Route::post('/franchise/application/store', [FranchiseApplicationController::class, 'store'])->name('franchise.application.store');
-
 Route::get('track-shipment/{builtyNumber}', [ShipmentController::class, 'trackShipment']);
-
 Route::group(['middleware' => ['guest']], function () {
     Route::get('/login', [LoginController::class, 'index'])->name('/');
     Route::post('login', [LoginController::class, 'store']);
@@ -88,9 +90,6 @@ Route::group(['middleware' => ['guest']], function () {
 });
 Route::get('/get-districts-user/{stateId}', [HomeController::class, 'getDistricts']);
 Route::post('/inquiry', [InquiryController::class, 'store']);
-
-
-
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', function () {
         $user = Auth::user();
