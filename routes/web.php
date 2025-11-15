@@ -76,7 +76,7 @@ Route::post('apply', [ApplicationController::class, 'store'])->name('application
 
 // Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->to(url('login'));
 });
 
 Route::get('franchise', [FranchiseApplicationController::class, 'index']);
