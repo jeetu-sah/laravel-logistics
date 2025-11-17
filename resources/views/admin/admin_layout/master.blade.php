@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-    <title>VikasLogistics | {{ $title ?? '' }}</title>
+    <title>Charlie Travels and Cargo | {{ $title ?? '' }}</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('admin_webu/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->

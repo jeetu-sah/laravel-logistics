@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Laralink">
-    <title>Vikash Logistic Pvt. ltd. - Invoice</title>
+    <title>Charlie Travels and Cargo. - Invoice</title>
     <style>
         /* Base styles */
         * {
@@ -240,9 +240,9 @@
         <div class="invoice">
             <div class="invoice-header">
                 <div class="company-info">
-                    <div class="company-name">VIKAS LOGISTICS</div>
+                    <div class="company-name">Charlie Travels & Cargo</div>
                     <div class="company-address">
-                        256 Damodar Nagar Barra<br>
+                        H NO. 628<br>
                         Kanpur Nagar - 208027<br>
                         Uttar Pradesh<br>
                         Contact: +91 88403 54461<br>
@@ -250,7 +250,7 @@
                     </div>
                 </div>
                 <div class="company-logo">
-                    <img src="{{ asset('site/img/logo-log.png') }}" alt="Logo" width="60">
+                    <img src="{{ asset('charlietravelscargo/logo/logo.png') }}" alt="Logo" width="60">
                 </div>
                 <div class="invoice-details">
                     <div class="invoice-title">
@@ -264,7 +264,7 @@
                     </div>
                     <div class="invoice-number">LR No: {{ $booking->bilti_number }}</div>
                     <div>GSTIN: 09AHQPV3722R2Z7</div>
-                    <div>Reg. UDYAM-UP-43-0045811</div>
+                    <div>Reg. UDYAM-DL-04-0066406</div>
                 </div>
             </div>
             
@@ -292,7 +292,7 @@
             <div class="two-columns">
                 <div class="column">
                     <div class="party-section">
-                        <div class="party-header">CONSIGNOR</div>
+                        <div class="party-header">SENDOR</div>
                         <div class="party-details">
                             <div class="party-row"><strong>Name:</strong> {{ $booking->consignor_name }}</div>
                             <div class="party-row"><strong>Address:</strong> {{ $booking->consignor_address }}</div>
@@ -304,7 +304,7 @@
                 
                 <div class="column">
                     <div class="party-section">
-                        <div class="party-header">CONSIGNEE</div>
+                        <div class="party-header">RECEIVER</div>
                         <div class="party-details">
                             <div class="party-row"><strong>Name:</strong> {{ $booking->consignee_name ?? '--' }}</div>
                             <div class="party-row"><strong>Address:</strong> {{ $booking->consignee_address ?? '--' }}</div>
@@ -317,11 +317,11 @@
             
             <table class="info-table">
                 <tr>
-                    <th>Goods Contained (Declared by Consignor)</th>
+                    <th>Goods Contained (Declared by Sender)</th>
                     <td>{{ $booking->cantain }}</td>
                 </tr>
                 <tr>
-                    <th>Actual Goods Value Declared by Consignor</th>
+                    <th>Actual Goods Value Declared by Sender</th>
                     <td>{{ $booking->mark }}</td>
                 </tr>
                 <tr>
@@ -352,7 +352,7 @@
                 <div class="terms">
                     <strong>Note:</strong> 1) Material must have been insured by owner in case of total value is more than Rs.2000. 
                     (2) Party shall have to collect the goods within three days, there after company shall not be responsible and have to pay demurrage. 
-                    (3) In case of loss or damage, we are liable for only risk cover value for transit which declared by consignor at the time of booking.
+                    (3) In case of loss or damage, we are liable for only risk cover value for transit which declared by sende at the time of booking.
                     (4) *Terms & Conditions Apply. (5) All Dispute at Kanpur jurisdiction only.
                 </div>
                 
@@ -363,7 +363,7 @@
                     </div>
                     <div class="signature-box">
                         <div class="signature-line"></div>
-                        Consignor Signature
+                        Sender Signature
                     </div>
                 </div>
             </div>
@@ -376,7 +376,7 @@
         <div class="invoice">
             <div class="invoice-header">
                 <div class="company-info">
-                    <div class="company-name">VIKAS LOGISTICS</div>
+                    <div class="company-name">Charlie Travels & Cargo</div>
                     <div class="company-address">
                         256 Damodar Nagar Barra<br>
                         Kanpur Nagar - 208027<br>
@@ -386,7 +386,7 @@
                     </div>
                 </div>
                 <div class="company-logo">
-                    <img src="{{ asset('site/img/logo-log.png') }}" alt="Logo" width="60">
+                    <img src="{{ asset('charlietravelscargo/logo/logo.png') }}" alt="Logo" width="60">
                 </div>
                 <div class="invoice-details">
                     <div class="invoice-title">
@@ -400,7 +400,7 @@
                     </div>
                     <div class="invoice-number">LR No: {{ $booking->bilti_number }}</div>
                     <div>GSTIN: 09AHQPV3722R2Z7</div>
-                    <div>Reg. UDYAM-UP-43-0045811</div>
+                    <div>Reg. UDYAM-DL-04-0066406</div>
                     <div style="margin-top: 2mm; font-weight: bold; color: red; font-size: 10px;">DUPLICATE COPY</div>
                 </div>
             </div>
@@ -429,7 +429,7 @@
             <div class="two-columns">
                 <div class="column">
                     <div class="party-section">
-                        <div class="party-header">CONSIGNOR</div>
+                        <div class="party-header">SENDER</div>
                         <div class="party-details">
                             <div class="party-row"><strong>Name:</strong> {{ $booking->consignor_name }}</div>
                             <div class="party-row"><strong>Address:</strong> {{ $booking->consignor_address }}</div>
@@ -441,7 +441,7 @@
                 
                 <div class="column">
                     <div class="party-section">
-                        <div class="party-header">CONSIGNEE</div>
+                        <div class="party-header">RECEIVER</div>
                         <div class="party-details">
                             <div class="party-row"><strong>Name:</strong> {{ $booking->consignee_name ?? '--' }}</div>
                             <div class="party-row"><strong>Address:</strong> {{ $booking->consignee_address ?? '--' }}</div>
@@ -454,11 +454,11 @@
             
             <table class="info-table">
                 <tr>
-                    <th>Goods Contained (Declared by Consignor)</th>
+                    <th>Goods Contained (Declared by Sendor)</th>
                     <td>{{ $booking->cantain }}</td>
                 </tr>
                 <tr>
-                    <th>Actual Goods Value Declared by Consignor</th>
+                    <th>Actual Goods Value Declared by Sendor</th>
                     <td>{{ $booking->mark }}</td>
                 </tr>
                 <tr>
@@ -489,7 +489,7 @@
                 <div class="terms">
                     <strong>Note:</strong> 1) Material must have been insured by owner in case of total value is more than Rs.2000. 
                     (2) Party shall have to collect the goods within three days, there after company shall not be responsible and have to pay demurrage. 
-                    (3) In case of loss or damage, we are liable for only risk cover value for transit which declared by consignor at the time of booking.
+                    (3) In case of loss or damage, we are liable for only risk cover value for transit which declared by sendor at the time of booking.
                     (4) *Terms & Conditions Apply. (5) All Dispute at Kanpur jurisdiction only.
                 </div>
                 
@@ -500,7 +500,7 @@
                     </div>
                     <div class="signature-box">
                         <div class="signature-line"></div>
-                        Consignor Signature
+                        Sendor Signature
                     </div>
                 </div>
             </div>
