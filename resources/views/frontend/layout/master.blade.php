@@ -171,15 +171,15 @@
                     <div class="col-md-4 mb-4">
                         <h6 class="fw-bold mb-3">📍 Our Office</h6>
                         <p class="text-muted mb-1" style="font-size:14px;">
-                            123, Transport Nagar<br>
-                            Indore, Madhya Pradesh 452001<br>
+                            37, Gate no. 5 Mori Gate<br>
+                            Delhi,<br>
                             India
                         </p>
                         <p class="text-muted mb-1" style="font-size:14px;">
-                            📞 +91 98765 43210
+                            📞 +91 7042236323
                         </p>
                         <p class="text-muted" style="font-size:14px;">
-                            ✉ support@charlietravelscargo.com
+                            ✉ charlietravels1@gmail.com
                         </p>
                     </div>
 
