@@ -541,6 +541,7 @@ class BookingController extends Controller
             return redirect()->back()->with([
                 "alertMessage" => true,
                 "redirectBookingId" => $booking->id,
+                "redirectAnotherRoute" => true,
                 "alert" => ['message' => 'Booking created successfully', 'type' => 'success']
             ]);
         } catch (\Exception $e) {
