@@ -169,8 +169,6 @@ class DeliveryController extends Controller
 
     public function store(Request $request, CloudStorageService $storage)
     {
-        // echo "<pre>";
-        // print_r($request->all());exit;
         $request->validate([
             'freight_charges' => 'required|numeric',
             'hamali_charges' => 'nullable|numeric',
