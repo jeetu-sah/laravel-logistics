@@ -320,13 +320,13 @@
         /* Two copies layout */
         @media screen {
             .gatepass-copy {
-                height: 138mm;
+                height: 160mm;
             }
         }
 
         @media print {
             .gatepass-copy {
-                height: 138mm;
+                height: 160mm;
             }
         }
     </style>
