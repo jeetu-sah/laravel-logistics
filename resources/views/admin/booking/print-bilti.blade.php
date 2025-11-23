@@ -242,11 +242,11 @@
                 <div class="company-info">
                     <div class="company-name">Charlie Travels & Cargo</div>
                     <div class="company-address">
-                        H NO. 628<br>
-                        Kanpur Nagar - 208027<br>
-                        Uttar Pradesh<br>
-                        Contact: +91 88403 54461<br>
-                        Email: vikaslogistics14320@gmail.com
+                        37, Gate no. 5<br>
+                        Delhi - 110006<br>
+                        India<br>
+                        Contact: +91 95994-12941<br>
+                        Email: Charlietravels1@gmail.com
                     </div>
                 </div>
                 <div class="company-logo">
@@ -263,7 +263,7 @@
                         @endif
                     </div>
                     <div class="invoice-number">LR No: {{ $booking->bilti_number }}</div>
-                    <div>GSTIN: 09AHQPV3722R2Z7</div>
+                    <div>GSTIN: 07DJVPS6408H1ZI</div>
                     <div>Reg. UDYAM-DL-04-0066406</div>
                 </div>
             </div>
@@ -339,9 +339,9 @@
                         IFSC - CBIN0283681<br>
                         Account Holder - Vikas Logistics
                     </div>
-                    <div class="qr-code">
+                    <!-- <div class="qr-code">
                         <img src="{{ asset('site/img/indianQr.jpg') }}" width="60" height="60">
-                    </div>
+                    </div> -->
                 </div>
                 
                 <div class="amount-section">
@@ -378,11 +378,11 @@
                 <div class="company-info">
                     <div class="company-name">Charlie Travels & Cargo</div>
                     <div class="company-address">
-                        256 Damodar Nagar Barra<br>
-                        Kanpur Nagar - 208027<br>
-                        Uttar Pradesh<br>
-                        Contact: +91 88403 54461<br>
-                        Email: vikaslogistics14320@gmail.com
+                        37, Gate no. 5<br>
+                        Delhi - 110006<br>
+                        India<br>
+                        Contact: +91 95994-12941<br>
+                        Email: charlietravels1@gmail.com
                     </div>
                 </div>
                 <div class="company-logo">
@@ -399,7 +399,7 @@
                         @endif
                     </div>
                     <div class="invoice-number">LR No: {{ $booking->bilti_number }}</div>
-                    <div>GSTIN: 09AHQPV3722R2Z7</div>
+                    <div>GSTIN: 07DJVPS6408H1ZI</div>
                     <div>Reg. UDYAM-DL-04-0066406</div>
                     <div style="margin-top: 2mm; font-weight: bold; color: red; font-size: 10px;">DUPLICATE COPY</div>
                 </div>
@@ -471,14 +471,15 @@
                 <div class="payment-info">
                     <div class="bank-details">
                         <strong>Bank Details:</strong><br>
-                        Ac- 5530142311<br>
-                        Bank Name - Central Bank of India<br>
-                        IFSC - CBIN0283681<br>
-                        Account Holder - Vikas Logistics
+                        Ac- 50200045433722<br>
+                        Bank Name - HDFC<br>
+                        Branch Name - KASHMERE GATE<br>
+                        IFSC - HDFC0000330<br>
+                        Account Holder - CHARLIE TRAVELS
                     </div>
-                    <div class="qr-code">
+                    <!-- <div class="qr-code">
                         <img src="{{ asset('site/img/indianQr.jpg') }}" width="60" height="60">
-                    </div>
+                    </div> -->
                 </div>
                 
                 <div class="amount-section">
