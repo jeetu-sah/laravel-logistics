@@ -169,6 +169,8 @@ class DeliveryController extends Controller
 
     public function store(Request $request, CloudStorageService $storage)
     {
+        // echo "<pre>";
+        // print_r($request->all());exit;
         $request->validate([
             'freight_charges' => 'required|numeric',
             'hamali_charges' => 'nullable|numeric',
@@ -208,6 +210,7 @@ class DeliveryController extends Controller
                 'delivery_number' => $serialNumber,
                 'recived_by' => $request->recived_by,
                 'discount' => $request->discount ?? 0,
+                'remark' => $request->remark ?? NULL,
                 'reciver_mobile' => $request->reciver_mobile,
                 'status' => 'generated-gatepass',
                 'branch_id' => Auth::user()->branch_user_id ?? NULL,
@@ -297,6 +300,8 @@ class DeliveryController extends Controller
     public function show($id)
     {
         $deliveryReceipt = DeliveryReceipt::with(['booking'])->find($id);
+        // echo "<pre>";
+        // print_r($deliveryReceipt);exit;
         if (!$deliveryReceipt) {
             return redirect('admin/delivery')->with('error', 'Delivery receipt not found!');
         }
