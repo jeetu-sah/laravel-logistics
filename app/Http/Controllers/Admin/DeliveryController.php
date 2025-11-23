@@ -11,6 +11,7 @@ use App\Library\sHelper;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Branch;
+use App\Services\CloudStorageService;
 use App\Models\DeliveryReceiptPayment;
 
 class DeliveryController extends Controller
@@ -166,7 +167,7 @@ class DeliveryController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request)
+    public function store(Request $request, CloudStorageService $storage)
     {
         $request->validate([
             'freight_charges' => 'required|numeric',
@@ -182,7 +183,10 @@ class DeliveryController extends Controller
             DB::beginTransaction();
             $imagePath = null;
             if ($request->hasFile('parcel_image')) {
-                $imagePath = $request->file('parcel_image')->store('parcel_images', 'public');
+                $prefixFolderName = env('DEVELOPMENT_MODE') ? 'dev-photos' : 'prod-photos';
+                $photoFolderName = $prefixFolderName . '/gatepass';
+                $uploadedPathsOfPhotos = $storage->uploadWithDetails($photoFolderName, $request->file('parcel_image'));
+                $imagePath = $uploadedPathsOfPhotos['full_url'];
             }
 
             if (!empty($request->delivery_number)) {
@@ -200,14 +204,14 @@ class DeliveryController extends Controller
                 'others_charges' => $request->others_charges ?? 0,
                 'grand_total' => $request->grand_total ?? 0,
                 'received_amount' => $request->received_amount ?? 0,
-                'pending_amount' => $request->pending_amount,
+                'pending_amount' => $request->pending_amount ?? 0,
                 'delivery_number' => $serialNumber,
                 'recived_by' => $request->recived_by,
-                'discount' => $request->discount,
+                'discount' => $request->discount ?? 0,
                 'reciver_mobile' => $request->reciver_mobile,
                 'status' => 'generated-gatepass',
                 'branch_id' => Auth::user()->branch_user_id ?? NULL,
-                'parcel_image' => $imagePath ?? '--',
+                'parcel_image' => $imagePath,
             ]);
             if ($deliveryReceipt) {
                 DeliveryReceiptPayment::create([
@@ -224,12 +228,14 @@ class DeliveryController extends Controller
                 }
 
                 DB::commit();
-                return redirect()->route('admin.delivery.receipt', ['id' => $deliveryReceipt->id])->with([
+                return redirect()->back()->with([
                     "alertMessage" => true,
-                    "alert" => ['message' => 'Delivery receipt created successfully!!!', 'type' => 'success']
+                    "redirectAnotherRoute" => true,
+                    "alert" => ['message' => 'Delivery receipt created successfully!!!', 'type' => 'success'],
+                    "redirectGatepassId" => $deliveryReceipt->id,
+                    "route" => route('admin.delivery.receipt', ['id' => $deliveryReceipt->id])
                 ]);
             } else {
-
                 DB::rollBack();
                 return redirect()->back()->with([
                     "alertMessage" => true,
@@ -237,10 +243,9 @@ class DeliveryController extends Controller
                 ])->withInput();
             }
         } catch (\Exception $e) {
-            // echo $e->getMessage();
             return redirect()->back()->with([
                 "alertMessage" => true,
-                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
+                "alert" => ['message' => $e->getMessage(), 'type' => 'danger']
             ])->withInput();
         }
     }
