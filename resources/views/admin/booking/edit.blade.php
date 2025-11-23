@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <input type="text" value="{{ $booking->freight_amount }}" name="freight_amount"
-                                                id="freight_amount" class="form-control mb-1" readonly />
+                                                id="freight_amount" class="form-control mb-1" />
                                         </div>
 
                                         <!-- WBC -->
