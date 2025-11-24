@@ -109,7 +109,6 @@ class BookingController extends Controller
 
     public function edit($id, Request $request)
     {
-
         $data['title'] = "Edit Booking";
         $data['user'] = auth()->user();
         $data['branch'] = Branch::all();
@@ -119,13 +118,6 @@ class BookingController extends Controller
         $data['currentBranch']  = Branch::currentbranch();
         $data['clients']  = $data['currentBranch']->clients;
         $data['booking'] = Booking::with(['transhipments'])->where('id', $id)->first();
-
-        // print_r($data['booking']->incoming_booking_commisions);exit;
-
-        // $bookingCommisions = Booking::bookingCommisions($data['booking']);
-        // echo "<pre>";
-        // print_r($data['booking']->transhipments[1]->commision);exit;
-
         $transhipments = $data['booking']->transhipments;
         $data['transhipmentOne'] = $data['transhipmentTwo'] = $data['transhipmentThree'] = NULL;
 
@@ -249,7 +241,6 @@ class BookingController extends Controller
         $data['booking'] = Booking::with(['client', 'transhipments'])->findOrFail($id);
         $branchCode1 = $data['booking']->consignor_branch_id;
         $branchCode2 = $data['booking']->consignee_branch_id;
-
         // Get the branch details for consignor and consignee
         $branch1 = Branch::find($branchCode1);
         $branch2 = Branch::find($branchCode2);
@@ -278,7 +269,7 @@ class BookingController extends Controller
         foreach ($data['transhipments'] as $transhipment) {
             $transhipment->from_transhipment_name = Branch::find($transhipment->from_transhipment)->branch_name ?? 'NA';
         }
-
+        $data['sendor'] = $branch1;
         // Return the view with data
         return view('admin.booking.print-bilti', $data);
     }

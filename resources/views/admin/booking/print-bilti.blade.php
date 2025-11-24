@@ -242,10 +242,8 @@
                 <div class="company-info">
                     <div class="company-name">VIKAS LOGISTICS</div>
                     <div class="company-address">
-                        256 Damodar Nagar Barra<br>
-                        Kanpur Nagar - 208027<br>
-                        Uttar Pradesh<br>
-                        Contact: +91 88403 54461<br>
+                        {!! isset($consignorAddress) ? nl2br(e($consignorAddress)) : '--' !!}<br>
+                        Contact: {{$sendor->contact ?? '+91 88403 54461'}} <br>
                         Email: vikaslogistics14320@gmail.com
                     </div>
                 </div>
@@ -354,6 +352,11 @@
                     (2) Party shall have to collect the goods within three days, there after company shall not be responsible and have to pay demurrage. 
                     (3) In case of loss or damage, we are liable for only risk cover value for transit which declared by consignor at the time of booking.
                     (4) *Terms & Conditions Apply. (5) All Dispute at Kanpur jurisdiction only.
+                    <br>
+                    <strong>Track Shipment:</strong>
+                    <a href="https://vikaslogistic.in/" target="_blank">
+                        https://vikaslogistic.in/
+                    </a>
                 </div>
                 
                 <div class="signatures">
@@ -378,10 +381,8 @@
                 <div class="company-info">
                     <div class="company-name">VIKAS LOGISTICS</div>
                     <div class="company-address">
-                        256 Damodar Nagar Barra<br>
-                        Kanpur Nagar - 208027<br>
-                        Uttar Pradesh<br>
-                        Contact: +91 88403 54461<br>
+                        {!! isset($consignorAddress) ? nl2br(e($consignorAddress)) : '--' !!}<br>
+                        Contact: {{$sendor->contact ?? '+91 88403 54461'}} <br>
                         Email: vikaslogistics14320@gmail.com
                     </div>
                 </div>
@@ -491,6 +492,11 @@
                     (2) Party shall have to collect the goods within three days, there after company shall not be responsible and have to pay demurrage. 
                     (3) In case of loss or damage, we are liable for only risk cover value for transit which declared by consignor at the time of booking.
                     (4) *Terms & Conditions Apply. (5) All Dispute at Kanpur jurisdiction only.
+                    <br>
+                    <strong>Track Shipment:</strong>
+                    <a href="https://vikaslogistic.in/" target="_blank">
+                        https://vikaslogistic.in/
+                    </a>
                 </div>
                 
                 <div class="signatures">
