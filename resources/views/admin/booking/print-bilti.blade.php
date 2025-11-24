@@ -247,7 +247,7 @@
                     <div class="company-address">
                         {!! isset($consignorAddress) ? nl2br(e($consignorAddress)) : '--' !!}
                         <br />
-                        Contact: {{$branch1->contact ?? '+91 95994-12941'}}<br>
+                        Contact: {{$sendor->contact ?? '+91 95994-12941'}}<br>
                         Email: Charlietravels1@gmail.com
                     </div>
                 </div>
@@ -389,7 +389,7 @@
                     <div class="company-address">
                         {!! isset($consignorAddress) ? nl2br(e($consignorAddress)) : '--' !!}
                         <br>
-                        Contact: {{$branch1->contact ?? '+91 95994-12941'}}<br>
+                        Contact: {{$sendor->contact ?? '+91 95994-12941'}}<br>
                         Email: charlietravels1@gmail.com
                     </div>
                 </div>
