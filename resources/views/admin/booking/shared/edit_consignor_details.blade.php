@@ -18,7 +18,11 @@
                     <div id="client_details"></div>
                 </div>
                 @endif
-                <div class="col-md-4 mb-1">
+                <div class="col-md-2 mb-1">
+                    <label for="manual_bilty">{{ __('Online Bilty No.') }}</label>
+                    <input type="text" value="{{ $booking->bilti_number }}" class="form-control" name="bilti_number" id="bilti_number" />
+                </div>
+                <div class="col-md-2 mb-1">
                     <label for="date">Offline Bilty No.</label>
                     <input
                         type="text"
@@ -28,7 +32,7 @@
                         id="manual_bilty" />
 
                 </div>
-                <div class="col-md-4 mb-1">
+                <div class="col-md-2 mb-1">
                     <label for="date">offline Booking Date</label>
                     <input type="date" class="form-control"
                         name="offline_booking_date"
@@ -116,7 +120,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
-                        <label for="date">From:</label>
+                        <label for="date">From<span style="color: red"> *</span>:</label>
                     </div>
                 </div>
                 <div class="col-md-3 mb-1">
@@ -150,7 +154,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
-                        <label for="date">To:</label>
+                        <label for="date">To<span style="color: red"> *</span>:</label>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -220,7 +224,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <label for="good_of_value">Goods Of Value:</label>
+                        <label for="good_of_value">Goods Of Value<span style="color: red"> *</span>:</label>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -236,19 +240,19 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6"> <label for="date" style="font-size:20px;">Consignor Details:</label></div>
-                <div class="col-md-6"> <label for="date" style="font-size:20px;">Consignee Details:</label></div>
+                <div class="col-md-6"> <label for="date" style="font-size:20px;">Sender Details:</label></div>
+                <div class="col-md-6"> <label for="date" style="font-size:20px;">Receiver Details:</label></div>
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <label for="date">Name:</label>
+                    <label for="date">Name<span style="color: red"> *</span>:</label>
                 </div>
                 <div class="col-md-3">
                     <input type="text" name="consignor_name" value="{{ $booking->consignor_name }}" class="form-control mb-1" />
                 </div>
 
                 <div class="col-md-3">
-                    <label for="date">Name:</label>
+                    <label for="date">Name<span style="color: red"> *</span>:</label>
                 </div>
                 <div class="col-md-3">
                     <input type="text" value="{{ $booking->consignee_name }}" id="consignee_name"
@@ -339,7 +343,7 @@
                     <input type="text" value="{{ $booking->aadhar_card }}" name="aadhar_card" class="form-control mb-1 mb-1" />
                 </div>
                 <div class="col-md-4">
-                    <label for="mark">Value Declare by Consignee.</label>
+                    <label for="mark">Value Declare by Receiver.</label>
                     <input type="text" value="{{ $booking->mark }}" name="mark" class="form-control mb-1 mb-1" />
                 </div>
                 <div class="col-md-4">

@@ -3,6 +3,7 @@
 namespace App\Library;
 
 use App\Models\Booking;
+use App\Models\Branch;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -115,8 +116,7 @@ class sHelper
 		if (!empty($image_name)) {
 			switch ($status) {
 				case 2:
-					return url("storage/profile_image/$image_name");
-					;
+					return url("storage/profile_image/$image_name");;
 					break;
 				case 'C':
 					return '<span class="badge badge-danger">Closed</span>';
@@ -246,14 +246,14 @@ class sHelper
 
 		$next = $deliverySerielNumber->id + 1;
 		return $prefix . str_pad($next, 3, '0', STR_PAD_LEFT);
-
 	}
 
 	public static function generateNextBiltiNumber(string $bookingStatus)
 	{
 		$settings = BranchSetting::where([['user_id', '=', Auth::user()->id]])->first();
+		$branch = Branch::where([['id', '=', Auth::user()->branch_user_id]])->first();
 		$latestBuiltyId = Booking::latest('id')->first()?->id;
-
+		
 		// Check if the last bilti number is provided and valid
 		if (!empty($latestBuiltyId) && preg_match('/\d+/', $latestBuiltyId, $matches)) {
 			// Extract the numeric part from the last bilti number
@@ -264,12 +264,18 @@ class sHelper
 		}
 
 		// Return the bilti number in the format of YYMMxxx (e.g., 250131001)
-		$nextBuiltyNumber = date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+		$nextBuiltyNumber = $branch?->branch_code.'-'.date('y') . date('m') . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
 		if ($bookingStatus === Booking::NO_BOOKING) {
 			return "NB-" . $nextBuiltyNumber;
 		}
 
 		return $nextBuiltyNumber;
+	}
+
+
+	public static function printLRNumber(string $branchCode, $lrNumber)
+	{
+		return $branchCode . '-' . $lrNumber;
 	}
 }

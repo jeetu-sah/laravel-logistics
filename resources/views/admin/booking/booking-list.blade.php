@@ -34,10 +34,10 @@
                                 <tr>
                                     <th>Bilti Number</th>
                                     <th>Offline Bitli</th>
-                                    <th>Consinger Branch</th>
-                                    <th>Consinger Name</th>
-                                    <th>Consignee Branch</th>
-                                    <th>Consignee Name</th>
+                                    <th>Sender Branch</th>
+                                    <th>Sender Name</th>
+                                    <th>Receiver Branch</th>
+                                    <th>Receiver Name</th>
                                     <th>Payment Mode</th>
                                     <th>Next Delivery Location</th>
                                     <th>Creation Date</th>

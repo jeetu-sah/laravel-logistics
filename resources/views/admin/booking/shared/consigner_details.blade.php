@@ -29,12 +29,16 @@
                 @endif
             </div>
             <div class="form-row align-items-end mb-3">
-                <div class="col-md-3 mb-1">
+                <div class="col-md-2 mb-1">
+                    <label for="manual_bilty">{{ __('Online Bilty No.') }}</label>
+                    <input type="text" value="{{ $nextOnlineBuiltyNumber }}" class="form-control" name="bilti_number" id="bilti_number" />
+                </div>
+                <div class="col-md-2 mb-1">
                     <label for="manual_bilty">{{ __('Offline Bilty No.') }}</label>
                     <input type="text" class="form-control" name="manual_bilty" value="{{ old('manual_bilty') }}" id="manual_bilty" />
                 </div>
 
-                <div class="col-md-3 mb-1">
+                <div class="col-md-2 mb-1">
                     <label for="offline_booking_date">{{ __('Offline Booking Date') }}</label>
                     <input type="date" class="form-control" name="offline_booking_date" value="{{ old('offline_booking_date') }}" id="offline_booking_date" />
                 </div>
@@ -175,8 +179,8 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6"> <label for="date" style="font-size:20px;">{{ __('Consignor Details') }}:</label></div>
-                <div class="col-md-6"> <label for="date" style="font-size:20px;">{{ __('Consignee Details') }}:</label></div>
+                <div class="col-md-6"> <label for="date" style="font-size:20px;">{{ __('Sender Details') }}:</label></div>
+                <div class="col-md-6"> <label for="date" style="font-size:20px;">{{ __('Receiver Details') }}:</label></div>
             </div>
             <div class="row">
                 <div class="col-md-3">
@@ -274,7 +278,7 @@
                     <input type="text" value="{{ old('aadhar_card') }}" name="aadhar_card" class="form-control mb-1" />
                 </div>
                 <div class="col-md-4">
-                    <label for="date">{{ __('Value Declare by Consignee') }}.</label>
+                    <label for="date">{{ __('Value Declare by Receiver') }}.</label>
                     <input type="text" value="{{ old('mark') }}" name="mark" class="form-control mb-1" />
                 </div>
                 <div class="col-md-4">

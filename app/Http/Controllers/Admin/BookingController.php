@@ -10,6 +10,7 @@ use App\Models\Transhipment;
 use App\Models\Client;
 use App\Models\ClientMap;
 use App\Models\Branch;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -96,6 +97,10 @@ class BookingController extends Controller
     public function create(Request $request)
     {
         $data['title'] = "Create New Booking";
+        if (!$request->query('booking')) {
+            return redirect('/admin/dashboard')
+                ->with('error', 'Booking ID missing.');
+        }
         $data['user'] = auth()->user();
         $data['branch'] = Branch::all();
         $data['noBillBookings'] = $request->query('no-bill-bookings');
@@ -104,12 +109,13 @@ class BookingController extends Controller
 
         $data['clients']  = $data['currentBranch']->clients;
         $data['toClients']  = $data['currentBranch']->toClients;
+        $data['nextOnlineBuiltyNumber'] = sHelper::generateNextBiltiNumber($request->query('booking'));
+        $data['settings'] = Setting::pluck('value', 'key')->toArray();
         return view('admin.booking.create', $data);
     }
 
     public function edit($id, Request $request)
     {
-
         $data['title'] = "Edit Booking";
         $data['user'] = auth()->user();
         $data['branch'] = Branch::all();
@@ -119,13 +125,6 @@ class BookingController extends Controller
         $data['currentBranch']  = Branch::currentbranch();
         $data['clients']  = $data['currentBranch']->clients;
         $data['booking'] = Booking::with(['transhipments'])->where('id', $id)->first();
-
-        // print_r($data['booking']->incoming_booking_commisions);exit;
-
-        // $bookingCommisions = Booking::bookingCommisions($data['booking']);
-        // echo "<pre>";
-        // print_r($data['booking']->transhipments[1]->commision);exit;
-
         $transhipments = $data['booking']->transhipments;
         $data['transhipmentOne'] = $data['transhipmentTwo'] = $data['transhipmentThree'] = NULL;
 
@@ -134,7 +133,7 @@ class BookingController extends Controller
             $data['transhipmentTwo'] = $data['booking']->transhipments->where('sequence_no', 3)->where('type', 'transhipment')->first()?->branch;
             $data['transhipmentThree'] = $data['booking']->transhipments->where('sequence_no', 4)->where('type', 'transhipment')->first()?->branch;
         }
-
+        $data['settings'] = Setting::pluck('value', 'key')->toArray();
         return view('admin.booking.edit', $data);
     }
 
@@ -263,7 +262,6 @@ class BookingController extends Controller
 
         // Handle transhipment data
         $transhipments = $data['booking']->transhipments;
-
         // Default data for transhipments if none exist
         if ($transhipments->isEmpty()) {
             $transhipments = collect([
@@ -274,6 +272,7 @@ class BookingController extends Controller
             ]);
         }
         $data['transhipments'] = $transhipments;
+        $data['sendor'] = $branch1;
 
         foreach ($data['transhipments'] as $transhipment) {
             $transhipment->from_transhipment_name = Branch::find($transhipment->from_transhipment)->branch_name ?? 'NA';
@@ -292,7 +291,6 @@ class BookingController extends Controller
 
     public function clintList(Request $request)
     {
-        // Get input values from the request
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
@@ -378,6 +376,7 @@ class BookingController extends Controller
         $parcelFolderName = $prefixFolderName . '/parcel';
 
         $validator = Validator::make($request->all(), [
+            'bilti_number' => 'required',
             'booking_date' => 'required|date',
             'transhipmen_one' => 'nullable',
             'consignor_branch_id' => 'required|exists:branches,id',
@@ -438,7 +437,11 @@ class BookingController extends Controller
                 ->withInput();
         }
 
-        $nextBiltiNumber = sHelper::generateNextBiltiNumber($request->booking_status);
+        if ($request->bilti_number) {
+            $nextBiltiNumber = $request->bilti_number;
+        } else {
+            $nextBiltiNumber = sHelper::generateNextBiltiNumber($request->booking_status);
+        }
 
         $onlyTranshipment = [
             'consignor_branch_id' => $request->consignor_branch_id,

@@ -280,18 +280,19 @@
 <script src="{{ asset(path: 'admin_webu/plugins/select2/js/select2.full.min.js') }} "></script>
 
 <script>
-    const wbcPerparcelChargesperParcel = 40; // for single parcel
-    const handlingChargesPerparcel = 30; // for single parcel
-    const fuelChargesPerparcel = 150; // for single parcel
-    const transhipMentChargesPerparcel = 40; // for single parcel
-    const hamaliChargesPerparcel = 20; // for single parcel
-    const biltiChargesPerparcel = 10; // for single parcel
-    const companyPerParcelCharges = 40; //for single parcel
-    const perKmRate = 0.20; // Freight rate per kilometer in rupees
+    const appSettings = @json($settings);
+    const wbcPerparcelChargesperParcel = Number(appSettings['wbc_charges'] ?? 40); // for single parcel
+    const handlingChargesPerparcel = Number(appSettings['handling_charges'] ?? 30); // for single parcel
+    const fuelChargesPerparcel = Number(appSettings['fuel_amount'] ?? 150); // for single parcel
+    const transhipMentChargesPerparcel = Number(appSettings['transhipmen_amount'] ?? 40);// for single parcel
+    const hamaliChargesPerparcel = Number(appSettings['hamali_Charges'] ?? 20);// for single parcel
+    const biltiChargesPerparcel = Number(appSettings['bilti_charges'] ?? 10); // for single parcel
+    const companyPerParcelCharges = Number(appSettings['compney_charges'] ?? 40);//for single parcel
+    const perKmRate = Number(appSettings['per_km_rate'] ?? 0.20); // Freight rate per kilometer in rupees
     const defaultTotalNumberOfparcel = 0; // Freight rate per kilometer in rupees
-    const defaultFovPercentage = 1.5; // defaultFovPercentage
+    const defaultFovPercentage = Number(appSettings['fov_amount'] ?? 1.5);// defaultFovPercentage
     const setDefaultDistance = 100; // default distance 100 km
-    const defaultTranshipment = 40;
+    const defaultTranshipment = Number(appSettings['transhipmen_amount'] ?? 40);
 
 
     const branches = @json($branch);
@@ -363,7 +364,6 @@
                 'keys': duplicated[0].keys,
             }
         }
-
         return {
             'status': false,
 
@@ -413,9 +413,9 @@
         }
 
         // If 'no-bill-bookings' is not found, proceed with the calculation
-        const cgstRate = 2.5; // CGST rate percentage
-        const sgstRate = 2.5; // SGST rate percentage
-        const igstRate = 5; // IGST rate percentage (for inter-state)
+        const cgstRate =  Number(appSettings['cgst'] ?? 2.5);// CGST rate percentage
+        const sgstRate = Number(appSettings['sgst'] ?? 2.5); // SGST rate percentage
+        const igstRate = Number(appSettings['igst'] ?? 5); // IGST rate percentage (for inter-state)
 
         // Calculate GST for Freight
         const freightCgst = (totalFreight * cgstRate) / 100;

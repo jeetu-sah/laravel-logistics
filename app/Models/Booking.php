@@ -349,7 +349,7 @@ class Booking extends Model
     //incoming_booking_commisions
     public function getIncomingBookingCommisionsAttribute()
     {
-        
+
         $incomingCommisionProcess = $this->consigneeBranch?->incoming_commission_price;
         if ($this->consigneeBranch && $incomingCommisionProcess) {
             $totalBookingCommision = $this->no_of_artical * $incomingCommisionProcess;
@@ -358,9 +358,18 @@ class Booking extends Model
         return 0;
     }
 
+    //lr_number
+    public function getLrNumberAttribute()
+    {
+        return $this->manual_bilty_number
+            ? $this->manual_bilty_number
+            : $this->bilti_number;
+    }
+
+
     // public static function bookingCommisions($booking)
     // {
-       
+
     //     $totalBookingCommision = 0;
     //     $transhipments = $booking->transhipments;
     //     if($transhipments->count() > 0) {
