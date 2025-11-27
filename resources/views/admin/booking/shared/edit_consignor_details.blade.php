@@ -348,13 +348,28 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 mb-3">
                     <label for="date">Upload Photo ID Image:</label>
-                    <input type="file" class="form-control mb-1 mb-1" name="photo_id" />
+                    <input type="file" class="form-control mb-1 mb-1" name="photo_id" onchange="previewFile(event, 'photoPreview')" />
+                    @if($booking->photo_id)
+                    <div class="mt-2">
+                        <img id="photoPreview"
+                            src="{{$booking->photo_id}}"
+                            class="img-thumbnail shadow-sm" width="220" />
+                    </div>
+                    @endif
                 </div>
                 <div class="col-md-3">
-                    <label for="parcel_image">Capture Image</label>
-                    <input type="file" name="parcel_image" id="parcel_image" class="form-control mb-1" />
+                    <label for="parcel_image">Upload Parcel Image</label>
+                    <input type="file" name="parcel_image" id="parcel_image" class="form-control mb-1" onchange="previewFile(event, 'parcelPreview')" />
+                    @if($booking->parcel_image)
+                    <div class="mt-2" id="defaultParcelImage">
+                        <img id="parcelPreview"
+                            src="{{$booking->parcel_image}}"
+                            class="img-thumbnail shadow-sm"
+                            width="200" />
+                    </div>
+                    @endif
                 </div>
                 <div class="col-md-3">
                     <label for="date"></label>

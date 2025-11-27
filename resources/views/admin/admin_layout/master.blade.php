@@ -170,7 +170,133 @@
 
         body {
             zoom: 0.8;
-            /* 70% size */
+        }
+    </style>
+    <style>
+        .form-control-lg {
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 15px;
+            border: 1px solid #cdd6e1;
+        }
+
+        .form-control-lg:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
+        }
+
+        label i {
+            margin-right: 6px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+            border: 1px solid #e6e6e6;
+        }
+
+        .card-header {
+            background: #f7f9fc;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 20px;
+        }
+
+        .card-header h3 {
+            font-weight: 600;
+            font-size: 18px;
+            color: #1f4e79;
+        }
+
+        /* Inputs */
+        .form-control {
+            border-radius: 6px;
+            border-color: #c5c5c5;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: none;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Table Styling */
+        table.dataTable {
+            border-radius: 10px !important;
+            overflow: hidden;
+        }
+
+        #booking-list th {
+            background: #eef2f7;
+            color: #1d3557;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        #booking-list td {
+            font-size: 14px;
+            padding: 8px 12px;
+        }
+
+        #booking-list tr:hover {
+            background: #f4f7fc;
+        }
+
+        /* Select All checkbox styling */
+        #selectAll {
+            cursor: pointer;
+            transform: scale(1.2);
+            margin-right: 4px;
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-header {
+            background: #1f4e79;
+            color: #fff;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-footer .btn-primary {
+            background-color: #1f4e79;
+            border-color: #1f4e79;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: transparent;
+            padding: 5px 0;
+        }
+
+        .breadcrumb-item a {
+            color: #1f4e79;
+            font-weight: 500;
+        }
+
+        /* Section Title Icon */
+        .content-header h4 i {
+            color: #1f4e79;
         }
     </style>
 

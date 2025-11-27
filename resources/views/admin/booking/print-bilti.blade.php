@@ -334,7 +334,7 @@
                 </tr>
                 <tr>
                     <th>Remark</th>
-                    <td>{{ $booking->mark }}</td>
+                    <td>{{ $booking->remark ?? '--' }}</td>
                 </tr>
             </table>
 
@@ -477,7 +477,7 @@
                 </tr>
                 <tr>
                     <th>Remark</th>
-                    <td>{{ $booking->mark }}</td>
+                    <td>{{ $booking->remark ?? '--' }}</td>
                 </tr>
             </table>
 

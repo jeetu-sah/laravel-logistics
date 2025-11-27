@@ -779,6 +779,12 @@
         }
     }
 
+    function previewFile(event, id) {
+        const output = document.getElementById(id);
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.style.display = "block";
+    }
+
     // Function to capture the photo after stopping the webcam
     function capturePhoto() {
         const video = document.getElementById('webcam');
@@ -823,6 +829,9 @@
         const image = document.getElementById('capturedImage');
         image.src = capturedImageData;
         image.style.display = 'block';
+
+        const defaultParcelImage = document.getElementById('defaultParcelImage');
+        defaultParcelImage.style.display = 'none';
 
         // Stop the webcam stream (turn off the camera)
         const tracks = stream.getTracks();
