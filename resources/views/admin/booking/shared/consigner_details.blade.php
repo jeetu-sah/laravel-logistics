@@ -161,7 +161,7 @@
                     <label for="actual_weight">{{ __('Weight (kg)') }}:<span style="color: red"> *</span></label>
                 </div>
                 <div class="col-md-1">
-                    <input type="number" min="0" name="actual_weight" class="form-control mb-1" step="0.01" value="{{ old('actual_weight') }}" />
+                    <input type="number" min="0" name="actual_weight" class="form-control mb-1" step="0.01" value="{{ old('actual_weight') }}" required />
                 </div>
                 <div class="col-md-1">
                     <label for="cantain">{{ __('Cantain') }}<span style="color: red"> *</span></label>

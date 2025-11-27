@@ -328,7 +328,7 @@
                 </tr>
                 <tr>
                     <th>Remark</th>
-                    <td>{{ $booking->mark }}</td>
+                    <td>{{ $booking->remark ?? '--' }}</td>
                 </tr>
             </table>
 
@@ -360,8 +360,8 @@
                     (5) All disputes at Kanpur jurisdiction only.
                     <br>
                     <strong>Track Shipment:</strong>
-                    <a href="https://tracking.charlietravelscargo.com/track-shipment" target="_blank">
-                        https://tracking.charlietravelscargo.com/track-shipment
+                    <a href="https://shipment.charlietravelscargo.com/track-shipment" target="_blank">
+                        https://shipment.charlietravelscargo.com/track-shipment
                     </a>
                 </div>
 
@@ -471,7 +471,7 @@
                 </tr>
                 <tr>
                     <th>Remark</th>
-                    <td>{{ $booking->mark }}</td>
+                    <td>{{ $booking->remark ?? '--' }}</td>
                 </tr>
             </table>
 
@@ -504,8 +504,8 @@
                     (5) All disputes at Kanpur jurisdiction only.
                     <br>
                     <strong>Track Shipment:</strong>
-                    <a href="https://tracking.charlietravelscargo.com/track-shipment" target="_blank">
-                        https://tracking.charlietravelscargo.com/track-shipment
+                    <a href="https://shipment.charlietravelscargo.com/track-shipment" target="_blank">
+                        https://shipment.charlietravelscargo.com/track-shipment
                     </a>
                 </div>
 

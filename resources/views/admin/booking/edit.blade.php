@@ -57,16 +57,6 @@
                                             <input type="text" value="{{ $booking->freight_amount }}" name="freight_amount"
                                                 id="freight_amount" class="form-control mb-1" />
                                         </div>
-
-                                        <!-- WBC -->
-                                        <div class="col-md-6">
-                                            <label for="wbc_charges">WBC:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" value="{{ $booking->wbc_charges }}" name="wbc_charges" id="wbc_charges"
-                                                class="form-control mb-1" readonly />
-                                        </div>
-
                                         <!-- Handling Charges -->
                                         <div class="col-md-6">
                                             <label for="handling_charges">Handling Charges:</label>
@@ -75,25 +65,6 @@
                                             <input type="text" value="{{ $booking->handling_charges }}" name="handling_charges" id="handling_charges"
                                                 class="form-control mb-1" readonly />
                                         </div>
-
-                                        <!-- FOV -->
-                                        <div class="col-md-6">
-                                            <label for="fov_amount">FOV:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" value="{{ $booking->fov_amount }}" name="fov_amount" id="fov_amount"
-                                                class="form-control mb-1" readonly />
-                                        </div>
-
-                                        <!-- Fuel Charges -->
-                                        <div class="col-md-6">
-                                            <label for="fuel_amount">Fuel Charges:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" value="{{ $booking->fuel_amount }}" name="fuel_amount"
-                                                id="fuel_amount" class="form-control mb-1" readonly />
-                                        </div>
-
                                         <!-- Transhipment 1 -->
                                         <div class="col-md-6">
                                             <label for="transhipmen_one_amount">Transhipment 1:</label>
@@ -126,18 +97,6 @@
                                                 name="transhipment_three_amount"
                                                 id="transhipment_three_amount" class="form-control mb-1" readonly />
                                         </div>
-
-                                        <!-- Pickup Charges -->
-                                        <div class="col-md-6">
-                                            <label for="pickup_charges">Pickup Charges:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text"
-                                                value="{{ $booking->pickup_charges }}"
-                                                name="pickup_charges" id="pickup_charges"
-                                                class="form-control mb-1" />
-                                        </div>
-
                                         <!-- Hamali Charges -->
                                         <div class="col-md-6">
                                             <label for="hamali_Charges">Hamali Charges:</label>
@@ -172,17 +131,6 @@
                                                 class="form-control mb-1"
                                                 value="{{ $booking->discount }}" />
                                         </div>
-                                        <!-- Company Charges -->
-                                        <div class="col-md-6">
-                                            <label for="compney_charges">Company Charges:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text"
-                                                value="{{ $booking->compney_charges }}"
-                                                name="compney_charges"
-                                                id="compney_charges" class="form-control mb-1" readonly />
-                                        </div>
-
                                         <!-- Misc Charges -->
                                         <div class="col-md-6">
                                             <label for="misc_charge_amount">Misc. Charges:</label>
@@ -284,13 +232,13 @@
     const wbcPerparcelChargesperParcel = Number(appSettings['wbc_charges'] ?? 40); // for single parcel
     const handlingChargesPerparcel = Number(appSettings['handling_charges'] ?? 30); // for single parcel
     const fuelChargesPerparcel = Number(appSettings['fuel_amount'] ?? 150); // for single parcel
-    const transhipMentChargesPerparcel = Number(appSettings['transhipmen_amount'] ?? 40);// for single parcel
-    const hamaliChargesPerparcel = Number(appSettings['hamali_Charges'] ?? 20);// for single parcel
+    const transhipMentChargesPerparcel = Number(appSettings['transhipmen_amount'] ?? 40); // for single parcel
+    const hamaliChargesPerparcel = Number(appSettings['hamali_Charges'] ?? 20); // for single parcel
     const biltiChargesPerparcel = Number(appSettings['bilti_charges'] ?? 10); // for single parcel
-    const companyPerParcelCharges = Number(appSettings['compney_charges'] ?? 40);//for single parcel
+    const companyPerParcelCharges = Number(appSettings['compney_charges'] ?? 40); //for single parcel
     const perKmRate = Number(appSettings['per_km_rate'] ?? 0.20); // Freight rate per kilometer in rupees
     const defaultTotalNumberOfparcel = 0; // Freight rate per kilometer in rupees
-    const defaultFovPercentage = Number(appSettings['fov_amount'] ?? 1.5);// defaultFovPercentage
+    const defaultFovPercentage = Number(appSettings['fov_amount'] ?? 1.5); // defaultFovPercentage
     const setDefaultDistance = 100; // default distance 100 km
     const defaultTranshipment = Number(appSettings['transhipmen_amount'] ?? 40);
 
@@ -413,7 +361,7 @@
         }
 
         // If 'no-bill-bookings' is not found, proceed with the calculation
-        const cgstRate =  Number(appSettings['cgst'] ?? 2.5);// CGST rate percentage
+        const cgstRate = Number(appSettings['cgst'] ?? 2.5); // CGST rate percentage
         const sgstRate = Number(appSettings['sgst'] ?? 2.5); // SGST rate percentage
         const igstRate = Number(appSettings['igst'] ?? 5); // IGST rate percentage (for inter-state)
 
@@ -432,14 +380,16 @@
     }
 
     async function calculateFreight(distance, numberOfParcel = 1) {
-        const freightTotalAmount = (distance * perKmRate) * numberOfParcel;
-        $('#freight_amount').val(freightTotalAmount); // set value in textbox
-        return freightTotalAmount
+        // const freightTotalAmount = (distance * perKmRate) * numberOfParcel;
+        // $('#freight_amount').val(freightTotalAmount); // set value in textbox
+        // return freightTotalAmount
+        return $('#freight_amount').val() || 0;
     }
     async function calculateHamaliCharges(numberOfParcel = 0) {
-        const calculatedHamaliCharges = hamaliChargesPerparcel * numberOfParcel;
-        $('#hamali_Charges').val(calculatedHamaliCharges); // set value in textbox
-        return calculatedHamaliCharges
+        // const calculatedHamaliCharges = hamaliChargesPerparcel * numberOfParcel;
+        // $('#hamali_Charges').val(calculatedHamaliCharges); // set value in textbox
+        // return calculatedHamaliCharges
+        return $('#hamali_Charges').val() || 0;
     }
 
     async function calculateWbcCharges(numberOfParcel = 0) {
@@ -449,9 +399,10 @@
     }
 
     async function calculateHandlingCharges(numberOfParcel = 0) {
-        const handlingCharges = numberOfParcel * handlingChargesPerparcel;
-        $('#handling_charges').val(handlingCharges);
-        return handlingCharges
+        // const handlingCharges = numberOfParcel * handlingChargesPerparcel;
+        // $('#handling_charges').val(handlingCharges);
+        // return handlingCharges
+        return $('#handling_charges').val() || 0;
     }
     async function calculateFuelCharges(numberOfParcel = 0) {
         const calculatedFuelAmount = numberOfParcel * fuelChargesPerparcel;
@@ -459,9 +410,10 @@
         return calculatedFuelAmount
     }
     async function calculateBiltiCharges(numberOfParcel = 0) {
-        const calculatedBiltiAmount = numberOfParcel * biltiChargesPerparcel;
-        $('#bilti_Charges').val(calculatedBiltiAmount);
-        return calculatedBiltiAmount
+        // const calculatedBiltiAmount = numberOfParcel * biltiChargesPerparcel;
+        // $('#bilti_Charges').val(calculatedBiltiAmount);
+        // return calculatedBiltiAmount
+        return $('#bilti_Charges').val() || 0;
     }
     async function calculateCompanyCharges(numberOfParcel = 0) {
         const calculatedCompanyChargesAmount = numberOfParcel * companyPerParcelCharges;
@@ -471,7 +423,6 @@
 
 
     async function calculateInvoice(defaultDistance = 0, numberOfParcel = 0) {
-
         // Get all input values
         const distance = defaultDistance || 0;
         const noOfArticles = parseInt(document.getElementById('no_of_articles').value) || 1;
@@ -480,27 +431,33 @@
         const freight = await calculateFreight(distance, setNumberofparcelForFreight);
         const gst = await calculateGST(freight)
         const sumOfgst = gst.cGst + gst.sGst;
-        const fovAmount = await calculateFavtotalAmount();
-        const fuelAmount = await calculateFuelCharges(numberOfParcel);
+        // const fovAmount = await calculateFavtotalAmount();
+        // const fuelAmount = await calculateFuelCharges(numberOfParcel);
         const hamaliCharges = await calculateHamaliCharges(numberOfParcel);
-        const wbcCharges = await calculateWbcCharges(numberOfParcel);
+        // const wbcCharges = await calculateWbcCharges(numberOfParcel);
         const handlingCharges = await calculateHandlingCharges(numberOfParcel);
         const biltiCharges = await calculateBiltiCharges(numberOfParcel);
-        const companyCharges = await calculateCompanyCharges(numberOfParcel);;
+        // const companyCharges = await calculateCompanyCharges(numberOfParcel);;
 
         /*-----------------*/
         const [firstTranshipment, secondTranshipment, thirdShipment] = calculateTransshipment();
 
-        const pickupCharges = parseFloat(document.getElementById('pickup_charges').value) || 0;
+        // const pickupCharges = parseFloat(document.getElementById('pickup_charges').value) || 0;
         const miscChargeAmount = parseFloat(document.getElementById('misc_charge_amount').value) || 0;
         const discount = parseFloat(document.getElementById('discount').value) || 0;
 
-
         // Calculate Sub Total
-        const subTotal = (freight + wbcCharges + handlingCharges + fovAmount + fuelAmount +
-                firstTranshipment + secondTranshipment + thirdShipment +
-                pickupCharges + hamaliCharges + biltiCharges + companyCharges + miscChargeAmount + sumOfgst) -
-            discount;
+        const subTotal =
+            (parseFloat(freight) || 0) +
+            (parseFloat(handlingCharges) || 0) +
+            (parseFloat(firstTranshipment) || 0) +
+            (parseFloat(secondTranshipment) || 0) +
+            (parseFloat(thirdShipment) || 0) +
+            (parseFloat(hamaliCharges) || 0) +
+            (parseFloat(biltiCharges) || 0) +
+            (parseFloat(miscChargeAmount) || 0) +
+            (parseFloat(sumOfgst) || 0) -
+            (parseFloat(discount) || 0);
 
         // Set Sub Total
         document.getElementById('sub_total').value = subTotal.toFixed(2);

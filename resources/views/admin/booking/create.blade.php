@@ -414,7 +414,7 @@
         // const calculatedBiltiAmount = numberOfParcel * biltiChargesPerparcel;
         // $('#bilti_Charges').val(calculatedBiltiAmount.toFixed(2));
         // return Number(calculatedBiltiAmount.toFixed(2))
-         return $('#bilti_Charges').val() || 0;
+        return $('#bilti_Charges').val() || 0;
     }
     async function calculateCompanyCharges(numberOfParcel = 0) {
         const calculatedCompanyChargesAmount = numberOfParcel * companyPerParcelCharges;
@@ -448,8 +448,6 @@
         const discount = parseFloat(document.getElementById('discount').value) || 0;
 
         // Calculate Sub Total
-        console.log('freight', freight, 'handlingCharges', handlingCharges, 'firstTranshipment', firstTranshipment, 'secondTranshipment', secondTranshipment,
-            'thirdShipment', thirdShipment, 'hamaliCharges', hamaliCharges, 'biltiCharges', biltiCharges, 'miscChargeAmount', miscChargeAmount, 'sumOfgst', sumOfgst)
         const subTotal =
             parseFloat(freight) +
             parseFloat(handlingCharges) +
@@ -461,7 +459,6 @@
             parseFloat(miscChargeAmount) +
             parseFloat(sumOfgst) -
             parseFloat(discount);
-        console.log('subTotal', subTotal)
         // Set Sub Total
         document.getElementById('sub_total').value = subTotal.toFixed(2);
         // Calculate Grand Total (without GST)
@@ -533,31 +530,31 @@
             var consignee_branch_id = $('#consignee_branch_id').val();
 
             if (consignor_branch_id && consignee_branch_id) {
-                $.ajax({
-                    url: "{{ url('admin/get-distance') }}",
-                    method: 'GET',
-                    data: {
-                        consignor_branch_id: consignor_branch_id,
-                        consignee_branch_id: consignee_branch_id
-                    },
-                    success: function(response) {
-                        if (response.distance) {
-                            $('#distance').val(response.distance);
-                            const numberOfArticle = parseFloat($('#no_of_articles')
-                                .val()) || 0;
+                // $.ajax({
+                //     url: "{{ url('admin/get-distance') }}",
+                //     method: 'GET',
+                //     data: {
+                //         consignor_branch_id: consignor_branch_id,
+                //         consignee_branch_id: consignee_branch_id
+                //     },
+                //     success: function(response) {
+                //         if (response.distance) {
+                //             $('#distance').val(response.distance);
+                //             const numberOfArticle = parseFloat($('#no_of_articles')
+                //                 .val()) || 0;
 
-                            calculateInvoice(response.distance,
-                                numberOfArticle);
-                        } else {
-                            $('#distance').val(0);
-                            alert('Error: ' + (response.error || 'Unknown error'));
-                        }
-                    },
-                    error: function() {
-                        $('#distance').val('');
-                        alert('Failed to fetch distance. Please try again.');
-                    }
-                });
+                //             calculateInvoice(response.distance,
+                //                 numberOfArticle);
+                //         } else {
+                //             $('#distance').val(0);
+                //             alert('Error: ' + (response.error || 'Unknown error'));
+                //         }
+                //     },
+                //     error: function() {
+                //         $('#distance').val('');
+                //         alert('Failed to fetch distance. Please try again.');
+                //     }
+                // });
             } else {
                 $('#distance').val(0);
             }
