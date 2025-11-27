@@ -546,8 +546,11 @@ class BookingController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, CloudStorageService $storage)
     {
+        $prefixFolderName = env('DEVELOPMENT_MODE') ? 'dev-photos' : 'prod-photos';
+        $photoFolderName = $prefixFolderName . '/photo';
+        $parcelFolderName = $prefixFolderName . '/parcel';
         $validator = Validator::make($request->all(), [
             'booking_date' => 'required|date',
             'transhipmen_one' => 'nullable',
@@ -623,6 +626,19 @@ class BookingController extends Controller
 
             $booking = Booking::find($id);
             if ($booking) {
+                $photoPath = $booking->photo_id;
+                $parcelPath =  $booking->parcel_image;
+                if ($request->hasFile('photo_id')) {
+                    $uploadedPathsOfPhotos = $storage->uploadWithDetails($photoFolderName, $request->file('photo_id'));
+                    $photoPath = $uploadedPathsOfPhotos['full_url'];
+                    $booking->photo_id = $photoPath;
+                }
+                if ($request->hasFile('parcel_image')) {
+                    $uploadedPathsOfParcel = $storage->uploadWithDetails($parcelFolderName, $request->file('parcel_image'));
+                    $parcelPath = $uploadedPathsOfParcel['full_url'];
+                    $booking->parcel_image = $parcelPath;
+                }
+
                 $booking->consignor_name = $request->consignor_name;
                 $booking->consignor_address = $request->consignor_address;
                 $booking->consignor_phone_number = $request->consignor_phone_number ?? '';
