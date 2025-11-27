@@ -459,6 +459,7 @@
             parseFloat(miscChargeAmount) +
             parseFloat(sumOfgst) -
             parseFloat(discount);
+
         // Set Sub Total
         document.getElementById('sub_total').value = subTotal.toFixed(2);
         // Calculate Grand Total (without GST)

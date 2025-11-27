@@ -72,60 +72,99 @@
             <form action="{{ url('admin/challans/create') }}" method="POST" id="challanForm">
                 @csrf
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row p-3 rounded" style="background:#f8f9fc; border:1px solid #e6e6e6; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="busNumber">{{ __('Vehicle Number') }}<span style="color: red"> *</span></label>
-                                <input type="text" placeholder="{{ __('Bus Number') }}" class="form-control" id="busNumber"
-                                    value="{{ old('busNumber') }}" name="busNumber" required>
-                            </div>
+                        <!-- Vehicle Number -->
+                        <div class="col-md-3 mb-3">
+                            <label class="fw-bold" for="busNumber">
+                                <i class="fas fa-truck text-primary"></i> {{ __('Vehicle Number') }} <span class="text-danger">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="{{ __('Bus Number') }}"
+                                class="form-control form-control-lg"
+                                id="busNumber"
+                                name="busNumber"
+                                value="{{ old('busNumber') }}"
+                                required>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="driverName">{{ __('Driver Name') }}<span style="color: red"> *</span></label>
-                                <input type="text" placeholder="{{ __('Driver Name') }}" class="form-control" id="driverName"
-                                    name="driverName" value="{{ old('driverName') }}" required>
-                            </div>
+                        <!-- Driver Name -->
+                        <div class="col-md-3 mb-3">
+                            <label class="fw-bold" for="driverName">
+                                <i class="fas fa-user text-primary"></i> {{ __('Driver Name') }} <span class="text-danger">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                class="form-control form-control-lg"
+                                placeholder="{{ __('Driver Name') }}"
+                                id="driverName"
+                                name="driverName"
+                                value="{{ old('driverName') }}"
+                                required>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="driverMobile">{{ __('Driver Mobile') }}<span style="color: red"> *</span></label>
-                                <input value="{{ old('driverMobile') }}" type="text" placeholder="{{ __('Driver Mobile') }}"
-                                    class="form-control" id="driverMobile" name="driverMobile" required>
-                            </div>
+                        <!-- Driver Mobile -->
+                        <div class="col-md-3 mb-3">
+                            <label class="fw-bold" for="driverMobile">
+                                <i class="fas fa-phone-alt text-primary"></i> {{ __('Driver Mobile') }} <span class="text-danger">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                class="form-control form-control-lg"
+                                placeholder="{{ __('Driver Mobile') }}"
+                                id="driverMobile"
+                                name="driverMobile"
+                                value="{{ old('driverMobile') }}"
+                                required>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="locknumber">{{ __('Lock Number') }}</label>
-                                <input type="text" placeholder="{{ __('Lock Number') }}" class="form-control" id="locknumber"
-                                    value="{{ old('locknumber') }}" name="locknumber">
-                            </div>
+                        <!-- Lock Number -->
+                        <div class="col-md-3 mb-3">
+                            <label class="fw-bold" for="locknumber">
+                                <i class="fas fa-lock text-primary"></i> {{ __('Lock Number') }}
+                            </label>
+                            <input
+                                type="text"
+                                class="form-control form-control-lg"
+                                placeholder="{{ __('Lock Number') }}"
+                                id="locknumber"
+                                name="locknumber"
+                                value="{{ old('locknumber') }}">
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="co-loder">{{ __('Co-Loader') }}</label>
-                                <input type="text" placeholder="{{ __('Co Loader') }}" class="form-control" id="co-loder"
-                                    value="{{ old('coLoder') }}" name="coLoder">
-                            </div>
+                        <!-- Co Loader -->
+                        <div class="col-md-3 mb-3">
+                            <label class="fw-bold" for="co-loder">
+                                <i class="fas fa-users text-primary"></i> {{ __('Co-Loader') }}
+                            </label>
+                            <input
+                                type="text"
+                                class="form-control form-control-lg"
+                                placeholder="{{ __('Co Loader') }}"
+                                id="co-loder"
+                                name="coLoder"
+                                value="{{ old('coLoder') }}">
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="status">{{ __('Select Status') }}<span style="color: red"> *</span></label>
-                            <select class="form-control" name="status" id="status">
+                        <!-- Status -->
+                        <div class="col-md-3 mb-3">
+                            <label class="fw-bold" for="status">
+                                <i class="fas fa-info-circle text-primary"></i> {{ __('Select Status') }} <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-control form-control-lg" id="status" name="status">
                                 <option value="">{{ __('Select Status') }}</option>
                                 <option value="Dispatch" selected>{{ __('Dispatch') }}</option>
                                 <option value="Pending">{{ __('Pending') }}</option>
                             </select>
                         </div>
 
-                        <div class="col-md-12 mb-2">
-                            <label for="for_challan">{{ __('Select For Challan') }}<span style="color: red"> *</span></label>
-                            <select class="form-control" id="for_challan" name="for_challan" required>
+                        <!-- For Challan -->
+                        <div class="col-md-3 mb-3">
+                            <label class="fw-bold" for="for_challan">
+                                <i class="fas fa-code-branch text-primary"></i> {{ __('Select For Challan') }} <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-control form-control-lg" id="for_challan" name="for_challan" required>
                                 <option value="">{{ __('Select Branch') }}</option>
                                 @forelse($forChallan as $branchChallan)
                                 <option value="{{ $branchChallan->id ?? '--' }}">{{ $branchChallan->branch_name ?? '--' }}</option>
@@ -135,7 +174,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="table-responsive">
                             <table class="display" id="booking-list">
@@ -168,7 +206,6 @@
                     </div>
                 </div>
             </form>
-
         </div>
     </section>
 </div>
@@ -244,4 +281,6 @@
 @section('styles')
 @parent
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+
+
 @endsection

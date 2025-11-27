@@ -352,35 +352,56 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <label for="date">Upload Photo ID Image:</label>
-                    <input type="file" class="form-control mb-1 mb-1" name="photo_id" />
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Upload Photo ID Image</label>
+                    <input type="file" class="form-control" name="photo_id" onchange="previewFile(event, 'photoPreview')" />
+                    @if($booking->photo_id)
+                    <div class="mt-2">
+                        <img id="photoPreview"
+                            src="{{$booking->photo_id}}"
+                            class="img-thumbnail shadow-sm" width="220" />
+                    </div>
+                    @endif
                 </div>
-                <div class="col-md-3">
-                    <label for="parcel_image">Capture Image</label>
-                    <input type="file" name="parcel_image" id="parcel_image" class="form-control mb-1" />
+                <!-- Upload Parcel Image -->
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Upload Parcel Image</label>
+                    <input type="file" name="parcel_image" id="parcel_image" class="form-control"
+                        onchange="previewFile(event, 'parcelPreview')" />
+
+                    @if($booking->parcel_image)
+                    <div class="mt-2" id="defaultParcelImage">
+                        <img id="parcelPreview"
+                            src="{{$booking->parcel_image}}"
+                            class="img-thumbnail shadow-sm"
+                            width="200" />
+                    </div>
+                    @endif
                 </div>
-                <div class="col-md-3">
-                    <label for="date"></label>
-                    <!-- Button to open webcam -->
-                    <button type="button" class="btn btn-primary mt-4" onclick="openWebCam()">Open Webcam</button>
+                <!-- Webcam Section -->
+                <div class="col-md-3 mb-3 text-center">
 
-                    <!-- Video element to display the webcam feed -->
-                    <video id="webcam" width="225" height="200" style="display: none;" autoplay></video>
+                    <label class="form-label fw-bold">Capture Image</label>
 
-                    <!-- Capture button that will appear after webcam is opened -->
-                    <button id="captureBtn" type="button" class="btn btn-secondary mt-4" style="display: none;"
-                        onclick="capturePhoto()">Capture Photo</button>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-sm w-100" onclick="openWebCam()">Open Webcam</button>
+                    </div>
 
-                    <!-- Canvas element to display the captured photo -->
-                    <canvas id="canvas" style="display: none;"></canvas>
+                    <!-- Webcam Window -->
+                    <video id="webcam" width="220" height="180" class="rounded border mt-2" style="display:none;" autoplay></video>
 
-                    <!-- Optionally, display the captured photo in an image element -->
-                    <img id="capturedImage" width="225" height="200" style="display: none;"
-                        alt="Captured Image" />
+                    <!-- Capture Button -->
+                    <button id="captureBtn" type="button" class="btn btn-secondary btn-sm w-100 mt-2"
+                        style="display:none;" onclick="capturePhoto()">Capture Photo</button>
+
+                    <!-- Captured Image -->
+                    <img id="capturedImage" width="220" height="180" class="img-thumbnail shadow-sm mt-2"
+                        style="display:none;" />
+
+                    <canvas id="canvas" style="display:none;"></canvas>
                 </div>
-
             </div>
+
         </div>
 
     </div>

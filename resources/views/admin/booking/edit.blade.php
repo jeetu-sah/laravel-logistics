@@ -63,7 +63,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <input type="text" value="{{ $booking->handling_charges }}" name="handling_charges" id="handling_charges"
-                                                class="form-control mb-1" readonly />
+                                                class="form-control mb-1" />
                                         </div>
                                         <!-- Transhipment 1 -->
                                         <div class="col-md-6">
@@ -73,7 +73,7 @@
                                             <input type="text"
                                                 value="{{ $booking->transhipmen_one_amount }}"
                                                 name="transhipmen_one_amount"
-                                                id="transhipmen_one_amount" class="form-control mb-1" readonly />
+                                                id="transhipmen_one_amount" class="form-control mb-1" />
                                         </div>
 
                                         <!-- Transhipment 2 -->
@@ -84,7 +84,7 @@
                                             <input type="text"
                                                 value="{{ $booking->transhipmen_two_amount }}"
                                                 name="transhipmen_two_amount"
-                                                id="transhipmen_two_amount" class="form-control mb-1" readonly />
+                                                id="transhipmen_two_amount" class="form-control mb-1" />
                                         </div>
 
                                         <!-- Transhipment 3 -->
@@ -95,7 +95,7 @@
                                             <input type="text"
                                                 value="{{ $booking->transhipment_three_amount }}"
                                                 name="transhipment_three_amount"
-                                                id="transhipment_three_amount" class="form-control mb-1" readonly />
+                                                id="transhipment_three_amount" class="form-control mb-1" />
                                         </div>
                                         <!-- Hamali Charges -->
                                         <div class="col-md-6">
@@ -105,7 +105,7 @@
                                             <input type="text"
                                                 value="{{ $booking->hamali_Charges }}"
                                                 name="hamali_Charges" id="hamali_Charges"
-                                                class="form-control mb-1" readonly />
+                                                class="form-control mb-1" />
                                         </div>
 
                                         <!-- Bilti Charges -->
@@ -117,7 +117,7 @@
                                                 value="{{ $booking->bilti_Charges }}"
                                                 name="bilti_Charges"
                                                 id="bilti_Charges"
-                                                class="form-control mb-1" readonly />
+                                                class="form-control mb-1" />
                                         </div>
 
                                         <!-- Discount -->
@@ -150,7 +150,7 @@
                                             <input type="text"
                                                 value="{{ $booking->sub_total }}"
                                                 name="sub_total" id="sub_total"
-                                                class="form-control mb-1" readonly />
+                                                class="form-control mb-1" />
                                         </div>
 
                                         <!-- GST: CGST, SGST, IGST -->
@@ -204,16 +204,17 @@
                                                 name="grand_total_amount"
                                                 id="grand_total_amount" class="form-control mb-1" readonly />
                                         </div>
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <input type="submit" value="Edit" class="btn btn-success float-right">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <input type="submit" value="Edit" class="btn btn-success float-right">
-                        </div>
-                    </div>
+
                 </form>
             </div>
         </div>
@@ -530,31 +531,31 @@
             var consignee_branch_id = $('#consignee_branch_id').val();
 
             if (consignor_branch_id && consignee_branch_id) {
-                $.ajax({
-                    url: "{{ url('admin/get-distance') }}",
-                    method: 'GET',
-                    data: {
-                        consignor_branch_id: consignor_branch_id,
-                        consignee_branch_id: consignee_branch_id
-                    },
-                    success: function(response) {
-                        if (response.distance) {
-                            $('#distance').val(response.distance);
-                            const numberOfArticle = parseFloat($('#no_of_articles')
-                                .val()) || 0;
+                // $.ajax({
+                //     url: "{{ url('admin/get-distance') }}",
+                //     method: 'GET',
+                //     data: {
+                //         consignor_branch_id: consignor_branch_id,
+                //         consignee_branch_id: consignee_branch_id
+                //     },
+                //     success: function(response) {
+                //         if (response.distance) {
+                //             $('#distance').val(response.distance);
+                //             const numberOfArticle = parseFloat($('#no_of_articles')
+                //                 .val()) || 0;
 
-                            calculateInvoice(response.distance,
-                                numberOfArticle);
-                        } else {
-                            $('#distance').val(0);
-                            alert('Error: ' + (response.error || 'Unknown error'));
-                        }
-                    },
-                    error: function() {
-                        $('#distance').val('');
-                        alert('Failed to fetch distance. Please try again.');
-                    }
-                });
+                //             calculateInvoice(response.distance,
+                //                 numberOfArticle);
+                //         } else {
+                //             $('#distance').val(0);
+                //             alert('Error: ' + (response.error || 'Unknown error'));
+                //         }
+                //     },
+                //     error: function() {
+                //         $('#distance').val('');
+                //         alert('Failed to fetch distance. Please try again.');
+                //     }
+                // });
             } else {
                 $('#distance').val(0);
             }
@@ -569,6 +570,41 @@
 
         //manageCalculateInvoice
         $(document).on('input', '.manageCalculateInvoice', function() {
+            const noOfArticles = parseInt($('#no_of_articles').val()) || 0;
+            const distance = parseInt($('#distance').val()) || setDefaultDistance;
+            calculateInvoice(distance, noOfArticles)
+        });
+        $(document).on('input', '#freight_amount', function() {
+            const noOfArticles = parseInt($('#no_of_articles').val()) || 0;
+            const distance = parseInt($('#distance').val()) || setDefaultDistance;
+            calculateInvoice(distance, noOfArticles)
+        });
+        $(document).on('input', '#handling_charges', function() {
+            const noOfArticles = parseInt($('#no_of_articles').val()) || 0;
+            const distance = parseInt($('#distance').val()) || setDefaultDistance;
+            calculateInvoice(distance, noOfArticles)
+        });
+        $(document).on('input', '#hamali_Charges', function() {
+            const noOfArticles = parseInt($('#no_of_articles').val()) || 0;
+            const distance = parseInt($('#distance').val()) || setDefaultDistance;
+            calculateInvoice(distance, noOfArticles)
+        });
+        $(document).on('input', '#transhipmen_one_amount', function() {
+            const noOfArticles = parseInt($('#no_of_articles').val()) || 0;
+            const distance = parseInt($('#distance').val()) || setDefaultDistance;
+            calculateInvoice(distance, noOfArticles)
+        });
+        $(document).on('input', '#transhipment_three_amount', function() {
+            const noOfArticles = parseInt($('#no_of_articles').val()) || 0;
+            const distance = parseInt($('#distance').val()) || setDefaultDistance;
+            calculateInvoice(distance, noOfArticles)
+        });
+        $(document).on('input', '#transhipment_three_amount', function() {
+            const noOfArticles = parseInt($('#no_of_articles').val()) || 0;
+            const distance = parseInt($('#distance').val()) || setDefaultDistance;
+            calculateInvoice(distance, noOfArticles)
+        });
+        $(document).on('input', '#bilti_Charges', function() {
             const noOfArticles = parseInt($('#no_of_articles').val()) || 0;
             const distance = parseInt($('#distance').val()) || setDefaultDistance;
             calculateInvoice(distance, noOfArticles)
@@ -736,6 +772,11 @@
         }
     }
 
+    function previewFile(event, id) {
+        const output = document.getElementById(id);
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.style.display = "block";
+    }
     // Function to capture the photo after stopping the webcam
     function capturePhoto() {
         const video = document.getElementById('webcam');
@@ -780,6 +821,10 @@
         const image = document.getElementById('capturedImage');
         image.src = capturedImageData;
         image.style.display = 'block';
+
+        // Optionally, display the captured image in an img element
+        const defaultParcelImage = document.getElementById('defaultParcelImage');
+        defaultParcelImage.style.display = 'none';
 
         // Stop the webcam stream (turn off the camera)
         const tracks = stream.getTracks();
