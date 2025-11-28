@@ -372,7 +372,7 @@
                             <div class="media">
                                 <!-- <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle"> -->
                                 <!-- <i class="far fa-user"></i>  -->
-                                <span>Site Language</span>
+                                <span>{{ __('Site Language') }}</span>
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         <span class="float-right">English</span>

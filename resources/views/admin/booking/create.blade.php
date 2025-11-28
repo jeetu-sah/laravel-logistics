@@ -190,7 +190,7 @@
         </div>
     </section>
 </div>
-@if(Session::has('alertMessage'))
+@if(Session::has('redirectAnotherRoute'))
 @php $redirectBookingId = Session::get("redirectBookingId") @endphp
 <script>
     setTimeout(function() {
@@ -202,6 +202,7 @@
     }, 0);
 </script>
 @endif
+
 @endsection
 
 
