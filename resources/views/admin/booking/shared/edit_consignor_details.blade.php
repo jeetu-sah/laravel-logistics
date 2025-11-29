@@ -18,7 +18,11 @@
                     <div id="client_details"></div>
                 </div>
                 @endif
-                <div class="col-md-4 mb-1">
+                <div class="col-md-2 mb-1">
+                    <label for="manual_bilty">{{ __('Online Bilty No.') }}</label>
+                    <input type="text" value="{{ $booking->bilti_number }}" class="form-control" name="bilti_number" id="bilti_number" />
+                </div>
+                <div class="col-md-2 mb-1">
                     <label for="date">Offline Bilty No.</label>
                     <input
                         type="text"
@@ -28,7 +32,7 @@
                         id="manual_bilty" />
 
                 </div>
-                <div class="col-md-4 mb-1">
+                <div class="col-md-2 mb-1">
                     <label for="date">offline Booking Date</label>
                     <input type="date" class="form-control"
                         name="offline_booking_date"
