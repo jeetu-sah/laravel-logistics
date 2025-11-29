@@ -269,6 +269,9 @@ class BookingController extends Controller
         foreach ($data['transhipments'] as $transhipment) {
             $transhipment->from_transhipment_name = Branch::find($transhipment->from_transhipment)->branch_name ?? 'NA';
         }
+        $data['transhipmentStr'] = $data['transhipments']
+            ->pluck('from_transhipment_name')
+            ->implode(', ');
         $data['sendor'] = $branch1;
         // Return the view with data
         return view('admin.booking.print-bilti', $data);

@@ -329,6 +329,10 @@
                     <td>{{ $booking->cantain }}</td>
                 </tr>
                 <tr>
+                    <th>{{__('Transhipment') }}</th>
+                    <td>{{ $transhipmentStr }}</td>
+                </tr>
+                <tr>
                     <th>Actual Goods Value Declared by Consignor</th>
                     <td>{{ $booking->mark }}</td>
                 </tr>
@@ -470,6 +474,10 @@
                 <tr>
                     <th>Goods Contained (Declared by Consignor)</th>
                     <td>{{ $booking->cantain }}</td>
+                </tr>
+                <tr>
+                    <th>{{__('Transhipment') }}</th>
+                    <td>{{ $transhipmentStr }}</td>
                 </tr>
                 <tr>
                     <th>Actual Goods Value Declared by Consignor</th>
