@@ -4,27 +4,39 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row mb-2 align-items-center">
                 <div class="col-sm-6">
-                    <a href="{{ url('admin/branches/create') }}" class="d-none d-sm-inline-block shadow-sm">
-                        <i class=" fa-sm text-white-50"></i> </a>
+                    <h4 class="m-0 text-primary">
+                        <i class="fas fa-user"></i> {{ __('Delivery') }}
+                    </h4>
                 </div>
+
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">{{ __('Home') }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('Pay Remaining Amount') }}</li>
+                    <ol class="breadcrumb float-sm-right mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="{{ url('admin/dashboard') }}">
+                                <i class="bi bi-house-door"></i> {{ __('Home') }}
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            {{ __('Receiver Details') }}
+                        </li>
                     </ol>
                 </div>
             </div>
         </div>
+
         <div class="row mb-2">
-            @include('common.notification')
+            <div class="col-sm-12" id="notification">
+                @include('common.notification')
+            </div>
         </div>
     </section>
 
+
     <section class="content">
         <div class="container-fluid">
-            <form action='{{ url("admin/delivery/gatepass-amount/add-payments/$deliveryReceipt->id") }}' method="POST" enctype="multipart/form-data">
+            <form action='{{ url("admin/delivery/gatepass-amount/add-receiver/$deliveryReceipt->id") }}' method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" value="{{ $deliveryReceipt->booking->id }}" name="booking_id">
                 <div class="row">
@@ -108,6 +120,7 @@
                                                     <td><strong>{{ __('Grand Total') }}</strong></td>
                                                     <td>&#8377;{{ $deliveryReceipt->grand_total ?? '--' }}</td>
                                                 </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -120,7 +133,7 @@
                     <div class="col-md-6">
                         <div class="card card-danger">
                             <div class="card-header">
-                                <h3 class="card-title">{{ __('Pay remaining amount') }}</h3>
+                                <h3 class="card-title">{{ __('Receiver Details') }}</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -144,25 +157,8 @@
                                                 required />
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mb-2">
-                                        <label for="received_amount">{{ __('Received Amount') }}:</label>
-                                        <input type="number" class="form-control" step="0.01"
-                                            id="received_amount"
-                                            value="{{ old('received_amount') }}"
-                                            name="received_amount" placeholder="₹.00" required>
-                                    </div>
-                                    <div class="col-md-6 mb-2">
-                                        <label for="pendingAmount">{{ __('Pending Amount') }}:</label>
-                                        <input type="text" class="form-control" id="pendingAmount"
-                                            value="{{ $pendingAmount }}" required name="pending_amount" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-2">
-                                        <label for="grand_total">{{ __('Note') }}:</label>
-                                        <textarea class="form-control" id="notes"
-                                            name="notes" placeholder="{{ __('Note') }}">{{ old('notes') }}</textarea>
-                                    </div>
                                     <div class="col-md-12 mb-2">
-                                        <input type="submit" value="{{ __('Save & Print') }}" class="btn btn-success float-right">
+                                        <input type="submit" value="{{ __('Submit') }}" class="btn btn-success float-right">
                                     </div>
 
                                 </div>
@@ -171,77 +167,10 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Payment list -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">{{ __('Payment list') }}</h3>
-                            </div>
-                            <div class="card-body p-0">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>{{ __('Received Amount') }}</th>
-                                            <th>{{ __('Pending Amount') }}</th>
-                                            <th>{{ __('Notes') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($deliveryReceipt?->payments as $deliveryReceiptPayment)
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>&#8377;{{ $deliveryReceiptPayment->received_amount ?? 0 }}</td>
-                                            <td>&#8377;{{ $deliveryReceiptPayment->pending_amount ?? 0 }}</td>
-                                            <td>{{ $deliveryReceiptPayment->notes ?? '--' }}</td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="4" class="text-center">{{ __('No payments found.') }}</td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </form>
         </div>
     </section>
 </div>
-@endsection
-
-
-@section('script')
-@parent
-<!-- <script src="{{ asset('datatables/jquery.min.js') }}"></script> -->
-<script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
-
-<script>
-    $(document).ready(function(e) {
-        var pendingAmount = "{{$pendingAmount}}";
-        console.log('pendingAmount', pendingAmount)
-        $(document).on('input', '#received_amount', function() {
-            var receivedAmount = parseFloat($(this).val()) || 0;
-            var pendingAmountNumber = "{{$pendingAmount}}";
-            let pendingAmount = parseFloat(pendingAmountNumber.replace(/,/g, ''));;
-
-            if (receivedAmount > pendingAmount) {
-                alert('Received amount cannot be greater than pending amount.');
-                $(this).val(pendingAmount);
-                receivedAmount = pendingAmount;
-            }
-
-            var newPendingAmount = (pendingAmount - receivedAmount).toFixed(2);
-            $('#pendingAmount').val(newPendingAmount);
-        });
-
-
-    });
-</script>
 @endsection
 @section('styles')
 @parent
@@ -296,7 +225,7 @@
 
     /* Input highlight on focus */
     .form-control:focus {
-        border-color: #28a745;
+        border-color: #ffffffff;
         box-shadow: 0 0 5px rgba(40, 167, 69, 0.4);
     }
 

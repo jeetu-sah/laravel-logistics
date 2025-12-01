@@ -10,6 +10,7 @@ use App\Models\Transhipment;
 use App\Models\Client;
 use App\Models\ClientMap;
 use App\Models\Branch;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -104,6 +105,7 @@ class BookingController extends Controller
 
         $data['clients']  = $data['currentBranch']->clients;
         $data['toClients']  = $data['currentBranch']->toClients;
+        $data['nextOnlineBuiltyNumber'] = sHelper::generateNextBiltiNumber($request->query('booking'));
         return view('admin.booking.create', $data);
     }
 
@@ -126,7 +128,7 @@ class BookingController extends Controller
             $data['transhipmentTwo'] = $data['booking']->transhipments->where('sequence_no', 3)->where('type', 'transhipment')->first()?->branch;
             $data['transhipmentThree'] = $data['booking']->transhipments->where('sequence_no', 4)->where('type', 'transhipment')->first()?->branch;
         }
-
+        $data['settings'] = Setting::pluck('value', 'key')->toArray();
         return view('admin.booking.edit', $data);
     }
 
@@ -254,7 +256,7 @@ class BookingController extends Controller
 
         // Handle transhipment data
         $transhipments = $data['booking']->transhipments;
-
+        $transhipments = $transhipments->skip(1)->take(count($transhipments) - 2);
         // Default data for transhipments if none exist
         if ($transhipments->isEmpty()) {
             $transhipments = collect([
@@ -269,6 +271,9 @@ class BookingController extends Controller
         foreach ($data['transhipments'] as $transhipment) {
             $transhipment->from_transhipment_name = Branch::find($transhipment->from_transhipment)->branch_name ?? 'NA';
         }
+        $data['transhipmentStr'] = $data['transhipments']
+            ->pluck('from_transhipment_name')
+            ->implode(', ');
         $data['sendor'] = $branch1;
         // Return the view with data
         return view('admin.booking.print-bilti', $data);

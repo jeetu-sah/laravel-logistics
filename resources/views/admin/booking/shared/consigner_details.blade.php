@@ -29,12 +29,16 @@
                 @endif
             </div>
             <div class="form-row align-items-end mb-3">
-                <div class="col-md-3 mb-1">
+                <div class="col-md-2 mb-1">
+                    <label for="manual_bilty">{{ __('Online Bilty No.') }}</label>
+                    <input type="text" value="{{ $nextOnlineBuiltyNumber }}" class="form-control" name="bilti_number" id="bilti_number" />
+                </div>
+                <div class="col-md-2 mb-1">
                     <label for="manual_bilty">{{ __('Offline Bilty No.') }}</label>
                     <input type="text" class="form-control" name="manual_bilty" value="{{ old('manual_bilty') }}" id="manual_bilty" />
                 </div>
 
-                <div class="col-md-3 mb-1">
+                <div class="col-md-2 mb-1">
                     <label for="offline_booking_date">{{ __('Offline Booking Date') }}</label>
                     <input type="date" class="form-control" name="offline_booking_date" value="{{ old('offline_booking_date') }}" id="offline_booking_date" />
                 </div>
@@ -293,11 +297,14 @@
                 </div>
                 <script>
                     let stream;
+
                     function openWebCam() {
                         const video = document.getElementById('webcam');
                         const captureButton = document.getElementById('captureBtn');
                         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                            navigator.mediaDevices.getUserMedia({ video: true })
+                            navigator.mediaDevices.getUserMedia({
+                                    video: true
+                                })
                                 .then(function(userStream) {
                                     stream = userStream;
                                     video.srcObject = stream;
@@ -311,6 +318,7 @@
                             alert('{{ __("Your browser does not support webcam access.") }}');
                         }
                     }
+
                     function capturePhoto() {
                         const video = document.getElementById('webcam');
                         const canvas = document.getElementById('canvas');
@@ -327,8 +335,12 @@
                         for (let i = 0; i < byteString.length; i++) {
                             ia[i] = byteString.charCodeAt(i);
                         }
-                        const blob = new Blob([ab], { type: mimeString });
-                        const file = new File([blob], 'parcel_image.jpg', { type: mimeString });
+                        const blob = new Blob([ab], {
+                            type: mimeString
+                        });
+                        const file = new File([blob], 'parcel_image.jpg', {
+                            type: mimeString
+                        });
                         const parcelImageInput = document.getElementById('parcel_image');
                         const dataTransfer = new DataTransfer();
                         dataTransfer.items.add(file);

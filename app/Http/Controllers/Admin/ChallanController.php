@@ -173,6 +173,7 @@ class ChallanController extends Controller
                 $row['busNumber'] = strtoupper($loadingChallan->busNumber);
                 $row['driverName'] = strtoupper($loadingChallan->driverName);
                 $row['type'] = ($loadingChallan->user->branch_user_id == $branchId) ? '<span class="badge badge-danger">Self Created</span>' : '<span class="badge badge-danger">Created By ' . $loadingChallan?->user?->branch?->branch_name . '</span>';
+                $row['challan'] = $loadingChallan;
                 $row['created_at'] = formatDate($loadingChallan->created_at);
                 $row['action'] = '--';
 
@@ -202,7 +203,6 @@ class ChallanController extends Controller
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }
         $bookings = $data['challanDetail']->bookings;
-
         $data['bookings'] = $bookings;
         return view('admin.challan.delevery-booking', $data);
     }

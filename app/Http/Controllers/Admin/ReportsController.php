@@ -391,6 +391,7 @@ class ReportsController extends Controller
                     . ($booking->manual_bilty_number ? ' / ' . $booking->manual_bilty_number : '')
                     . '</a>',
                 'booking_date' => formatOnlyDate($booking->booking_date),
+                'booking' => $booking,
                 'no_of_artical' => $booking->no_of_artical ?? '-',
                 'origin' => $booking?->consignorBranch?->branch_name,
                 'consignor_name' => $booking->consignor_name,

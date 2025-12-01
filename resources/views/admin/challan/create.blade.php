@@ -147,7 +147,7 @@
                                                 <label class="form-check-label" for="selectAll">{{ __('Select All') }}</label>
                                             </div>
                                         </th>
-                                        <th>{{ __('Bilti Number') }}</th>
+                                        <th>{{ __('Bilti Number') }} /{{ __('Challan Number') }}</th>
                                         <th>{{ __('Offline Bilti') }}</th>
                                         <th>{{ __('Consignor Name') }}</th>
                                         <th>{{ __('Consignee Name') }}</th>
@@ -206,7 +206,16 @@
                     orderable: false
                 },
                 {
-                    data: 'bilti_number'
+                    data: 'bilti_number',
+                    render: function(data, type, row) {
+
+                        // If value is null, empty, or undefined → show '--'
+                        if (!data || data === '' || data === null) {
+                            return '--';
+                        }
+
+                        return data;
+                    }
                 },
                 {
                     data: 'offline_bilti'

@@ -320,6 +320,9 @@
     const transhipmentThreeElement = document.getElementById("transhipment_three");
     //selected value of transhipment. 
     const selectedConsigneeId = "{{$booking->consignee_branch_id}}";
+    const selectedTranshipmentOneValue = "{{$transhipmentOne?->id ?? ''}}";
+    const selectedTranshipmentTwoValue = "{{$transhipmentTwo?->id ?? ''}}";
+    const selectedTranshipmentThreeValue = "{{$transhipmentThree?->id ?? ''}}";
 
     async function printToSelectBranch(selectElementName, oldValue, selectedElementId, selectedValue) {
         const filteredBranches = branches.filter(item => !selectedBranches.includes(item.id));
@@ -333,8 +336,6 @@
             selectElementName.appendChild(option);
         });
         //value append. 
-        console.log('selectedElementId', selectedElementId)
-        console.log('selectedValue', selectedValue)
         // $(`#${selectedElementId}`).val(selectedValue).trigger('change');
         $(`#${selectedElementId}`).val(selectedValue).trigger('change');
 
@@ -469,7 +470,6 @@
         return calculatedCompanyChargesAmount
     }
 
-
     async function calculateInvoice(defaultDistance = 0, numberOfParcel = 0) {
 
         // Get all input values
@@ -565,8 +565,6 @@
         calculateInvoice(distance, numberOfArticle)
     }
 
-
-
     $(document).ready(function() {
         $('#consignor_branch_id, #consignee_branch_id').on('change', function() {
             var consignor_branch_id = $('#consignor_branch_id').val();
@@ -635,6 +633,12 @@
 
         //print to branch dropdown. 
         printToSelectBranch(consigneeBranch, oldConsigneeBranchId, 'consignee_branch_id', selectedConsigneeId);
+        //print transhipment one dropdown value
+        printToSelectBranch(transhipmentOneElement, oldTranshipmentOne, 'transhipmen_one', selectedTranshipmentOneValue);
+        //print transhipment two dropdown value
+        printToSelectBranch(transhipmentTwoElement, oldTranshipmentTwo, 'transhipmen_two', selectedTranshipmentTwoValue);
+        //print transhipment three dropdown value
+        printToSelectBranch(transhipmentThreeElement, oldTranshipmentThree, 'transhipment_three', selectedTranshipmentThreeValue);
 
 
 
@@ -648,6 +652,8 @@
                 const duplicateResponse = checkDuplicateBranchValue(consigneeId);
 
                 if (duplicateResponse.status == false) {
+                    console.log('transhipmentOneElement', transhipmentOneElement)
+                    console.log('oldTranshipmentOne', oldTranshipmentOne)
                     printToSelectBranch(transhipmentOneElement, oldTranshipmentOne);
                 } else {
                     displayAndRemoveField(duplicateResponse);

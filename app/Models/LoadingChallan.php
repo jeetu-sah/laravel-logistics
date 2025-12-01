@@ -53,11 +53,6 @@ class LoadingChallan extends Model
         return $this->belongsToMany(Booking::class, 'loading_challan_booking', 'loading_challans_id', 'booking_id')->whereNull('loading_challan_booking.deleted_at');
     }
 
-    // public function bookings()
-    // {
-    //     return $this->hasManyThrough(Booking::class, LoadingChallanBooking::class, 'loading_challans_id', 'id', 'id', 'booking_id');
-    // }
-
     public function challanBookings()
     {
         return $this->hasMany(LoadingChallanBooking::class, 'loading_challans_id');

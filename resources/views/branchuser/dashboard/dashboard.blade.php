@@ -212,15 +212,15 @@
                         <table class="display" id="incoming-booking-list">
                             <thead>
                                 <tr>
-                                    <th>Bilti No.</th>
-                                    <th>Offline Bilti No / Date.</th>
-                                    <th>Consignor Name</th>
-                                    <th>Consignee Name</th>
-                                    <th>Article</th>
-                                    <th>Payment Mode</th>
-                                    <th>Transhipment</th>
-                                    <th>Amount</th>
-                                    <th>Creation Date</th>
+                                    <th>{{ __('Bilti No.') }}</th>
+                                    <th>{{ __('Offline Bilti No / Date.') }}</th>
+                                    <th>{{ __('Consignor Name') }}</th>
+                                    <th>{{ __('Consignee Name') }}</th>
+                                    <th>{{ __('Article') }}</th>
+                                    <th>{{ __('Payment Mode') }}</th>
+                                    <th>{{ __('Transhipment') }}</th>
+                                    <th>{{ __('Amount') }}</th>
+                                    <th>{{ __('Creation Date') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -306,14 +306,24 @@
                     url: "{{ url('admin/incoming-booking/list') }}",
                     data: function(d) {}
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'bilti_number'
                     },
                     {
-                        data: 'offline_bilti_number'
-                    },
+                        data: null,
+                        render: function(data, type, row) {
+                            const manual = row.manual_bilty_number;
+                            const date = row.offline_booking_date;
 
+                            // If both are null or empty → show '--'
+                            if ((!manual || manual === '') && (!date || date === '')) {
+                                return '--';
+                            }
+
+                            // Otherwise show manual / date (null-safe)
+                            return (manual ?? '--') + ' / ' + (date ?? '--');
+                        }
+                    },
                     {
                         data: 'consignor_name'
                     },

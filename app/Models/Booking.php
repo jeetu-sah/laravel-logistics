@@ -101,6 +101,8 @@ class Booking extends Model
         'consignee_email',
         'booking_status',
         'offline_booking_date',
+        'receiver_name',
+        'receiver_mobile_number'
     ];
 
     // If you want to hide attributes from arrays
@@ -349,7 +351,7 @@ class Booking extends Model
     //incoming_booking_commisions
     public function getIncomingBookingCommisionsAttribute()
     {
-        
+
         $incomingCommisionProcess = $this->consigneeBranch?->incoming_commission_price;
         if ($this->consigneeBranch && $incomingCommisionProcess) {
             $totalBookingCommision = $this->no_of_artical * $incomingCommisionProcess;
@@ -360,7 +362,7 @@ class Booking extends Model
 
     // public static function bookingCommisions($booking)
     // {
-       
+
     //     $totalBookingCommision = 0;
     //     $transhipments = $booking->transhipments;
     //     if($transhipments->count() > 0) {
