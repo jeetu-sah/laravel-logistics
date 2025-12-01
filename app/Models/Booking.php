@@ -101,6 +101,8 @@ class Booking extends Model
         'consignee_email',
         'booking_status',
         'offline_booking_date',
+        'receiver_name',
+        'receiver_mobile_number'
     ];
 
     // If you want to hide attributes from arrays
@@ -357,15 +359,6 @@ class Booking extends Model
         }
         return 0;
     }
-
-    //lr_number
-    public function getLrNumberAttribute()
-    {
-        return $this->manual_bilty_number
-            ? $this->manual_bilty_number
-            : $this->bilti_number;
-    }
-
 
     // public static function bookingCommisions($booking)
     // {

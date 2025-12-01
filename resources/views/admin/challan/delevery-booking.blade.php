@@ -20,7 +20,7 @@
                             <a href="{{ url('admin/dashboard') }}" class="text-muted text-decoration-none">{{ __('Home') }}</a>
                         </li>
                         <li class="breadcrumb-item text-muted">{{ __('Manifest') }}</li>
-                        <li class="breadcrumb-item active text-primary">{{ __('Loading Challan Details') }}</li>
+                        <li class="breadcrumb-item active text-primary">&nbsp;{{ __('Loading Challan Details') }}</li>
                     </ol>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                     <div class="card-header text-white"
                         style="background: linear-gradient(135deg, #007bff, #0056b3); padding: 12px 20px; border-radius: 8px;">
                         <h3 class="card-title fw-semibold m-0 d-flex align-items-center">
-                            <i class="fas fa-truck-loading me-2"></i> {{ __('Loading Challan Information') }}
+                            <i class="fas fa-truck-loading me-2"></i>&nbsp;{{ __('Loading Challan Information') }}
                         </h3>
                     </div>
 

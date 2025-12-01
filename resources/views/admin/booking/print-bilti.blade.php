@@ -264,7 +264,7 @@
                         UNKNOWN
                         @endif
                     </div>
-                    <div class="invoice-number">LR No:  {{ \App\Library\sHelper::printLRNumber($sendor->branch_code, $booking->lr_number)  }}</div>
+                    <div class="invoice-number">LR No: {{ \App\Library\sHelper::printLRNumber($sendor->branch_code, $booking->lr_number)  }}</div>
                     <div>GSTIN: 07DJVPS6408H1ZI</div>
                     <div>Reg. UDYAM-DL-04-0066406</div>
                 </div>
@@ -286,8 +286,16 @@
                     <td>Article: {{ $booking->no_of_artical }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Act.Wt: {{ $booking->actual_weight }} Kg | Goods Value: {{ $booking->good_of_value }}</td>
-                    <td>Invoice No: {{ $booking?->invoice_number }}</td>
+                    <td><strong>Act.Wt:</strong> {{ $booking->actual_weight }} Kg | Goods Value: {{ $booking->good_of_value }}</td>
+                    <td><strong>Online Bilty No.:</strong> {{ $booking?->bilti_number }}</td>
+                    <td><strong>Invoice No:</strong> {{ $booking?->invoice_number }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <strong>Offline Bilty / Date:</strong>
+                        {{ $booking->manual_bilty_number ?? '-' }} /
+                        {{ $booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : '-' }}
+                    </td>
                 </tr>
             </table>
 
@@ -429,8 +437,16 @@
                     <td>Article: {{ $booking->no_of_artical }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Act.Wt: {{ $booking->actual_weight }} Kg | Goods Value: {{ $booking->good_of_value }}</td>
-                    <td>Invoice No: {{ $booking->invoice_number }}</td>
+                    <td><strong>Act.Wt:</strong> {{ $booking->actual_weight }} Kg | Goods Value: {{ $booking->good_of_value }}</td>
+                    <td><strong>Online Bilty No.:</strong> {{ $booking?->bilti_number }}</td>
+                    <td><strong>Invoice No:</strong> {{ $booking?->invoice_number }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <strong>Offline Bilty / Date:</strong>
+                        {{ $booking->manual_bilty_number ?? '-' }} /
+                        {{ $booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : '-' }}
+                    </td>
                 </tr>
             </table>
 
