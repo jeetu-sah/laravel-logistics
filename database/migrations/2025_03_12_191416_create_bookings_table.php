@@ -70,6 +70,8 @@ return new class extends Migration
             $table->integer('client_id')->nullable();
             $table->integer('client_to_id')->nullable();
             $table->string('booking_status', 20)->default('normal-booking');
+            $table->string('receiver_name')->nullable();
+            $table->integer('receiver_mobile_number')->nullable();
             $table->timestamps();
         });
     }

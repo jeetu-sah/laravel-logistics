@@ -68,7 +68,9 @@ class IncomingBookingController extends Controller
 
                 // Bilti and offline bilti links
                 $row['bilti_number'] = '<a href="' . url("admin/bookings/print-bilti/$booking->id") . '" target="_blank">' . $booking->bilti_number . '</a>';
-                $row['offline_bilti_number'] = $booking->manual_bilty_number . " / " . formatOnlyDate($booking->offline_booking_date);
+                $row['offline_bilti_number'] = $booking->manual_bilty_number;
+                $row['manual_bilty_number'] = $booking->manual_bilty_number;
+                $row['offline_booking_date'] = $booking->offline_booking_date;
                 $row['offline_bilti'] = $booking->manual_bilty_number  ? '<a href="" target="_blank">' . $booking->offline_booking_date . '</a>' : 'N/A';;
                 $row['consignor_branch'] = $booking?->consignorBranch?->branch_name;
                 $row['consignee_branch'] = $booking?->consigneeBranch?->branch_name;
@@ -79,6 +81,7 @@ class IncomingBookingController extends Controller
                 $row['no_of_artical'] = '<span class="badge badge-primary">' . $booking->no_of_artical . '</span>' ?? '--';
 
                 // Adding Transhipment Amounts (showing each transhipment charge)
+                $row['booking'] = $booking;
                 $row['transhipment'] = $transhipments;
                 $row['created_at'] = formatDate($booking->created_at);
                 $rows[] = $row;

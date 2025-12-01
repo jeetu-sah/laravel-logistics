@@ -75,7 +75,11 @@
                     data: 'busNumber'
                 },
                 {
-                    data: 'driverName'
+                    data: 'driverName',
+                    render: function(data, type, row) {
+                     
+                        return row.driverName + ' (' + row.challan.driverMobile + ')';
+                    }
                 },
                 {
                     data: 'type'

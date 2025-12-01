@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-md-2 mb-1">
                     <label for="date">offline Booking Date</label>
-                    <input type="date" class="form-control"
+                    <input type="date" class="form-control" 
                         name="offline_booking_date"
                         value="{{ $booking->offline_booking_date }}"
                         id="offline_booking_date" />

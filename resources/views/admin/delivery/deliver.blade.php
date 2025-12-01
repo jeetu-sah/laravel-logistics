@@ -63,39 +63,50 @@
                                                 <td>{{ $booking->no_of_artical }}</td>
                                             </tr>
                                             <tr>
+                                                <td class="font-weight-bold">{{ __('Online Bilty No.') }}</td>
+                                                <td>{{ $booking->bilti_number ?? '--' }}</td>
                                                 <td class="font-weight-bold">{{ __('Contain') }}</td>
-                                                <td colspan="3">{{ $booking->cantain }}</td>
+                                                <td>{{ $booking->cantain }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <div class="p-3 border-top">
-                                    <div class="form-group mb-3">
-                                        <label class="font-weight-bold">{{ __('Delivery / Gatepass Number') }}</label>
-                                        <input type="text" value="{{ old('delivery_number') }}" class="form-control"
-                                            name="delivery_number" placeholder="{{ __('Enter delivery/gatepass number') }}" maxlength="40" />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label class="font-weight-bold">{{ __('Delivery / Gatepass Number') }}</label>
+                                                <input type="text" value="{{ old('delivery_number') }}" class="form-control"
+                                                    name="delivery_number" placeholder="{{ __('Enter delivery/gatepass number') }}" maxlength="40" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label class="font-weight-bold">{{ __('Carrier By') }}<span style="color: red"> *</span></label>
+                                                <input type="text" value="{{ old('recived_by') }}" class="form-control"
+                                                    name="recived_by" placeholder="{{ __('Enter carrier name') }}" maxlength="40" required>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <div class="form-group mb-3">
-                                        <label class="font-weight-bold">{{ __('Carrier By') }}<span style="color: red"> *</span></label>
-                                        <input type="text" value="{{ old('recived_by') }}" class="form-control"
-                                            name="recived_by" placeholder="{{ __('Enter carrier name') }}" maxlength="40" required>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label class="font-weight-bold">{{ __('Carrier Mobile') }}<span style="color: red"> *</span></label>
-                                        <input type="number" step="0.01" class="form-control"
-                                            value="{{ old('reciver_mobile') }}" name="reciver_mobile"
-                                            placeholder="{{ __('Enter mobile number') }}" maxlength="12" required>
-                                    </div>
-
-                                    <div class="form-group mb-0">
-                                        <label class="font-weight-bold">{{ __('Remark') }}<span style="color: red"> *</span></label>
-                                        <input type="text" class="form-control" value="{{ old('remark') }}"
-                                            name="remark" placeholder="{{ __('Enter remark') }}" maxlength="100" required />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label class="font-weight-bold">{{ __('Carrier Mobile') }}<span style="color: red"> *</span></label>
+                                                <input type="number" step="0.01" class="form-control"
+                                                    value="{{ old('reciver_mobile') }}" name="reciver_mobile"
+                                                    placeholder="{{ __('Enter mobile number') }}" maxlength="12" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-0">
+                                                <label class="font-weight-bold">{{ __('Remark') }}<span style="color: red"> *</span></label>
+                                                <input type="text" class="form-control" value="{{ old('remark') }}"
+                                                    name="remark" placeholder="{{ __('Enter remark') }}" maxlength="100" required />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -115,7 +126,6 @@
                                         <p class="h5 font-weight-bold text-primary">{{ $booking->booking_type }}</p>
                                     </div>
                                 </div>
-
                                 <div class="invoice-details">
                                     <div class="form-group row mb-3">
                                         <label for="freight_charges" class="col-md-6 col-form-label font-weight-bold">{{ __('Freight Charges') }}<span style="color: red"> *</span>:</label>
@@ -126,7 +136,6 @@
                                                 oninput="calculateTotal()" readonly />
                                         </div>
                                     </div>
-
                                     <div class="form-group row mb-3">
                                         <label for="hamali_charges" class="col-md-6 col-form-label font-weight-bold">{{ __('Hamali Charges') }}:</label>
                                         <div class="col-md-6">
