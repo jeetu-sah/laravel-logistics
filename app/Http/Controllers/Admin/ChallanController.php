@@ -203,7 +203,6 @@ class ChallanController extends Controller
             return redirect()->back()->with('danger', 'Something went wrong, please try after sometime.');
         }
         $bookings = $data['challanDetail']->bookings;
-
         $data['bookings'] = $bookings;
         return view('admin.challan.delevery-booking', $data);
     }

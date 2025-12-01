@@ -245,8 +245,6 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/list', [DeliveryController::class, 'list']);
             Route::get('/gatepass-amount', [DeliveryController::class, 'gatepassAmounts']);
             Route::get('/gatepass-amount/detail/{deliveryReceptId}', [DeliveryController::class, 'details']);
-            Route::get('/gatepass-amount/add-receiver/{deliveryReceptId}', [DeliveryController::class, 'receiverDetails']);
-            Route::post('/gatepass-amount/add-receiver/{deliveryReceptId}', [DeliveryController::class, 'addReceiverDetails']);
             Route::post('/gatepass-amount/add-payments/{deliveryReceptId}', [DeliveryController::class, 'addDeliveryPayment']);
             Route::get('/gatepass/amount/ajax-list', [DeliveryController::class, 'gatepassList']);
             Route::get('gatepass/create/{id}', [DeliveryController::class, 'create']);

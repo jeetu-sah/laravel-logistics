@@ -37,7 +37,7 @@ class DeliveryController extends Controller
         if ($data['deliveryReceipt']) {
             $data['pendingAmount'] = $data['deliveryReceipt']->bookingPendingAmount();
         }
-        return view('admin.delivery.receiver-detail', $data);
+        return view('admin.delivery.details', $data);
     }
 
 
@@ -194,18 +194,10 @@ class DeliveryController extends Controller
                     <a href="' . url("admin/delivery/gatepass-amount/detail/{$deliveryReceipt->id}") . '" 
                     class="btn btn-success btn-sm">
                     Payments Details
-                    </a>
-
-                    <a href="' . url("admin/delivery/gatepass-amount/add-receiver/{$deliveryReceipt->id}") . '" 
-                    class="btn btn-primary btn-sm ml-2">
-                    Add Receiver Details
-                    </a>
-                ';
+                    </a>';
                 $rows[] = $row;
             }
         }
-
-
         // Prepare the JSON response with correct record counts
         $json_data = [
             "draw" => intval($request->input('draw')),
@@ -319,20 +311,32 @@ class DeliveryController extends Controller
 
         try {
             DB::beginTransaction();
-            $deliveryReceipt = DeliveryReceipt::find($deliveryReceptId);
+            $deliveryReceipt = DeliveryReceipt::with('booking')->find($deliveryReceptId);
             if (!$deliveryReceipt) {
                 return redirect()->back()->with([
                     "alertMessage" => true,
                     "alert" => ['message' => 'Delivery receipt not found!', 'type' => 'danger']
                 ]);
             }
+            if (!$deliveryReceipt->booking) {
+                return redirect()->back()->with([
+                    "alertMessage" => true,
+                    "alert" => ['message' => 'Booking not found!', 'type' => 'danger']
+                ]);
+            }
 
-            $deliveryReceiptPayment = DeliveryReceiptPayment::create([
+            DeliveryReceiptPayment::create([
                 'delivery_receipt_id' => $deliveryReceptId,
                 'pending_amount' => $request->pending_amount,
                 'received_amount' => $request->received_amount,
                 'notes' => $request->notes ?? NULL,
             ]);
+
+            $booking = $deliveryReceipt->booking;
+            $booking->receiver_name = $request->receiver_name;
+            $booking->receiver_mobile_number = $request->receiver_mobile;
+            $booking->save();
+
             DB::commit();
             return redirect("admin/delivery/gatepass-amount/detail/$deliveryReceptId")->with([
                 "alertMessage" => true,

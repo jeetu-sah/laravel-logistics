@@ -108,7 +108,6 @@
                                                     <td><strong>{{ __('Grand Total') }}</strong></td>
                                                     <td>&#8377;{{ $deliveryReceipt->grand_total ?? '--' }}</td>
                                                 </tr>
-
                                             </tbody>
                                         </table>
                                     </div>
@@ -125,32 +124,43 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6" style="font-size: 25px; color: green;">
-                                        <label for="received_amount">{{ __('Received Amount') }}:</label>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="font-weight-bold">{{ __('Receiver Name') }}<span style="color: red"> *</span></label>
+                                            <input type="text" class="form-control"
+                                                value="{{ old('receiver_name', $deliveryReceipt?->booking?->receiver_name) }}" name="receiver_name"
+                                                placeholder="{{ __('Receiver Name') }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-0">
+                                            <label class="font-weight-bold">{{ __('Receiver Mobile') }}<span style="color: red"> *</span></label>
+                                            <input type="tel"
+                                                class="form-control"
+                                                name="receiver_mobile"
+                                                placeholder="{{ __('Receiver Mobile') }}"
+                                                maxlength="100"
+                                                value="{{ old('receiver_mobile', $deliveryReceipt?->booking?->receiver_mobile_number) }}"
+                                                required />
+                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-2">
+                                        <label for="received_amount">{{ __('Received Amount') }}:</label>
                                         <input type="number" class="form-control" step="0.01"
                                             id="received_amount"
                                             value="{{ old('received_amount') }}"
                                             name="received_amount" placeholder="₹.00" required>
                                     </div>
-
-                                    <div class="col-md-6" style="font-size: 25px; color: red;">
-                                        <label for="pendingAmount">{{ __('Pending Amount') }}:</label>
-                                    </div>
                                     <div class="col-md-6 mb-2">
+                                        <label for="pendingAmount">{{ __('Pending Amount') }}:</label>
                                         <input type="text" class="form-control" id="pendingAmount"
                                             value="{{ $pendingAmount }}" required name="pending_amount" readonly />
                                     </div>
-
-                                    <div class="col-md-6" style="font-size: 25px; color: blue;">
-                                        <label for="grand_total">{{ __('Note') }}:</label>
-                                    </div>
                                     <div class="col-md-6 mb-2">
+                                        <label for="grand_total">{{ __('Note') }}:</label>
                                         <textarea class="form-control" id="notes"
                                             name="notes" placeholder="{{ __('Note') }}">{{ old('notes') }}</textarea>
                                     </div>
-
                                     <div class="col-md-12 mb-2">
                                         <input type="submit" value="{{ __('Save & Print') }}" class="btn btn-success float-right">
                                     </div>

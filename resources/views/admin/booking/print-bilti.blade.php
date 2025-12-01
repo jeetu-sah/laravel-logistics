@@ -6,7 +6,6 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Laralink">
-    <title>Bilty</title>
     <style>
         /* Base styles */
         * {
@@ -257,7 +256,8 @@
                 <div class="company-logo">
                     <img src="{{ asset('site/img/logo-log.png') }}" alt="Logo" width="60">
                     <div class="company-address" style="font-size: 8px;line-height: 1.2; margin-top: -15px;">
-                        <strong>Head office:</strong> 256 Damodar nagar Kanpur nagar -208027
+                        <strong>Head office:</strong> 256 Damodar nagar Kanpur nagar -208027 <br />
+                        <strong>Contact:</strong> 9005355103 <br />
                     </div>
                 </div>
                 <div class="invoice-details">
@@ -289,11 +289,19 @@
                 <tr>
                     <td>{{ $branch1Contact }}</td>
                     <td>{{ $branch2Contact }}</td>
-                    <td>Article: {{ $booking->no_of_artical }}</td>
+                    <td><strong>Article:</strong> {{ $booking->no_of_artical }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Act.Wt: {{ $booking->actual_weight }} Kg | Goods Value: {{ $booking->good_of_value }}</td>
-                    <td>Invoice No: {{ $booking?->invoice_number }}</td>
+                    <td><strong>Act.Wt:</strong> {{ $booking->actual_weight }} Kg | Goods Value: {{ $booking->good_of_value }}</td>
+                    <td><strong>Online Bilty No.:</strong> {{ $booking?->bilti_number }}</td>
+                    <td><strong>Invoice No:</strong> {{ $booking?->invoice_number }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <strong>Offline Bilty / Date:</strong>
+                        {{ $booking->manual_bilty_number ?? '-' }} /
+                        {{ $booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : '-' }}
+                    </td>
                 </tr>
             </table>
 
@@ -403,7 +411,8 @@
                 <div class="company-logo">
                     <img src="{{ asset('site/img/logo-log.png') }}" alt="Logo" width="60">
                     <div class="company-address" style="font-size: 8px;line-height: 1.2; margin-top: -15px;">
-                        <strong>Head office:</strong> 256 Damodar nagar Kanpur nagar -208027
+                        <strong>Head office:</strong> 256 Damodar nagar Kanpur nagar -208027 <br />
+                        <strong>Contact:</strong> 9005355103 <br />
                     </div>
                 </div>
                 <div class="invoice-details">
@@ -436,11 +445,19 @@
                 <tr>
                     <td>{{ $branch1Contact }}</td>
                     <td>{{ $branch2Contact }}</td>
-                    <td>Article: {{ $booking->no_of_artical }}</td>
+                    <td><strong>Article:</strong> {{ $booking->no_of_artical }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">Act.Wt: {{ $booking->actual_weight }} Kg | Goods Value: {{ $booking->good_of_value }}</td>
-                    <td>Invoice No: {{ $booking->invoice_number }}</td>
+                    <td><strong>Act.Wt:</strong> {{ $booking->actual_weight }} Kg | Goods Value: {{ $booking->good_of_value }}</td>
+                    <td><strong>Online Bilty No.:</strong> {{ $booking?->bilti_number }}</td>
+                    <td><strong>Invoice No:</strong> {{ $booking->invoice_number }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <strong>Offline Bilty / Date:</strong>
+                        {{ $booking->manual_bilty_number ?? '-' }} /
+                        {{ $booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : '-' }}
+                    </td>
                 </tr>
             </table>
 

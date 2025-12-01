@@ -86,7 +86,14 @@
                     data: 'bilti_number'
                 },
                 {
-                    data: 'offline_bilti_number'
+                    data: null,
+                    name: 'offline_bilti_number',
+                    render: function(data, type, row) {
+                        let bilty = row.manual_bilty_number ? row.manual_bilty_number : '-';
+                        let date = row.offline_booking_date ? row.offline_booking_date : '-';
+
+                        return bilty + ' / ' + date;
+                    }
                 },
 
                 {

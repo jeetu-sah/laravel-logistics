@@ -1,246 +1,222 @@
 @extends('admin.admin_layout.master')
 @section('main_content')
-<div class="content-wrapper" style="min-height: 1419.51px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
+
+<div class="content-wrapper bg-light" style="min-height: 1419px;">
+
+    <!-- Page Header -->
+    <section class="content-header pb-1">
         <div class="container-fluid">
+
             <div class="row mb-2 align-items-center">
                 <div class="col-sm-6">
-                    <h4 class="m-0 text-primary">
-                        <i class="fas fa-clipboard-list me-2" style="color: #007bff;"></i> {{ __('Manifest') }}
+                    <h4 class="m-0 text-primary fw-bold d-flex align-items-center">
+                        <i class="fas fa-clipboard-list me-2 text-primary"></i> {{ __('Manifest') }}
                     </h4>
                 </div>
+
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right mb-0" style="background: transparent; padding: 0;">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}" style="color: #6c757d; text-decoration: none;">{{ __('Home') }}</a></li>
-                        <li class="breadcrumb-item"><a href="#" style="color: #6c757d; text-decoration: none;">{{ __('Manifest') }}</a></li>
-                        <li class="breadcrumb-item active" style="color: #007bff;">{{ __('Loading Challan Details') }}</li>
+                    <ol class="breadcrumb float-sm-right bg-transparent m-0 p-0">
+                        <li class="breadcrumb-item">
+                            <a href="{{ url('admin/dashboard') }}" class="text-muted text-decoration-none">{{ __('Home') }}</a>
+                        </li>
+                        <li class="breadcrumb-item text-muted">{{ __('Manifest') }}</li>
+                        <li class="breadcrumb-item active text-primary">{{ __('Loading Challan Details') }}</li>
                     </ol>
                 </div>
             </div>
-        </div>
-        <div class="row mb-2">
-            @include('common.notification')
+
+            <div class="row mb-2">
+                @include('common.notification')
+            </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- Main Content -->
     <section class="content">
         <div class="container-fluid">
+
             <!-- Action Buttons -->
-            <div class="row mb-4">
-                <div class="col-12">
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button onclick="window.print()" class="btn btn-success" style="background: #28a745; border: none; padding: 8px 15px; border-radius: 4px; color: white; display: flex; align-items: center;">
-                            <i class="fas fa-print mr-1"></i>{{__('Print') }}
-                        </button>
-                        @if($challanDetail->user->branch_user_id === $branchId)
-                        <a href="{{ url('admin/challans') }}" class="btn btn-primary" style="background: #007bff; border: none; padding: 8px 15px; border-radius: 4px; color: white; display: flex; align-items: center; text-decoration: none;">
-                            <i class="fas fa-edit mr-1"></i>{{__('Edit') }}
-                        </a>
-                        @endif
-                        <a href="{{ url('admin/challans') }}" class="btn btn-warning" style="background: #ffc107; border: none; padding: 8px 15px; border-radius: 4px; color: #212529; display: flex; align-items: center; text-decoration: none;">
-                            <i class="fas fa-angle-double-left mr-1"></i>{{__('Back') }}
-                        </a>
-                    </div>
+            <div class="row mb-3">
+                <div class="col-12 d-flex flex-wrap gap-2">
+
+                    <button onclick="window.print()" class="btn btn-success shadow-sm px-3 py-2 fw-bold">
+                        <i class="fas fa-print me-1"></i> {{__('Print') }}
+                    </button>
+                    &nbsp;
+                    @if($challanDetail->user->branch_user_id === $branchId)
+                    <a href="{{ url('admin/challans') }}" class="btn btn-primary shadow-sm px-3 py-2 fw-bold">
+                        <i class="fas fa-edit me-1"></i> {{__('Edit') }}
+                    </a>
+                    @endif
+
+                    <a href="{{ url('admin/challans') }}" class="btn btn-warning shadow-sm px-3 py-2 fw-bold">
+                        <i class="fas fa-angle-double-left me-1"></i> {{__('Back') }}
+                    </a>
+
                 </div>
             </div>
 
             <!-- Challan Information Card -->
-            <div class="row mb-4">
-                <div class="col-12">
-                    <div style="background: white; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <div style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); padding: 15px 20px; border-radius: 8px 8px 0 0; display: flex; justify-content: between; align-items: center;">
-                            <h3 style="margin: 0; color: white; font-size: 1.25rem; font-weight: 600;">
-                                <i class="fas fa-truck-loading mr-2"></i>
-                                {{ __('Loading Challan Information') }}
-                            </h3>
-                            <button type="button" style="background: none; border: none; color: white; font-size: 1rem;">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                        <div style="padding: 20px;">
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
-                                <!-- Created By -->
-                                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 15px;">
-                                    <div style="color: #6c757d; font-size: 0.875rem; margin-bottom: 5px;">{{ __('Created By') }}</div>
-                                    <div style="font-weight: 600; font-size: 1rem;">
-                                        <span style="background: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.875rem;">
-                                            {{ ($challanDetail->user->branch_user_id === $branchId) ? __('Self') :  (strtoupper($challanDetail->user->branch->branch_name) ?? __('N/A')) }}
-                                        </span>
-                                    </div>
-                                </div>
+            <div class="card shadow-sm mb-4 border-0 rounded-3">
+                <div class="card-header text-white"
+                    style="background: linear-gradient(135deg, #007bff, #0056b3); padding: 12px 20px; border-radius: 8px;">
+                    <h3 class="card-title fw-semibold m-0 d-flex align-items-center">
+                        <i class="fas fa-truck-loading me-2"></i> {{ __('Loading Challan Information') }}
+                    </h3>
+                </div>
 
-                                <!-- Vehicle Number -->
-                                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 15px;">
-                                    <div style="color: #6c757d; font-size: 0.875rem; margin-bottom: 5px;">{{ __('Vehicle Number') }}</div>
-                                    <div style="font-weight: 600; font-size: 1rem; color: #495057;">
-                                        {{ strtoupper($challanDetail->busNumber ?? __('N/A')) }}
-                                    </div>
-                                </div>
+                <div class="card-body p-3">
+                    <div class="row g-3">
 
-                                <!-- Driver Name -->
-                                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 15px;">
-                                    <div style="color: #6c757d; font-size: 0.875rem; margin-bottom: 5px;">{{ __('Driver Name') }}</div>
-                                    <div style="font-weight: 600; font-size: 1rem; color: #495057;">
-                                        {{ strtoupper($challanDetail->driverName ?? __('N/A')) }}
-                                    </div>
-                                </div>
+                        <!-- Fields style improved -->
+                        @php
+                        $fields = [
+                        ['label'=>'Created By', 'value'=> ($challanDetail->user->branch_user_id === $branchId) ? __('Self') : strtoupper($challanDetail->user->branch->branch_name)],
+                        ['label'=>'Vehicle Number', 'value'=> strtoupper($challanDetail->busNumber)],
+                        ['label'=>'Driver Name', 'value'=> strtoupper($challanDetail->driverName)],
+                        ['label'=>'Driver Mobile', 'value'=> strtoupper($challanDetail->driverMobile)],
+                        ['label'=>'Lock Number', 'value'=> strtoupper($challanDetail->locknumber)],
+                        ['label'=>'Co-Loder', 'value'=> strtoupper($challanDetail->coLoder)],
+                        ];
+                        @endphp
 
-                                <!-- Driver Mobile -->
-                                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 15px;">
-                                    <div style="color: #6c757d; font-size: 0.875rem; margin-bottom: 5px;">{{ __('Driver Mobile') }}</div>
-                                    <div style="font-weight: 600; font-size: 1rem;">
-                                        <span style="background: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.875rem;">
-                                            {{ strtoupper($challanDetail->driverMobile ?? __('N/A')) }}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- Lock Number -->
-                                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 15px;">
-                                    <div style="color: #6c757d; font-size: 0.875rem; margin-bottom: 5px;">{{ __('Lock Number') }}</div>
-                                    <div style="font-weight: 600; font-size: 1rem;">
-                                        <span style="background: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.875rem;">
-                                            {{ (strtoupper($challanDetail->locknumber) ?? __('N/A')) }}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- Co-Loder -->
-                                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 15px;">
-                                    <div style="color: #6c757d; font-size: 0.875rem; margin-bottom: 5px;">{{ __('Co-Loder') }}</div>
-                                    <div style="font-weight: 600; font-size: 1rem; color: #495057;">
-                                        {{ strtoupper($challanDetail->coLoder ?? __('N/A')) }}
-                                    </div>
-                                </div>
-
-                                <!-- Dispatch Date -->
-                                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 15px;">
-                                    <div style="color: #6c757d; font-size: 0.875rem; margin-bottom: 5px;">{{ __('Dispatch Date') }}</div>
-                                    <div style="font-weight: 600; font-size: 1rem; color: #495057;">
-                                        {{ formatDate($challanDetail->created_at) }}
-                                    </div>
-                                </div>
-
-                                <!-- Challan Number -->
-                                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 15px;">
-                                    <div style="color: #6c757d; font-size: 0.875rem; margin-bottom: 5px;">{{ __('Challan Number') }}</div>
-                                    <div style="font-weight: 600; font-size: 1rem; color: #495057;">
-                                        {{ $challanDetail->challan_number ?? '--' }}
-                                    </div>
-                                </div>
+                        @foreach($fields as $field)
+                        <div class="col-md-2">
+                            <div class="border rounded p-2 bg-light small-box-shadow">
+                                <div class="text-muted small">{{ __($field['label']) }}</div>
+                                <div class="fw-bold">{{ $field['value'] ?? __('N/A') }}</div>
                             </div>
                         </div>
+                        @endforeach
+
+                        <div class="col-md-3">
+                            <div class="border rounded p-2 bg-light">
+                                <div class="text-muted small">{{ __('Dispatch Date') }}</div>
+                                <div class="fw-bold">{{ formatDate($challanDetail->created_at) }}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="border rounded p-2 bg-light">
+                                <div class="text-muted small">{{ __('Challan Number') }}</div>
+                                <div class="fw-bold">{{ $challanDetail->challan_number ?? '--' }}</div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
             <!-- Booking List Card -->
-            <div class="row">
-                <div class="col-12">
-                    <div style="background: white; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <form id="bookingForm" action="{{ url('admin/bookings/booking-received') }}" method="post">
-                            @csrf
-                            <input type="hidden" value="{{ $challanDetail->id }}" name="chalan_id">
-                            <div style="background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); padding: 15px 20px; border-radius: 8px 8px 0 0; display: flex; justify-content: between; align-items: center;">
-                                <h3 style="margin: 0; color: white; font-size: 1.25rem; font-weight: 600;">
-                                    <i class="fas fa-list-alt mr-2"></i>
-                                    {{ __('Loading Challan Booking List') }}
-                                </h3>
-                                <button type="button" style="background: none; border: none; color: white; font-size: 1rem;">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                            <div style="padding: 20px;">
-                                <div style="overflow-x: auto;">
-                                    <table style="width: 100%; border-collapse: collapse; background: white;">
-                                        <thead>
-                                            <tr style="background: #343a40; color: white;">
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 5%;">
-                                                    <!-- <input type="checkbox" style="margin: 0;"> -->
-                                                </th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 10%;">{{ __('Created By') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 8%;">{{ __('Bilti Number') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 5%;">{{ __('Chalan Number') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 10%;">{{ __('Origin') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 10%;">{{ __('Consignor') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 10%;">{{ __('Consignee') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 10%;">{{ __('Destination') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 5%;">{{ __('QTY') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 10%;">{{ __('Cantain') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 8%;">{{ __('Booking Type') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 20%;">{{ __('Booked at') }}</th>
-                                                <th style="padding: 4px 8px; text-align: left; font-weight: 600; border: 1px solid #454d55; width: 10%;">{{ __('Actions') }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php $i = 1; @endphp
-                                            @foreach ($bookings as $booking)
-                                            <tr style="border-bottom: 1px solid #dee2e6; transition: background-color 0.2s;">
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">
-                                                    @if($booking->visible_for === auth()->user()->branch_user_id)
-                                                    <input type="checkbox" name="selectedBookings[]" value="{{ $booking->id }}" style="margin: 0;">
-                                                    @endif
-                                                </td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">
-                                                    <span style="background: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.875rem;">
-                                                        {{ $booking->booking_created_by }}
-                                                    </span>
-                                                </td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">{{ $booking->bilti_number }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">{{ $challanDetail->challan_number ?? '--' }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">{{ $booking->consignorBranch->branch_name ?? '--' }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">{{ $booking->consignor_name }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">{{ $booking->consignee_name }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">{{ $booking->consigneeBranch->branch_name ?? '--' }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6; text-align: center;">{{ $booking->no_of_artical }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">{{ $booking->cantain ?? '--' }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">
-                                                    <span style="background: #dc3545; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.875rem;">
-                                                        {{$booking->booking_type_name ?? '--'}}
-                                                    </span>
-                                                </td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">{{ formatDate($booking->created_at) }}</td>
-                                                <td style="padding: 4px 8px; border: 1px solid #dee2e6;">
-                                                    @if(($challanDetail->user->branch_user_id === $branchId) && ($booking->is_revert_button_visible))
-                                                    <a class="revertbooking" href="#" data-reverturl='{{ url("admin/challans/$challanDetail->id/revert-booking/$booking->id") }}'" style=" background: #dc3545; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.875rem; display: inline-flex; align-items: center; border: none; cursor: pointer;">
-                                                        <i class="fas fa-undo mr-1"></i>{{ __('Revert') }}
-                                                    </a>
-                                                    @else
-                                                    {{'--'}}
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                            <tr style="background: #f8f9fa; font-weight: 600;">
-                                                <td style="padding: 8px; border: 1px solid #dee2e6; text-align: right;" colspan="8">{{ __('Total Quantity') }}:</td>
-                                                <td style="padding: 8px; border: 1px solid #dee2e6; text-align: center; background: #e9ecef;">
-                                                    {{ $bookings->sum('no_of_artical') }}
-                                                </td>
-                                                <td style="padding: 8px; border: 1px solid #dee2e6;" colspan="4"></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                            <div style="padding: 15px 20px; background: #f8f9fa; border-radius: 0 0 8px 8px; border-top: 1px solid #dee2e6;">
-                                @if($challanDetail->is_received_button_visible)
-                                <button type="button" id="receivedButton" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: 600; cursor: pointer; float: right; display: flex; align-items: center;">
-                                    <i class="fas fa-check-circle mr-1"></i>{{ __('Mark as Received') }}
-                                </button>
-                                @endif
-                            </div>
-                        </form>
-                    </div>
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header text-white"
+                    style="background: linear-gradient(135deg, #28a745, #1e7e34); padding: 12px 20px; border-radius: 8px;">
+                    <h3 class="card-title fw-semibold m-0 d-flex align-items-center">
+                        <i class="fas fa-list-alt me-2"></i> {{ __('Loading Challan Booking List') }}
+                    </h3>
                 </div>
+
+                <form id="bookingForm" action="{{ url('admin/bookings/booking-received') }}" method="post">
+                    @csrf
+                    <input type="hidden" value="{{ $challanDetail->id }}" name="chalan_id">
+
+                    <div class="card-body p-3">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped mb-0 align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th width="5%">
+                                            <div class="form-check ms-1">
+                                                <input class="form-check-input" type="checkbox" id="selectAll">
+                                                <label class="form-check-label small" for="selectAll">
+                                                    {{ __('Select All') }}
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th>{{ __('Created By') }}</th>
+                                        <th>{{ __('Bilti Number') }}</th>
+                                        <th>{{ __('Offline Bilti / Date') }}</th>
+                                        <th>{{ __('Chalan Number') }}</th>
+                                        <th>{{ __('Origin') }}</th>
+                                        <th>{{ __('Consignor') }}</th>
+                                        <th>{{ __('Consignee') }}</th>
+                                        <th>{{ __('Destination') }}</th>
+                                        <th class="text-center">{{ __('QTY') }}</th>
+                                        <th>{{ __('Cantain') }}</th>
+                                        <th>{{ __('Booking Type') }}</th>
+                                        <th>{{ __('Booked at') }}</th>
+                                        <th>{{ __('Actions') }}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($bookings as $booking)
+                                    <tr>
+                                        <td>
+                                            @if($booking->visible_for === auth()->user()->branch_user_id)
+                                            <input type="checkbox" name="selectedBookings[]" value="{{ $booking->id }}">
+                                            @endif
+                                        </td>
+
+                                        <td><span class="badge bg-danger">{{ $booking->booking_created_by }}</span></td>
+                                        <td>{{ $booking->bilti_number }}</td>
+                                        <th> {{ $booking->manual_bilty_number ?? '--' }} /
+                                            {{ $booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : '--' }}
+                                        </th>
+                                        <td>{{ $challanDetail->challan_number ?? '--' }}</td>
+                                        <td>{{ $booking->consignorBranch->branch_name ?? '--' }}</td>
+                                        <td>{{ $booking->consignor_name }}</td>
+                                        <td>{{ $booking->consignee_name }}</td>
+                                        <td>{{ $booking->consigneeBranch->branch_name ?? '--' }}</td>
+                                        <td class="text-center fw-bold">{{ $booking->no_of_artical }}</td>
+                                        <td>{{ $booking->cantain ?? '--' }}</td>
+                                        <td><span class="badge bg-primary">{{ $booking->booking_type_name }}</span></td>
+                                        <td>{{ formatDate($booking->created_at) }}</td>
+
+                                        <td>
+                                            @if(($challanDetail->user->branch_user_id === $branchId) && ($booking->is_revert_button_visible))
+                                            <a class="btn btn-sm btn-danger revertbooking"
+                                                data-reverturl='{{ url("admin/challans/$challanDetail->id/revert-booking/$booking->id") }}'>
+                                                <i class="fas fa-undo me-1"></i> {{ __('Revert') }}
+                                            </a>
+                                            @else
+                                            --
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+
+                                <tfoot class="table-light fw-bold">
+                                    <tr>
+                                        <td colspan="9" class="text-end"><strong>{{ __('Total Quantity') }}</strong></td>
+                                        <td class="text-center bg-secondary text-white">{{ $bookings->sum('no_of_artical') }}</td>
+                                        <td colspan="4"></td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-light border-top">
+                        @if($challanDetail->is_received_button_visible)
+                        <button type="button" id="receivedButton"
+                            class="btn btn-success fw-bold px-4 py-2 float-end shadow-sm">
+                            <i class="fas fa-check-circle me-1"></i> {{ __('Mark as Received') }}
+                        </button>
+                        @endif
+                    </div>
+
+                </form>
             </div>
+
         </div>
     </section>
+
 </div>
 @endsection
+
 
 @section('script')
 @parent
@@ -289,23 +265,24 @@
 @section('styles')
 @parent
 <style>
+    .small-box-shadow {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .table td,
+    .table th {
+        vertical-align: middle !important;
+        font-size: 0.9rem;
+    }
+
     @media (max-width: 768px) {
-        .content-header h4 {
-            font-size: 1.25rem !important;
+        .table {
+            font-size: 0.8rem;
         }
 
-        .btn-group {
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        table {
-            font-size: 0.875rem;
-        }
-
-        table th,
-        table td {
-            padding: 8px 4px !important;
+        .btn {
+            width: 100%;
+            margin-bottom: 5px;
         }
     }
 </style>
