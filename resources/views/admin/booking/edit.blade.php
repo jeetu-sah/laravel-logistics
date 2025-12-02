@@ -273,7 +273,6 @@
 </div>
 @endsection
 
-
 @section('script')
 @parent
 

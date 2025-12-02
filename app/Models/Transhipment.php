@@ -52,15 +52,15 @@ class Transhipment extends Model
                 ->where('consignee_branch_id', $consigneeId)
                 ->first();
             if ($commisionPrice) {
-                return $commisionPrice->amount * $this->booking->no_of_artical;
+                return $commisionPrice->amount * $this->booking?->no_of_artical;
             }
             return 0;
         } elseif ($this->type === self::TYPE_TRANSHIPMENT && $this->branch) {
 
-            return $this->branch->transhipment_commission_price * $this->booking->no_of_artical;
+            return $this->branch->transhipment_commission_price * $this->booking?->no_of_artical;
         } else if ($this->type === self::TYPE_RECEIVER && $this->booking) {
 
-            return $this->branch->incoming_commission_price * $this->booking->no_of_artical;
+            return $this->branch->incoming_commission_price * $this->booking?->no_of_artical;
         }
     }
 }

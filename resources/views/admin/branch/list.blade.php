@@ -23,13 +23,13 @@
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
-@endif
+    @endif
 
-@if (session('error'))
+    @if (session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
     </div>
-@endif
+    @endif
 
     <!-- Main content -->
     <section class="content">
@@ -130,4 +130,37 @@
 @section('styles')
 @parent
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+<style>
+    /* Add margin to DataTable Header */
+    .dataTables_wrapper .dataTables_header {
+        margin-bottom: 15px !important;
+    }
+
+    /* Add margin to DataTable Footer */
+    .dataTables_wrapper .dataTables_footer {
+        margin-top: 15px !important;
+    }
+
+    /* Alternative for different DataTables versions */
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 15px !important;
+    }
+
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 15px !important;
+    }
+
+    table.dataTable,
+    .dataTables_wrapper,
+    .dataTables_scroll,
+    .dataTables_scrollBody {
+        overflow: visible !important;
+    }
+
+    .dropdown-menu {
+        z-index: 999999 !important;
+    }
+</style>
 @endsection

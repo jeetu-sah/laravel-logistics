@@ -162,52 +162,72 @@ class DeliveryController extends Controller
         $search = $request->input('search')['value'] ?? null;
         $limit = $request->input('length', 10);
         $start = $request->input('start', 0);
-        // $totalRecord = Booking::where('status', Booking::RECEIVED_FINAL_TRANSHIPMENT)->count();
-        $query = DeliveryReceipt::with(['booking']);
-        $query->where('branch_id', Auth::user()->branch_user_id);
+
+        $query = DeliveryReceipt::with(['booking'])
+            ->where('branch_id', Auth::user()->branch_user_id);
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('delivery_number', 'like', "%$search%")
-                    ->orwhere('recived_by', 'like', "%$search%")
+                    ->orWhere('recived_by', 'like', "%$search%")
                     ->orWhereHas('booking', function ($bookingQuery) use ($search) {
                         $bookingQuery->where('bilti_number', 'like', "%$search%");
                     });
             });
         }
-        $totalRecord = $query->count();
-        $deliveryReceipts = $query->skip($start)->take($limit)->get();
+        $orderColIndex = $request->input('order.0.column');
+        $orderDir = $request->input('order.0.dir', 'asc');
 
-        $rows = [];
-        if ($deliveryReceipts->count() > 0) {
-            foreach ($deliveryReceipts as $index => $deliveryReceipt) {
-                $row = [];
-                $row['bilti_number'] = $deliveryReceipt?->booking?->bilti_number ?? '--';
-                $row['delivery_number'] = $deliveryReceipt?->delivery_number ?? '--';
-                $row['reciver_mobile'] = $deliveryReceipt?->reciver_mobile ?? '--';
-                $row['recived_by'] = $deliveryReceipt?->recived_by ?? '--';
-                $row['grand_total'] = "&#8377;" . $deliveryReceipt?->grand_total ?? '--';
-                $row['received_amount'] = "&#8377;" . $deliveryReceipt?->bookingReceivedAmount() ?? '--';
-                $row['pending_amount'] = "&#8377;" . $deliveryReceipt?->bookingPendingAmount() ?? '--';
+        // Get column name from DataTable
+        $columnName = $request->input("columns.$orderColIndex.data");
 
-                $row['created_at'] = formatDate($deliveryReceipt->created_at);
-                $row['action'] = '
-                    <a href="' . url("admin/delivery/gatepass-amount/detail/{$deliveryReceipt->id}") . '" 
-                    class="btn btn-success btn-sm">
-                    Payments Details
-                    </a>';
-                $rows[] = $row;
-            }
-        }
-        // Prepare the JSON response with correct record counts
-        $json_data = [
-            "draw" => intval($request->input('draw')),
-            "recordsTotal" => $totalRecord,
-            "recordsFiltered" => $totalRecord, // Adjust this if you implement search/filter functionality
-            "data" => $rows,
+        // Columns actually available in database
+        $dbSortable = [
+            'delivery_number' => 'delivery_number',
+            'reciver_mobile'  => 'reciver_mobile',
+            'recived_by'      => 'recived_by',
+            'grand_total'     => 'grand_total',
+            'created_at'      => 'created_at',
         ];
 
-        return response()->json($json_data);
+        if (isset($dbSortable[$columnName])) {
+            $query->orderBy($dbSortable[$columnName], $orderDir);
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $totalRecord = $query->count();
+        $deliveryReceipts = $query->skip($start)->take($limit)->get();
+        /* --------------------------
+        FORMAT RESPONSE DATA
+    -------------------------- */
+        $rows = [];
+
+        foreach ($deliveryReceipts as $deliveryReceipt) {
+            $rows[] = [
+                'bilti_number'    => $deliveryReceipt->booking->bilti_number ?? '--',
+                'delivery_number' => $deliveryReceipt->delivery_number,
+                'reciver_mobile'  => $deliveryReceipt->reciver_mobile ?? '--',
+                'recived_by'      => $deliveryReceipt->recived_by ?? '--',
+                'grand_total'     => "&#8377;" . ($deliveryReceipt->grand_total ?? 0),
+                'received_amount' => "&#8377;" . ($deliveryReceipt->bookingReceivedAmount() ?? 0),
+                'pending_amount'  => "&#8377;" . ($deliveryReceipt->bookingPendingAmount() ?? 0),
+                'created_at'      => formatDate($deliveryReceipt->created_at),
+                'action'          => '
+                <a href="' . url("admin/delivery/gatepass-amount/detail/{$deliveryReceipt->id}") . '" 
+                   class="btn btn-success btn-sm">Payments Details</a>
+                <a target="_blank" href="' . route('admin.delivery.receipt', ['id' => $deliveryReceipt->id]) . '" 
+                   class="btn btn-warning btn-sm">Print</a>'
+            ];
+        }
+
+        return response()->json([
+            "draw" => intval($request->input('draw')),
+            "recordsTotal" => $totalRecord,
+            "recordsFiltered" => $totalRecord,
+            "data" => $rows,
+        ]);
     }
+
 
 
     /**

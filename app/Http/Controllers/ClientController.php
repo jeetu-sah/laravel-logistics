@@ -87,70 +87,82 @@ class ClientController extends Controller
     public function list(Request $request)
     {
         $search = $request->input('search')['value'] ?? null;
-        $limit = $request->input('length', 10);
-        $start = $request->input('start', 0);
+        $limit  = $request->input('length', 10);
+        $start  = $request->input('start', 0);
+
+        // Base Query
         $clientQuery = Client::query();
 
-        // For debugging, let's print the query first to see if it's being built properly
-        $sql = $clientQuery->toSql(); // Get the raw SQL query
-        // Apply search filters if a search term is provided
+        // Search Filter
         if ($search) {
-            $clientQuery->where(column: function ($query) use ($search) {
-                $query->where('client_name', 'like', "%$search%")
-                    ->orWhere('client_branch_id', 'like', "%$search%");
+            $clientQuery->where(function ($query) use ($search) {
+                $query->where('client_name', 'like', "%{$search}%")
+                    ->orWhere('client_address', 'like', "%{$search}%")
+                    ->orWhere('client_phone_number', 'like', "%{$search}%")
+                    ->orWhere('client_gst_number', 'like', "%{$search}%")
+                    ->orWhere('client_email', 'like', "%{$search}%")
+                    ->orWhere('client_aadhar_card', 'like', "%{$search}%");
             });
         }
 
-        // Eager load the consignorBranch relationship
-        $clients = $clientQuery->with('branch') // Eager loading branch data
+        // Clone BEFORE pagination
+        $filteredCount = (clone $clientQuery)->count();
+        $totalCount    = Client::count();
+
+        // Fetch with pagination
+        $clients = $clientQuery->with('branch')
+            ->orderBy('created_at', 'desc')
             ->skip($start)
             ->take($limit)
-            ->orderBy('created_at', 'desc')
             ->get();
 
-        $totalRecord = $clientQuery->count();
         $rows = [];
-
-        if ($clients->count() > 0) {
-            foreach ($clients as $index => $client) {
-                $row = [];
-                $row['sn'] = $start + $index + 1;
-                // $row['client_id'] = '<a href="' . url('admin/clients/client-details', ['id' => $client->id]) . '">' . $client->id . '</a>';
-                $row['client_name'] = $client->client_name;
-                $row['client_address'] = $client->client_address;
-                $row['client_phone_number'] = $client->client_phone_number;
-                $row['client_gst_number'] = $client->client_gst_number;
-                $row['client_branch_id'] = $client->branch->branch_name ?? 'N/A';
-
-                $row['client_email'] = $client->client_email;
-                $row['client_aadhar_card'] = $client->client_aadhar_card;
-                $row['action'] = '<a href="' . url("admin/clients/edit/{$client->id}") . '" class="btn btn-primary">Edit</a>&nbsp;
-                                  <a href="' . url("admin/clients/delete/{$client->id}") . '" class="btn btn-warning delete-client">Delete</a> &nbsp;
-                                  <a href="' . url("admin/clients/map-to-branch/{$client->id}") . '" class="btn btn-info">Map to branch</a>';
-
-                // Format the creation date
-                $row['created_at'] = formatDate($client->created_at);
-
-                // Append the row to the rows array
-                $rows[] = $row;
-            }
+        foreach ($clients as $index => $client) {
+            $rows[] = [
+                'sn' => $start + $index + 1,
+                'client_name' => $client->client_name,
+                'client_address' => $client->client_address,
+                'client_phone_number' => $client->client_phone_number,
+                'client_gst_number' => $client->client_gst_number,
+                'client_branch_id' => $client->branch?->branch_name ?? 'N/A',
+                'client_email' => $client->client_email,
+                'client_aadhar_card' => $client->client_aadhar_card,
+                'created_at' => formatDate($client->created_at),
+                'action' => '
+                <div class="dropdown">
+                    <button class="btn btn-light btn-sm" type="button" id="actionMenu' . $client->id . '" data-bs-toggle="dropdown">
+                        <i class="fa fa-list"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="actionMenu' . $client->id . '">
+                        <li>
+                            <a class="dropdown-item" href="' . url("admin/clients/edit/{$client->id}") . '">
+                                <i class="fas fa-pencil-alt me-2"></i> Edit
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger delete-client" 
+                               href="' . url("admin/clients/delete/{$client->id}") . '" 
+                               onclick="return confirm(\'Are you sure you want to delete this client?\')">
+                                <i class="fas fa-trash me-2"></i> Delete
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-info" href="' . url("admin/clients/map-to-branch/{$client->id}") . '">
+                                <i class="fas fa-random me-2"></i> Map to Branch
+                            </a>
+                        </li>
+                    </ul>
+                </div>'
+            ];
         }
 
-        // Prepare the JSON response with correct record counts
-        $json_data = [
+        return response()->json([
             "draw" => intval($request->input('draw')),
-            "recordsTotal" => $totalRecord,
-            "recordsFiltered" => $totalRecord,
+            "recordsTotal" => $totalCount,
+            "recordsFiltered" => $filteredCount,
             "data" => $rows,
-        ];
-
-        // Return the JSON response
-        return response()->json($json_data);
+        ]);
     }
-
-
-
-
 
 
     /**
