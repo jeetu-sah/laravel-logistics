@@ -16,7 +16,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            font-size: 10px;
+            font-size: 12px;
             line-height: 1.2;
             color: #333;
             background-color: #fff;
@@ -76,7 +76,7 @@
         }
 
         .company-address {
-            font-size: 9px;
+            font-size: 12px;
             line-height: 1.2;
         }
 
@@ -87,7 +87,7 @@
         }
 
         .invoice-number {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
         }
 
@@ -99,7 +99,7 @@
             margin-bottom: 3mm;
             text-align: center;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 12px;
         }
 
         /* Table styles */
@@ -107,7 +107,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 3mm;
-            font-size: 9px;
+            font-size: 12px;
         }
 
         .info-table th,
@@ -133,14 +133,14 @@
             padding: 1mm;
             text-align: center;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 12px;
         }
 
         .party-details {
             border: 1px solid #ddd;
             border-top: none;
             padding: 1mm;
-            font-size: 9px;
+            font-size: 12px;
         }
 
         .party-row {
@@ -162,7 +162,7 @@
 
         .bank-details {
             flex: 1;
-            font-size: 9px;
+            font-size: 12px;
         }
 
         .qr-code {
@@ -185,11 +185,11 @@
         .amount-in-words {
             font-style: italic;
             margin-top: 0.5mm;
-            font-size: 9px;
+            font-size: 12px;
         }
 
         .terms {
-            font-size: 8px;
+            font-size: 12px;
             margin-top: 2mm;
             line-height: 1.2;
         }
@@ -203,7 +203,7 @@
         .signature-box {
             text-align: center;
             width: 40%;
-            font-size: 9px;
+            font-size: 12px;
         }
 
         .signature-line {
