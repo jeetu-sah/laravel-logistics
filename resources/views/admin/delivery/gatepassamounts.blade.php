@@ -34,8 +34,8 @@
                                 <tr>
                                     <th>Bilti Number</th>
                                     <th>Delivery Number</th>
-                                    <th>Reciver mobile</th>
-                                    <th>Recived by</th>
+                                    <th>Carrier mobile</th>
+                                    <th>Carrier by</th>
                                     <th>Total Amount</th>
                                     <th>Received Amount</th>
                                     <th>Pending Amount</th>

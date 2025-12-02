@@ -6,330 +6,326 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vikash Logistic - Gatepass</title>
-    <style>
-        /* A4 Print Styles */
-        @page {
-            size: A4;
-            margin: 0;
-        }
+<style>
+    /* A4 Print Styles */
+    @page {
+        size: A4;
+        margin: 0;
+    }
 
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .tm_container {
-                width: 210mm;
-                height: 297mm;
-                padding: 5mm;
-                margin: 0 auto;
-                box-shadow: none;
-            }
-
-            .tm_hide_print {
-                display: none !important;
-            }
-
-            .copy-separator {
-                display: block !important;
-            }
-        }
-
-        /* Compact Styling */
+    @media print {
         body {
-            font-family: 'Inter', Arial, sans-serif;
-            background: #f8f9fa;
             margin: 0;
-            padding: 10px;
-            font-size: 12px;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
         .tm_container {
-            max-width: 210mm;
-            margin: 0 auto;
-            background: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 8mm 10mm;
+            margin: 0 auto !important;
+            box-shadow: none;
         }
 
-        .gatepass-copy {
-            padding: 10px;
-            border: 2px solid #2c5aa0;
-            margin-bottom: 5mm;
-            page-break-inside: avoid;
-            position: relative;
-        }
-
-        .copy-2 {
-            border-color: #dc3545;
-        }
-
-        .copy-label {
-            position: absolute;
-            top: -8px;
-            right: 10px;
-            background: #2c5aa0;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 3px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .copy-2 .copy-label {
-            background: #dc3545;
-        }
-
-        .header-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid #2c5aa0;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo {
-            width: 40px;
-            height: 40px;
-        }
-
-        .company-info {
-            text-align: left;
-        }
-
-        .company-name {
-            font-size: 16px;
-            font-weight: bold;
-            color: #2c5aa0;
-            margin: 0;
-            line-height: 1.2;
-        }
-
-        .company-details {
-            font-size: 8px;
-            color: #555;
-            line-height: 1.1;
-        }
-
-        .receipt-section {
-            text-align: right;
-        }
-
-        .receipt-number {
-            background: #2c5aa0;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 3px;
-            font-weight: bold;
-            font-size: 11px;
-            display: inline-block;
-        }
-
-        .compact-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 5px;
-            margin: 8px 0;
-            font-size: 10px;
-        }
-
-        .grid-item {
-            background: #f8f9fa;
-            padding: 4px;
-            border-radius: 3px;
-            border-left: 2px solid #2c5aa0;
-        }
-
-        .grid-label {
-            font-weight: bold;
-            color: #555;
-            display: block;
-            font-size: 9px;
-        }
-
-        .grid-value {
-            color: #333;
-            font-weight: bold;
-        }
-
-        .section-title {
-            background: #2c5aa0;
-            color: white;
-            padding: 4px 6px;
-            font-weight: bold;
-            margin: 8px 0 4px 0;
-            border-radius: 2px;
-            font-size: 11px;
-        }
-
-        .details-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 3px;
-            font-size: 10px;
-        }
-
-        .detail-label {
-            font-weight: bold;
-            color: #555;
-            min-width: 100px;
-        }
-
-        .detail-value {
-            color: #333;
-            flex: 1;
-        }
-
-        .payment-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 10px;
-            margin: 6px 0;
-        }
-
-        .payment-table th {
-            background: #2c5aa0;
-            color: white;
-            padding: 4px 6px;
-            text-align: left;
-            font-weight: bold;
-        }
-
-        .payment-table td {
-            padding: 4px 6px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .amount-total {
-            font-weight: bold;
-            border-top: 2px solid #2c5aa0 !important;
-        }
-
-        .amount-received {
-            color: #28a745;
-            font-weight: bold;
-        }
-
-        .amount-pending {
-            color: #dc3545;
-            font-weight: bold;
-        }
-
-        .bank-section {
-            background: #e9f7fe;
-            padding: 6px;
-            border-radius: 3px;
-            margin: 6px 0;
-            border-left: 3px solid #2c5aa0;
-            font-size: 9px;
-        }
-
-        .bank-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .qr-code img {
-            width: 50px;
-            height: 50px;
-        }
-
-        .signatures {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            font-size: 9px;
-        }
-
-        .signature-box {
-            text-align: center;
-            width: 30%;
-        }
-
-        .signature-line {
-            border-top: 1px solid #333;
-            margin-top: 25px;
-            padding-top: 2px;
-        }
-
-        .disclaimer {
-            font-size: 8px;
-            color: #666;
-            margin-top: 8px;
-            line-height: 1.2;
-            border-top: 1px solid #ddd;
-            padding-top: 4px;
-        }
-
-        .print-controls {
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .print-btn {
-            background: #2c5aa0;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 14px;
-            margin: 0 5px;
-        }
-
-        .print-btn:hover {
-            background: #1e3d6f;
-        }
-
-        .back-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 14px;
-            margin: 0 5px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .back-btn:hover {
-            background: #545b62;
+        .tm_hide_print {
+            display: none !important;
         }
 
         .copy-separator {
-            text-align: center;
-            color: #666;
-            font-size: 10px;
-            margin: 3mm 0;
-            display: none;
+            display: block !important;
         }
+    }
 
-        /* Two copies layout */
-        @media screen {
-            .gatepass-copy {
-                height: 160mm;
-            }
-        }
+    /* General Layout */
+    body {
+        font-family: 'Inter', Arial, sans-serif;
+        background: #f5f6f8;
+        margin: 0;
+        padding: 12px;
+        font-size: 15px;
+    }
 
-        @media print {
-            .gatepass-copy {
-                height: 160mm;
-            }
-        }
-    </style>
+    .tm_container {
+        max-width: 210mm;
+        margin: 10px auto;
+        background: white;
+        box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        padding: 12px 15px;
+        border-radius: 4px;
+    }
+
+    .gatepass-copy {
+        padding: 14px 16px;
+        border: 2px solid #2c5aa0;
+        margin-bottom: 10mm;
+        border-radius: 4px;
+        page-break-inside: avoid;
+        position: relative;
+    }
+
+    .copy-2 {
+        border-color: #dc3545;
+    }
+
+    /* Copy Label */
+    .copy-label {
+        position: absolute;
+        top: -10px;
+        right: 18px;
+        background: #2c5aa0;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 3px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .copy-2 .copy-label {
+        background: #dc3545;
+    }
+
+    /* HEADER */
+    .header-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 6px;
+        margin-bottom: 8px;
+        border-bottom: 2px solid #2c5aa0;
+    }
+
+    .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .logo {
+        width: 45px;
+        height: 45px;
+    }
+
+    .company-info {
+        line-height: 1.25;
+    }
+
+    .company-name {
+        font-size: 17px;
+        font-weight: 700;
+        color: #2c5aa0;
+        margin: 0;
+    }
+
+    .company-details {
+        font-size: 13px;
+        color: #666;
+    }
+
+    .receipt-section {
+        text-align: right;
+    }
+
+    .receipt-number {
+        background: #2c5aa0;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 3px;
+        font-weight: 600;
+        display: inline-block;
+        font-size: 14px;
+    }
+
+    /* GRID SUMMARY */
+    .compact-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin: 12px 0;
+    }
+
+    .grid-item {
+        background: #f5f7fc;
+        padding: 6px;
+        border-radius: 3px;
+        border-left: 3px solid #2c5aa0;
+    }
+
+    .grid-label {
+        font-weight: 600;
+        color: #444;
+        display: block;
+        font-size: 13px;
+        margin-bottom: 2px;
+    }
+
+    .grid-value {
+        font-weight: 600;
+        color: #222;
+        font-size: 14px;
+    }
+
+    /* Section Title */
+    .section-title {
+        background: #2c5aa0;
+        color: white;
+        padding: 5px 8px;
+        font-weight: 600;
+        border-radius: 3px;
+        margin: 10px 0 6px 0;
+        font-size: 14px;
+    }
+
+    /* Detail Rows */
+    .details-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #555;
+        min-width: 125px;
+    }
+
+    .detail-value {
+        font-weight: 600;
+        color: #222;
+        flex: 1;
+    }
+
+    /* Payment Table */
+    .payment-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+        font-size: 14px;
+    }
+
+    .payment-table th {
+        background: #2c5aa0;
+        color: white;
+        padding: 6px 8px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .payment-table td {
+        padding: 6px 8px;
+        border-bottom: 1px solid #e3e6ea;
+        font-weight: 500;
+    }
+
+    .amount-total {
+        font-weight: 700 !important;
+        border-top: 2px solid #2c5aa0 !important;
+    }
+
+    .amount-received {
+        color: #28a745;
+        font-weight: 700;
+    }
+
+    .amount-pending {
+        color: #dc3545;
+        font-weight: 700;
+    }
+
+    /* BANK SECTION */
+    .bank-section {
+        background: #eaf4ff;
+        padding: 6px 10px;
+        border-radius: 3px;
+        border-left: 4px solid #2c5aa0;
+        margin: 10px 0;
+    }
+
+    .bank-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .qr-code img {
+        width: 110px;
+        height: 110px;
+    }
+
+    /* SIGNATURES */
+    .signatures {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .signature-box {
+        text-align: center;
+        width: 32%;
+    }
+
+    .signature-line {
+        border-top: 1px solid #333;
+        margin-top: 30px;
+        padding-top: 3px;
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+        font-size: 13px;
+        color: #555;
+        margin-top: 12px;
+        line-height: 1.4;
+        border-top: 1px solid #ddd;
+        padding-top: 6px;
+    }
+
+    /* Buttons */
+    .print-controls {
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .print-btn, .back-btn {
+        background: #2c5aa0;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 0 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: 600;
+    }
+
+    .back-btn {
+        background: #6c757d;
+    }
+
+    .print-btn:hover {
+        background: #1b3f72;
+    }
+
+    .back-btn:hover {
+        background: #565d64;
+    }
+
+    .copy-separator {
+        text-align: center;
+        margin: 4mm 0;
+        font-size: 14px;
+        color: #999;
+        display: none;
+    }
+
+</style>
+
 </head>
 
 <body>
@@ -342,7 +338,6 @@
         <!-- First Copy -->
         <div class="gatepass-copy">
             <div class="copy-label">ORIGINAL COPY</div>
-
             <!-- Header with Logo -->
             <div class="header-section">
                 <div class="logo-section">
@@ -385,17 +380,51 @@
 
             <!-- Delivery Details -->
             <div class="section-title">Delivery Information</div>
-            <div class="details-row">
-                <span class="detail-label">Received By:</span>
-                <span class="detail-value">{{ ucfirst($deliveryReceipt->recived_by) }}</span>
-            </div>
-            <div class="details-row">
-                <span class="detail-label">Mobile:</span>
-                <span class="detail-value">{{ $deliveryReceipt->reciver_mobile }}</span>
-            </div>
-            <div class="details-row">
-                <span class="detail-label">LR Number:</span>
-                <span class="detail-value">{{ $deliveryReceipt?->booking?->bilti_number ?? '--' }}</span>
+            <div style="display: flex; justify-content: space-between; gap: 10px;">
+                <!-- LEFT SIDE (YOUR ORIGINAL LINES—UNCHANGED) -->
+                <div style="width: 50%;">
+                    <div class="details-row">
+                        <span class="detail-label">Carrier By:</span>
+                        <span class="detail-value">{{ ucfirst($deliveryReceipt->recived_by) }}</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">Carrier Mobile:</span>
+                        <span class="detail-value">{{ $deliveryReceipt->reciver_mobile }}</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">LR Number:</span>
+                        <span class="detail-value">{{ $deliveryReceipt?->booking?->bilti_number ?? '--' }}</span>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE (NEW CONSIGNOR & CONSIGNEE INFO) -->
+                <div style="width: 50%;">
+                    <div class="details-row">
+                        <span class="detail-label">Consignor:</span>
+                        <span class="detail-value">
+                            {{ $deliveryReceipt?->booking?->consignor_name ?? '--' }}
+                        </span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">Consignee:</span>
+                        <span class="detail-value">
+                            {{ $deliveryReceipt?->booking?->consignee_name ?? '--' }}
+                        </span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">Consignor Mobile:</span>
+                        <span class="detail-value">
+                            {{ $deliveryReceipt?->booking?->consignor_phone_number ?? '--' }}
+                        </span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">Consignee Mobile:</span>
+                        <span class="detail-value">
+                            {{ $deliveryReceipt?->booking?->consignee_phone_number ?? '--' }}
+                        </span>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Goods Information -->
@@ -538,17 +567,51 @@
 
             <!-- Delivery Details -->
             <div class="section-title">Delivery Information</div>
-            <div class="details-row">
-                <span class="detail-label">Received By:</span>
-                <span class="detail-value">{{ ucfirst($deliveryReceipt->recived_by) }}</span>
-            </div>
-            <div class="details-row">
-                <span class="detail-label">Mobile:</span>
-                <span class="detail-value">{{ $deliveryReceipt->reciver_mobile }}</span>
-            </div>
-            <div class="details-row">
-                <span class="detail-label">LR Number:</span>
-                <span class="detail-value">{{ $deliveryReceipt?->booking?->bilti_number ?? '--' }}</span>
+               <div style="display: flex; justify-content: space-between; gap: 10px;">
+                <!-- LEFT SIDE (YOUR ORIGINAL LINES—UNCHANGED) -->
+                <div style="width: 50%;">
+                    <div class="details-row">
+                        <span class="detail-label">Carrier By:</span>
+                        <span class="detail-value">{{ ucfirst($deliveryReceipt->recived_by) }}</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">Carrier Mobile:</span>
+                        <span class="detail-value">{{ $deliveryReceipt->reciver_mobile }}</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">LR Number:</span>
+                        <span class="detail-value">{{ $deliveryReceipt?->booking?->bilti_number ?? '--' }}</span>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE (NEW CONSIGNOR & CONSIGNEE INFO) -->
+                <div style="width: 50%;">
+                    <div class="details-row">
+                        <span class="detail-label">Consignor:</span>
+                        <span class="detail-value">
+                            {{ $deliveryReceipt?->booking?->consignor_name ?? '--' }}
+                        </span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">Consignee:</span>
+                        <span class="detail-value">
+                            {{ $deliveryReceipt?->booking?->consignee_name ?? '--' }}
+                        </span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">Consignor Mobile:</span>
+                        <span class="detail-value">
+                            {{ $deliveryReceipt?->booking?->consignor_mobile ?? '--' }}
+                        </span>
+                    </div>
+                    <div class="details-row">
+                        <span class="detail-label">Consignee Mobile:</span>
+                        <span class="detail-value">
+                            {{ $deliveryReceipt?->booking?->consignee_mobile ?? '--' }}
+                        </span>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Goods Information -->
