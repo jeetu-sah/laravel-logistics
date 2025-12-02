@@ -270,6 +270,9 @@
     const transhipmentThreeElement = document.getElementById("transhipment_three");
     //selected value of transhipment. 
     const selectedConsigneeId = "{{$booking->consignee_branch_id}}";
+    const selectedTranshipmentOneValue = "{{$transhipmentOne?->id ?? ''}}";
+    const selectedTranshipmentTwoValue = "{{$transhipmentTwo?->id ?? ''}}";
+    const selectedTranshipmentThreeValue = "{{$transhipmentThree?->id ?? ''}}";
 
     async function printToSelectBranch(selectElementName, oldValue, selectedElementId, selectedValue) {
         const filteredBranches = branches.filter(item => !selectedBranches.includes(item.id));
@@ -628,7 +631,12 @@
 
         //print to branch dropdown. 
         printToSelectBranch(consigneeBranch, oldConsigneeBranchId, 'consignee_branch_id', selectedConsigneeId);
-
+         //print transhipment one dropdown value
+        printToSelectBranch(transhipmentOneElement, oldTranshipmentOne, 'transhipmen_one', selectedTranshipmentOneValue);
+        //print transhipment two dropdown value
+        printToSelectBranch(transhipmentTwoElement, oldTranshipmentTwo, 'transhipmen_two', selectedTranshipmentTwoValue);
+        //print transhipment three dropdown value
+        printToSelectBranch(transhipmentThreeElement, oldTranshipmentThree, 'transhipment_three', selectedTranshipmentThreeValue);
 
 
         //select consignee_branch_id
