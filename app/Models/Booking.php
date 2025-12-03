@@ -102,7 +102,8 @@ class Booking extends Model
         'booking_status',
         'offline_booking_date',
         'receiver_name',
-        'receiver_mobile_number'
+        'receiver_mobile_number',
+        'received_at'
     ];
 
     // If you want to hide attributes from arrays
@@ -332,6 +333,16 @@ class Booking extends Model
         return LoadingChallan::whereHas('bookings', function ($query) {
             $query->where('bookings.id', $this->id);
         })->where('from_transhipment', $branchId)->first();
+    }
+
+    public function loadingChallans()
+    {
+        return $this->belongsToMany(
+            LoadingChallan::class,
+            'loading_challan_booking',   // Pivot table
+            'booking_id',                // Foreign key for this model
+            'loading_challans_id'        // Foreign key for related model
+        );
     }
 
     //outgoing_booking_commisions

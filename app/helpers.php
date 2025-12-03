@@ -59,13 +59,13 @@ function numberToWords($number)
 if (!function_exists('formatDate')) {
     function formatDate($date, $format = 'd-m-Y')
     {
-        return \Carbon\Carbon::parse($date)->format('d/m/Y h:i A');
+        return \Carbon\Carbon::parse($date)->timezone('Asia/Kolkata')->format('d/m/Y h:i A');
     }
 }
 
 function formatOnlyDate($date)
 {
-    return \Carbon\Carbon::parse($date)->format('d/m/Y');
+    return \Carbon\Carbon::parse($date)->timezone('Asia/Kolkata')->format('d/m/Y');
 }
 
 
@@ -90,5 +90,15 @@ if (!function_exists('indian_number_format')) {
         }
 
         return $num . $decimal;
+    }
+}
+
+if (!function_exists('format_price')) {
+    function format_price($price = 0, $symbol = '₹')
+    {
+        // Use your existing formatter
+        $formatted = indian_number_format($price);
+
+        return $symbol . $formatted;
     }
 }

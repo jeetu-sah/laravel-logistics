@@ -32,16 +32,18 @@
                         <table class="display" id="booking-list">
                             <thead>
                                 <tr>
-                                    <th>Bilti Number</th>
-                                    <th>Offline Bitli</th>
-                                    <th>Consinger Branch</th>
-                                    <th>Consinger Name</th>
-                                    <th>Consignee Branch</th>
-                                    <th>Consignee Name</th>
-                                    <th>Payment Mode</th>
-                                    <th>Next Delivery Location</th>
-                                    <th>Creation Date</th>
-                                    <th>Action</th>
+                                    <th>{{ __('Bilti Number') }}</th>
+                                    <th>{{ __('Offline Bitli') }}</th>
+                                    <th>{{ __('Consinger Branch') }}</th>
+                                    <th>{{ __('Consinger Name') }}</th>
+                                    <th>{{ __('Consignee Branch') }}</th>
+                                    <th>{{ __('Consignee Name') }}</th>
+                                    <th>{{ __('Article') }}</th>
+                                    <th>{{ __('Amount') }}</th>
+                                    <th>{{ __('Payment Mode') }}</th>
+                                    <th>{{ __('Next Delivery Location') }}</th>
+                                    <th>{{ __('Creation Date') }}</th>
+                                    <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -95,6 +97,12 @@
                 },
                 {
                     data: 'consignee_name'
+                },
+                {
+                    data: 'no_of_artical'
+                },
+                {
+                    data: 'grand_total_amount',
                 },
               
                 {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Branch;
 
 class DeliveryReceipt extends Model
 {
@@ -56,5 +57,11 @@ class DeliveryReceipt extends Model
         $totalReceived = $this->payments->sum('received_amount');
         $receivedAmount =  max(0, (float) $totalReceived);
         return number_format($receivedAmount, 2) ?? '0.0';
+    }
+
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 }

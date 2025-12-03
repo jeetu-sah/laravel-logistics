@@ -353,9 +353,12 @@ class DeliveryController extends Controller
             ]);
 
             $booking = $deliveryReceipt->booking;
-            $booking->receiver_name = $request->receiver_name;
-            $booking->receiver_mobile_number = $request->receiver_mobile;
-            $booking->save();
+            if (empty($booking->receiver_name)) {
+                $booking->receiver_name = $request->receiver_name;
+                $booking->receiver_mobile_number = $request->receiver_mobile;
+                $booking->received_at = now();
+                $booking->save();
+            }
 
             DB::commit();
             return redirect("admin/delivery/gatepass-amount/detail/$deliveryReceptId")->with([
@@ -366,7 +369,10 @@ class DeliveryController extends Controller
             // echo $e->getMessage();
             return redirect()->back()->with([
                 "alertMessage" => true,
-                "alert" => ['message' => 'Something went wrong, please try again', 'type' => 'danger']
+                "alert" => [
+                    'message' => 'Something went wrong, please try again' . $e->getMessage(),
+                    'type' => 'danger'
+                ]
             ])->withInput();
         }
     }

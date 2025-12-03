@@ -76,7 +76,7 @@
         }
 
         .company-address {
-            font-size: 12px;
+            font-size: 14px;
             line-height: 1.2;
         }
 
@@ -87,7 +87,7 @@
         }
 
         .invoice-number {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
         }
 
@@ -99,7 +99,7 @@
             margin-bottom: 3mm;
             text-align: center;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         /* Table styles */
@@ -257,7 +257,9 @@
                     <img src="{{ asset('site/img/logo-log.png') }}" alt="Logo" width="60">
                     <div class="company-address" style="font-size: 8px;line-height: 1.2; margin-top: -15px;">
                         <strong>Head office:</strong> 256 Damodar nagar Kanpur nagar -208027 <br />
-                        <strong>Contact:</strong> 9005355103 <br />
+                        <strong>GSTIN:</strong> 09AHQPV3722R2Z7<br />
+                        <strong>REG.:</strong>UDYAM-UP-43-0045811<br />
+                        <strong>Contact:</strong> +91-8840354461 <br />
                     </div>
                 </div>
                 <div class="invoice-details">
@@ -271,11 +273,8 @@
                         @endif
                     </div>
                     <div class="invoice-number">LR No: {{ $booking->bilti_number }}</div>
-                    <div>GSTIN: 09AHQPV3722R2Z7</div>
-                    <div>Reg. UDYAM-UP-43-0045811</div>
                 </div>
             </div>
-
             <div class="route-info">
                 {{ $consignorCity }} TO: {{ $consigneeCity }} ({{ $booking->created_at }})
             </div>
@@ -412,7 +411,9 @@
                     <img src="{{ asset('site/img/logo-log.png') }}" alt="Logo" width="60">
                     <div class="company-address" style="font-size: 8px;line-height: 1.2; margin-top: -15px;">
                         <strong>Head office:</strong> 256 Damodar nagar Kanpur nagar -208027 <br />
-                        <strong>Contact:</strong> 9005355103 <br />
+                        <strong>GSTIN:</strong> 09AHQPV3722R2Z7<br />
+                        <strong>REG.:</strong>UDYAM-UP-43-0045811<br />
+                        <strong>Contact:</strong> +91-8840354461 <br />
                     </div>
                 </div>
                 <div class="invoice-details">
@@ -426,8 +427,6 @@
                         @endif
                     </div>
                     <div class="invoice-number">LR No: {{ $booking->bilti_number }}</div>
-                    <div>GSTIN: 09AHQPV3722R2Z7</div>
-                    <div>Reg. UDYAM-UP-43-0045811</div>
                     <div style="margin-top: 2mm; font-weight: bold; color: red; font-size: 10px;">DUPLICATE COPY</div>
                 </div>
             </div>

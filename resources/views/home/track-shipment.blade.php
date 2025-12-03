@@ -2,106 +2,143 @@
 
 @section('main_content')
 <div class="container my-5">
-    <div class="card shadow border-0 rounded-4 p-5 bg-light">
+    <div class="card shadow border-0 rounded-4 p-5 bg-white">
         <div class="card-body">
-            <h4 class="fw-bold text-dark mb-4 text-center">🚚 Shipment Tracking</h4>
+            <a href="{{ url('/') }}" class="btn btn-outline-primary mb-4">
+                <i class="fa fa-arrow-left me-1"></i> {{__('Back')}}
+            </a>
 
-            <!-- Shipment Info -->
-            <div class="mb-5 px-3 py-2 bg-white rounded-3 shadow-sm border">
-                <p><strong>Bilti Number:</strong> <span class="text-dark">{{ $booking->bilti_number }}</span></p>
-                <p><strong>Customer:</strong> {{ $booking->consignee_name }}</p>
-                <p>
-                    <strong>Shipping By:</strong> Vikas Logistic
-                    <i class="fa fa-phone text-success ms-2"></i>
-                    <a href="tel:+918840354461" class="fw-semibold text-decoration-none">+91-8840354461</a>
-                </p>
+            <!-- Header -->
+            <h3 class="fw-bold text-dark mb-4 text-center">
+                🚚 {{__('Shipment Tracking')}}
+            </h3>
+
+            <!-- Booking Info -->
+            <div class="mb-5 p-4 bg-light rounded-4 border shadow-sm">
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <p class="mb-1 text-secondary">{{ __('Bilti Number')}}</p>
+                        <h6 class="fw-bold">{{ $booking->bilti_number }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <p class="mb-1 text-secondary">Customer</p>
+                        <h6 class="fw-bold">{{ $booking->consignee_name }}</h6>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <p class="mb-1 text-secondary">Shipping By</p>
+                        <h6 class="fw-bold">
+                            Vikas Logistic
+                            <a href="tel:+918840354461"
+                                class="text-decoration-none ms-2 text-primary fw-semibold">
+                                <i class="fa fa-phone text-success me-1"></i> +91 88403 54461
+                            </a>
+                        </h6>
+                    </div>
+                </div>
             </div>
 
             <!-- Vertical Timeline -->
-            <div class="timeline">
+            <div class="timeline position-relative">
+
                 @foreach($steps as $step)
                 @php
-                $statusClass = 'pending';
-                $icon = 'fa-clock';
-
-                if($step['status'] === 'completed') {
-                $statusClass = 'completed';
-                $icon = 'fa-check';
-                } elseif($step['status'] === 'active') {
-                $statusClass = 'active';
-                $icon = 'fa-spinner fa-spin';
-                }
+                $statusClass = match($step['status']) {
+                'completed' => 'completed',
+                'active' => 'active',
+                default => 'pending'
+                };
+                $icon = match($step['status']) {
+                'completed' => 'fa-check',
+                'active' => 'fa-spinner fa-spin',
+                default => 'fa-clock'
+                };
                 @endphp
 
                 <div class="timeline-step {{ $statusClass }}">
                     <div class="circle">
                         <i class="fa {{ $icon }}"></i>
                     </div>
+
                     <div class="content">
-                        <h6>{{ $step['name'] }}
+                        <h6 class="fw-bold mb-1">
+                            {{ $step['name'] }}
                             @if(!empty($step['branchName']))
-                            ({{ $step['branchName'] }})
+                            <span class="text-muted">({{ $step['branchName'] }})</span>
                             @endif
                         </h6>
-                        <p>
+                        <span class="badge 
+                            @if($step['status'] === 'completed') bg-success 
+                            @elseif($step['status'] === 'pending') bg-warning text-dark
+                            @else bg-secondary 
+                            @endif
+                            mb-2 d-inline-block">
+                            {{ ucfirst($step['status']) }}
+                        </span>
+                        @if($step['status'] === 'completed')
+                        <div class="small text-secondary">
                             @if(!empty($step['dispatched_at']))
-                            <strong>Dispatched:</strong> {{ $step['dispatched_at'] }}<br>
+                            <div><strong>Dispatched:</strong> {{ $step['dispatched_at'] }}</div>
                             @endif
                             @if(!empty($step['received_at']))
-                            <strong>Received:</strong> {{ $step['received_at'] }}
+                            <div><strong>Received:</strong> {{ $step['received_at'] }}</div>
                             @endif
-                        </p>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 @endforeach
+
             </div>
         </div>
     </div>
 </div>
 
-<!-- Timeline CSS -->
 <style>
+    /* Timeline Line */
     .timeline {
-        position: relative;
-        margin: 30px 0;
-        padding-left: 50px;
-        border-left: 3px solid #dee2e6;
+        border-left: 3px dashed #d0d0d0;
+        margin-left: 30px;
+        padding-left: 30px;
     }
 
+    /* Step */
     .timeline-step {
         position: relative;
-        margin-bottom: 40px;
-        transition: all 0.3s ease-in-out;
+        margin-bottom: 45px;
     }
 
     .timeline-step:last-child {
         margin-bottom: 0;
     }
 
+    /* Circle */
     .timeline-step .circle {
         position: absolute;
-        left: -33px;
+        left: -52px;
         top: 0;
-        width: 46px;
-        height: 46px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
         background: #f8f9fa;
-        border: 3px solid #ced4da;
+        border: 3px solid #cfcfcf;
         display: flex;
-        justify-content: center;
         align-items: center;
-        font-size: 18px;
-        color: #6c757d;
-        transition: all 0.3s ease-in-out;
+        justify-content: center;
+        font-size: 16px;
     }
 
+    /* Completed */
     .timeline-step.completed .circle {
         background: #28a745;
         border-color: #28a745;
         color: #fff;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
     }
 
+    .timeline-step.completed .content h6 {
+        color: #28a745;
+    }
+
+    /* Active */
     .timeline-step.active .circle {
         background: #ffc107;
         border-color: #ffc107;
@@ -109,50 +146,28 @@
         animation: pulse 1.5s infinite;
     }
 
-    .timeline-step .content {
-        padding-left: 20px;
-        background: #fff;
-        border-radius: 8px;
-        padding: 12px 20px;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease-in-out;
-        position: relative;
-        /* ensure it stays in flow */
-        left: 30px;
-        /* keep content aligned */
-    }
-
-    .timeline-step:hover .content {
-        /* Remove translateX to prevent overlap */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        /* subtle deeper shadow on hover */
-    }
-
-    .timeline-step .content h6 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 600;
-        color: #343a40;
-    }
-
-    .timeline-step .content p {
-        margin: 5px 0 0;
-        font-size: 14px;
-        color: #495057;
-    }
-
-    .timeline-step.completed .content h6 {
-        color: #28a745;
-    }
-
     .timeline-step.active .content h6 {
         color: #ffc107;
     }
 
-    /* Pulse animation */
+    /* Content Card */
+    .timeline-step .content {
+        background: #ffffff;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        transition: 0.3s;
+    }
+
+    .timeline-step:hover .content {
+        transform: translateX(5px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Pulse Animation */
     @keyframes pulse {
         0% {
-            box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.6);
+            box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.5);
         }
 
         70% {
@@ -162,12 +177,6 @@
         100% {
             box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
         }
-    }
-
-    /* Add hover effect */
-    .timeline-step:hover .content {
-        transform: translateX(5px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
     }
 </style>
 @endsection

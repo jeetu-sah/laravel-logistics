@@ -63,10 +63,13 @@ class BookingController extends Controller
             foreach ($bookings as $index => $booking) {
                 $row = [];
                 $row['bilti_number'] = '<a href="' . route('bookings.bilti', ['id' => $booking->id]) . '" target="_blank">' . $booking->bilti_number . '</a>';
-                $row['offline_bilti'] = ($booking->manual_bilty_number ?? '--') . "/" . formatOnlyDate($booking->offline_booking_date);
+                $row['offline_bilti'] = ($booking->manual_bilty_number ?? '--') . "/" . ($booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : '--');
 
                 // Consignor and consignee information
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name ?? 'N/A';
+                $row['booking'] = $booking;
+                $row['no_of_artical'] = $booking->no_of_artical ?? 0;
+                $row['grand_total_amount'] = format_price($booking->grand_total_amount);
                 $row['consignor_name'] = $booking->consignor_name ?? 'N/A';
                 $row['address'] = $booking->consignor_address ?? 'N/A';
                 $row['gst_number'] = $booking->gst_number ?? 'N/A';
@@ -434,7 +437,11 @@ class BookingController extends Controller
                 ->withInput();
         }
 
-        $nextBiltiNumber = sHelper::generateNextBiltiNumber($request->booking_status);
+        if ($request->bilti_number) {
+            $nextBiltiNumber = $request->bilti_number;
+        } else {
+            $nextBiltiNumber = sHelper::generateNextBiltiNumber($request->booking_status);
+        }
 
         $onlyTranshipment = [
             'consignor_branch_id' => $request->consignor_branch_id,

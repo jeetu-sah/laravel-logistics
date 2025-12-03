@@ -218,6 +218,8 @@
                                     <th>{{ __('Consignee Name') }}</th>
                                     <th>{{ __('Article') }}</th>
                                     <th>{{ __('Payment Mode') }}</th>
+                                    <th>{{ __('Driver Details') }}</th>
+                                    <th>{{ __('Challan No.') }}</th>
                                     <th>{{ __('Transhipment') }}</th>
                                     <th>{{ __('Amount') }}</th>
                                     <th>{{ __('Creation Date') }}</th>
@@ -338,7 +340,19 @@
 
                     },
                     {
-                        data: 'transhipment'
+                        data: 'driver_name_details',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'challan_number',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'transhipment',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'grand_total_amount'

@@ -26,7 +26,7 @@ class IncomingBookingController extends Controller
         $start = $request->input('start', 0);
         $userBranchId = Auth::user()->branch_user_id;
 
-        $bookingQuery = Booking::with(['consigneeBranch', 'client', 'transhipments', 'consignorBranch', 'getAlltranshipments'])
+        $bookingQuery = Booking::with(['consigneeBranch', 'client', 'transhipments', 'consignorBranch', 'getAlltranshipments', 'loadingChallans'])
             ->whereIn('status', [Booking::BOOKED, Booking::DISPATCH])
             ->where('consignee_branch_id', $userBranchId)
             ->whereHas('transhipments', function ($query) use ($userBranchId) {
@@ -46,10 +46,20 @@ class IncomingBookingController extends Controller
         $totalRecord = $bookingQuery->count();
 
         $bookings = $bookingQuery->skip($start)->take($limit)->orderBy('created_at', 'desc')->get();
-
         $rows = [];
         if ($bookings->count() > 0) {
             foreach ($bookings as $index => $booking) {
+                //find loading challan details
+                $loadingChallans = $booking->loadingChallans;
+                $driverNameDetails = '--';
+                $challanNumber = '--';
+                if ($loadingChallans->count() > 0) {
+                    $driverDetails = $loadingChallans->where('from_transhipment', $booking->consignorBranch->id)->first();
+                    if ($driverDetails) {
+                        $challanNumber = $driverDetails->challan_number;
+                        $driverNameDetails = $driverDetails->driverName . '/<br />' . $driverDetails->driverMobile .'/<br />'.$driverDetails->busNumber;
+                    }
+                }
                 //transhipment
                 $transhipments = '--';
                 if ($booking->getAlltranshipments->count() > 2) {
@@ -68,6 +78,7 @@ class IncomingBookingController extends Controller
 
                 // Bilti and offline bilti links
                 $row['bilti_number'] = '<a href="' . url("admin/bookings/print-bilti/$booking->id") . '" target="_blank">' . $booking->bilti_number . '</a>';
+                $row['challan_number'] = $challanNumber;
                 $row['offline_bilti_number'] = $booking->manual_bilty_number;
                 $row['manual_bilty_number'] = $booking->manual_bilty_number;
                 $row['offline_booking_date'] = $booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : null;
@@ -76,6 +87,7 @@ class IncomingBookingController extends Controller
                 $row['consignee_branch'] = $booking?->consigneeBranch?->branch_name;
                 $row['consignor_name'] = $booking?->consignor_name;
                 $row['grand_total_amount'] = "&#8377;" . $booking?->grand_total_amount;
+                $row['driver_name_details'] = $driverNameDetails;
                 $row['consignee_name'] = $booking?->consignee_name;
                 $row['booking_type'] = '<span class="badge badge-danger">' . $booking->booking_type_name . '</span>' ?? '--';
                 $row['no_of_artical'] = '<span class="badge badge-primary">' . $booking->no_of_artical . '</span>' ?? '--';

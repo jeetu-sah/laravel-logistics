@@ -43,15 +43,18 @@
                         <table class="display" id="incoming-booking-list">
                             <thead>
                                 <tr>
-                                    <th>Bilti No.</th>
-                                    <th>Offline Bilti No / Date.</th>
-                                    <th>Consignor Name</th>
-                                    <th>Consignee Name</th>
-                                    <th>Article</th>
-                                    <th>Payment Mode</th>
-                                    <th>Transhipment</th>
-                                    <th>Amount</th>
-                                    <th>Creation Date</th>
+                                    <th>{{ __('Bilti No.') }}</th>
+                                    <th>{{ __('Offline Bilti No / Date.') }}</th>
+                                    <th>{{ __('Consignor Name') }}</th>
+                                    <th>{{ __('Consignee Name') }}</th>
+                                    <th>{{ __('Article') }}</th>
+                                    <th>{{ __('Payment Mode') }}</th>
+                                    <th>{{ __('Driver Details') }}</th>
+                                    <th>{{ __('Challan No.') }}</th>
+                                    <th>{{ __('Transhipment') }}</th>
+                                    <th>{{ __('Amount') }}</th>
+                                    <th>{{ __('Creation Date') }}</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,12 +113,23 @@
 
                 },
                 {
-                    data: 'transhipment'
+                    data: 'driver_name_details',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'challan_number',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'transhipment',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'grand_total_amount'
                 },
-
                 {
                     data: 'created_at'
                 }
