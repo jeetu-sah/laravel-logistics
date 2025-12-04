@@ -27,11 +27,11 @@ class IncomingBookingController extends Controller
         $userBranchId = Auth::user()->branch_user_id;
 
         $bookingQuery = Booking::with(['consigneeBranch', 'client', 'transhipments', 'consignorBranch', 'getAlltranshipments', 'loadingChallans'])
-            ->whereIn('status', [Booking::BOOKED, Booking::DISPATCH])
-            ->where('consignee_branch_id', $userBranchId)
-            ->whereHas('transhipments', function ($query) use ($userBranchId) {
-                $query->where('dispatched_at', NULL)->where('received_at', NULL);
-            });
+            // ->whereIn('status', [Booking::BOOKED, Booking::DISPATCH])
+            ->where('consignee_branch_id', $userBranchId);
+            // ->whereHas('transhipments', function ($query) use ($userBranchId) {
+            //     $query->where('from_transhipment', $userBranchId)->where('dispatched_at', NULL)->where('received_at', NULL);
+            // });
 
         if ($search) {
             $bookingQuery->where(function ($query) use ($search) {

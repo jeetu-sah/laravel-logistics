@@ -296,11 +296,12 @@
                     <td><strong>Invoice No:</strong> {{ $booking?->invoice_number }}</td>
                 </tr>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="1">
                         <strong>Offline Bilty / Date:</strong>
                         {{ $booking->manual_bilty_number ?? '-' }} /
                         {{ $booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : '-' }}
                     </td>
+                    <td><strong>{{ __('Eway Bill no.') }}:</strong> {{ $booking?->eway_bill_number ?? '--' }}</td>
                 </tr>
             </table>
 
@@ -334,10 +335,6 @@
                 <tr>
                     <th>Goods Contained (Declared by Consignor)</th>
                     <td>{{ $booking->cantain }}</td>
-                </tr>
-                <tr>
-                    <th>{{__('Transhipment') }}</th>
-                    <td>{{ $transhipmentStr }}</td>
                 </tr>
                 <tr>
                     <th>Actual Goods Value Declared by Consignor</th>
@@ -452,11 +449,12 @@
                     <td><strong>Invoice No:</strong> {{ $booking->invoice_number }}</td>
                 </tr>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="1">
                         <strong>Offline Bilty / Date:</strong>
                         {{ $booking->manual_bilty_number ?? '-' }} /
                         {{ $booking->offline_booking_date ? formatOnlyDate($booking->offline_booking_date) : '-' }}
                     </td>
+                    <td><strong>{{ __('Eway Bill no.') }}:</strong> {{ $booking?->eway_bill_number ?? '--' }}</td>
                 </tr>
             </table>
 
