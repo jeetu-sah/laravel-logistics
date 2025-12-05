@@ -72,6 +72,7 @@ return new class extends Migration
             $table->string('booking_status', 20)->default('normal-booking');
             $table->string('receiver_name')->nullable();
             $table->integer('receiver_mobile_number')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

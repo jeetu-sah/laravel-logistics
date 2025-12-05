@@ -9,10 +9,11 @@ use App\Models\Transhipment;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'bookings';
 
@@ -37,6 +38,7 @@ class Booking extends Model
 
     // Specify the primary key (if it's not 'id')
     protected $primaryKey = 'id';
+    protected $dates = ['deleted_at'];
 
     // Indicate that the primary key is not an auto-incrementing integer
     public $incrementing = true;
