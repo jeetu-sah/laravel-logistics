@@ -42,8 +42,8 @@
                 <form action="{{ url('/reset-password') }}" method="POST" autocomplete="off">
                     @csrf
 
-                    <input type="" name="token" value="{{ $token }}">
-                    <input type="" name="email" value="{{ $email }}">
+                    <input type="hidden" name="token" value="{{ $token }}">
+                    <input type="hidden" name="email" value="{{ $email }}">
 
                     <div class="input-group mb-3">
                         <input type="text" name="password" class="form-control" placeholder="New password" value="{{ old('password') }}" required>

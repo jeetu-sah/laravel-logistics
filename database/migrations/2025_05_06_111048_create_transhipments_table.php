@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('received_at')->nullable();
             $table->dateTime('dispatched_at')->nullable();
             $table->string('status', 20)->default('pending');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

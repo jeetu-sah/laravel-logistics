@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transhipment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     const PENDING = 'pending';
     const RECEIVED = 'received';
@@ -18,7 +19,7 @@ class Transhipment extends Model
     const TYPE_RECEIVER = 'receiver';
     const TYPE_TRANSHIPMENT = 'transhipment';
 
-
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'booking_id',
         'from_transhipment',
@@ -27,6 +28,7 @@ class Transhipment extends Model
         'received_at',
         'dispatched_at',
         'status',
+        'type',
         'type'
     ];
 

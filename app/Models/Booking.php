@@ -373,6 +373,32 @@ class Booking extends Model
         return 0;
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($booking) {
+
+            // Delete transhipments
+            $booking->transhipments()->delete();
+
+            // Delete loading challans pivot records
+            $booking->loadingChallans()->detach();
+
+            // Delete delivery receipt payments
+            if ($booking->delivery_receipt) {
+                $booking->delivery_receipt->payments()->delete();
+                $booking->delivery_receipt()->delete();
+            }
+
+            // Delete booking → challan entries
+            \App\Models\LoadingChallanBooking::where('booking_id', $booking->id)->delete();
+
+            // Add more if needed (logs, images etc.)
+            // \App\Models\BookingLog::where('booking_id', $booking->id)->delete();
+        });
+    }
+
     // public static function bookingCommisions($booking)
     // {
 

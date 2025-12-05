@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MapClientController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Admin\IncomingBookingController;
+use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\BranchUser\ReviewerController;
 use App\Http\Controllers\BranchUser\SettingController;
@@ -55,20 +56,20 @@ Route::get('debug-lang', function () {
 
 Route::get('lang/{locale}', function ($locale) {
     $availableLocales = ['en', 'hi', 'es', 'fr'];
-    
+
     if (!in_array($locale, $availableLocales)) {
         $locale = config('app.fallback_locale');
     }
 
     // Store in session
     Session::put('locale', $locale);
-    
+
     // Set application locale
     App::setLocale($locale);
-    
+
     // Also set in cookie for persistence
     cookie()->queue(cookie()->forever('locale', $locale));
-    
+
     return redirect()->back()->with('success', __('Language changed to :locale', ['locale' => $locale]));
 })->name('lang.switch');
 
@@ -119,6 +120,12 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/create', [SettingsController::class, 'create']);
             Route::get('/delete/{id}', [SettingsController::class, 'delete']);
             Route::post('/store', [SettingsController::class, 'store']);
+        });
+        //admin/settings
+        Route::prefix('admin-bookings')->group(function () {
+            Route::get('/', [AdminBookingController::class, 'index']);
+            Route::get('/list', [AdminBookingController::class, 'list']);
+            Route::delete('/delete/{id}', [AdminBookingController::class, 'delete']);
         });
 
         // Booking Report

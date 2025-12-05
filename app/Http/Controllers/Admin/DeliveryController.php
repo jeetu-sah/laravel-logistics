@@ -121,7 +121,7 @@ class DeliveryController extends Controller
             foreach ($bookings as $index => $booking) {
                 $row = [];
                 $row['bilti_number'] = $booking->bilti_number;
-
+                $row['no_of_artical'] = $booking->no_of_artical;
                 $row['consignor_branch_id'] = $booking?->consignorBranch?->branch_name;
                 $row['consignor_name'] = $booking->consignor_name;
                 $row['address'] = $booking->consignor_address;
@@ -204,6 +204,7 @@ class DeliveryController extends Controller
 
         foreach ($deliveryReceipts as $deliveryReceipt) {
             $rows[] = [
+                'no_of_artical' => $deliveryReceipt->booking->no_of_artical,
                 'bilti_number'    => $deliveryReceipt->booking->bilti_number ?? '--',
                 'delivery_number' => $deliveryReceipt->delivery_number,
                 'reciver_mobile'  => $deliveryReceipt->reciver_mobile ?? '--',

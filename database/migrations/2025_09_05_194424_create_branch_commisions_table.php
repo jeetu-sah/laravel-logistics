@@ -30,7 +30,7 @@ return new class extends Migration
 
             $table->string('status', 15)->default('active')->comment('active, inactive');
             $table->string('type', 15)->default('outgoing')->comment('outgoing, incoming');
-
+            
             $table->timestamps();
         });
     }

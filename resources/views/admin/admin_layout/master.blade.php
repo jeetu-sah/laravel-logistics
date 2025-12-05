@@ -196,7 +196,6 @@
         }
 
         .card-header {
-            background: #f7f9fc;
             border-bottom: 1px solid #ddd;
             padding: 15px 20px;
         }
@@ -204,7 +203,6 @@
         .card-header h3 {
             font-weight: 600;
             font-size: 18px;
-            color: #ffff;
         }
 
         /* Inputs */

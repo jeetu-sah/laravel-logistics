@@ -36,6 +36,7 @@
                                     <th>Delivery Number</th>
                                     <th>Carrier mobile</th>
                                     <th>Carrier by</th>
+                                    <th>No. of Article</th>
                                     <th>Total Amount</th>
                                     <th>Received Amount</th>
                                     <th>Pending Amount</th>
@@ -88,6 +89,9 @@
                 },
                 {
                     data: 'recived_by'
+                },
+                {
+                    data: 'no_of_artical'
                 },
                 {
                     data: 'grand_total'

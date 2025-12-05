@@ -133,7 +133,6 @@
 
 
                 @role('Admin')
-
                 <li class="nav-item has-treeview {{ request()->is('admin/branches*') ? 'menu-open' : '' }}">
                     <a href="{{ url('admin/branches') }}"
                         class="nav-link {{ request()->is('admin/branches*') ? 'active' : '' }}">
@@ -197,6 +196,15 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item has-treeview {{ request()->is('admin/admin-bookings*') ? 'menu-open' : '' }} ">
+                    <a href="{{ url('admin/admin-bookings') }}"
+                        class="nav-link {{ request()->is('admin/admin-bookings*') ? 'active' : '' }}">
+                        <i class="nav-icon fa-calendar-check"></i>
+                        <p>
+                            {{__('Bookings Management')}}
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item has-treeview {{ request()->is('admin/admin-settings*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('admin/admin-settings') }}"
                         class="nav-link {{ request()->is('admin/admin-settings*') ? 'active' : '' }}">
@@ -219,9 +227,7 @@
                         </p>
                     </a>
                 </li>
-
-                <li
-                    class="nav-item has-treeview {{ request()->query('no-bill-bookings') ? '' : ( (request()->is('admin/bookings*') && request('booking') != 'no-booking') ? 'menu-open' : '') }} ">
+                <li class="nav-item has-treeview {{ request()->query('no-bill-bookings') ? '' : ( (request()->is('admin/bookings*') && request('booking') != 'no-booking') ? 'menu-open' : '') }} ">
                     <a href="{{ url('admin/admin/role-list') }}"
                         class="nav-link {{ request()->query('no-bill-bookings') ? '' : ( (request()->is('admin/bookings*') && request('booking') != 'no-booking') ? 'active' : '') }}">
                         <i class="nav-icon fas fa-book"></i>
@@ -304,7 +310,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li class="nav-item has-treeview {{ request()->is('admin/delivery*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('admin/delivery/generate-gatepass') }}"
                         class="nav-link {{ request()->is('admin/delivery*') ? 'active' : '' }}">
@@ -399,7 +404,6 @@
                         </li>
                     </ul>
                 </li>
-
                 @endrole
             </ul>
         </nav>

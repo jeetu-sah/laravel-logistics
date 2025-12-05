@@ -39,6 +39,7 @@
                                     <th>Consignee Name</th>
                                     <th>Destinaton</th>
                                     <th>Payment Mode</th>
+                                    <th>Article</th>
                                     <th>Amount</th>
                                     <th>Received Date</th>
                                     <th>Action</th>
@@ -96,6 +97,10 @@
                 },
                 {
                     data: 'booking_type'
+
+                },
+                {
+                    data: 'no_of_artical'
 
                 },
                 {
