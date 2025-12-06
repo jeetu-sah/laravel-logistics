@@ -16,30 +16,33 @@
             <!-- Booking Info -->
             <div class="mb-5 p-4 bg-light rounded-4 border shadow-sm">
                 <div class="row">
-                    <div class="col-md-4 mb-2">
-                        <p class="mb-1 text-secondary">{{ __('Bilti Number')}}</p>
+                    <div class="col-md-3 mb-2">
+                        <p class="mb-1 text-secondary">{{ __('Bilty Number') }}</p>
                         <h6 class="fw-bold">{{ $booking->bilti_number }}</h6>
                     </div>
-                    <div class="col-md-4 mb-2">
-                        <p class="mb-1 text-secondary">Customer</p>
+                    <div class="col-md-3 mb-2">
+                        <p class="mb-1 text-secondary">{{ __('Booking Date') }}</p>
+                        <h6 class="fw-bold">{{ formatOnlyDate($booking->booking_date) }}</h6>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <p class="mb-1 text-secondary">{{ __('Consignor') }}</p>
+                        <h6 class="fw-bold">{{ $booking->consignor_name }}</h6>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <p class="mb-1 text-secondary">{{ __('Consignee') }}</p>
                         <h6 class="fw-bold">{{ $booking->consignee_name }}</h6>
                     </div>
-                    <div class="col-md-4 mb-2">
-                        <p class="mb-1 text-secondary">Shipping By</p>
-                        <h6 class="fw-bold">
-                            Vikas Logistic
-                            <a href="tel:+918840354461"
-                                class="text-decoration-none ms-2 text-primary fw-semibold">
-                                <i class="fa fa-phone text-success me-1"></i> +91 88403 54461
-                            </a>
-                        </h6>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <p class="mb-1 text-secondary">Remark</p>
+                        <h6 class="fw-bold">{{ $booking->remark ?? '--' }}</h6>
                     </div>
                 </div>
             </div>
 
             <!-- Vertical Timeline -->
             <div class="timeline position-relative">
-
                 @foreach($steps as $step)
                 @php
                 $statusClass = match($step['status']) {
@@ -76,11 +79,14 @@
                         </span>
                         @if($step['status'] === 'completed')
                         <div class="small text-secondary">
-                            @if(!empty($step['dispatched_at']))
-                            <div><strong>Dispatched:</strong> {{ $step['dispatched_at'] }}</div>
+                            @if(!empty($step['date_time']))
+                            <div><strong>Date:</strong> {{ $step['date_time'] }}</div>
                             @endif
-                            @if(!empty($step['received_at']))
-                            <div><strong>Received:</strong> {{ $step['received_at'] }}</div>
+                            @if(!empty($step['carrier_by']))
+                            <div><strong>Carrier by:</strong> {{ $step['carrier_by'] }}</div>
+                            @endif
+                            @if(!empty($step['recived_by']))
+                            <div><strong>Recived by:</strong> {{ $step['recived_by'] }}</div>
                             @endif
                         </div>
                         @endif

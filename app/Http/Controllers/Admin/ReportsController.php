@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Models\Branch;
+use App\Models\DeliveryReceipt;
 use Illuminate\Support\Facades\Auth;
 
 class ReportsController extends Controller
@@ -327,6 +328,7 @@ class ReportsController extends Controller
         return view('admin.report.incoming-booking-report', $data);
     }
 
+
     public function incomingBookingAjaxList(Request $request)
     {
         $search = $request->input('search')['value'] ?? null;
@@ -400,6 +402,113 @@ class ReportsController extends Controller
                 'amount' => number_format($booking?->delivery_receipt?->grand_total, 2),
                 'booking_type' => '<span class="badge badge-danger">' . $booking->booking_type . '</span>',
                 'dispatch_date' => formatOnlyDate($booking?->first_transhipment->dispatched_at) ?? '-',
+                'challan_number' => $booking->getSpecificBranchBookingChallan(Auth::user()?->branch_user_id)->challan_number ?? '-',
+            ];
+        }
+
+        return response()->json([
+            'draw' => $request->input('draw'),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $rows,
+            'total_amount' => $totalOutGoingBookingAmount,
+        ]);
+    }
+
+
+    public function deliveryReportIndex()
+    {
+        $data['title'] = 'Delivery Reports';
+        $data['branches'] = Branch::where('id', '!=', Auth::user()->branch_user_id)
+            ->where('user_status', Branch::ACTIVE)
+            ->get();
+        $data['combineClients'] = Branch::currentbranch()?->combineClients?->unique('id')?->values() ?? [];
+        return view('admin.report.delivery-booking-report', $data);
+    }
+
+    public function deliveryReportAjaxList(Request $request)
+    {
+        $search = $request->input('search')['value'] ?? null;
+        $limit = $request->input('length', 10);
+        $start = $request->input('start', 0);
+        // Retrieve filter values
+        $fromDate = $request->input('date_from');
+        $toDate = $request->input('date_to') ?: now()->format('Y-m-d');
+        $bookingType = $request->input('booking_type');
+        $consigneeBranchId = $request->input('consignee_branch_id');
+        $clientId = $request->input('client_id');
+        $orderColumnIndex = $request->input('order')[0]['column'] ?? 0;
+        $orderDirection = $request->input('order')[0]['dir'] ?? 'asc';
+
+        $columns = [
+            'sn',
+            'bilti_number',
+            'booking_date',
+            'no_of_artical',
+            'origin',
+            'consignor_name',
+            'destination',
+            'consignee_name',
+            'amount',
+            'booking_type',
+            'created_at',
+            'challan_number'
+        ];
+
+        $deliveryReceipt = DeliveryReceipt::with('booking')->where('status', DeliveryReceipt::DELIVERY_STATUS);
+        // Date filter
+        if ($fromDate && $toDate) {
+            $deliveryReceipt->whereBetween('created_at', [$fromDate, $toDate]);
+        }
+        // Filter by consignee_branch_id on related booking
+        $deliveryReceipt->whereHas('booking', function ($query) use ($request, $bookingType, $consigneeBranchId, $clientId) {
+            if ($request->consignee_branch_id) {
+                $query->where('consignee_branch_id', $request->consignee_branch_id);
+            }
+            if ($bookingType) {
+                $query->where('booking_type', $bookingType);
+            }
+            if ($consigneeBranchId) {
+                $query->where('consignee_branch_id', $consigneeBranchId);
+            }
+            if ($clientId) {
+                $query->where('client_to_id', $clientId);
+            }
+        });
+
+        // Ordering
+        if ($orderColumnIndex !== null && isset($columns[$orderColumnIndex]) && $columns[$orderColumnIndex] !== 'sn') {
+            $deliveryReceipt->orderBy($columns[$orderColumnIndex], $orderDirection);
+        } else {
+            $deliveryReceipt->orderBy('created_at', 'desc');
+        }
+
+        // Total records
+        $totalRecords = $deliveryReceipt->count();
+        // Total outgoing booking amount
+        $totalOutGoingBookingAmount = number_format($deliveryReceipt->sum('grand_total'), 2);
+        // Paginated results
+        $deliveryReceipts = $deliveryReceipt->skip($start)->take($limit)->get();
+
+        $rows = [];
+        foreach ($deliveryReceipts as $index => $deliveryReceipt) {
+            $booking = $deliveryReceipt->booking;
+            $rows[] = [
+                'sn' => $start + $index + 1,
+                'bilti_number' => '<a href="' . url('/') . '" target="_blank">'
+                    . ($booking->bilti_number ?? '')
+                    . ($booking->manual_bilty_number ? ' / ' . $booking->manual_bilty_number : '')
+                    . '</a>',
+                'booking_date' => formatOnlyDate($booking->booking_date),
+                'booking' => $booking,
+                'no_of_artical' => $booking->no_of_artical ?? '-',
+                'origin' => $booking?->consignorBranch?->branch_name,
+                'consignor_name' => $booking->consignor_name,
+                'destination' => $booking?->consigneeBranch?->branch_name,
+                'consignee_name' => $booking->consignee_name ?? '',
+                'amount' => number_format($booking?->delivery_receipt?->grand_total, 2),
+                'booking_type' => '<span class="badge badge-danger">' . $booking->booking_type . '</span>',
+                'created_at' =>    formatOnlyDate($booking?->created_at) ?? '-',
                 'challan_number' => $booking->getSpecificBranchBookingChallan(Auth::user()?->branch_user_id)->challan_number ?? '-',
             ];
         }

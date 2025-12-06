@@ -37,36 +37,52 @@ class ShipmentController extends Controller
                 $steps[] = [
                     'branchName' => $branchName ?: 'Sender',
                     'name' => 'Order Booked',
+                    'status' => $update->received_at ? 'completed' : 'pending',
+                    'dispatched_at' => formatDate($update->received_at),
+                    'received_at' => formatDate($update->received_at),
+                    'date_time' => formatDate($update->received_at),
+                ];
+                $steps[] = [
+                    'branchName' => $branchName ?: 'Sender',
+                    'name' => 'Order Dispatched',
                     'status' => $update->dispatched_at ? 'completed' : 'pending',
                     'dispatched_at' => formatDate($update->dispatched_at),
                     'received_at' => null,
+                    'date_time' => formatDate($update->dispatched_at),
                 ];
             } elseif ($update->type == 'transhipment') {
                 // Transhipment: Received first
-                $steps[] = [
-                    'branchName' => $branchName ?: 'Transhipment',
-                    'name' => 'Received at ' . $branchName,
-                    'status' => $update->received_at ? 'completed' : 'pending',
-                    'dispatched_at' => null,
-                    'received_at' => formatDate($update->received_at),
-                ];
+                if ($update->received_at) {
+                    $steps[] = [
+                        'branchName' => $branchName ?: 'Transhipment',
+                        'name' => 'Received at ' . $branchName,
+                        'status' => $update->received_at ? 'completed' : 'pending',
+                        'dispatched_at' => null,
+                        'received_at' => formatDate($update->received_at),
+                        'date_time' => formatDate($update->received_at)
+                    ];
+                }
 
                 // Transhipment: Dispatched after received
-                $steps[] = [
-                    'branchName' => $branchName ?: 'Transhipment',
-                    'name' => 'Dispatched from ' . $branchName,
-                    'status' => $update->dispatched_at ? 'completed' : 'pending',
-                    'dispatched_at' => formatDate($update->dispatched_at),
-                    'received_at' => null,
-                ];
+                if($update->dispatched_at) {
+                    $steps[] = [
+                        'branchName' => $branchName ?: 'Transhipment',
+                        'name' => 'Dispatched from ' . $branchName,
+                        'status' => $update->dispatched_at ? 'completed' : 'pending',
+                        'dispatched_at' => formatDate($update->dispatched_at),
+                        'received_at' => null,
+                        'date_time' => formatDate($update->dispatched_at),
+                    ];
+                }
             } elseif ($update->type == 'receiver') {
                 // Receiver step
                 $steps[] = [
                     'branchName' => $branchName ?: 'Receiver',
-                    'name' => 'Received at' . $branchName,
+                    'name' => 'Received at ' . $branchName,
                     'status' => $update->received_at ? 'completed' : 'pending',
                     'dispatched_at' => formatDate($update->dispatched_at),
                     'received_at' => formatDate($update->received_at),
+                    'date_time' => formatDate($update->received_at),
                 ];
             }
         }
@@ -82,6 +98,7 @@ class ShipmentController extends Controller
                 'status' => $deliveryReceipt->created_at ? 'completed' : 'pending',
                 'dispatched_at' => formatDate($deliveryReceipt->created_at),
                 'received_at' => null,
+                'date_time' => formatDate($deliveryReceipt->created_at)
             ];
         } else {
             $steps[] = [
@@ -92,6 +109,7 @@ class ShipmentController extends Controller
                 'status' => 'pending',
                 'dispatched_at' => null,
                 'received_at' => null,
+                'date_time' => null
             ];
         }
 
@@ -105,7 +123,7 @@ class ShipmentController extends Controller
                 'received_at' => $booking->received_at,
                 'status' => 'completed',
                 'dispatched_at' => formatDate($booking->received_at),
-                'received_at' => null,
+                'date_time' => formatDate($booking->received_at)
             ];
         } else {
             $steps[] = [
@@ -117,9 +135,11 @@ class ShipmentController extends Controller
                 'status' => 'pending',
                 'dispatched_at' => null,
                 'received_at' => null,
+                'date_time' => null
             ];
         }
-
+        // echo "<pre>";
+        // print_r($steps);exit;
         return view('home.track-shipment', compact('booking', 'steps', 'title'));
     }
 }

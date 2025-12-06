@@ -141,6 +141,9 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::get('incoming-bookings-report', [ReportsController::class, 'incomingBookingIndex']);
             Route::get('incoming-bookings/list', [ReportsController::class, 'incomingBookingAjaxList']);
+
+            Route::get('delivery-reports', [ReportsController::class, 'deliveryReportIndex']);
+            Route::get('delivery-reports/list', [ReportsController::class, 'deliveryReportAjaxList']);
         });
 
         // Client Booking Report

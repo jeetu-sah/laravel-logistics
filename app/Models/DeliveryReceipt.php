@@ -13,6 +13,8 @@ class DeliveryReceipt extends Model
     // The table associated with the model (optional if you use Laravel's naming conventions)
     protected $table = 'delivery_receipts';
 
+    const DELIVERY_STATUS = "generated-gatepass";
+
     // The attributes that are mass assignable
     protected $fillable = [
         'id',

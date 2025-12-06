@@ -344,46 +344,57 @@
                     </a>
 
                 </li>
-                <li class="nav-item has-treeview {{ request()->is('admin/report*') ? 'menu-open' : '' }} ">
-                    <a href="{{ url('admin/report') }}"
-                        class="nav-link {{ request()->is('admin/report*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file"></i>
+                <li class="nav-item has-treeview {{ request()->is('admin/reports*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is('admin/reports*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-file-alt"></i>
                         <p>
                             Reports
-                            <i class="fas fa-angle-left right"></i>
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ url('admin/reports/outgoing-bookings-report') }}"
                                 class="nav-link {{ request()->is('admin/reports/outgoing-bookings-report') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Outgoing Load </p>
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Outgoing Load</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="{{ url('admin/reports/incoming-bookings-report') }}"
                                 class="nav-link {{ request()->is('admin/reports/incoming-bookings-report') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Incoming Load </p>
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Incoming Load</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="{{ url('admin/reports/clients-outgoing-reports') }}"
                                 class="nav-link {{ request()->is('admin/reports/clients-outgoing-reports') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Clients Outgoing Load</p>
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>{{ __('Clients Outgoing Load') }}</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ url('admin/reports/clients-incoming-reports') }}"
+                                class="nav-link {{ request()->is('admin/reports/clients-incoming-reports') ? 'active' : '' }}">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>{{ __('Clients Incoming Load') }}</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('admin/reports/clients-incoming-reports') }}"
-                                class="nav-link {{ request()->is('admin/reports/clients-incoming-reports') || request()->is('admin/reports') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Clients Incoming Load</p>
+                            <a href="{{ url('admin/reports/delivery-reports') }}"
+                                class="nav-link {{ request()->is('admin/reports/delivery-reports') ? 'active' : '' }}">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>{{ __('Delivery Reports')}}</p>
                             </a>
                         </li>
+
                     </ul>
                 </li>
+
                 <li class="nav-item has-treeview {{ request()->is('branch-user/settings*') ? 'menu-open' : '' }} ">
                     <a href="{{ url('branch-user/settings') }}"
                         class="nav-link {{ request()->is('branch-user/settings*') ? 'active' : '' }}">

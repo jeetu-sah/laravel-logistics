@@ -13,7 +13,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item">Reports</li>
-                        <li class="breadcrumb-item active">Incoming Load Reports</li>
+                        <li class="breadcrumb-item active">Delivery Reports</li>
                     </ol>
                 </div>
             </div>
@@ -24,24 +24,24 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center w-100">
-                    <h2 class="card-title mb-0">Incoming Load Reports</h2>
+                    <h2 class="card-title mb-0">Delivery Reports</h2>
 
                 </div>
             </div>
             <div class="card-body">
                 <form id="filter-form" class="mb-4">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="date_from" class="form-label">From Date</label>
                             <input type="date" name="date_from" id="date_from" class="form-control">
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="date_to" class="form-label">To Date</label>
                             <input type="date" name="date_to" id="date_to" class="form-control">
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="booking_type" class="form-label">Booking Type</label>
                             <select name="booking_type" id="booking_type" class="form-control">
                                 <option value="">-- All --</option>
@@ -50,12 +50,22 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="consignee_branch_id" class="form-label">Origin branch</label>
                             <select id="consignee_branch_id" name="consignee_branch_id" class="form-select select2 form-control js-select2">
-                                <option value="">-- All Clients --</option>
+                                <option value="">-- All branch --</option>
                                 @foreach($branches as $branch)
                                 <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="client_id" class="form-label">Client</label>
+                            <select id="client_id" name="client_id" class="form-select select2 form-control js-select2">
+                                <option value="">-- All Clients --</option>
+                                @foreach($combineClients as $client)
+                                <option value="{{ $client->id }}">{{ $client->client_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -71,30 +81,30 @@
                 {{-- Data Table --}}
                 <div class="row">
                     <div class="table-responsive">
-                        <table class="display" id="incoming-booking-list">
+                        <table class="display" id="delivery-list">
                             <thead>
                                 <tr>
-                                    <th>SN.</th>
-                                    <th>Online / Offline Bilti No.</th>
-                                    <th>Booking Date</th>
-                                    <th>Articles</th>
-                                    <th>Origin</th>
-                                    <th>Consignor</th>
-                                    <th>Destinaton</th>
-                                    <th>Consignee</th>
-                                    <th>Amount</th>
-                                    <th>Type</th>
-                                    <th>Dispatch Date</th>
-                                    <th>Challan No.</th>
+                                    <th>{{ __('SN.') }}</th>
+                                    <th>{{ __('Online / Offline Bilti No.') }}</th>
+                                    <th>{{ __('Booking Date') }}</th>
+                                    <th>{{ __('Articles') }}</th>
+                                    <th>{{ __('Origin') }}</th>
+                                    <th>{{ __('Consignor') }}</th>
+                                    <th>{{ __('Destination') }}</th>
+                                    <th>{{ __('Consignee') }}</th>
+                                    <th>{{ __('Amount') }}</th>
+                                    <th>{{ __('Type') }}</th>
+                                    <th>{{ __('Created At') }}</th>
+                                    <th>{{ __('Challan No.') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                             </tbody>
-                           <tfoot>
+                            <tfoot>
                                 <tr>
                                     <th colspan="8" style="text-align:right">Total:</th>
-                                    <th></th> 
+                                    <th></th>
                                     <th colspan="3"></th>
                                 </tr>
                             </tfoot>
@@ -119,23 +129,20 @@
 
 <script>
     $(document).ready(function(e) {
-
-
-
         function parseValue(val) {
             if (typeof val === 'number') return val;
             if (typeof val === 'string') return parseFloat(val.replace(/[^0-9.\-]/g, '')) || 0;
             return 0;
         }
 
-        var table = new DataTable('#incoming-booking-list', {
+        var table = new DataTable('#delivery-list', {
             responsive: true,
             scrollY: "400px",
             scrollX: true,
             scrollCollapse: true,
-            searching: false, 
+            searching: false,
             ajax: {
-                url: "{{ url('admin/reports/incoming-bookings/list') }}",
+                url: "{{ url('admin/reports/delivery-reports/list') }}",
                 data: function(d) {
                     d.client_id = $('#client_id').val();
                     d.date_from = $('#date_from').val();
@@ -178,8 +185,8 @@
                     data: 'booking_type'
                 },
                 {
-                    data: 'dispatch_date',
-                    orderable: false
+                    data: 'created_at',
+                    orderable: true
                 },
                 {
                     data: 'challan_number',
